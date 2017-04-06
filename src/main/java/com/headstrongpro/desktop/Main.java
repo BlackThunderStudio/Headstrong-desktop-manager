@@ -1,5 +1,6 @@
 package com.headstrongpro.desktop;
 
+import com.headstrongpro.desktop.core.GUI.SplashScreen;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -31,6 +32,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
+        SplashScreen.viewSplashScreen(3000, SplashScreen.Style.FADE, SplashScreen.Style.FADE);
         window = primaryStage;
         Parent root = FXMLLoader.load(getClass().getResource("/layout/mainWindow.fxml"));
         primaryStage.setTitle("Headstrong Company Manager");

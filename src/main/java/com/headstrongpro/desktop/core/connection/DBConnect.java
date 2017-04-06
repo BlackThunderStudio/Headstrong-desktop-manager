@@ -51,7 +51,7 @@ public class DBConnect {
             con = DriverManager.getConnection(hostname, user, pass);
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
-            throw new ConnectionException("Exception occured while connecting to the database", ex);
+            throw new ConnectionException("Exception occurred while connecting to the database", ex);
         }
         return con;
     }
@@ -118,7 +118,7 @@ public class DBConnect {
             int affectedRows = stmt.executeUpdate();
             con.close();
         } catch (SQLException ex) {
-            throw new ConnectionException("WARNING! exception occured while uploading a query to the server.", ex);
+            throw new ConnectionException("WARNING! exception occurred while uploading a query to the server.", ex);
         }
     }
 
