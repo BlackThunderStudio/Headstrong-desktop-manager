@@ -1,0 +1,12 @@
+{
+  "database_mssql": {
+    "url": "jdbc:sqlserver://kraka.ucn.dk;databaseName=dmaj0916_199366",
+    "user": "dmaj0916_199366",
+    "pass": "Password1!"
+  },
+  "database_mysql": {
+    "url": "",
+    "user": "",
+    "pass": ""
+  }
+}
