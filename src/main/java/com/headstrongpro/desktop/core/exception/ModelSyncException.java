@@ -1,0 +1,26 @@
+package com.headstrongpro.desktop.core.exception;
+
+/**
+ * Created by rajmu on 17.04.06.
+ */
+public class ModelSyncException extends Exception {
+    public ModelSyncException() {
+        super();
+    }
+
+    public ModelSyncException(String message) {
+        super(message);
+    }
+
+    public ModelSyncException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public ModelSyncException(Throwable cause) {
+        super(cause);
+    }
+
+    protected ModelSyncException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
+    }
+}
