@@ -1,7 +1,7 @@
 package com.headstrongpro.desktop.model.entity;
 
 /**
- * Created by 1062085 on 11-Apr-17.
+ * Company Entity
  */
 public class Company {
     private int id;
