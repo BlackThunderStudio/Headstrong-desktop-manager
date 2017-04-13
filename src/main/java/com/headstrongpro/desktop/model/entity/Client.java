@@ -14,6 +14,14 @@ public class Client extends Person {
         this.currencyAmount = currencyAmount;
     }
 
+    public Client(String name, String email, String phone, String gender, String login, String password, String registrationDate, String currencyAmount) {
+        super(name, email, phone, gender);
+        this.login = login;
+        this.password = password;
+        this.registrationDate = registrationDate;
+        this.currencyAmount = currencyAmount;
+    }
+
     public String getLogin() {
         return login;
     }

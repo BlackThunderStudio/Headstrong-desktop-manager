@@ -15,6 +15,13 @@ public abstract class Person {
         this.gender = gender;
     }
 
+    public Person(String name, String email, String phone, String gender) {
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.gender = gender;
+    }
+
     public int getId() {
         return id;
     }

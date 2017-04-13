@@ -17,6 +17,16 @@ public class Company {
         this.country = country;
     }
 
+    public Company(String name, String cvr, String street, String postal, String city, String country) {
+
+        this.name = name;
+        this.cvr = cvr;
+        this.street = street;
+        this.postal = postal;
+        this.city = city;
+        this.country = country;
+    }
+
     public int getId() {
         return id;
     }
