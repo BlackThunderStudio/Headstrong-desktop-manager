@@ -1,13 +1,16 @@
 package com.headstrongpro.desktop.model.entity;
 
+import com.headstrongpro.desktop.model.Subscription;
+
 /**
  * Company Entity
  */
 public class Company {
     private int id;
     private String name, cvr, street, postal, city, country;
+    private Subscription subscription;
 
-    public Company(int id, String name, String cvr, String street, String postal, String city, String country) {
+    public Company(int id, String name, String cvr, String street, String postal, String city, String country, Subscription subscription) {
         this.id = id;
         this.name = name;
         this.cvr = cvr;
@@ -15,16 +18,17 @@ public class Company {
         this.postal = postal;
         this.city = city;
         this.country = country;
+        this.subscription = subscription;
     }
 
-    public Company(String name, String cvr, String street, String postal, String city, String country) {
-
+    public Company(String name, String cvr, String street, String postal, String city, String country, Subscription subscription) {
         this.name = name;
         this.cvr = cvr;
         this.street = street;
         this.postal = postal;
         this.city = city;
         this.country = country;
+        this.subscription = subscription;
     }
 
     public int getId() {
@@ -82,4 +86,8 @@ public class Company {
     public void setCountry(String country) {
         this.country = country;
     }
+
+    public Subscription getSubscription() { return subscription; }
+
+    public void setSubscription(Subscription subscription) { this.subscription = subscription; }
 }
