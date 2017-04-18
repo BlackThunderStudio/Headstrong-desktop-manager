@@ -17,6 +17,17 @@ public class User extends Person {
         this.baseSalary = baseSalary;
     }
 
+    public User(String name, String email, String phone, String gender, String cpr, String street, String postal, String city, String country, String accountNo, String baseSalary) {
+        super(name, email, phone, gender);
+        this.cpr = cpr;
+        this.street = street;
+        this.postal = postal;
+        this.city = city;
+        this.country = country;
+        this.accountNo = accountNo;
+        this.baseSalary = baseSalary;
+    }
+
     public String getCpr() {
         return cpr;
     }
