@@ -1,6 +1,9 @@
 package com.headstrongpro.desktop.model.entity;
 
+import com.headstrongpro.desktop.model.Department;
 import com.headstrongpro.desktop.model.Subscription;
+
+import java.util.ArrayList;
 
 /**
  * Company Entity
@@ -9,8 +12,9 @@ public class Company {
     private int id;
     private String name, cvr, street, postal, city, country;
     private Subscription subscription;
+    private ArrayList<Department> departments;
 
-    public Company(int id, String name, String cvr, String street, String postal, String city, String country, Subscription subscription) {
+    public Company(int id, String name, String cvr, String street, String postal, String city, String country, Subscription subscription, ArrayList<Department> departments) {
         this.id = id;
         this.name = name;
         this.cvr = cvr;
@@ -19,9 +23,10 @@ public class Company {
         this.city = city;
         this.country = country;
         this.subscription = subscription;
+        this.departments = departments;
     }
 
-    public Company(String name, String cvr, String street, String postal, String city, String country, Subscription subscription) {
+    public Company(String name, String cvr, String street, String postal, String city, String country, Subscription subscription, ArrayList<Department> departments) {
         this.name = name;
         this.cvr = cvr;
         this.street = street;
@@ -29,6 +34,7 @@ public class Company {
         this.city = city;
         this.country = country;
         this.subscription = subscription;
+        this.departments = departments;
     }
 
     public int getId() {
@@ -90,4 +96,8 @@ public class Company {
     public Subscription getSubscription() { return subscription; }
 
     public void setSubscription(Subscription subscription) { this.subscription = subscription; }
+
+    public ArrayList<Department> getDepartments() { return departments;}
+
+    public void setDepartments(ArrayList<Department> departments) { this.departments = departments;}
 }
