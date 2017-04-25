@@ -1,6 +1,6 @@
 package com.headstrongpro.desktop.modelCollections;
 
-import com.headstrongpro.desktop.connection.IDataAccessObject;
+import com.headstrongpro.desktop.core.connection.IDataAccessObject;
 import com.headstrongpro.desktop.model.entity.Company;
 
 /**
