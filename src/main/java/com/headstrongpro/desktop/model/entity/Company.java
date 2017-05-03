@@ -11,10 +11,8 @@ import java.util.ArrayList;
 public class Company {
     private int id;
     private String name, cvr, street, postal, city, country;
-    private Subscription subscription;
-    private ArrayList<Department> departments;
 
-    public Company(int id, String name, String cvr, String street, String postal, String city, String country, Subscription subscription, ArrayList<Department> departments) {
+    public Company(int id, String name, String cvr, String street, String postal, String city, String country) {
         this.id = id;
         this.name = name;
         this.cvr = cvr;
@@ -22,19 +20,15 @@ public class Company {
         this.postal = postal;
         this.city = city;
         this.country = country;
-        this.subscription = subscription;
-        this.departments = departments;
     }
 
-    public Company(String name, String cvr, String street, String postal, String city, String country, Subscription subscription, ArrayList<Department> departments) {
+    public Company(String name, String cvr, String street, String postal, String city, String country) {
         this.name = name;
         this.cvr = cvr;
         this.street = street;
         this.postal = postal;
         this.city = city;
         this.country = country;
-        this.subscription = subscription;
-        this.departments = departments;
     }
 
     public int getId() {
@@ -92,12 +86,4 @@ public class Company {
     public void setCountry(String country) {
         this.country = country;
     }
-
-    public Subscription getSubscription() { return subscription; }
-
-    public void setSubscription(Subscription subscription) { this.subscription = subscription; }
-
-    public ArrayList<Department> getDepartments() { return departments;}
-
-    public void setDepartments(ArrayList<Department> departments) { this.departments = departments;}
 }

@@ -16,6 +16,7 @@ import java.util.List;
  * company model collection
  *
  * TODO: fix the subscription and departments thingie
+ * #fixd I guess
  */
 public class DBCompany implements IDataAccessObject<Company> {
     private List<Company> companies;
@@ -40,9 +41,7 @@ public class DBCompany implements IDataAccessObject<Company> {
                         companyRS.getString("street"),
                         companyRS.getString("postal"),
                         companyRS.getString("city"),
-                        companyRS.getString("country"),
-                        null,
-                        null));
+                        companyRS.getString("country")));
             isLoaded = true;
         } catch (ConnectionException | SQLException e) {
             throw new ModelSyncException("Could not load companies.", e);
