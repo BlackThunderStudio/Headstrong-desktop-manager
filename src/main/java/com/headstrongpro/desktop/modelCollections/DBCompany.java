@@ -19,17 +19,12 @@ import java.util.List;
  * #fixd I guess
  */
 public class DBCompany implements IDataAccessObject<Company> {
-    private List<Company> companies;
+
     private DBConnect dbConnect;
-    private boolean isLoaded;
 
-    public DBCompany() throws ModelSyncException{
-        companies = new ArrayList<>();
-        isLoaded = false;
-    }
-
-    public void load()throws ModelSyncException{
-        companies = new ArrayList<>();
+    @Override
+    public List<Company> getAll() throws ModelSyncException {
+        List<Company> companies = new ArrayList<>();
         try{
             dbConnect = new DBConnect();
             String query = "SELECT [id], [name], [cvr], [street], [postal], [city], [country] FROM [companies]";
@@ -42,24 +37,31 @@ public class DBCompany implements IDataAccessObject<Company> {
                         companyRS.getString("postal"),
                         companyRS.getString("city"),
                         companyRS.getString("country")));
-            isLoaded = true;
         } catch (ConnectionException | SQLException e) {
             throw new ModelSyncException("Could not load companies.", e);
         }
-    }
-    
-    @Override
-    public List<Company> getAll() throws ModelSyncException{
-        if(!isLoaded)
-            load();
         return companies;
     }
     
     @Override
     public Company getById(int id) throws ModelSyncException{
-        if(!isLoaded)
-            load();
-        return companies.stream().filter(o -> o.getId() == id).findFirst().get();
+        Company company = null;
+        try {
+            dbConnect = new DBConnect();
+            String query = "SELECT * FROM companies WHERE id=" + id + ";";
+            ResultSet rs = dbConnect.getFromDataBase(query);
+            rs.next();
+            company = new Company(rs.getInt("id"),
+                    rs.getString("name"),
+                    rs.getString("cvr"),
+                    rs.getString("street"),
+                    rs.getString("postal"),
+                    rs.getString("city"),
+                    rs.getString("country"));
+        } catch (ConnectionException | SQLException e) {
+            throw new ModelSyncException("Could not retrieve object by ID", e);
+        }
+        return company;
     }
 
     @Override
@@ -84,8 +86,6 @@ public class DBCompany implements IDataAccessObject<Company> {
             }
         } catch (ConnectionException | SQLException e) {
             throw new ModelSyncException("Could not create new company!", e);
-        } finally {
-            companies.add(newCompany);
         }
         return newCompany;
     }
@@ -118,8 +118,6 @@ public class DBCompany implements IDataAccessObject<Company> {
             preparedStatement.execute();
         } catch (ConnectionException | SQLException e) {
             throw new ModelSyncException("Couldn't delete the company of id=" + company.getId(), e);
-        } finally {
-            companies.removeIf(p -> p.getId() == company.getId());
         }
     }
 }
