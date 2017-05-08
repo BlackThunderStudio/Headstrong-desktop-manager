@@ -122,4 +122,28 @@ class DBResources implements IDataAccessObject<Resource> {
             throw new ModelSyncException("WARNING! Could not update resource of ID: " + object.getID() + " !", e);
         }
     }
+
+    public List<Resource> getbyType(int type) throws ModelSyncException {
+        List<Resource> resources = new ArrayList<>();
+        try{
+            dbConnect = new DBConnect();
+            //language=TSQL
+            String query = "SELECT * FROM [resources] WHERE type=" + type;
+            ResultSet rs = dbConnect.getFromDataBase(query);
+            ResourceFactory resourceFactory = new ResourceFactory();
+            while(rs.next()){
+                resources.add(resourceFactory.getResource(
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getString("description"),
+                        rs.getString("url"),
+                        rs.getBoolean("is_for_achievement"),
+                        rs.getInt("type")
+                ));
+            }
+        } catch (ConnectionException | SQLException e) {
+            throw new ModelSyncException("Could not load resources.", e);
+        }
+        return resources;
+    }
 }

@@ -3,23 +3,24 @@ package com.headstrongpro.desktop.model.resource;
 /**
  * Created by rajmu on 17.05.08.
  */
+//TODO: Custom functionality and behaviour to be added!
 class VideoResource implements Resource {
 
-    private int id, type;
+    private static final int TYPE = 4;
+
+    private int id;
     private String name, description, url;
     private boolean isForAchievement;
 
-    public VideoResource(int type, String name, String description, String url, boolean isForAchievement) {
-        this.type = type;
+    public VideoResource(String name, String description, String url, boolean isForAchievement) {
         this.name = name;
         this.description = description;
         this.url = url;
         this.isForAchievement = isForAchievement;
     }
 
-    public VideoResource(int id, int type, String name, String description, String url, boolean isForAchievement) {
+    public VideoResource(int id, String name, String description, String url, boolean isForAchievement) {
         this.id = id;
-        this.type = type;
         this.name = name;
         this.description = description;
         this.url = url;
@@ -48,7 +49,7 @@ class VideoResource implements Resource {
 
     @Override
     public int getType() {
-        return type;
+        return TYPE;
     }
 
     @Override

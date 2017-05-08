@@ -5,23 +5,24 @@ import javafx.scene.image.Image;
 /**
  * Created by rajmu on 17.05.08.
  */
+//TODO: Custom functionality and behaviour to be added!
 class PhotoResource implements Resource {
 
-    private int id, type;
+    private static final int TYPE = 2;
+
+    private int id;
     private String name, description, url;
     private boolean isForAchievement;
 
-    public PhotoResource(int type, String name, String description, String url, boolean isForAchievement) {
-        this.type = type;
+    public PhotoResource(String name, String description, String url, boolean isForAchievement) {
         this.name = name;
         this.description = description;
         this.url = url;
         this.isForAchievement = isForAchievement;
     }
 
-    public PhotoResource(int id, int type, String name, String description, String url, boolean isForAchievement) {
+    public PhotoResource(int id, String name, String description, String url, boolean isForAchievement) {
         this.id = id;
-        this.type = type;
         this.name = name;
         this.description = description;
         this.url = url;
@@ -50,7 +51,7 @@ class PhotoResource implements Resource {
 
     @Override
     public int getType() {
-        return type;
+        return TYPE;
     }
 
     @Override

@@ -56,4 +56,10 @@ public class DBResourcesTest {
 
     }
 
+    @Ignore(value = "To be implemented")
+    @Test
+    public void getByTypeTest() throws Exception {
+
+    }
+
 }

@@ -3,23 +3,24 @@ package com.headstrongpro.desktop.model.resource;
 /**
  * Created by rajmu on 17.05.08.
  */
+//TODO: Custom functionality and behaviour to be added!
 class TextResource implements Resource {
 
-    private int id, type;
+    private static final int TYPE = 1;
+
+    private int id;
     private String name, description, url;
     private boolean isForAchievement;
 
-    public TextResource(int type, String name, String description, String url, boolean isForAchievement) {
-        this.type = type;
+    public TextResource(String name, String description, String url, boolean isForAchievement) {
         this.name = name;
         this.description = description;
         this.url = url;
         this.isForAchievement = isForAchievement;
     }
 
-    public TextResource(int id, int type, String name, String description, String url, boolean isForAchievement) {
+    public TextResource(int id, String name, String description, String url, boolean isForAchievement) {
         this.id = id;
-        this.type = type;
         this.name = name;
         this.description = description;
         this.url = url;
@@ -48,7 +49,7 @@ class TextResource implements Resource {
 
     @Override
     public int getType() {
-        return type;
+        return TYPE;
     }
 
     @Override

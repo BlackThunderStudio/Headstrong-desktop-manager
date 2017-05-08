@@ -9,13 +9,13 @@ public class ResourceFactory {
         if (type < 1 || type > 4){
             return null;
         } else if (type == 1){
-            return new TextResource(id, type, name, description, url, isForAchievement);
+            return new TextResource(id, name, description, url, isForAchievement);
         } else if (type == 2){
-            return new PhotoResource(id, type, name, description, url, isForAchievement);
+            return new PhotoResource(id, name, description, url, isForAchievement);
         } else if (type == 3){
-            return new AudioResource(id, type, name, description, url, isForAchievement);
+            return new AudioResource(id, name, description, url, isForAchievement);
         } else if (type == 4){
-            return new VideoResource(id, type, name, description, url, isForAchievement);
+            return new VideoResource(id, name, description, url, isForAchievement);
         }
         return null;
     }
@@ -24,13 +24,13 @@ public class ResourceFactory {
         if (type < 1 || type > 4){
             return null;
         } else if (type == 1){
-            return new TextResource(type, name, description, url, isForAchievement);
+            return new TextResource(name, description, url, isForAchievement);
         } else if (type == 2){
-            return new PhotoResource(type, name, description, url, isForAchievement);
+            return new PhotoResource(name, description, url, isForAchievement);
         } else if (type == 3){
-            return new AudioResource(type, name, description, url, isForAchievement);
+            return new AudioResource(name, description, url, isForAchievement);
         } else if (type == 4){
-            return new VideoResource(type, name, description, url, isForAchievement);
+            return new VideoResource(name, description, url, isForAchievement);
         }
         return null;
     }
