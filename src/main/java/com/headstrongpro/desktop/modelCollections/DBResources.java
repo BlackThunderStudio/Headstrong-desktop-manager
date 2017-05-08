@@ -146,4 +146,40 @@ class DBResources implements IDataAccessObject<Resource> {
         }
         return resources;
     }
+
+    public List<Resource> getBySessionID(int sessionID) throws ModelSyncException {
+        ArrayList<Integer> resIDs = new ArrayList<>();
+        List<Resource> resources = new ArrayList<>();
+        try{
+            dbConnect = new DBConnect();
+            ResourceFactory resourceFactory = new ResourceFactory();
+            //language=TSQL
+            String qry = "SELECT * FROM sessions_resources WHERE session_id=" + sessionID + ";";
+            ResultSet rs = dbConnect.getFromDataBase(qry);
+            while (rs.next()){
+                resIDs.add(rs.getInt("resource_id"));
+            }
+
+            String simplifiedResIDs = "";
+            for (int i = 0; i < resIDs.size() - 2; i ++){
+                simplifiedResIDs += resIDs.get(i) + ",";
+            }
+            simplifiedResIDs += resIDs.get(resIDs.size() - 1);
+            qry = "SELECT * FROM resources WHERE id IN(" + simplifiedResIDs + ");";
+            rs = dbConnect.getFromDataBase(qry);
+            while (rs.next()){
+                resources.add(resourceFactory.getResource(
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getString("description"),
+                        rs.getString("url"),
+                        rs.getBoolean("is_for_achievement"),
+                        rs.getInt("type")
+                ));
+            }
+        } catch (ConnectionException | SQLException e){
+            throw new ModelSyncException("WARNING! Could not fetch resources of sessionID: " + sessionID + " !", e);
+        }
+        return resources;
+    }
 }
