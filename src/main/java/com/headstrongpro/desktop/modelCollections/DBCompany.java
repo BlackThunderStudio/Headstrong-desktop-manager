@@ -14,9 +14,6 @@ import java.util.List;
 
 /**
  * company model collection
- *
- * TODO: fix the subscription and departments thingie
- * #fixd I guess
  */
 public class DBCompany implements IDataAccessObject<Company> {
 
