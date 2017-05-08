@@ -19,6 +19,9 @@ public class CollectionFactory<T> {
         if (type.equals(CollectionType.RESOURCE)) {
             return (IDataAccessObject<T>) new DBResources();
         }
+        if (type.equals(CollectionType.DEPARTMENT)){
+            return (IDataAccessObject<T>) new DBDepartments();
+        }
         return null;
     }
 }
@@ -26,5 +29,6 @@ public class CollectionFactory<T> {
 enum CollectionType {
     COMPANY,
     COURSE_CATEGORY,
-    RESOURCE
+    RESOURCE,
+    DEPARTMENT
 }
