@@ -5,34 +5,33 @@ package com.headstrongpro.desktop.model.resource;
  */
 public class ResourceFactory {
 
-    public Resource getResource(ResourceType resourceType, int id, int type, String name, String description, String url, boolean isForAchievement){
-        if (resourceType == null){
+    public Resource getResource(int id, String name, String description, String url, boolean isForAchievement, int type){
+        if (type < 1 || type > 4){
             return null;
-        } else if (resourceType.equals(ResourceType.TEXT)){
+        } else if (type == 1){
             return new TextResource(id, type, name, description, url, isForAchievement);
-        } else if (resourceType.equals(ResourceType.PHOTO)){
+        } else if (type == 2){
             return new PhotoResource(id, type, name, description, url, isForAchievement);
-        } else if (resourceType.equals(ResourceType.AUDIO)){
+        } else if (type == 3){
             return new AudioResource(id, type, name, description, url, isForAchievement);
-        } else if (resourceType.equals(ResourceType.VIDEO)){
+        } else if (type == 4){
             return new VideoResource(id, type, name, description, url, isForAchievement);
         }
         return null;
     }
-}
 
-enum ResourceType{
-    TEXT(1),
-    PHOTO(2),
-    AUDIO(3),
-    VIDEO(4);
-
-    private int id;
-    ResourceType(int id){
-        this.id = id;
-    }
-
-    int getId(){
-        return id;
+    public Resource getResource(String name, String description, String url, boolean isForAchievement, int type){
+        if (type < 1 || type > 4){
+            return null;
+        } else if (type == 1){
+            return new TextResource(type, name, description, url, isForAchievement);
+        } else if (type == 2){
+            return new PhotoResource(type, name, description, url, isForAchievement);
+        } else if (type == 3){
+            return new AudioResource(type, name, description, url, isForAchievement);
+        } else if (type == 4){
+            return new VideoResource(type, name, description, url, isForAchievement);
+        }
+        return null;
     }
 }

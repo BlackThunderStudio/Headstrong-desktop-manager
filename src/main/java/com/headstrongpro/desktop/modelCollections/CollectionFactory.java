@@ -16,11 +16,15 @@ public class CollectionFactory<T> {
         if (type.equals(CollectionType.COURSE_CATEGORY)) {
             return (IDataAccessObject<T>) new DBCourseCategory();
         }
+        if (type.equals(CollectionType.RESOURCE)) {
+            return (IDataAccessObject<T>) new DBResources();
+        }
         return null;
     }
 }
 
 enum CollectionType {
     COMPANY,
-    COURSE_CATEGORY
+    COURSE_CATEGORY,
+    RESOURCE
 }

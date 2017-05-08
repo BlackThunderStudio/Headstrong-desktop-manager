@@ -10,4 +10,6 @@ public interface Resource {
     boolean isForAchievement();
     int getType();
     int getID();
+
+    void setID(int id);
 }

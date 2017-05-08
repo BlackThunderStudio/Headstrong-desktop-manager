@@ -14,7 +14,7 @@ public class ResourceFactoryTest {
     @Test
     public void getResource() throws Exception {
         ResourceFactory rf = new ResourceFactory();
-        Resource resource = rf.getResource(ResourceType.AUDIO, 2, 2, "asd", "sdf", "sdfsdf", false);
+        Resource resource = rf.getResource(2, "asd", "sdf", "sdfsdf", false, 3);
 
         assertEquals(resource.toString(), "AudioFile");
     }

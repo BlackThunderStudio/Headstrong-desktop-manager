@@ -55,4 +55,9 @@ class TextResource implements Resource {
     public int getID() {
         return id;
     }
+
+    @Override
+    public void setID(int id) {
+        this.id = id;
+    }
 }

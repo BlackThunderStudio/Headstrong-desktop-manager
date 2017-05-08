@@ -58,6 +58,11 @@ class PhotoResource implements Resource {
         return id;
     }
 
+    @Override
+    public void setID(int id) {
+        this.id = id;
+    }
+
     public Image getImage(){
         return new Image(url);
     }
