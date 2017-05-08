@@ -5,6 +5,7 @@ import com.headstrongpro.desktop.core.connection.IDataAccessObject;
 import com.headstrongpro.desktop.core.exception.ConnectionException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.model.CourseCategory;
+import com.sun.org.apache.regexp.internal.RE;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,48 +13,43 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by 1062085 on 25-Apr-17.
- */
+/**********************************
+ * course category model collection
+ *********************************/
 public class DBCourseCategory implements IDataAccessObject<CourseCategory> {
-    //table name maybe not exact
-    private List<CourseCategory> courseCategories;
+
     private DBConnect dbConnect;
-    private boolean isLoaded;
-
-    public DBCourseCategory() throws ModelSyncException{
-        courseCategories = new ArrayList<>();
-        isLoaded = false;
-    }
-
-    public void load() throws ModelSyncException{
-        courseCategories = new ArrayList<>();
-        try{
-            dbConnect = new DBConnect();
-            String query = "SELECT [id], [name] FROM [course_categories]";
-            ResultSet courseCategoriesRS = dbConnect.getFromDataBase(query);
-            while(courseCategoriesRS.next()){
-                courseCategories.add(new CourseCategory(courseCategoriesRS.getInt("id"),
-                                                        courseCategoriesRS.getString("name")));
-            }
-            isLoaded = true;
-        }catch (ConnectionException | SQLException e) {
-            throw new ModelSyncException("Could not load course categories.", e);
-        }
-    }
 
     @Override
     public List<CourseCategory> getAll() throws ModelSyncException{
-        if(!isLoaded)
-            load();
+        List<CourseCategory> courseCategories = new ArrayList<>();
+        try{
+            dbConnect = new DBConnect();
+            String getAllCourseCategoriesQuery = "SELECT [id], [name] FROM [course_categories]";
+            ResultSet ccRS = dbConnect.getFromDataBase(getAllCourseCategoriesQuery);
+            while(ccRS.next())
+                courseCategories.add(new CourseCategory(ccRS.getInt("int"),
+                                                        ccRS.getString("name")));
+        } catch (ConnectionException | SQLException e) {
+            throw new ModelSyncException("Could not load companies.", e);
+        }
         return courseCategories;
     }
 
     @Override
     public CourseCategory getById(int id) throws ModelSyncException{
-        if(!isLoaded)
-            load();
-        return courseCategories.stream().filter(o -> o.getId() == id).findFirst().get();
+        CourseCategory courseCategory = null;
+        try{
+            dbConnect = new DBConnect();
+            String getByIdCourseCategoriesQuery = "SELECT * FROM [course_categories] WHERE [id] = " + id + ";";
+            ResultSet rs = dbConnect.getFromDataBase(getByIdCourseCategoriesQuery);
+            rs.next();
+            courseCategory = new CourseCategory(rs.getInt("id"),
+                                                rs.getString("name"));
+        } catch (ConnectionException | SQLException e) {
+            throw new ModelSyncException("Could not retrieve object by ID", e);
+        }
+        return courseCategory;
     }
 
     @Override
@@ -73,8 +69,6 @@ public class DBCourseCategory implements IDataAccessObject<CourseCategory> {
             }
         } catch (ConnectionException | SQLException e) {
             throw new ModelSyncException("Could not create new course category!", e);
-        } finally {
-            courseCategories.add(newCourseCategory);
         }
         return newCourseCategory;
     }
@@ -101,9 +95,7 @@ public class DBCourseCategory implements IDataAccessObject<CourseCategory> {
             preparedStatement.setInt(1, courseCategory.getId());
             preparedStatement.execute();
         } catch (ConnectionException | SQLException e) {
-            throw new ModelSyncException("Couldn't delete order of id=" + courseCategory.getId(), e);
-        } finally {
-            courseCategories.removeIf(p -> p.getId() == courseCategory.getId());
+            throw new ModelSyncException("Couldn't delete course category of id=" + courseCategory.getId(), e);
         }
     }
 
