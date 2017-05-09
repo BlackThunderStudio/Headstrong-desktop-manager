@@ -1,31 +1,39 @@
 package com.headstrongpro.desktop.model;
 
+import com.headstrongpro.desktop.model.entity.Company;
+
 import java.sql.Date;
 
 /**
  * Subscription model class
  */
 public class Subscription {
-    private int id, noOfUsers, rateId;
+    private int id, noOfUsers;
     private boolean isActive;
     private Date startDate, endDate;
+    private PaymentRate rate;
+    private Company company;
 
-    public Subscription(int id, int noOfUsers, int rateId, boolean isActive, Date startDate, Date endDate) {
+    public Subscription(int id, int noOfUsers, boolean isActive, Date startDate, Date endDate, PaymentRate rate, Company company) {
         this.id = id;
         this.noOfUsers = noOfUsers;
-        this.rateId = rateId;
         this.isActive = isActive;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.rate = rate;
+        this.company = company;
     }
 
-    public Subscription(int noOfUsers, int rateId, boolean isActive, Date startDate, Date endDate) {
+    public Subscription(int noOfUsers, boolean isActive, Date startDate, Date endDate, PaymentRate rate, Company company) {
         this.noOfUsers = noOfUsers;
-        this.rateId = rateId;
         this.isActive = isActive;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.rate = rate;
+        this.company = company;
     }
+
+
 
     public int getId() {
         return id;
@@ -41,14 +49,6 @@ public class Subscription {
 
     public void setNoOfUsers(int noOfUsers) {
         this.noOfUsers = noOfUsers;
-    }
-
-    public int getRateId() {
-        return rateId;
-    }
-
-    public void setRateId(int rateId) {
-        this.rateId = rateId;
     }
 
     public boolean isActive() {
@@ -73,5 +73,13 @@ public class Subscription {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
+    }
+
+    public PaymentRate getRate() {
+        return rate;
+    }
+
+    public Company getCompany() {
+        return company;
     }
 }
