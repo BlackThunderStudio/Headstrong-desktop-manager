@@ -36,7 +36,7 @@ class DBClient implements IDataAccessObject<Person> {
                         String.valueOf(rs.getBoolean("gender")),
                         rs.getString("login"),
                         rs.getString("pass"),
-                        rs.getString("date_registered"),
+                        rs.getDate("date_registered"),
                         rs.getInt("company_id")
                 ));
             }

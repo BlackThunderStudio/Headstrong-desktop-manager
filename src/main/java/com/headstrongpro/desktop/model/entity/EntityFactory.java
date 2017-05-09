@@ -1,5 +1,7 @@
 package com.headstrongpro.desktop.model.entity;
 
+import java.sql.Date;
+
 /**
  * Created by Rajmund Staniek on 09-May-17.
  */
@@ -13,11 +15,11 @@ public class EntityFactory {
         return new User(name, email, phone, gender, cpr, street, postal, city, country, accountNo, baseSalary);
     }
 
-    public static Person getClient(int id, String name, String email, String phone, String gender, String login, String password, String registrationDate, int companyId) {
+    public static Person getClient(int id, String name, String email, String phone, String gender, String login, String password, Date registrationDate, int companyId) {
         return new Client(id, name, email, phone, gender, login, password, registrationDate, companyId);
     }
 
-    public static Person getClient(String name, String email, String phone, String gender, String login, String password, String registrationDate, int companyId) {
+    public static Person getClient(String name, String email, String phone, String gender, String login, String password, Date registrationDate, int companyId) {
         return new Client(name, email, phone, gender, login, password, registrationDate, companyId);
     }
 }

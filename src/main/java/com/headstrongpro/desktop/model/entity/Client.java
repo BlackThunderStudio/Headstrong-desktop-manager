@@ -1,13 +1,16 @@
 package com.headstrongpro.desktop.model.entity;
 
+import java.sql.Date;
+
 /**
  * Client Entity
  */
 public class Client extends Person {
-    private String login, password, registrationDate;
+    private String login, password;
+    private Date  registrationDate;
     private int companyId;
 
-    public Client(int id, String name, String email, String phone, String gender, String login, String password, String registrationDate, int companyId) {
+    public Client(int id, String name, String email, String phone, String gender, String login, String password, Date registrationDate, int companyId) {
         super(id, name, email, phone, gender);
         this.login = login;
         this.password = password;
@@ -15,7 +18,7 @@ public class Client extends Person {
         this.companyId = companyId;
     }
 
-    public Client(String name, String email, String phone, String gender, String login, String password, String registrationDate, int companyId) {
+    public Client(String name, String email, String phone, String gender, String login, String password, Date registrationDate, int companyId) {
         super(name, email, phone, gender);
         this.login = login;
         this.password = password;
@@ -39,11 +42,11 @@ public class Client extends Person {
         this.password = password;
     }
 
-    public String getRegistrationDate() {
+    public Date getRegistrationDate() {
         return registrationDate;
     }
 
-    public void setRegistrationDate(String registrationDate) {
+    public void setRegistrationDate(Date registrationDate) {
         this.registrationDate = registrationDate;
     }
 
