@@ -14,7 +14,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-class DBSubscriptions implements IDataAccessObject<Subscription> {
+public class DBSubscriptions implements IDataAccessObject<Subscription> {
 
     private DBConnect dbConnect;
 
