@@ -1,7 +1,6 @@
 package com.headstrongpro.desktop.modelCollections;
 
 import com.headstrongpro.desktop.core.connection.IDataAccessObject;
-import com.headstrongpro.desktop.model.entity.Company;
 
 /**
  * Created by Rajmund Staniek on 08-May-17.
@@ -22,6 +21,12 @@ public class CollectionFactory<T> {
         if (type.equals(CollectionType.DEPARTMENT)){
             return (IDataAccessObject<T>) new DBDepartments();
         }
+        if (type.equals(CollectionType.USER)) {
+            return (IDataAccessObject<T>) new DBUser();
+        }
+        if (type.equals(CollectionType.CLIENT)) {
+            return (IDataAccessObject<T>) new DBClient();
+        }
         return null;
     }
 }
@@ -30,5 +35,7 @@ enum CollectionType {
     COMPANY,
     COURSE_CATEGORY,
     RESOURCE,
-    DEPARTMENT
+    DEPARTMENT,
+    USER,
+    CLIENT
 }
