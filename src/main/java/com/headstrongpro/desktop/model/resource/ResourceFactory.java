@@ -5,7 +5,22 @@ package com.headstrongpro.desktop.model.resource;
  */
 public class ResourceFactory {
 
+    private IUrlChecker urlCheckerhttps = (u) -> u.startsWith("https://");
+    private IUrlChecker urlCheckerWww = u -> u.startsWith("www");
+    private IUrlTransformer urlTransformer = (u) -> {
+        if (u.length() <= 2000 && !u.contains("'")) {
+            if (urlCheckerhttps.check(u)) {
+                return u;
+            } else if (urlCheckerWww.check(u)) {
+                return "https://" + u;
+            } else {
+                return "ERROR";
+            }
+        } else return "ERROR";
+    };
+
     public Resource getResource(int id, String name, String description, String url, boolean isForAchievement, int type){
+        url = urlTransformer.transform(url);
         if (type < 1 || type > 4){
             return null;
         } else if (type == 1){
@@ -21,6 +36,7 @@ public class ResourceFactory {
     }
 
     public Resource getResource(String name, String description, String url, boolean isForAchievement, int type){
+        url = urlTransformer.transform(url);
         if (type < 1 || type > 4){
             return null;
         } else if (type == 1){
