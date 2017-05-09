@@ -25,13 +25,13 @@ class DBCourseCategory implements IDataAccessObject<CourseCategory> {
         List<CourseCategory> courseCategories = new ArrayList<>();
         try{
             dbConnect = new DBConnect();
-            String getAllCourseCategoriesQuery = "SELECT [id], [name] FROM [course_categories]";
+            String getAllCourseCategoriesQuery = "SELECT * FROM s_categories";
             ResultSet ccRS = dbConnect.getFromDataBase(getAllCourseCategoriesQuery);
             while(ccRS.next())
-                courseCategories.add(new CourseCategory(ccRS.getInt("int"),
+                courseCategories.add(new CourseCategory(ccRS.getInt("id"),
                                                         ccRS.getString("name")));
         } catch (ConnectionException | SQLException e) {
-            throw new ModelSyncException("Could not load companies.", e);
+            throw new ModelSyncException("Could not load course categories.", e);
         }
         return courseCategories;
     }
@@ -41,7 +41,7 @@ class DBCourseCategory implements IDataAccessObject<CourseCategory> {
         CourseCategory courseCategory = null;
         try{
             dbConnect = new DBConnect();
-            String getByIdCourseCategoriesQuery = "SELECT * FROM [course_categories] WHERE [id] = " + id + ";";
+            String getByIdCourseCategoriesQuery = "SELECT * FROM s_categories WHERE id = " + id + ";";
             ResultSet rs = dbConnect.getFromDataBase(getByIdCourseCategoriesQuery);
             rs.next();
             courseCategory = new CourseCategory(rs.getInt("id"),
@@ -56,7 +56,7 @@ class DBCourseCategory implements IDataAccessObject<CourseCategory> {
     public CourseCategory create(CourseCategory newCourseCategory) throws ModelSyncException{
         try{
             dbConnect = new DBConnect();
-            String createCourseCategoryQuery = "INSERT INTO course_categories(name) VALUES (?);";
+            String createCourseCategoryQuery = "INSERT INTO s_categories(name) VALUES (?);";
             PreparedStatement preparedStatement = dbConnect.getConnection().prepareStatement(createCourseCategoryQuery, PreparedStatement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, newCourseCategory.getName());
             preparedStatement.executeUpdate();
@@ -77,7 +77,7 @@ class DBCourseCategory implements IDataAccessObject<CourseCategory> {
     public void update(CourseCategory courseCategory) throws ModelSyncException{
         try{
             dbConnect = new DBConnect();
-            String updateCourseCategoryQuery = "UPDATE course_categories SET name=? WHERE id=?;";
+            String updateCourseCategoryQuery = "UPDATE s_categories SET name=? WHERE id=?;";
             PreparedStatement preparedStatement = dbConnect.getConnection().prepareStatement(updateCourseCategoryQuery);
             preparedStatement.setString(1, courseCategory.getName());
             dbConnect.uploadSafe(preparedStatement);
@@ -90,7 +90,7 @@ class DBCourseCategory implements IDataAccessObject<CourseCategory> {
     public void delete(CourseCategory courseCategory) throws ModelSyncException{
         try{
             dbConnect = new DBConnect();
-            String deleteCourseCategoryQuery = "DELETE FROM course_categories WHERE id=?;";
+            String deleteCourseCategoryQuery = "DELETE FROM s_categories WHERE id=?;";
             PreparedStatement preparedStatement = dbConnect.getConnection().prepareStatement(deleteCourseCategoryQuery);
             preparedStatement.setInt(1, courseCategory.getId());
             preparedStatement.execute();
