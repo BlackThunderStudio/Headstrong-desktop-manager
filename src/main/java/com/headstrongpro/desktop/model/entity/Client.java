@@ -4,22 +4,23 @@ package com.headstrongpro.desktop.model.entity;
  * Client Entity
  */
 public class Client extends Person {
-    private String login, password, registrationDate, currencyAmount;
+    private String login, password, registrationDate;
+    private int companyId;
 
-    public Client(int id, String name, String email, String phone, String gender, String login, String password, String registrationDate, String currencyAmount) {
+    public Client(int id, String name, String email, String phone, String gender, String login, String password, String registrationDate, int companyId) {
         super(id, name, email, phone, gender);
         this.login = login;
         this.password = password;
         this.registrationDate = registrationDate;
-        this.currencyAmount = currencyAmount;
+        this.companyId = companyId;
     }
 
-    public Client(String name, String email, String phone, String gender, String login, String password, String registrationDate, String currencyAmount) {
+    public Client(String name, String email, String phone, String gender, String login, String password, String registrationDate, int companyId) {
         super(name, email, phone, gender);
         this.login = login;
         this.password = password;
         this.registrationDate = registrationDate;
-        this.currencyAmount = currencyAmount;
+        this.companyId = companyId;
     }
 
     public String getLogin() {
@@ -46,11 +47,11 @@ public class Client extends Person {
         this.registrationDate = registrationDate;
     }
 
-    public String getCurrencyAmount() {
-        return currencyAmount;
+    public int getcompanyId() {
+        return companyId;
     }
 
-    public void setCurrencyAmount(String currencyAmount) {
-        this.currencyAmount = currencyAmount;
+    public void setcompanyId(int companyId) {
+        this.companyId = companyId;
     }
 }
