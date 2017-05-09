@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Rajmund Staniek on 09-May-17.
+ * Clients model collection
  */
 class DBClient implements IDataAccessObject<Person> {
 
@@ -27,7 +27,6 @@ class DBClient implements IDataAccessObject<Person> {
             //language=TSQL
             String query = "SELECT * FROM clients";
             ResultSet rs = connect.getFromDataBase(query);
-            //TODO: incompatible variable types, fields missing, WTF. Andrej, please fix
             while (rs.next()) {
                 clients.add(EntityFactory.getClient(
                         rs.getInt("id"),
@@ -37,7 +36,7 @@ class DBClient implements IDataAccessObject<Person> {
                         String.valueOf(rs.getBoolean("gender")),
                         rs.getString("login"),
                         rs.getString("pass"),
-                        rs.getDate("date_registered"),
+                        rs.getString("date_registered"),
                         rs.getInt("company_id")
                 ));
             }
