@@ -3,6 +3,7 @@ package com.headstrongpro.desktop.modelCollections;
 import com.headstrongpro.desktop.core.connection.IDataAccessObject;
 import com.headstrongpro.desktop.model.CourseCategory;
 import com.headstrongpro.desktop.model.Department;
+import com.headstrongpro.desktop.model.Subscription;
 import com.headstrongpro.desktop.model.entity.Company;
 import com.headstrongpro.desktop.model.entity.Person;
 import com.headstrongpro.desktop.model.resource.Resource;
@@ -32,6 +33,9 @@ public class CollectionFactory<T> {
         if (type.equals(CollectionType.CLIENT)) {
             return (IDataAccessObject<T>) new DBClient();
         }
+        if (type.equals(CollectionType.SUBSCRIPTION)) {
+            return (IDataAccessObject<T>) new DBSubscriptions();
+        }
         return null;
     }
 
@@ -60,6 +64,10 @@ public class CollectionFactory<T> {
     public static IDataAccessObject<Person> getClientDAO(){
         return new DBClient();
     }
+
+    public static IDataAccessObject<Subscription> getSubscriptionDAO(){
+        return new DBSubscriptions();
+    }
 }
 
 enum CollectionType {
@@ -68,5 +76,6 @@ enum CollectionType {
     RESOURCE,
     DEPARTMENT,
     USER,
-    CLIENT
+    CLIENT,
+    SUBSCRIPTION
 }
