@@ -5,9 +5,9 @@ package com.headstrongpro.desktop.model.resource;
  */
 public class ResourceFactory {
 
-    private IUrlChecker urlCheckerhttps = (u) -> u.startsWith("https://");
-    private IUrlChecker urlCheckerWww = u -> u.startsWith("www");
-    private IUrlTransformer urlTransformer = (u) -> {
+    private static IUrlChecker urlCheckerhttps = (u) -> u.startsWith("https://");
+    private static IUrlChecker urlCheckerWww = u -> u.startsWith("www");
+    private static IUrlTransformer urlTransformer = (u) -> {
         if (u.length() <= 2000 && !u.contains("'")) {
             if (urlCheckerhttps.check(u)) {
                 return u;
@@ -19,7 +19,7 @@ public class ResourceFactory {
         } else return "ERROR";
     };
 
-    public Resource getResource(int id, String name, String description, String url, boolean isForAchievement, int type){
+    public static Resource getResource(int id, String name, String description, String url, boolean isForAchievement, int type){
         url = urlTransformer.transform(url);
         if (type < 1 || type > 4){
             return null;
@@ -35,7 +35,7 @@ public class ResourceFactory {
         return null;
     }
 
-    public Resource getResource(String name, String description, String url, boolean isForAchievement, int type){
+    public static Resource getResource(String name, String description, String url, boolean isForAchievement, int type){
         url = urlTransformer.transform(url);
         if (type < 1 || type > 4){
             return null;
