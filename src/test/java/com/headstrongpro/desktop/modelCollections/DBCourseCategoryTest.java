@@ -14,12 +14,11 @@ import static org.junit.Assert.*;
  * course category tests
  */
 public class DBCourseCategoryTest {
-    private IDataAccessObject<CourseCategory> ccDAO;
+    private DBCourseCategory ccDAO;
 
     @Before
     public void setUp() throws Exception {
-        CollectionFactory<CourseCategory> collectionFactory = new CollectionFactory<>();
-        ccDAO = collectionFactory.getCollection(CollectionType.COURSE_CATEGORY);
+        ccDAO = new DBCourseCategory();
     }
 
     @Test

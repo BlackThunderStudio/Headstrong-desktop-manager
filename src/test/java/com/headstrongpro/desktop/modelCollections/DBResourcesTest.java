@@ -3,6 +3,7 @@ package com.headstrongpro.desktop.modelCollections;
 import com.headstrongpro.desktop.core.connection.DBConnect;
 import com.headstrongpro.desktop.core.connection.IDataAccessObject;
 import com.headstrongpro.desktop.model.resource.Resource;
+import com.headstrongpro.desktop.model.resource.ResourceFactory;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -16,13 +17,11 @@ import static org.junit.Assert.*;
  */
 public class DBResourcesTest {
     private DBConnect connect;
-    private CollectionFactory<Resource> resourceCollectionFactory;
-    private IDataAccessObject<Resource> resourcesDAO;
+    private DBResources resourcesDAO;
     @Before
     public void setUp() throws Exception {
         connect = new DBConnect();
-        resourceCollectionFactory = new CollectionFactory<>();
-        resourcesDAO = resourceCollectionFactory.getCollection(CollectionType.RESOURCE);
+        resourcesDAO = new DBResources();
     }
 
     @Test
@@ -41,7 +40,14 @@ public class DBResourcesTest {
     @Ignore(value = "To be implemented")
     @Test
     public void create() throws Exception {
+        int tablesize = resourcesDAO.getAll().size();
 
+        Resource resource = ResourceFactory.getResource("some test resource", "desc", "https://www.google.com", false, 3);
+        resourcesDAO.create(resource);
+
+        int newsize = resourcesDAO.getAll().size();
+
+        assertNotEquals(tablesize, newsize);
     }
 
     @Ignore(value = "To be implemented")

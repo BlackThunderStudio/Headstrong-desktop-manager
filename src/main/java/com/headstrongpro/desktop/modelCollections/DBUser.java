@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * Created by Rajmund Staniek on 09-May-17.
  */
-class DBUser implements IDataAccessObject<Person> {
+public class DBUser implements IDataAccessObject<Person> {
 
     private DBConnect connect;
 

@@ -16,16 +16,16 @@ import static org.junit.Assert.*;
  */
 public class DBClientTest {
 
-    private IDataAccessObject dao;
+    private DBClient dao;
 
     @Before
     public void setUp() throws Exception {
-        dao = CollectionFactory.getClientDAO();
+        dao = new DBClient();
     }
 
     @Test
     public void getAll() throws Exception {
-        List<Client> people = dao.getAll();
+        List<Person> people = dao.getAll();
 
         assertNotNull(people);
         assertNotEquals(0, people.size());

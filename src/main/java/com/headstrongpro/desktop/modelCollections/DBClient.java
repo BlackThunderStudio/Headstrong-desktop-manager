@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * Clients model collection
  */
-class DBClient implements IDataAccessObject<Person> {
+public class DBClient implements IDataAccessObject<Person> {
 
     private DBConnect connect;
 

@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * company model collection
  */
-class DBCompany implements IDataAccessObject<Company> {
+public class DBCompany implements IDataAccessObject<Company> {
 
     private DBConnect dbConnect;
 

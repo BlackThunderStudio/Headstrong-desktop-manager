@@ -16,7 +16,7 @@ import java.util.List;
 /**********************************
  * course category model collection
  *********************************/
-class DBCourseCategory implements IDataAccessObject<CourseCategory> {
+public class DBCourseCategory implements IDataAccessObject<CourseCategory> {
 
     private DBConnect dbConnect;
 

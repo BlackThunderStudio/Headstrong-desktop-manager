@@ -2,21 +2,24 @@ package com.headstrongpro.desktop.modelCollections;
 
 import com.headstrongpro.desktop.core.connection.DBConnect;
 import com.headstrongpro.desktop.core.connection.IDataAccessObject;
+import com.headstrongpro.desktop.core.connection.Synchronizable;
 import com.headstrongpro.desktop.core.exception.ConnectionException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
+import com.headstrongpro.desktop.model.Log;
 import com.headstrongpro.desktop.model.resource.Resource;
 import com.headstrongpro.desktop.model.resource.ResourceFactory;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 /**
  * Created by rajmu on 17.05.08.
  */
-class DBResources implements IDataAccessObject<Resource> {
+public class DBResources extends Synchronizable implements IDataAccessObject<Resource> {
 
     private DBConnect dbConnect;
 
@@ -85,6 +88,7 @@ class DBResources implements IDataAccessObject<Resource> {
                     throw new ModelSyncException("Creating resource failed. No ID retrieved!");
                 }
             }
+            logChange(-1, "resources", object.getID(), "CREATE");
         } catch (ConnectionException | SQLException e) {
             throw new ModelSyncException("Could not create new resource!", e);
         }
@@ -118,6 +122,7 @@ class DBResources implements IDataAccessObject<Resource> {
             PreparedStatement preparedStatement = dbConnect.getConnection().prepareStatement(query);
             preparedStatement.setInt(1, object.getID());
             preparedStatement.execute();
+            logChange(-1, "resources", object.getID(), "DELETE");
         } catch (ConnectionException | SQLException e) {
             throw new ModelSyncException("WARNING! Could not update resource of ID: " + object.getID() + " !", e);
         }
@@ -181,5 +186,21 @@ class DBResources implements IDataAccessObject<Resource> {
             throw new ModelSyncException("WARNING! Could not fetch resources of sessionID: " + sessionID + " !", e);
         }
         return resources;
+    }
+
+    @Override
+    protected boolean verifyIntegrity(int itemID) throws ModelSyncException {
+        List<Log> logs = new DBLogActions().getByTable("resources");
+        if(logs.size() == 0) return true;
+        else {
+            if(logs.stream().anyMatch(e -> e.getItemID() == itemID)){
+                long millis = logs.stream()
+                        .filter(e -> e.getItemID() == itemID)
+                        .sorted(Comparator.comparingLong(e -> e.getDate().getTime()))
+                        .findFirst().get().getDate().getTime(); //TODO: needs to be tested
+                return millis < Calendar.getInstance().getTime().getTime();
+                //stuck here for now
+            } else return true;
+        }
     }
 }

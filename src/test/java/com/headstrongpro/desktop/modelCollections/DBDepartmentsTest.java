@@ -15,12 +15,11 @@ import static org.junit.Assert.*;
  * Created by rajmu on 17.05.08.
  */
 public class DBDepartmentsTest {
-    private IDataAccessObject<Department> departmentDAO;
+    private DBDepartments departmentDAO;
 
     @Before
     public void setUp() throws Exception {
-        CollectionFactory<Department> collectionFactory = new CollectionFactory<>();
-        departmentDAO = collectionFactory.getCollection(CollectionType.DEPARTMENT);
+        departmentDAO = new DBDepartments();
     }
 
     @Test
