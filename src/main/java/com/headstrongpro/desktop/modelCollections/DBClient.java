@@ -8,6 +8,7 @@ import com.headstrongpro.desktop.model.entity.Client;
 import com.headstrongpro.desktop.model.entity.EntityFactory;
 import com.headstrongpro.desktop.model.entity.Person;
 
+import javax.ws.rs.DELETE;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -124,14 +125,41 @@ class DBClient implements IDataAccessObject<Person> {
     public void delete(Person object) throws ModelSyncException {
         try{
             connect = new DBConnect();
-            connect.upload("DELETE FROM clients WHERE id=" + object.getId() + ";");
+            int clientID = object.getId();
+            connect.upload("DELETE FROM clients WHERE id=" + clientID + ";");
+            connect.upload("DELETE FROM achievements_clients WHERE client_id=" + clientID + ";");
+            connect.upload("DELETE FROM departments_clients WHERE client_id=" + clientID + ";");
+            connect.upload("DELETE FROM groups_clients WHERE client_id=" + clientID + ";");
+            connect.upload("DELETE FROM payments_clients WHERE clients_id=" + clientID + ";");
+            connect.upload("DELETE FROM roles_clients WHERE client_id=" + clientID + ";");
         } catch (ConnectionException e) {
             throw new ModelSyncException("Could not delete a client!", e);
         }
     }
 
-    public List<Person> getByCompanyId(int id) {
-        //TODO: to be implemented
-        return null;
+    public List<Person> getByCompanyId(int id) throws ModelSyncException {
+        List<Person> clients = new ArrayList<>();
+        try {
+            connect = new DBConnect();
+            //language=TSQL
+            String query = "SELECT * FROM clients WHERE company_id=" + id + ";";
+            ResultSet rs = connect.getFromDataBase(query);
+            while (rs.next()) {
+                clients.add(EntityFactory.getClient(
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getString("email"),
+                        String.valueOf(rs.getInt("phone_number")),
+                        String.valueOf(rs.getBoolean("gender")),
+                        rs.getString("login"),
+                        rs.getString("pass"),
+                        rs.getDate("date_registered"),
+                        rs.getInt("company_id")
+                ));
+            }
+        } catch (ConnectionException | SQLException e) {
+            throw new ModelSyncException("Could not fetch clients by a company ID!", e);
+        }
+        return clients;
     }
 }
