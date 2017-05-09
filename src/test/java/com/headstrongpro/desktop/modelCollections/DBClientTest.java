@@ -1,8 +1,8 @@
 package com.headstrongpro.desktop.modelCollections;
 
-import com.headstrongpro.desktop.core.connection.DBConnect;
 import com.headstrongpro.desktop.core.connection.IDataAccessObject;
-import com.headstrongpro.desktop.model.Department;
+import com.headstrongpro.desktop.model.entity.Client;
+import com.headstrongpro.desktop.model.entity.Person;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -12,30 +12,29 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 /**
- * Created by rajmu on 17.05.08.
+ * Created by rajmu on 17.05.09.
  */
-public class DBDepartmentsTest {
-    private IDataAccessObject<Department> departmentDAO;
+public class DBClientTest {
+
+    private IDataAccessObject dao;
 
     @Before
     public void setUp() throws Exception {
-        CollectionFactory<Department> collectionFactory = new CollectionFactory<>();
-        departmentDAO = collectionFactory.getCollection(CollectionType.DEPARTMENT);
+        dao = CollectionFactory.getClientDAO();
     }
 
     @Test
     public void getAll() throws Exception {
-        List<Department> departments = departmentDAO.getAll();
+        List<Client> people = dao.getAll();
 
-        assertNotNull(departments);
-        assertNotEquals(0, departments.size());
+        assertNotNull(people);
+        assertNotEquals(0, people.size());
     }
 
     @Test
     public void getById() throws Exception {
-        Department department = departmentDAO.getById(2);
-
-        assertNotNull(department);
+        Client p = (Client) dao.getById(4);
+        assertEquals("Tom Christiansen", p.getName());
     }
 
     @Ignore(value = "To be implemented")
@@ -58,13 +57,7 @@ public class DBDepartmentsTest {
 
     @Ignore(value = "To be implemented")
     @Test
-    public void getByCompanyID() throws Exception {
-
-    }
-
-    @Ignore(value = "To be implemented")
-    @Test
-    public void deleteByCompanyID() throws Exception {
+    public void getByCompanyId() throws Exception {
 
     }
 
