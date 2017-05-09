@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Created by rajmu on 17.05.08.
  */
-public class DBDepartments implements IDataAccessObject<Department> {
+class DBDepartments implements IDataAccessObject<Department> {
 
     private DBConnect connect;
 
