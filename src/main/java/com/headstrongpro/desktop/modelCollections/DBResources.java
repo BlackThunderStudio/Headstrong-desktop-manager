@@ -6,8 +6,7 @@ import com.headstrongpro.desktop.core.connection.Synchronizable;
 import com.headstrongpro.desktop.core.exception.ConnectionException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.model.Log;
-import com.headstrongpro.desktop.model.resource.Resource;
-import com.headstrongpro.desktop.model.resource.ResourceFactory;
+import com.headstrongpro.desktop.model.resource.*;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -23,6 +22,49 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
 
     private DBConnect dbConnect;
 
+    private Resource prepareResource(ResultSet rs) throws SQLException, ConnectionException{
+        Resource resource = ResourceFactory.getResource(rs.getInt("id"),
+                rs.getString("name"),
+                rs.getString("description"),
+                rs.getBoolean("is_for_achievement"),
+                rs.getInt("type"));
+        ResultSet resultSet = null;
+        assert resource != null;
+        switch (resource.getType()){
+            case 1:
+                resultSet = dbConnect.getFromDataBase("SELECT content FROM text_resources WHERE parent_id=" + resource.getID() + ";");
+                resultSet.next();
+                TextResource tr = Resource.as(resource, TextResource.class);
+                tr.setContent(resultSet.getString(1));
+                resource = tr;
+                break;
+            case 2:
+                resultSet = dbConnect.getFromDataBase("SELECT url FROM image_resources WHERE parent_id=" + resource.getID() + ";");
+                resultSet.next();
+                PhotoResource pr = Resource.as(resource, PhotoResource.class);
+                pr.setURL(resultSet.getString(1));
+                resource = pr;
+                break;
+            case 3:
+                resultSet = dbConnect.getFromDataBase("SELECT url,duration FROM multimedia_resources WHERE parent_id=" + resource.getID() + ";");
+                resultSet.next();
+                AudioResource ar = Resource.as(resource, AudioResource.class);
+                ar.setUrl(resultSet.getString(1));
+                ar.setDuration(resultSet.getTime(2));
+                resource = ar;
+                break;
+            case 4:
+                resultSet = dbConnect.getFromDataBase("SELECT url,duration FROM multimedia_resources WHERE parent_id=" + resource.getID() + ";");
+                resultSet.next();
+                VideoResource vr = Resource.as(resource, VideoResource.class);
+                vr.setUrl(resultSet.getString(1));
+                vr.setDuration(resultSet.getTime(2));
+                resource = vr;
+                break;
+        }
+        return resource;
+    }
+
     @Override
     public List<Resource> getAll() throws ModelSyncException {
         List<Resource> resources = new ArrayList<>();
@@ -30,16 +72,9 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
             dbConnect = new DBConnect();
             String query = "SELECT * FROM [resources]";
             ResultSet rs = dbConnect.getFromDataBase(query);
-            ResourceFactory resourceFactory = new ResourceFactory();
             while(rs.next()){
-                resources.add(resourceFactory.getResource(
-                        rs.getInt("id"),
-                        rs.getString("name"),
-                        rs.getString("description"),
-                        rs.getString("url"),
-                        rs.getBoolean("is_for_achievement"),
-                        rs.getInt("type")
-                ));
+                Resource resource = prepareResource(rs);
+                resources.add(resource);
             }
         } catch (ConnectionException | SQLException e) {
             throw new ModelSyncException("Could not load resources.", e);
@@ -54,32 +89,25 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
             dbConnect = new DBConnect();
             String query = "SELECT * FROM [resources] WHERE id=" + id + ";";
             ResultSet rs = dbConnect.getFromDataBase(query);
-            ResourceFactory resourceFactory = new ResourceFactory();
             rs.next();
-            resource = resourceFactory.getResource(
-                    rs.getInt("id"),
-                    rs.getString("name"),
-                    rs.getString("description"),
-                    rs.getString("url"),
-                    rs.getBoolean("is_for_achievement"),
-                    rs.getInt("type"));
+            resource = prepareResource(rs);
         } catch (ConnectionException | SQLException e) {
             throw new ModelSyncException("Could not load resources.", e);
         }
         return resource;
     }
 
+    //TODO: need update
     @Override
     public Resource create(Resource object) throws ModelSyncException {
         try{
             dbConnect = new DBConnect();
-            String createCompanyQuery = "INSERT INTO resources(name, description, url, is_for_achievement, type) VALUES (?, ?, ?, ?, ?);";
+            String createCompanyQuery = "INSERT INTO resources(name, description, is_for_achievement, type) VALUES (?, ?, ?, ?);";
             PreparedStatement preparedStatement = dbConnect.getConnection().prepareStatement(createCompanyQuery, PreparedStatement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, object.getName());
             preparedStatement.setString(2, object.getDescription());
-            preparedStatement.setString(3, object.getURL());
-            preparedStatement.setBoolean(4, object.isForAchievement());
-            preparedStatement.setInt(5, object.getType());
+            preparedStatement.setBoolean(3, object.isForAchievement());
+            preparedStatement.setInt(4, object.getType());
             preparedStatement.executeUpdate();
             try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
@@ -95,24 +123,25 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
         return object;
     }
 
+    //TODO: need update
     @Override
     public void update(Resource object) throws ModelSyncException {
         try {
             dbConnect = new DBConnect();
             //language=TSQL
-            String query = "UPDATE resources SET name=?,description=?,url=?,is_for_achievement=?,type=? WHERE id=?;";
+            String query = "UPDATE resources SET name=?,description=?,is_for_achievement=?,type=? WHERE id=?;";
             PreparedStatement preparedStatement = dbConnect.getConnection().prepareStatement(query);
             preparedStatement.setString(1, object.getName());
             preparedStatement.setString(2, object.getDescription());
-            preparedStatement.setString(3, object.getURL());
-            preparedStatement.setBoolean(4, object.isForAchievement());
-            preparedStatement.setInt(5, object.getType());
+            preparedStatement.setBoolean(3, object.isForAchievement());
+            preparedStatement.setInt(4, object.getType());
             dbConnect.uploadSafe(preparedStatement);
         } catch (ConnectionException | SQLException e) {
             throw new ModelSyncException("WARNING! Could not update resource of ID: " + object.getID() + " !", e);
         }
     }
 
+    //TODO: need update
     @Override
     public void delete(Resource object) throws ModelSyncException {
         try{
@@ -135,16 +164,8 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
             //language=TSQL
             String query = "SELECT * FROM [resources] WHERE type=" + type;
             ResultSet rs = dbConnect.getFromDataBase(query);
-            ResourceFactory resourceFactory = new ResourceFactory();
             while(rs.next()){
-                resources.add(resourceFactory.getResource(
-                        rs.getInt("id"),
-                        rs.getString("name"),
-                        rs.getString("description"),
-                        rs.getString("url"),
-                        rs.getBoolean("is_for_achievement"),
-                        rs.getInt("type")
-                ));
+                resources.add(prepareResource(rs));
             }
         } catch (ConnectionException | SQLException e) {
             throw new ModelSyncException("Could not load resources.", e);
@@ -157,7 +178,6 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
         List<Resource> resources = new ArrayList<>();
         try{
             dbConnect = new DBConnect();
-            ResourceFactory resourceFactory = new ResourceFactory();
             //language=TSQL
             String qry = "SELECT * FROM sessions_resources WHERE session_id=" + sessionID + ";";
             ResultSet rs = dbConnect.getFromDataBase(qry);
@@ -173,14 +193,7 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
             qry = "SELECT * FROM resources WHERE id IN(" + simplifiedResIDs + ");";
             rs = dbConnect.getFromDataBase(qry);
             while (rs.next()){
-                resources.add(resourceFactory.getResource(
-                        rs.getInt("id"),
-                        rs.getString("name"),
-                        rs.getString("description"),
-                        rs.getString("url"),
-                        rs.getBoolean("is_for_achievement"),
-                        rs.getInt("type")
-                ));
+                resources.add(prepareResource(rs));
             }
         } catch (ConnectionException | SQLException e){
             throw new ModelSyncException("WARNING! Could not fetch resources of sessionID: " + sessionID + " !", e);

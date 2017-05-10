@@ -6,7 +6,7 @@ import javafx.scene.image.Image;
  * Created by rajmu on 17.05.08.
  */
 //TODO: Custom functionality and behaviour to be added!
-class PhotoResource implements Resource {
+public class PhotoResource implements Resource {
 
     private static final int TYPE = 2;
 
@@ -14,22 +14,21 @@ class PhotoResource implements Resource {
     private String name, description, url;
     private boolean isForAchievement;
 
-    public PhotoResource(String name, String description, String url, boolean isForAchievement) {
+    PhotoResource(String name, String description, boolean isForAchievement) {
         this.name = name;
         this.description = description;
-        this.url = url;
         this.isForAchievement = isForAchievement;
     }
 
-    public PhotoResource(int id, String name, String description, String url, boolean isForAchievement) {
+    PhotoResource(int id, String name, String description, boolean isForAchievement) {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.url = url;
         this.isForAchievement = isForAchievement;
     }
 
-    @Override
+    private PhotoResource(){}
+
     public String getURL() {
         return url;
     }
@@ -64,7 +63,7 @@ class PhotoResource implements Resource {
         this.id = id;
     }
 
-    public Image getImage(){
-        return new Image(url);
+    public void setURL(String url) {
+        this.url = url;
     }
 }

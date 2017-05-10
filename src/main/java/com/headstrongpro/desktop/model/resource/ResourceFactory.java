@@ -19,34 +19,32 @@ public class ResourceFactory {
         } else return "ERROR";
     };
 
-    public static Resource getResource(int id, String name, String description, String url, boolean isForAchievement, int type){
-        url = urlTransformer.transform(url);
+    public static Resource getResource(int id, String name, String description, boolean isForAchievement, int type){
         if (type < 1 || type > 4){
             return null;
         } else if (type == 1){
-            return new TextResource(id, name, description, url, isForAchievement);
+            return new TextResource(id, name, description, isForAchievement);
         } else if (type == 2){
-            return new PhotoResource(id, name, description, url, isForAchievement);
+            return new PhotoResource(id, name, description, isForAchievement);
         } else if (type == 3){
-            return new AudioResource(id, name, description, url, isForAchievement);
+            return new AudioResource(id, name, description, isForAchievement);
         } else if (type == 4){
-            return new VideoResource(id, name, description, url, isForAchievement);
+            return new VideoResource(id, name, description, isForAchievement);
         }
         return null;
     }
 
-    public static Resource getResource(String name, String description, String url, boolean isForAchievement, int type){
-        url = urlTransformer.transform(url);
+    public static Resource getResource(String name, String description, boolean isForAchievement, int type){
         if (type < 1 || type > 4){
             return null;
         } else if (type == 1){
-            return new TextResource(name, description, url, isForAchievement);
+            return new TextResource(name, description, isForAchievement);
         } else if (type == 2){
-            return new PhotoResource(name, description, url, isForAchievement);
+            return new PhotoResource(name, description, isForAchievement);
         } else if (type == 3){
-            return new AudioResource(name, description, url, isForAchievement);
+            return new AudioResource(name, description, isForAchievement);
         } else if (type == 4){
-            return new VideoResource(name, description, url, isForAchievement);
+            return new VideoResource(name, description, isForAchievement);
         }
         return null;
     }

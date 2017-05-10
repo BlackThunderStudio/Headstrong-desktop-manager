@@ -4,33 +4,28 @@ package com.headstrongpro.desktop.model.resource;
  * Created by rajmu on 17.05.08.
  */
 //TODO: Custom functionality and behaviour to be added!
-class TextResource implements Resource {
+public class TextResource implements Resource {
 
     private static final int TYPE = 1;
 
     private int id;
-    private String name, description, url;
+    private String name, description, content;
     private boolean isForAchievement;
 
-    public TextResource(String name, String description, String url, boolean isForAchievement) {
+    TextResource(String name, String description, boolean isForAchievement) {
         this.name = name;
         this.description = description;
-        this.url = url;
         this.isForAchievement = isForAchievement;
     }
 
-    public TextResource(int id, String name, String description, String url, boolean isForAchievement) {
+    TextResource(int id, String name, String description, boolean isForAchievement) {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.url = url;
         this.isForAchievement = isForAchievement;
     }
 
-    @Override
-    public String getURL() {
-        return url;
-    }
+    private TextResource(){}
 
     @Override
     public String getDescription() {
@@ -60,5 +55,13 @@ class TextResource implements Resource {
     @Override
     public void setID(int id) {
         this.id = id;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 }
