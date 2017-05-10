@@ -13,9 +13,9 @@ import static org.junit.Assert.*;
 public class ResourceFactoryTest {
     @Test
     public void getResource() throws Exception {
-        ResourceFactory rf = new ResourceFactory();
-        Resource resource = rf.getResource(2, "asd", "sdf", "sdfsdf", false, 3);
+        Resource resource = ResourceFactory.getResource(2, "asd", "sdfsdf", false, 3);
 
+        assert resource != null;
         assertEquals(resource.toString(), "AudioFile");
     }
 

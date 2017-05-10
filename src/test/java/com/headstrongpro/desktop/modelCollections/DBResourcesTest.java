@@ -2,12 +2,14 @@ package com.headstrongpro.desktop.modelCollections;
 
 import com.headstrongpro.desktop.core.connection.DBConnect;
 import com.headstrongpro.desktop.core.connection.IDataAccessObject;
+import com.headstrongpro.desktop.model.resource.AudioResource;
 import com.headstrongpro.desktop.model.resource.Resource;
 import com.headstrongpro.desktop.model.resource.ResourceFactory;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import java.sql.Time;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -37,12 +39,13 @@ public class DBResourcesTest {
         assertEquals("PhotoResource", resource.getClass().getSimpleName());
     }
 
-    @Ignore(value = "To be implemented")
     @Test
     public void create() throws Exception {
         int tablesize = resourcesDAO.getAll().size();
 
-        Resource resource = ResourceFactory.getResource("some test resource", "desc", "https://www.google.com", false, 3);
+        AudioResource resource = Resource.as(ResourceFactory.getResource("some test resource", "desc", false, 3), AudioResource.class);
+        resource.setUrl("htttp://google.com/xxx.mp3");
+        resource.setDuration(Time.valueOf("12:00:00"));
         resourcesDAO.create(resource);
 
         int newsize = resourcesDAO.getAll().size();

@@ -73,9 +73,42 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
             String query = "SELECT * FROM [resources]";
             ResultSet rs = dbConnect.getFromDataBase(query);
             while(rs.next()){
-                Resource resource = prepareResource(rs);
+                Resource resource = ResourceFactory.getResource(rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getString("description"),
+                        rs.getBoolean("is_for_achievement"),
+                        rs.getInt("type"));
                 resources.add(resource);
             }
+            //TODO: created a bit more optimised version of the query, tho just for text resources
+            //resource segment: TEXT
+            query = "SELECT content,parent_id FROM text_resources WHERE parent_id IN (";
+            String parentIDs = "";
+            List<TextResource> textResources = resources.stream().filter(e -> e.getType() == 1).map(TextResource.class::cast).collect(Collectors.toList());
+            for (int i = 0; i < textResources.size() - 2; i++){
+                parentIDs += textResources.get(i).getID() + ",";
+            }
+            parentIDs += textResources.get(textResources.size() - 1).getID();
+            ResultSet resultSet = dbConnect.getFromDataBase(query + parentIDs + ");");
+            while (resultSet.next()){
+                textResources.stream().filter(e -> {
+                    try {
+                        return e.getID() == resultSet.getInt(2);
+                    } catch (SQLException e1) {
+                        e1.printStackTrace();
+                    }
+                    return false;
+                }).findFirst().get().setContent(resultSet.getString(1));
+            }
+            //EOS
+            List<PhotoResource> photoResources = resources.stream().filter(e -> e.getType() == 2).map(PhotoResource.class::cast).collect(Collectors.toList());
+            List<AudioResource> audioResources = resources.stream().filter(e -> e.getType() == 3).map(AudioResource.class::cast).collect(Collectors.toList());
+            List<VideoResource> videoResources = resources.stream().filter(e -> e.getType() == 4).map(VideoResource.class::cast).collect(Collectors.toList());
+
+            resources = textResources.stream().map(Resource.class::cast).collect(Collectors.toList());
+            resources.addAll(photoResources.stream().map(Resource.class::cast).collect(Collectors.toList()));
+            resources.addAll(audioResources.stream().map(Resource.class::cast).collect(Collectors.toList()));
+            resources.addAll(videoResources.stream().map(Resource.class::cast).collect(Collectors.toList()));
         } catch (ConnectionException | SQLException e) {
             throw new ModelSyncException("Could not load resources.", e);
         }
@@ -122,7 +155,7 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
         }
         return object;
     }
-
+    
     //TODO: need update
     @Override
     public void update(Resource object) throws ModelSyncException {
