@@ -9,12 +9,16 @@ public class Payment {
     private int id;
     private double value;
     private Date timestamp, dueDate;
+    boolean paid;
+    Subscription subscription;
 
-    public Payment(int id, double value, Date timestamp, Date dueDate) {
+    public Payment(int id, double value, Date timestamp, Date dueDate, boolean paid, Subscription subscription) {
         this.id = id;
         this.value = value;
         this.timestamp = timestamp;
         this.dueDate = dueDate;
+        this.paid = paid;
+        this.subscription = subscription;
     }
 
     public Payment(double value, Date timestamp, Date dueDate) {
@@ -54,4 +58,12 @@ public class Payment {
     public void setDueDate(Date dueDate) {
         this.dueDate = dueDate;
     }
+
+    public boolean isPaid() { return paid; }
+
+    public void setPaid() { this.paid = paid; }
+
+    public Subscription getSubscription() { return subscription; }
+
+    public void setSubscription(Subscription subscription) { this.subscription = subscription; }
 }
