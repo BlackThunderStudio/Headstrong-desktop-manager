@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.Optional;
 
 /**
- * Western Style App
+ * Headstrong - Desktop Manager
  *
  * @author Marek Cervinka
  * @author Andrei Katona
