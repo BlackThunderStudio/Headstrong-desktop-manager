@@ -1,7 +1,6 @@
 package com.headstrongpro.desktop.core.connection;
 
 import com.headstrongpro.desktop.core.exception.ConnectionException;
-import javafx.scene.control.TextField;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -120,16 +119,5 @@ public class DBConnect {
         } catch (SQLException ex) {
             throw new ConnectionException("WARNING! exception occurred while uploading a query to the server.", ex);
         }
-    }
-
-    /***
-     *Checks the textField for illegal characters
-     * @param tf a TextField object
-     * @return true when the TextField object doesn't contain any illegal characters. False otherwise
-     */
-    @Deprecated
-    public static boolean validateField(TextField tf) {
-        //TODO: should be implemented better but didn't have creativity to do it better
-        return !(tf.getText().contains(";") || tf.getText().contains("[") || tf.getText().contains("]") || tf.getText().contains("{") || tf.getText().contains("}")) && !tf.getText().isEmpty();
     }
 }
