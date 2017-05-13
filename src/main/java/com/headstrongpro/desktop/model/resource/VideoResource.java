@@ -8,7 +8,7 @@ import java.sql.Time;
 //TODO: Custom functionality and behaviour to be added!
 public class VideoResource implements Resource {
 
-    private static final int TYPE = 4;
+    private static final ResourceType TYPE = ResourceType.VIDEO;
 
     private int id;
     private String name, description, url;
@@ -46,7 +46,7 @@ public class VideoResource implements Resource {
     }
 
     @Override
-    public int getType() {
+    public ResourceType getType() {
         return TYPE;
     }
 

@@ -6,7 +6,7 @@ package com.headstrongpro.desktop.model.resource;
 //TODO: Custom functionality and behaviour to be added!
 public class TextResource implements Resource {
 
-    private static final int TYPE = 1;
+    private static final ResourceType TYPE = ResourceType.TEXT;
 
     private int id;
     private String name, description, content;
@@ -43,7 +43,7 @@ public class TextResource implements Resource {
     }
 
     @Override
-    public int getType() {
+    public ResourceType getType() {
         return TYPE;
     }
 

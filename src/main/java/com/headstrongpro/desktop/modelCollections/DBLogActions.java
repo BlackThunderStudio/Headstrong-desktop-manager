@@ -71,6 +71,7 @@ public class DBLogActions implements IDataAccessObject<Log> {
     public Log create(Log object) throws ModelSyncException {
         try {
             connect = new DBConnect();
+            //language=TSQL
             String query = "INSERT INTO log_actions(headstrong_employee_id, table_name, item_id, action_type) VALUES (?,?,?,?);";
             PreparedStatement preparedStatement = connect.getConnection().prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
             preparedStatement.setInt(1, object.getHeadstrongEmpID());

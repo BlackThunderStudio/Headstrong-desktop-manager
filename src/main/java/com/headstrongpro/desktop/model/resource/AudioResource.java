@@ -9,7 +9,7 @@ import java.sql.Time;
 //TODO: Custom functionality and behaviour to be added!
 public class AudioResource implements Resource {
 
-    private static final int TYPE = 3;
+    private static final ResourceType TYPE = ResourceType.AUDIO;
 
     private int id;
     private String name, description, url;
@@ -49,7 +49,7 @@ public class AudioResource implements Resource {
     }
 
     @Override
-    public int getType() {
+    public ResourceType getType() {
         return TYPE;
     }
 

@@ -1,33 +1,31 @@
 package com.headstrongpro.desktop.model.resource;
 
-import javafx.scene.image.Image;
-
 /**
  * Created by rajmu on 17.05.08.
  */
 //TODO: Custom functionality and behaviour to be added!
-public class PhotoResource implements Resource {
+public class ImageResource implements Resource {
 
-    private static final int TYPE = 2;
+    private static final ResourceType TYPE = ResourceType.IMAGE;
 
     private int id;
     private String name, description, url;
     private boolean isForAchievement;
 
-    PhotoResource(String name, String description, boolean isForAchievement) {
+    ImageResource(String name, String description, boolean isForAchievement) {
         this.name = name;
         this.description = description;
         this.isForAchievement = isForAchievement;
     }
 
-    PhotoResource(int id, String name, String description, boolean isForAchievement) {
+    ImageResource(int id, String name, String description, boolean isForAchievement) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.isForAchievement = isForAchievement;
     }
 
-    private PhotoResource(){}
+    private ImageResource(){}
 
     public String getURL() {
         return url;
@@ -49,7 +47,7 @@ public class PhotoResource implements Resource {
     }
 
     @Override
-    public int getType() {
+    public ResourceType getType() {
         return TYPE;
     }
 
