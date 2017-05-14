@@ -5,12 +5,12 @@ import com.headstrongpro.desktop.core.connection.IDataAccessObject;
 import com.headstrongpro.desktop.core.exception.ConnectionException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.model.Session;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * DB Sessions
@@ -20,18 +20,14 @@ public class DBSession implements IDataAccessObject<Session> {
     private DBConnect dbConnect;
 
     @Override
-    public List<Session> getAll() throws ModelSyncException {
-        List<Session> sessions = new ArrayList<>();
+    public ObservableList<Session> getAll() throws ModelSyncException {
+        ObservableList sessions = FXCollections.observableArrayList();
+        String selectQuery = "SELECT * FROM [sessions]";
         try {
             dbConnect = new DBConnect();
-            String query = "SELECT * FROM [sessions]";
-            ResultSet rs = dbConnect.getFromDataBase(query);
-            while (rs.next()) {
-                sessions.add(new Session(
-                        rs.getInt("id"),
-                        rs.getString("name"),
-                        rs.getString("description")
-                ));
+            ResultSet resultSet = dbConnect.getFromDataBase(selectQuery);
+            while (resultSet.next()) {
+                sessions.add(createObject(resultSet));
             }
         } catch (ConnectionException | SQLException e) {
             throw new ModelSyncException("Could not load sessions.", e);
@@ -41,16 +37,14 @@ public class DBSession implements IDataAccessObject<Session> {
 
     @Override
     public Session getById(int id) throws ModelSyncException {
-        Session session;
+        Session session = null;
+        String selectQuery = "SELECT * FROM [sessions] WHERE id = " + id;
         try {
             dbConnect = new DBConnect();
-            ResultSet rs = dbConnect.getFromDataBase("SELECT * FROM sessions WHERE id=" + id);
-            rs.next();
-            session = new Session(
-                    rs.getInt("id"),
-                    rs.getString("name"),
-                    rs.getString("description")
-            );
+            ResultSet resultSet = dbConnect.getFromDataBase(selectQuery);
+            if (resultSet.next()) {
+                session = createObject(resultSet);
+            }
         } catch (ConnectionException | SQLException e) {
             throw new ModelSyncException("Could not retrieve a session!", e);
         }
@@ -74,7 +68,7 @@ public class DBSession implements IDataAccessObject<Session> {
                 }
             }
         } catch (ConnectionException | SQLException e) {
-            throw new ModelSyncException("Could not create new session!", e);
+            throw new ModelSyncException("Could not createObject new session!", e);
         }
         return object;
     }
@@ -105,5 +99,13 @@ public class DBSession implements IDataAccessObject<Session> {
         } catch (ConnectionException | SQLException e) {
             throw new ModelSyncException("WARNING! Could not delete session of ID: " + object.getId() + " !", e);
         }
+    }
+
+    private Session createObject(ResultSet resultSet) throws SQLException {
+        Session session = new Session();
+        session.setId(resultSet.getInt("id"));
+        session.setName(resultSet.getString("name"));
+        session.setDescription(resultSet.getString("description"));
+        return session;
     }
 }

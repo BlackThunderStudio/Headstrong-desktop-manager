@@ -18,9 +18,7 @@ public class Session {
         this.description = description;
     }
 
-    public Session(String name, String description) {
-        this.name = name;
-        this.description = description;
+    public Session() {
     }
 
     public int getId() {
