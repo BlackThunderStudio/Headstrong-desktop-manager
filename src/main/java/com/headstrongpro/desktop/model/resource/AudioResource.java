@@ -19,7 +19,6 @@ public class AudioResource implements Resource {
     AudioResource(String name, String description, boolean isForAchievement) {
         this.name = name;
         this.description = description;
-        this.url = url;
         this.isForAchievement = isForAchievement;
     }
 
@@ -27,7 +26,6 @@ public class AudioResource implements Resource {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.url = url;
         this.isForAchievement = isForAchievement;
     }
 
@@ -81,6 +79,10 @@ public class AudioResource implements Resource {
 
     @Override
     public String toString() {
-        return "AudioFile";
+        String s = String.format("[Name]: %s\n[Description]: %s\n[For Achievement]: %s\n", name, description, String.valueOf(isForAchievement));
+        if(id != 0) s += (String.format("[ID]: %d\n", id));
+        if(duration != null) s += String.format("[Duration]: %s\n", String.valueOf(duration));
+        if(url != null && !url.isEmpty()) s += String.format("[URL]: %s\n", url);
+        return s;
     }
 }

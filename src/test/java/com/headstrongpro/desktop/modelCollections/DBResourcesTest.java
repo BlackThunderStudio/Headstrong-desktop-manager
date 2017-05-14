@@ -1,10 +1,8 @@
 package com.headstrongpro.desktop.modelCollections;
 
 import com.headstrongpro.desktop.core.connection.DBConnect;
-import com.headstrongpro.desktop.core.connection.IDataAccessObject;
 import com.headstrongpro.desktop.model.resource.*;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.sql.Time;
@@ -41,7 +39,7 @@ public class DBResourcesTest {
     public void createDelete() throws Exception {
         int tablesize = resourcesDAO.getAll().size();
 
-        AudioResource resource = Resource.as(ResourceFactory.getResource("some test resource", "desc", false, 3));
+        AudioResource resource = Resource.ofType(ResourceFactory.getResource("some test resource", "desc", false, 3));
         resource.setUrl("htttp://google.com/xxx.mp3");
         resource.setDuration(Time.valueOf("12:00:00"));
         resourcesDAO.create(resource);
@@ -59,12 +57,12 @@ public class DBResourcesTest {
     public void update() throws Exception {
         String oldVal = "https://randomlink.sleeppart1.wav";
         Resource r = resourcesDAO.getById(10);
-        AudioResource ar = Resource.as(r);
+        AudioResource ar = Resource.ofType(r);
         String expected = "http://www.example.com/qwerty.mp3";
         ar.setUrl(expected);
 
         resourcesDAO.update(ar);
-        AudioResource ar2 = Resource.as(resourcesDAO.getById(10));
+        AudioResource ar2 = Resource.ofType(resourcesDAO.getById(10));
 
         assertEquals(expected, ar2.getUrl());
 
@@ -86,5 +84,13 @@ public class DBResourcesTest {
 
         assertNotNull(resources);
         assertEquals(8, resources.size());
+    }
+
+    @Test
+    public void getBySessionID2() throws Exception {
+        List<Resource> resources = resourcesDAO.getBySessionID(5);
+
+        assertNotNull(resources);
+        assertEquals(4, resources.size());
     }
 }

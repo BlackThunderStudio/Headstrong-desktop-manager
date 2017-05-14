@@ -31,7 +31,7 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
         String parentIDs = "";
         List<TextResource> textResources = resources.stream().filter(e -> e.getType().equals(TEXT)).map(TextResource.class::cast).collect(Collectors.toList());
         if(textResources.size() != 0){
-            for (int i = 0; i < textResources.size() - 2; i++){
+            for (int i = 0; i < textResources.size() - 1; i++){
                 parentIDs += textResources.get(i).getID() + ",";
             }
             parentIDs += textResources.get(textResources.size() - 1).getID();
@@ -54,7 +54,7 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
         query = "SELECT url, parent_id FROM image_resources WHERE parent_id IN (";
         parentIDs = "";
         if(imageResources.size() != 0){
-            for (int i = 0; i < imageResources.size() - 2; i++){
+            for (int i = 0; i < imageResources.size() - 1; i++){
                 parentIDs += imageResources.get(i).getID() + ",";
             }
             parentIDs += imageResources.get(imageResources.size() - 1).getID();
@@ -77,7 +77,7 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
         parentIDs = "";
         query = "SELECT url, duration, parent_id FROM multimedia_resources WHERE parent_id IN (";
         if(audioResources.size() != 0){
-            for (int i = 0; i < audioResources.size() - 2; i++){
+            for (int i = 0; i < audioResources.size() - 1; i++){
                 parentIDs += audioResources.get(i).getID() + ",";
             }
             parentIDs += audioResources.get(audioResources.size() - 1).getID();
@@ -101,7 +101,7 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
         List<VideoResource> videoResources = resources.stream().filter(e -> e.getType().equals(VIDEO)).map(VideoResource.class::cast).collect(Collectors.toList());
         parentIDs = "";
         if(videoResources.size() != 0){
-            for (int i = 0; i < videoResources.size() - 2; i++){
+            for (int i = 0; i < videoResources.size() - 1; i++){
                 parentIDs += videoResources.get(i).getID() + ",";
             }
             parentIDs += videoResources.get(videoResources.size() - 1).getID();
@@ -192,7 +192,7 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
                     //creating records in children tables!!!
                     switch (object.getType().get()){
                         case 1:
-                            TextResource textResource = Resource.as(object);
+                            TextResource textResource = Resource.ofType(object);
                             query = "INSERT INTO text_resources(content, parent_id) VALUES (?,?)";
                             PreparedStatement preparedStatement1 = dbConnect.getConnection().prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
                             preparedStatement1.setString(1, textResource.getContent());
@@ -205,7 +205,7 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
                             }
                             break;
                         case 2:
-                            ImageResource imageResource = Resource.as(object);
+                            ImageResource imageResource = Resource.ofType(object);
                             query = "INSERT INTO image_resources(url, parent_id) VALUES (?,?)";
                             PreparedStatement preparedStatement2 = dbConnect.getConnection().prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
                             preparedStatement2.setString(1, imageResource.getURL());
@@ -218,7 +218,7 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
                             }
                             break;
                         case 3:
-                            AudioResource audioResource = Resource.as(object);
+                            AudioResource audioResource = Resource.ofType(object);
                             query = "INSERT INTO multimedia_resources(url, duration, parent_id) VALUES (?,?,?)";
                             PreparedStatement preparedStatement3 = dbConnect.getConnection().prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
                             preparedStatement3.setString(1, audioResource.getUrl());
@@ -232,7 +232,7 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
                             }
                             break;
                         case 4:
-                            VideoResource videoResource = Resource.as(object);
+                            VideoResource videoResource = Resource.ofType(object);
                             query = "INSERT INTO multimedia_resources(url, duration, parent_id) VALUES (?,?,?)";
                             PreparedStatement preparedStatement4 = dbConnect.getConnection().prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
                             preparedStatement4.setString(1, videoResource.getUrl());
@@ -274,7 +274,7 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
             //update the rest of it
             switch (object.getType().get()){
                 case 1:
-                    TextResource textResource = Resource.as(object);
+                    TextResource textResource = Resource.ofType(object);
                     query = "UPDATE text_resources SET content=? WHERE parent_id=?";
                     PreparedStatement preparedStatement1 = dbConnect.getConnection().prepareStatement(query);
                     preparedStatement1.setString(1, textResource.getContent());
@@ -285,7 +285,7 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
                     logChange(-1, "text_resources", x.getInt(1), UPDATE);
                     break;
                 case 2:
-                    ImageResource imageResource = Resource.as(object);
+                    ImageResource imageResource = Resource.ofType(object);
                     query = "UPDATE image_resources SET url=? WHERE parent_id=?";
                     PreparedStatement preparedStatement2 = dbConnect.getConnection().prepareStatement(query);
                     preparedStatement2.setString(1, imageResource.getURL());
@@ -296,7 +296,7 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
                     logChange(-1, "image_resources", x2.getInt(1), UPDATE);
                     break;
                 case 3:
-                    AudioResource audioResource = Resource.as(object);
+                    AudioResource audioResource = Resource.ofType(object);
                     query = "UPDATE multimedia_resources SET url=?,duration=? WHERE parent_id=?";
                     PreparedStatement preparedStatement3 = dbConnect.getConnection().prepareStatement(query);
                     preparedStatement3.setString(1, audioResource.getUrl());
@@ -308,7 +308,7 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
                     logChange(-1, "multimedia_resources", x3.getInt(1), UPDATE);
                     break;
                 case 4:
-                    VideoResource videoResource = Resource.as(object);
+                    VideoResource videoResource = Resource.ofType(object);
                     query = "UPDATE multimedia_resources SET url=?,duration=? WHERE parent_id=?";
                     PreparedStatement preparedStatement4 = dbConnect.getConnection().prepareStatement(query);
                     preparedStatement4.setString(1, videoResource.getUrl());
@@ -400,7 +400,7 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
             }
 
             String simplifiedResIDs = "";
-            for (int i = 0; i < resIDs.size() - 2; i ++){
+            for (int i = 0; i < resIDs.size() - 1; i ++){
                 simplifiedResIDs += resIDs.get(i) + ",";
             }
             simplifiedResIDs += resIDs.get(resIDs.size() - 1);

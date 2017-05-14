@@ -19,7 +19,7 @@ public interface Resource {
         return type.cast(resource);
     }
 
-    static <T extends Resource> T as(Resource resource){
+    static <T extends Resource> T ofType(Resource resource){
         if(resource.getType().equals(TEXT)){
             return (T) TextResource.class.cast(resource);
         } else if(resource.getType().equals(IMAGE)){

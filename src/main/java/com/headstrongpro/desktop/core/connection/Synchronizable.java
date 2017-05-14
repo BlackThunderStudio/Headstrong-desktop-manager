@@ -9,7 +9,7 @@ import com.headstrongpro.desktop.modelCollections.DBLogActions;
  */
 public abstract class Synchronizable {
 
-    //TODO: we need to resolve the issue of tracking which employee triggered this method. Possibly storing user session data as a singleton?
+    //TODO: we need to resolve the issue of tracking which employee triggered this method. Possibly storing user session data ofType a singleton?
     protected static Log logChange(int empID, String tableName, int itemID, ActionType type) throws ModelSyncException {
         return new DBLogActions().create(new Log(empID, tableName, itemID, type.getType()));
     }
