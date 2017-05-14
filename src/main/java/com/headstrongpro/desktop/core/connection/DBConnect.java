@@ -11,18 +11,50 @@ import java.io.InputStreamReader;
 import java.sql.*;
 
 /**
- * Created by rajmu on 17.04.06.
+ * DB Connection Utility
  */
 public class DBConnect {
 
-    private static String url;
-    private static String username;
-    private static String password;
+    private static String url, username, password;
 
     public DBConnect() throws ConnectionException {
         parseJson();
     }
 
+    /**
+     * Connects to the database
+     *
+     * @return returns connection object
+     */
+    private static Connection connect(String hostname, String user, String pass) throws ConnectionException {
+        Connection con;
+        try {
+            con = DriverManager.getConnection(hostname, user, pass);
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            throw new ConnectionException("Exception occurred while connecting to the database", ex);
+        }
+        return con;
+    }
+
+    /**
+     * Test the connection
+     *
+     * @return returns true when connected, otherwise false
+     */
+    public static boolean testConnection(String host, String user, String pass) {
+        try (Connection conn = DriverManager.getConnection(host, user, pass)) {
+            return true;
+        } catch (SQLException ex) {
+            return false;
+        }
+    }
+
+    /**
+     * Gets database credentials from the config file
+     *
+     * @throws ConnectionException Passes exception to the model layer
+     */
     private void parseJson() throws ConnectionException {
         JSONParser parser = new JSONParser();
         try {
@@ -40,48 +72,24 @@ public class DBConnect {
         }
     }
 
-    /***
-     * Connects to thee database
-     * @return returns connection object
-     */
-    private static Connection connect(String hostname, String user, String pass) throws ConnectionException {
-        Connection con = null;
-        try {
-            con = DriverManager.getConnection(hostname, user, pass);
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-            throw new ConnectionException("Exception occurred while connecting to the database", ex);
-        }
-        return con;
-    }
-
-    /***
+    /**
      * Returns the connection object
+     *
      * @return Connection
      */
     public Connection getConnection() throws ConnectionException {
         return connect(url, username, password);
     }
 
-    /***
-     * Test the connection
-     * @return returns True when connected, otherwise false
-     */
-    public static boolean testConnection(String host, String user, String pass) {
-        try (Connection conn = DriverManager.getConnection(host, user, pass)) {
-            return true;
-        } catch (SQLException ex) {
-            return false;
-        }
-    }
-
-    /***
+    /**
      * Executes specified SQL query and returns the data from the table
+     *
+     * @return ResultSet
      */
     public ResultSet getFromDataBase(String query) throws ConnectionException {
         Connection con = connect(url, username, password);
-        ResultSet rs = null;
-        Statement statement = null;
+        ResultSet rs;
+        Statement statement;
         try {
             statement = con.createStatement();
             rs = statement.executeQuery(query);
@@ -92,8 +100,9 @@ public class DBConnect {
         return rs;
     }
 
-    /***
+    /**
      * Uploads data stated in the query to the database (UNSAFE)
+     *
      * @param query an SQL query string
      */
     public void upload(String query) throws ConnectionException {
