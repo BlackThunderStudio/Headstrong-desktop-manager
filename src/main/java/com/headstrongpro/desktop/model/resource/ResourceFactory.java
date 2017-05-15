@@ -7,20 +7,6 @@ import static com.headstrongpro.desktop.model.resource.ResourceType.*;
  */
 public class ResourceFactory {
 
-    private static IUrlChecker urlCheckerhttps = (u) -> u.startsWith("https://");
-    private static IUrlChecker urlCheckerWww = u -> u.startsWith("www");
-    private static IUrlTransformer urlTransformer = (u) -> {
-        if (u.length() <= 2000 && !u.contains("'")) {
-            if (urlCheckerhttps.check(u)) {
-                return u;
-            } else if (urlCheckerWww.check(u)) {
-                return "https://" + u;
-            } else {
-                return "ERROR";
-            }
-        } else return "ERROR";
-    };
-
     public static Resource getResource(int id, String name, String description, boolean isForAchievement, int type){
         if (type == 1){
             return new TextResource(id, name, description, isForAchievement);

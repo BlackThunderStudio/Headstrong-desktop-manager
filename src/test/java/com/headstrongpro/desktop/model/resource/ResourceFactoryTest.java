@@ -15,8 +15,7 @@ public class ResourceFactoryTest {
     public void getResource() throws Exception {
         Resource resource = ResourceFactory.getResource(2, "asd", "sdfsdf", false, 3);
 
-        assert resource != null;
-        assertEquals(resource.toString(), "AudioFile");
+        assertNotNull(resource);
     }
 
 }
