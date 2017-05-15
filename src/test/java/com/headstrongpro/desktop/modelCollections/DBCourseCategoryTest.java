@@ -35,18 +35,26 @@ public class DBCourseCategoryTest {
     }
 
     @Test
-    public void create() throws Exception {
-        //todo
+    public void createDelete() throws Exception {
+        int oldSize = ccDAO.getAll().size(), newSize;
+        CourseCategory newCat = new CourseCategory("dummy category");
+        ccDAO.create(newCat);
+        assertNotEquals("Course category was not created", oldSize, ccDAO.getAll().size());
+        ccDAO.delete(newCat);
+        assertEquals("Course category was not deleted", oldSize, ccDAO.getAll().size());
     }
 
     @Test
     public void update() throws Exception {
-        //todo
-    }
-
-    @Test
-    public void delete() throws Exception {
-        //todo
+        CourseCategory cc = ccDAO.getById(1);
+        String oldName = cc.getName();
+        String newName = "dummy";
+        cc.setName(newName);
+        ccDAO.update(cc);
+        assertNotEquals("Name has not been changed", oldName, ccDAO.getById(1).getName());
+        cc.setName(oldName);
+        ccDAO.update(cc);
+        assertEquals("Name was not reversed", oldName, ccDAO.getById(1).getName());
     }
 
 }

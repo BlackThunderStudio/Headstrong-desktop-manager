@@ -86,6 +86,7 @@ public class DBCourseCategory extends Synchronizable implements IDataAccessObjec
                 String updateCourseCategoryQuery = "UPDATE s_categories SET name=? WHERE id=?;";
                 PreparedStatement preparedStatement = dbConnect.getConnection().prepareStatement(updateCourseCategoryQuery);
                 preparedStatement.setString(1, courseCategory.getName());
+                preparedStatement.setInt(2, courseCategory.getId());
                 dbConnect.uploadSafe(preparedStatement);
                 logChange("s_categories", courseCategory.getId(), ActionType.UPDATE);
             } catch (SQLException | ConnectionException e) {
