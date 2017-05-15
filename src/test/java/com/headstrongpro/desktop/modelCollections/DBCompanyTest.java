@@ -23,7 +23,7 @@ public class DBCompanyTest {
     }
 
     @Test
-    public void getAllTest() throws Exception {
+    public void getAll() throws Exception {
         List<Company> c = companyDAO.getAll();
 
         assertNotNull("list is null", c);
@@ -31,22 +31,24 @@ public class DBCompanyTest {
     }
 
     @Test
-    public void getByIdTest() throws Exception {
+    public void getById() throws Exception {
         Company c = companyDAO.getById(2);
 
         assertNotNull(c);
         assertEquals(c.getName(), "Maersk");
     }
 
-    @Ignore
+    @Ignore("department thingie needs fix")
     @Test
     public void createDelete() throws  Exception{
         Company company = new Company("test company", "1234567890", "test street", "123", "dummyville", "dummyland");
         int oldSize = companyDAO.getAll().size();
+
         companyDAO.create(company);
         assertNotEquals("Company has not been created", oldSize, companyDAO.getAll().size());
         companyDAO.delete(company);
         assertEquals("Company has not been removed", oldSize, companyDAO.getAll().size());
+
     }
 
     @Test
