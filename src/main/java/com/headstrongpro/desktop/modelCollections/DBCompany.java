@@ -106,6 +106,7 @@ public class DBCompany extends Synchronizable implements IDataAccessObject<Compa
                 preparedStatement.setString(4, company.getPostal());
                 preparedStatement.setString(5, company.getCity());
                 preparedStatement.setString(6, company.getCountry());
+                preparedStatement.setInt(7, company.getId());
                 dbConnect.uploadSafe(preparedStatement);
                 logChange("companies", company.getId(), ActionType.UPDATE);
             } catch (SQLException | ConnectionException e) {
