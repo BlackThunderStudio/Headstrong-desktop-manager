@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import java.util.Calendar;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -15,16 +16,16 @@ import static org.junit.Assert.*;
  */
 public class DBClientTest {
 
-    private DBClient dao;
+    private DBClient clientDAO;
 
     @Before
     public void setUp() throws Exception {
-        dao = new DBClient();
+        clientDAO = new DBClient();
     }
 
     @Test
     public void getAll() throws Exception {
-        List<Person> people = dao.getAll();
+        List<Person> people = clientDAO.getAll();
 
         assertNotNull(people);
         assertNotEquals(0, people.size());
@@ -32,32 +33,38 @@ public class DBClientTest {
 
     @Test
     public void getById() throws Exception {
-        Client p = (Client) dao.getById(4);
+        Client p = (Client) clientDAO.getById(4);
         assertEquals("Tom Christiansen", p.getName());
     }
 
-    @Ignore(value = "To be implemented")
     @Test
-    public void create() throws Exception {
-
+    public void createDelete() throws Exception {
+        java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+        Client client = new Client("dummy dumson", "dummy@testing.dk", "332", "true", "dummy", "124", date, 1);
+        int oldSize = clientDAO.getAll().size();
+        clientDAO.create(client);
+        assertNotEquals("Client has not been added", oldSize, clientDAO.getAll().size());
+        clientDAO.delete(client);
+        assertEquals("Client has not been removed", oldSize, clientDAO.getAll().size());
     }
 
-    @Ignore(value = "To be implemented")
     @Test
     public void update() throws Exception {
-
+        Client client = (Client) clientDAO.getById(1);
+        String oldName, newName = "dummy";
+        oldName = client.getName();
+        client.setName(newName);
+        clientDAO.update(client);
+        assertNotEquals("Client's name has not been changed", oldName, clientDAO.getById(1).getName());
+        client.setName(oldName);
+        clientDAO.update(client);
+        assertEquals("Client's name has not been reverted", oldName, clientDAO.getById(1).getName());
     }
 
-    @Ignore(value = "To be implemented")
-    @Test
-    public void delete() throws Exception {
-
-    }
-
-    @Ignore(value = "To be implemented")
     @Test
     public void getByCompanyId() throws Exception {
-
+        List<Person> clients =  clientDAO.getByCompanyId(1);
+        assertNotEquals("No clients were found for the company specified", 0, clients.size());
     }
 
 }

@@ -108,7 +108,7 @@ public class DBClient extends Synchronizable implements IDataAccessObject<Person
         if (verifyIntegrity(client.getId())){
             try{
                 connect = new DBConnect();
-                String query = "UPDATE clients SET name=?, email=?, phone_number=?, gender=?, login=?, pass=?, date_registered=?, company_id=?;";
+                String query = "UPDATE clients SET name=?, email=?, phone_number=?, gender=?, login=?, pass=?, date_registered=?, company_id=? WHERE id=?;";
                 PreparedStatement preparedStatement = connect.getConnection().prepareStatement(query);
                 preparedStatement.setString(1, client.getName());
                 preparedStatement.setString(2, client.getEmail());
@@ -118,6 +118,7 @@ public class DBClient extends Synchronizable implements IDataAccessObject<Person
                 preparedStatement.setString(6, client.getPassword());
                 preparedStatement.setDate(7, client.getRegistrationDate());
                 preparedStatement.setInt(8, client.getcompanyId());
+                preparedStatement.setInt(9, client.getId());
                 connect.uploadSafe(preparedStatement);
                 logChange("clients", client.getId(), ActionType.UPDATE);
             } catch (ConnectionException | SQLException e) {
