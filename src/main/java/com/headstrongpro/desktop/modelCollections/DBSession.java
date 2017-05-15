@@ -1,10 +1,13 @@
 package com.headstrongpro.desktop.modelCollections;
 
 import com.headstrongpro.desktop.core.connection.DBConnect;
-import com.headstrongpro.desktop.core.connection.IDataAccessObject;
 import com.headstrongpro.desktop.core.exception.ConnectionException;
+import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.model.Session;
+import com.headstrongpro.desktop.modelCollections.util.ActionType;
+import com.headstrongpro.desktop.modelCollections.util.IDataAccessObject;
+import com.headstrongpro.desktop.modelCollections.util.Synchronizable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -15,7 +18,7 @@ import java.sql.SQLException;
 /**
  * DB Sessions
  */
-public class DBSession implements IDataAccessObject<Session> {
+public class DBSession extends Synchronizable implements IDataAccessObject<Session> {
 
     private DBConnect dbConnect;
 
@@ -55,6 +58,7 @@ public class DBSession implements IDataAccessObject<Session> {
     public Session create(Session object) throws ModelSyncException {
         try {
             dbConnect = new DBConnect();
+            //language=TSQL
             String createSessionQuery = "INSERT INTO sessions (name, description) VALUES (?, ?)";
             PreparedStatement preparedStatement = dbConnect.getConnection().prepareStatement(createSessionQuery, PreparedStatement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, object.getName());
@@ -63,6 +67,7 @@ public class DBSession implements IDataAccessObject<Session> {
             try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     object.setId(generatedKeys.getInt(1));
+                    logChange("sessions", object.getId(), ActionType.CREATE);
                 } else {
                     throw new ModelSyncException("Creating session failed. No ID retrieved!");
                 }
@@ -74,30 +79,42 @@ public class DBSession implements IDataAccessObject<Session> {
     }
 
     @Override
-    public void update(Session object) throws ModelSyncException {
-        try {
-            dbConnect = new DBConnect();
-            String updateSessionQuery = "UPDATE sessions SET name = ?, description = ? WHERE id = ?;";
-            PreparedStatement preparedStatement = dbConnect.getConnection().prepareStatement(updateSessionQuery);
-            preparedStatement.setString(1, object.getName());
-            preparedStatement.setString(2, object.getDescription());
-            preparedStatement.setInt(3, object.getId());
-            dbConnect.uploadSafe(preparedStatement);
-        } catch (ConnectionException | SQLException e) {
-            throw new ModelSyncException("WARNING! Could not update session of ID: " + object.getId() + " !", e);
+    public void update(Session object) throws ModelSyncException, DatabaseOutOfSyncException {
+        if (verifyIntegrity(object.getId())){
+            try {
+                dbConnect = new DBConnect();
+                //language=TSQL
+                String updateSessionQuery = "UPDATE sessions SET name = ?, description = ? WHERE id = ?;";
+                PreparedStatement preparedStatement = dbConnect.getConnection().prepareStatement(updateSessionQuery);
+                preparedStatement.setString(1, object.getName());
+                preparedStatement.setString(2, object.getDescription());
+                preparedStatement.setInt(3, object.getId());
+                dbConnect.uploadSafe(preparedStatement);
+                logChange("sessions", object.getId(), ActionType.UPDATE);
+            } catch (ConnectionException | SQLException e) {
+                throw new ModelSyncException("WARNING! Could not update session of ID: " + object.getId() + " !", e);
+            }
+        } else {
+            throw new DatabaseOutOfSyncException();
         }
     }
 
     @Override
-    public void delete(Session object) throws ModelSyncException {
-        try {
-            dbConnect = new DBConnect();
-            String deleteSessionQuery = "DELETE FROM sessions WHERE id = ?;";
-            PreparedStatement preparedStatement = dbConnect.getConnection().prepareStatement(deleteSessionQuery);
-            preparedStatement.setInt(1, object.getId());
-            preparedStatement.execute();
-        } catch (ConnectionException | SQLException e) {
-            throw new ModelSyncException("WARNING! Could not delete session of ID: " + object.getId() + " !", e);
+    public void delete(Session object) throws ModelSyncException, DatabaseOutOfSyncException {
+        if (verifyIntegrity(object.getId())){
+            try {
+                dbConnect = new DBConnect();
+                //language=TSQL
+                String deleteSessionQuery = "DELETE FROM sessions WHERE id = ?;";
+                PreparedStatement preparedStatement = dbConnect.getConnection().prepareStatement(deleteSessionQuery);
+                preparedStatement.setInt(1, object.getId());
+                preparedStatement.execute();
+                logChange("sessions", object.getId(), ActionType.DELETE);
+            } catch (ConnectionException | SQLException e) {
+                throw new ModelSyncException("WARNING! Could not delete session of ID: " + object.getId() + " !", e);
+            }
+        } else {
+            throw new DatabaseOutOfSyncException();
         }
     }
 
@@ -107,5 +124,10 @@ public class DBSession implements IDataAccessObject<Session> {
         session.setName(resultSet.getString("name"));
         session.setDescription(resultSet.getString("description"));
         return session;
+    }
+
+    @Override
+    protected boolean verifyIntegrity(int itemID) throws ModelSyncException {
+        return true; //TODO: to be implemented
     }
 }

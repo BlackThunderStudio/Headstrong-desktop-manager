@@ -40,6 +40,13 @@ public class Log {
         this.actionType = actionType;
     }
 
+    public Log(String tableName, int itemID, String actionType) {
+        this.tableName = tableName;
+        this.itemID = itemID;
+        this.actionType = actionType;
+        headstrongEmpID = -1;
+    }
+
     public int getId() {
         return id;
     }

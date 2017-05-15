@@ -2,11 +2,14 @@ package com.headstrongpro.desktop.modelCollections;
 
 import com.headstrongpro.desktop.core.connection.DBConnect;
 import com.headstrongpro.desktop.core.exception.ConnectionException;
+import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.model.entity.EntityFactory;
 import com.headstrongpro.desktop.model.entity.Person;
 import com.headstrongpro.desktop.model.entity.User;
+import com.headstrongpro.desktop.modelCollections.util.ActionType;
 import com.headstrongpro.desktop.modelCollections.util.IDataAccessObject;
+import com.headstrongpro.desktop.modelCollections.util.Synchronizable;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,7 +20,7 @@ import java.util.List;
 /**
  * Created by Rajmund Staniek on 09-May-17.
  */
-public class DBUser implements IDataAccessObject<Person> {
+public class DBUser extends Synchronizable implements IDataAccessObject<Person> {
 
     private DBConnect connect;
 
@@ -83,6 +86,7 @@ public class DBUser implements IDataAccessObject<Person> {
         User user = (User) object;
         try {
             connect = new DBConnect();
+            //language=TSQL
             String query = "INSERT INTO employees_headstrong(name, cpr, street, postal, city, country, email, phone_number, bank_account_n, gender, base_salary) VALUES (?,?,?,?,?,?,?,?,?,?,?);";
             PreparedStatement preparedStatement = connect.getConnection().prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, user.getName());
@@ -100,6 +104,7 @@ public class DBUser implements IDataAccessObject<Person> {
             try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     user.setId(generatedKeys.getInt(1));
+                    logChange("employees_headstrong", user.getId(), ActionType.CREATE);
                 } else {
                     throw new ModelSyncException("Creating new user failed! Could not retrieve the ID!");
                 }
@@ -111,37 +116,52 @@ public class DBUser implements IDataAccessObject<Person> {
     }
 
     @Override
-    public void update(Person object) throws ModelSyncException {
+    public void update(Person object) throws ModelSyncException, DatabaseOutOfSyncException {
         User user = (User) object;
-        try {
-            connect = new DBConnect();
-            //language=TSQL
-            String query = "UPDATE employees_headstrong SET name=?,street=?,postal=?,city=?,country=?,email=?,phone_number=?,bank_account_n=?,gender=?,base_salary=? WHERE id=?;";
-            PreparedStatement preparedStatement = connect.getConnection().prepareStatement(query);
-            preparedStatement.setString(1, user.getName());
-            preparedStatement.setString(2, user.getStreet());
-            preparedStatement.setString(3, user.getPostal());
-            preparedStatement.setString(4, user.getCity());
-            preparedStatement.setString(5, user.getCountry());
-            preparedStatement.setString(6, user.getEmail());
-            preparedStatement.setString(7, user.getPhone());
-            preparedStatement.setString(8, user.getAccountNo());
-            preparedStatement.setString(9, user.getGender());
-            preparedStatement.setString(10, user.getBaseSalary());
-            preparedStatement.setInt(11, user.getId());
-            connect.uploadSafe(preparedStatement);
-        } catch (ConnectionException | SQLException e) {
-            throw new ModelSyncException("Could not update a user!", e);
+        if(verifyIntegrity(object.getId())){
+            try {
+                connect = new DBConnect();
+                //language=TSQL
+                String query = "UPDATE employees_headstrong SET name=?,street=?,postal=?,city=?,country=?,email=?,phone_number=?,bank_account_n=?,gender=?,base_salary=? WHERE id=?;";
+                PreparedStatement preparedStatement = connect.getConnection().prepareStatement(query);
+                preparedStatement.setString(1, user.getName());
+                preparedStatement.setString(2, user.getStreet());
+                preparedStatement.setString(3, user.getPostal());
+                preparedStatement.setString(4, user.getCity());
+                preparedStatement.setString(5, user.getCountry());
+                preparedStatement.setString(6, user.getEmail());
+                preparedStatement.setString(7, user.getPhone());
+                preparedStatement.setString(8, user.getAccountNo());
+                preparedStatement.setString(9, user.getGender());
+                preparedStatement.setString(10, user.getBaseSalary());
+                preparedStatement.setInt(11, user.getId());
+                connect.uploadSafe(preparedStatement);
+                logChange("employees_headstrong", object.getId(), ActionType.UPDATE);
+            } catch (ConnectionException | SQLException e) {
+                throw new ModelSyncException("Could not update a user!", e);
+            }
+        } else {
+            throw new DatabaseOutOfSyncException();
         }
     }
 
     @Override
-    public void delete(Person object) throws ModelSyncException {
-        try {
-            connect = new DBConnect();
-            connect.upload("DELETE FROM employees_headstrong  WHERE id=" + object.getId() + ";");
-        } catch (ConnectionException e) {
-            throw new ModelSyncException("Could not delete a department!", e);
+    public void delete(Person object) throws ModelSyncException, DatabaseOutOfSyncException {
+        if(verifyIntegrity(object.getId())){
+            try {
+                connect = new DBConnect();
+                connect.upload("DELETE FROM employees_headstrong  WHERE id=" + object.getId() + ";");
+                logChange("employees_headstrong", object.getId(), ActionType.DELETE);
+            } catch (ConnectionException e) {
+                throw new ModelSyncException("Could not delete a department!", e);
+            }
+        } else {
+            throw new DatabaseOutOfSyncException();
         }
+    }
+
+    @Override
+    protected boolean verifyIntegrity(int itemID) throws ModelSyncException {
+        return true; //TODO: to be implemented
     }
 }

@@ -1,5 +1,6 @@
 package com.headstrongpro.desktop.modelCollections.util;
 
+import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 
 import java.util.List;
@@ -14,7 +15,7 @@ public interface IDataAccessObject<T> {
 
     T create(T object) throws ModelSyncException;
 
-    void update(T object) throws ModelSyncException;
+    void update(T object) throws ModelSyncException, DatabaseOutOfSyncException;
 
-    void delete(T object) throws ModelSyncException;
+    void delete(T object) throws ModelSyncException, DatabaseOutOfSyncException;
 }

@@ -1,6 +1,7 @@
 package com.headstrongpro.desktop.modelCollections;
 
 import com.headstrongpro.desktop.core.connection.DBConnect;
+import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
 import com.headstrongpro.desktop.modelCollections.util.Synchronizable;
 import com.headstrongpro.desktop.core.exception.ConnectionException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
@@ -258,110 +259,118 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
     }
 
     @Override
-    public void update(Resource object) throws ModelSyncException {
-        try {
-            dbConnect = new DBConnect();
-            //language=TSQL
-            String query = "UPDATE resources SET name=?,description=?,is_for_achievement=?,type=? WHERE id=?;";
-            PreparedStatement preparedStatement = dbConnect.getConnection().prepareStatement(query);
-            preparedStatement.setString(1, object.getName());
-            preparedStatement.setString(2, object.getDescription());
-            preparedStatement.setBoolean(3, object.isForAchievement());
-            preparedStatement.setInt(4, object.getType().get());
-            preparedStatement.setInt(5, object.getID());
-            dbConnect.uploadSafe(preparedStatement);
+    public void update(Resource object) throws ModelSyncException, DatabaseOutOfSyncException {
+        if (verifyIntegrity(object.getID())){
+            try {
+                dbConnect = new DBConnect();
+                //language=TSQL
+                String query = "UPDATE resources SET name=?,description=?,is_for_achievement=?,type=? WHERE id=?;";
+                PreparedStatement preparedStatement = dbConnect.getConnection().prepareStatement(query);
+                preparedStatement.setString(1, object.getName());
+                preparedStatement.setString(2, object.getDescription());
+                preparedStatement.setBoolean(3, object.isForAchievement());
+                preparedStatement.setInt(4, object.getType().get());
+                preparedStatement.setInt(5, object.getID());
+                dbConnect.uploadSafe(preparedStatement);
 
-            //update the rest of it
-            switch (object.getType().get()){
-                case 1:
-                    TextResource textResource = Resource.ofType(object);
-                    query = "UPDATE text_resources SET content=? WHERE parent_id=?";
-                    PreparedStatement preparedStatement1 = dbConnect.getConnection().prepareStatement(query);
-                    preparedStatement1.setString(1, textResource.getContent());
-                    preparedStatement1.setInt(2, textResource.getID());
-                    ResultSet x = dbConnect.getFromDataBase("SELECT id FROM text_resources WHERE parent_id=" + textResource.getID());
-                    x.next();
-                    dbConnect.uploadSafe(preparedStatement1);
-                    logChange(-1, "text_resources", x.getInt(1), UPDATE);
-                    break;
-                case 2:
-                    ImageResource imageResource = Resource.ofType(object);
-                    query = "UPDATE image_resources SET url=? WHERE parent_id=?";
-                    PreparedStatement preparedStatement2 = dbConnect.getConnection().prepareStatement(query);
-                    preparedStatement2.setString(1, imageResource.getURL());
-                    preparedStatement2.setInt(2, imageResource.getID());
-                    dbConnect.uploadSafe(preparedStatement2);
-                    ResultSet x2 = dbConnect.getFromDataBase("SELECT id FROM image_resources WHERE parent_id=" + imageResource.getID());
-                    x2.next();
-                    logChange(-1, "image_resources", x2.getInt(1), UPDATE);
-                    break;
-                case 3:
-                    AudioResource audioResource = Resource.ofType(object);
-                    query = "UPDATE multimedia_resources SET url=?,duration=? WHERE parent_id=?";
-                    PreparedStatement preparedStatement3 = dbConnect.getConnection().prepareStatement(query);
-                    preparedStatement3.setString(1, audioResource.getUrl());
-                    preparedStatement3.setTime(2, audioResource.getDuration());
-                    preparedStatement3.setInt(3, audioResource.getID());
-                    dbConnect.uploadSafe(preparedStatement3);
-                    ResultSet x3 = dbConnect.getFromDataBase("SELECT id FROM multimedia_resources WHERE parent_id=" + audioResource.getID());
-                    x3.next();
-                    logChange(-1, "multimedia_resources", x3.getInt(1), UPDATE);
-                    break;
-                case 4:
-                    VideoResource videoResource = Resource.ofType(object);
-                    query = "UPDATE multimedia_resources SET url=?,duration=? WHERE parent_id=?";
-                    PreparedStatement preparedStatement4 = dbConnect.getConnection().prepareStatement(query);
-                    preparedStatement4.setString(1, videoResource.getUrl());
-                    preparedStatement4.setTime(2, videoResource.getDuration());
-                    preparedStatement4.setInt(3, videoResource.getID());
-                    dbConnect.uploadSafe(preparedStatement4);
-                    ResultSet x4 = dbConnect.getFromDataBase("SELECT id FROM multimedia_resources WHERE parent_id=" + videoResource.getID());
-                    x4.next();
-                    logChange(-1, "multimedia_resources", x4.getInt(1), UPDATE);
-                    break;
-            } //end of switch
-            logChange(-1, "resources", object.getID(), UPDATE);
-        } catch (ConnectionException | SQLException e) {
-            throw new ModelSyncException("WARNING! Could not update resource of ID: " + object.getID() + " !", e);
+                //update the rest of it
+                switch (object.getType().get()){
+                    case 1:
+                        TextResource textResource = Resource.ofType(object);
+                        query = "UPDATE text_resources SET content=? WHERE parent_id=?";
+                        PreparedStatement preparedStatement1 = dbConnect.getConnection().prepareStatement(query);
+                        preparedStatement1.setString(1, textResource.getContent());
+                        preparedStatement1.setInt(2, textResource.getID());
+                        ResultSet x = dbConnect.getFromDataBase("SELECT id FROM text_resources WHERE parent_id=" + textResource.getID());
+                        x.next();
+                        dbConnect.uploadSafe(preparedStatement1);
+                        logChange(-1, "text_resources", x.getInt(1), UPDATE);
+                        break;
+                    case 2:
+                        ImageResource imageResource = Resource.ofType(object);
+                        query = "UPDATE image_resources SET url=? WHERE parent_id=?";
+                        PreparedStatement preparedStatement2 = dbConnect.getConnection().prepareStatement(query);
+                        preparedStatement2.setString(1, imageResource.getURL());
+                        preparedStatement2.setInt(2, imageResource.getID());
+                        dbConnect.uploadSafe(preparedStatement2);
+                        ResultSet x2 = dbConnect.getFromDataBase("SELECT id FROM image_resources WHERE parent_id=" + imageResource.getID());
+                        x2.next();
+                        logChange(-1, "image_resources", x2.getInt(1), UPDATE);
+                        break;
+                    case 3:
+                        AudioResource audioResource = Resource.ofType(object);
+                        query = "UPDATE multimedia_resources SET url=?,duration=? WHERE parent_id=?";
+                        PreparedStatement preparedStatement3 = dbConnect.getConnection().prepareStatement(query);
+                        preparedStatement3.setString(1, audioResource.getUrl());
+                        preparedStatement3.setTime(2, audioResource.getDuration());
+                        preparedStatement3.setInt(3, audioResource.getID());
+                        dbConnect.uploadSafe(preparedStatement3);
+                        ResultSet x3 = dbConnect.getFromDataBase("SELECT id FROM multimedia_resources WHERE parent_id=" + audioResource.getID());
+                        x3.next();
+                        logChange(-1, "multimedia_resources", x3.getInt(1), UPDATE);
+                        break;
+                    case 4:
+                        VideoResource videoResource = Resource.ofType(object);
+                        query = "UPDATE multimedia_resources SET url=?,duration=? WHERE parent_id=?";
+                        PreparedStatement preparedStatement4 = dbConnect.getConnection().prepareStatement(query);
+                        preparedStatement4.setString(1, videoResource.getUrl());
+                        preparedStatement4.setTime(2, videoResource.getDuration());
+                        preparedStatement4.setInt(3, videoResource.getID());
+                        dbConnect.uploadSafe(preparedStatement4);
+                        ResultSet x4 = dbConnect.getFromDataBase("SELECT id FROM multimedia_resources WHERE parent_id=" + videoResource.getID());
+                        x4.next();
+                        logChange(-1, "multimedia_resources", x4.getInt(1), UPDATE);
+                        break;
+                } //end of switch
+                logChange(-1, "resources", object.getID(), UPDATE);
+            } catch (ConnectionException | SQLException e) {
+                throw new ModelSyncException("WARNING! Could not update resource of ID: " + object.getID() + " !", e);
+            }
+        } else {
+            throw new DatabaseOutOfSyncException();
         }
     }
 
     @Override
-    public void delete(Resource object) throws ModelSyncException {
-        try{
-            dbConnect = new DBConnect();
-            //language=TSQL
-            String query = "DELETE FROM resources WHERE id=?;";
-            PreparedStatement preparedStatement = dbConnect.getConnection().prepareStatement(query);
-            preparedStatement.setInt(1, object.getID());
-            dbConnect.uploadSafe(preparedStatement);
-            logChange(-1, "resources", object.getID(), DELETE);
+    public void delete(Resource object) throws ModelSyncException, DatabaseOutOfSyncException {
+        if (verifyIntegrity(object.getID())){
+            try{
+                dbConnect = new DBConnect();
+                //language=TSQL
+                String query = "DELETE FROM resources WHERE id=?;";
+                PreparedStatement preparedStatement = dbConnect.getConnection().prepareStatement(query);
+                preparedStatement.setInt(1, object.getID());
+                dbConnect.uploadSafe(preparedStatement);
+                logChange(-1, "resources", object.getID(), DELETE);
 
-            switch (object.getType().get()){
-                case 1:
-                    ResultSet x = dbConnect.getFromDataBase("SELECT id FROM text_resources WHERE parent_id=" + object.getID());
-                    query = "DELETE FROM text_resources WHERE parent_id=" + object.getID();
-                    dbConnect.upload(query);
-                    x.next();
-                    logChange(-1, "text_resources", x.getInt(1), DELETE);
-                    break;
-                case 2:
-                    ResultSet x2 = dbConnect.getFromDataBase("SELECT id FROM image_resources WHERE parent_id=" + object.getID());
-                    query = "DELETE FROM image_resources WHERE parent_id=" + object.getID();
-                    dbConnect.upload(query);
-                    x2.next();
-                    logChange(-1, "image_resources", x2.getInt(1), DELETE);
-                    break;
-                case 3 | 4:
-                    ResultSet x3 = dbConnect.getFromDataBase("SELECT id FROM multimedia_resources WHERE parent_id=" + object.getID());
-                    query = "DELETE FROM multimedia_resources WHERE parent_id=" + object.getID();
-                    dbConnect.upload(query);
-                    x3.next();
-                    logChange(-1, "multimedia_resources", x3.getInt(1), DELETE);
-                    break;
+                switch (object.getType().get()){
+                    case 1:
+                        ResultSet x = dbConnect.getFromDataBase("SELECT id FROM text_resources WHERE parent_id=" + object.getID());
+                        query = "DELETE FROM text_resources WHERE parent_id=" + object.getID();
+                        dbConnect.upload(query);
+                        x.next();
+                        logChange(-1, "text_resources", x.getInt(1), DELETE);
+                        break;
+                    case 2:
+                        ResultSet x2 = dbConnect.getFromDataBase("SELECT id FROM image_resources WHERE parent_id=" + object.getID());
+                        query = "DELETE FROM image_resources WHERE parent_id=" + object.getID();
+                        dbConnect.upload(query);
+                        x2.next();
+                        logChange(-1, "image_resources", x2.getInt(1), DELETE);
+                        break;
+                    case 3 | 4:
+                        ResultSet x3 = dbConnect.getFromDataBase("SELECT id FROM multimedia_resources WHERE parent_id=" + object.getID());
+                        query = "DELETE FROM multimedia_resources WHERE parent_id=" + object.getID();
+                        dbConnect.upload(query);
+                        x3.next();
+                        logChange(-1, "multimedia_resources", x3.getInt(1), DELETE);
+                        break;
+                }
+            } catch (ConnectionException | SQLException e) {
+                throw new ModelSyncException("WARNING! Could not update resource of ID: " + object.getID() + " !", e);
             }
-        } catch (ConnectionException | SQLException e) {
-            throw new ModelSyncException("WARNING! Could not update resource of ID: " + object.getID() + " !", e);
+        } else {
+            throw new DatabaseOutOfSyncException();
         }
     }
 
@@ -431,8 +440,8 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
                 long millis = logs.stream()
                         .filter(e -> e.getItemID() == itemID)
                         .sorted(Comparator.comparingLong(e -> e.getDate().getTime()))
-                        .findFirst().get().getDate().getTime(); //TODO: needs to be tested
-                return millis < Calendar.getInstance().getTime().getTime();
+                        .findFirst().get().getDate().getTime(); //Retrieves the most recent change from the list
+                return millis < Calendar.getInstance().getTime().getTime(); //TODO: Now compating to current time but I don't think it's the right way to do
                 //stuck here for now
             } else return true;
         }

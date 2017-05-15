@@ -14,6 +14,16 @@ public abstract class Synchronizable {
         return new DBLogActions().create(new Log(empID, tableName, itemID, type.getType()));
     }
 
+    protected static Log logChange(String tableName, int itemID, ActionType type) throws ModelSyncException {
+        return new DBLogActions().create(new Log(tableName, itemID, type.getType()));
+    }
+
+    protected static void logChange(String tableName, ActionType type, int... itemIDs) throws ModelSyncException {
+        for (int i : itemIDs){
+            new DBLogActions().create(new Log(tableName, i, type.getType()));
+        }
+    }
+
     protected abstract boolean verifyIntegrity(int itemID) throws ModelSyncException;
 }
 

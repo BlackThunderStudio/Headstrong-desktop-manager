@@ -2,11 +2,14 @@ package com.headstrongpro.desktop.modelCollections;
 
 import com.headstrongpro.desktop.core.connection.DBConnect;
 import com.headstrongpro.desktop.core.exception.ConnectionException;
+import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.model.entity.Client;
 import com.headstrongpro.desktop.model.entity.EntityFactory;
 import com.headstrongpro.desktop.model.entity.Person;
+import com.headstrongpro.desktop.modelCollections.util.ActionType;
 import com.headstrongpro.desktop.modelCollections.util.IDataAccessObject;
+import com.headstrongpro.desktop.modelCollections.util.Synchronizable;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,7 +20,7 @@ import java.util.List;
 /**
  * Created by rajmu on 17.05.15.
  */
-public class DBClient implements IDataAccessObject<Person> {
+public class DBClient extends Synchronizable implements IDataAccessObject<Person> {
     private DBConnect connect;
 
     @Override
@@ -88,6 +91,7 @@ public class DBClient implements IDataAccessObject<Person> {
             try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     newClient.setId(generatedKeys.getInt(1));
+                    logChange("clients", newClient.getId(), ActionType.CREATE);
                 } else {
                     throw new ModelSyncException("Creating new client failed! Could not retrieve the ID!");
                 }
@@ -99,39 +103,68 @@ public class DBClient implements IDataAccessObject<Person> {
     }
 
     @Override
-    public void update(Person object) throws ModelSyncException {
+    public void update(Person object) throws ModelSyncException, DatabaseOutOfSyncException {
         Client client = (Client) object;
-        try{
-            connect = new DBConnect();
-            String query = "UPDATE clients SET name=?, email=?, phone_number=?, gender=?, login=?, pass=?, date_registered=?, company_id=?;";
-            PreparedStatement preparedStatement = connect.getConnection().prepareStatement(query);
-            preparedStatement.setString(1, client.getName());
-            preparedStatement.setString(2, client.getEmail());
-            preparedStatement.setString(3, client.getPhone());
-            preparedStatement.setString(4, client.getGender());
-            preparedStatement.setString(5, client.getLogin());
-            preparedStatement.setString(6, client.getPassword());
-            preparedStatement.setDate(7, client.getRegistrationDate());
-            preparedStatement.setInt(8, client.getcompanyId());
-            connect.uploadSafe(preparedStatement);
-        } catch (ConnectionException | SQLException e) {
-            throw new ModelSyncException("Could not update a client!", e);
+        if (verifyIntegrity(client.getId())){
+            try{
+                connect = new DBConnect();
+                String query = "UPDATE clients SET name=?, email=?, phone_number=?, gender=?, login=?, pass=?, date_registered=?, company_id=?;";
+                PreparedStatement preparedStatement = connect.getConnection().prepareStatement(query);
+                preparedStatement.setString(1, client.getName());
+                preparedStatement.setString(2, client.getEmail());
+                preparedStatement.setString(3, client.getPhone());
+                preparedStatement.setString(4, client.getGender());
+                preparedStatement.setString(5, client.getLogin());
+                preparedStatement.setString(6, client.getPassword());
+                preparedStatement.setDate(7, client.getRegistrationDate());
+                preparedStatement.setInt(8, client.getcompanyId());
+                connect.uploadSafe(preparedStatement);
+                logChange("clients", client.getId(), ActionType.UPDATE);
+            } catch (ConnectionException | SQLException e) {
+                throw new ModelSyncException("Could not update a client!", e);
+            }
+        } else {
+            throw new DatabaseOutOfSyncException();
         }
     }
 
     @Override
-    public void delete(Person object) throws ModelSyncException {
-        try{
-            connect = new DBConnect();
-            int clientID = object.getId();
-            connect.upload("DELETE FROM clients WHERE id=" + clientID + ";");
-            connect.upload("DELETE FROM achievements_clients WHERE client_id=" + clientID + ";");
-            connect.upload("DELETE FROM departments_clients WHERE client_id=" + clientID + ";");
-            connect.upload("DELETE FROM groups_clients WHERE client_id=" + clientID + ";");
-            connect.upload("DELETE FROM payments_clients WHERE clients_id=" + clientID + ";");
-            connect.upload("DELETE FROM roles_clients WHERE client_id=" + clientID + ";");
-        } catch (ConnectionException e) {
-            throw new ModelSyncException("Could not delete a client!", e);
+    public void delete(Person object) throws ModelSyncException, DatabaseOutOfSyncException {
+        if (verifyIntegrity(object.getId())){
+            try{
+                connect = new DBConnect();
+                int clientID = object.getId();
+                connect.upload("DELETE FROM clients WHERE id=" + clientID + ";");
+                logChange("clients", clientID, ActionType.DELETE);
+
+                ResultSet x = connect.getFromDataBase("SELECT id FROM achievements_clients WHERE client_id=" + clientID + "; " + "DELETE FROM achievements_clients WHERE client_id=" + clientID + ";");
+                while (x.next()){
+                    logChange("achievements_clients", x.getInt(1), ActionType.DELETE);
+                }
+
+                x = connect.getFromDataBase("SELECT id FROM departments_clients WHERE client_id=" + clientID + "; " + "DELETE FROM departments_clients WHERE client_id=" + clientID + ";");
+                while (x.next()){
+                    logChange("departments_clients", x.getInt(1), ActionType.DELETE);
+                }
+
+                x = connect.getFromDataBase("SELECT id FROM groups_clients WHERE client_id=" + clientID + "; " + "DELETE FROM groups_clients WHERE client_id=" + clientID + ";");
+                while (x.next()){
+                    logChange("groups_clients", x.getInt(1), ActionType.DELETE);
+                }
+
+                x = connect.getFromDataBase("SELECT id FROM payments_clients WHERE clients_id=" + clientID + "; " + "DELETE FROM payments_clients WHERE clients_id=" + clientID + ";");
+                while (x.next()){
+                    logChange("payments_clients", x.getInt(1), ActionType.DELETE);
+                }
+                x = connect.getFromDataBase("SELECT id FROM roles_clients WHERE client_id=" + clientID + "; " + "DELETE FROM roles_clients WHERE client_id=" + clientID + ";");
+                while (x.next()){
+                    logChange("roles_clients", x.getInt(1), ActionType.DELETE);
+                }
+            } catch (ConnectionException | SQLException e) {
+                throw new ModelSyncException("Could not delete a client!", e);
+            }
+        } else {
+            throw new DatabaseOutOfSyncException();
         }
     }
 
@@ -159,5 +192,10 @@ public class DBClient implements IDataAccessObject<Person> {
             throw new ModelSyncException("Could not fetch clients by a company ID!", e);
         }
         return clients;
+    }
+
+    @Override
+    protected boolean verifyIntegrity(int itemID) throws ModelSyncException {
+        return true; //TODO: to be implemented
     }
 }

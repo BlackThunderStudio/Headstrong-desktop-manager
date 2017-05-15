@@ -2,9 +2,12 @@ package com.headstrongpro.desktop.modelCollections;
 
 import com.headstrongpro.desktop.core.connection.DBConnect;
 import com.headstrongpro.desktop.core.exception.ConnectionException;
+import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.model.entity.Company;
+import com.headstrongpro.desktop.modelCollections.util.ActionType;
 import com.headstrongpro.desktop.modelCollections.util.IDataAccessObject;
+import com.headstrongpro.desktop.modelCollections.util.Synchronizable;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,7 +18,7 @@ import java.util.List;
 /**
  * company model collection
  */
-public class DBCompany implements IDataAccessObject<Company> {
+public class DBCompany extends Synchronizable implements IDataAccessObject<Company> {
 
     private DBConnect dbConnect;
 
@@ -65,6 +68,7 @@ public class DBCompany implements IDataAccessObject<Company> {
     public Company create(Company newCompany) throws ModelSyncException{
         try{
             dbConnect = new DBConnect();
+            //language=TSQL
             String createCompanyQuery = "INSERT INTO companies(name, cvr, street, postal, city, country) VALUES (?, ?, ?, ?, ?, ?);";
             PreparedStatement preparedStatement = dbConnect.getConnection().prepareStatement(createCompanyQuery, PreparedStatement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, newCompany.getName());
@@ -77,6 +81,7 @@ public class DBCompany implements IDataAccessObject<Company> {
             try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     newCompany.setId(generatedKeys.getInt(1));
+                    logChange("companies", newCompany.getId(), ActionType.CREATE);
                 } else {
                     throw new ModelSyncException("Creating company failed. No ID retrieved!");
                 }
@@ -88,33 +93,52 @@ public class DBCompany implements IDataAccessObject<Company> {
     }
 
     @Override
-    public void update(Company company) throws ModelSyncException{
-        try{
-            dbConnect = new DBConnect();
-            String updateCompanyQuery = "UPDATE course_categories SET name=?, cvr=?, street=?, postal=?, city=?, country=? WHERE id=?;";
-            PreparedStatement preparedStatement = dbConnect.getConnection().prepareStatement(updateCompanyQuery);
-            preparedStatement.setString(1, company.getName());
-            preparedStatement.setString(2, company.getCvr());
-            preparedStatement.setString(3, company.getStreet());
-            preparedStatement.setString(4, company.getPostal());
-            preparedStatement.setString(5, company.getCity());
-            preparedStatement.setString(6, company.getCountry());
-            dbConnect.uploadSafe(preparedStatement);
-        } catch (SQLException | ConnectionException e) {
-            throw new ModelSyncException("WARNING! Could not update the company of id [" + company.getId() + "]!", e);
+    public void update(Company company) throws ModelSyncException, DatabaseOutOfSyncException {
+        if(verifyIntegrity(company.getId())){
+            try{
+                dbConnect = new DBConnect();
+                //language=TSQL
+                String updateCompanyQuery = "UPDATE companies SET name=?, cvr=?, street=?, postal=?, city=?, country=? WHERE id=?;";
+                PreparedStatement preparedStatement = dbConnect.getConnection().prepareStatement(updateCompanyQuery);
+                preparedStatement.setString(1, company.getName());
+                preparedStatement.setString(2, company.getCvr());
+                preparedStatement.setString(3, company.getStreet());
+                preparedStatement.setString(4, company.getPostal());
+                preparedStatement.setString(5, company.getCity());
+                preparedStatement.setString(6, company.getCountry());
+                dbConnect.uploadSafe(preparedStatement);
+                logChange("companies", company.getId(), ActionType.UPDATE);
+            } catch (SQLException | ConnectionException e) {
+                throw new ModelSyncException("WARNING! Could not update the company of id [" + company.getId() + "]!", e);
+            }
+        } else {
+            throw new DatabaseOutOfSyncException();
         }
     }
 
     @Override
-    public void delete(Company company) throws ModelSyncException{
-        try{
-            dbConnect = new DBConnect();
-            String deleteCompanyQuery = "DELETE FROM companies WHERE id=?;";
-            PreparedStatement preparedStatement = dbConnect.getConnection().prepareStatement(deleteCompanyQuery);
-            preparedStatement.setInt(1, company.getId());
-            preparedStatement.execute();
-        } catch (ConnectionException | SQLException e) {
-            throw new ModelSyncException("Couldn't delete the company of id=" + company.getId(), e);
+    public void delete(Company company) throws ModelSyncException, DatabaseOutOfSyncException {
+        if(verifyIntegrity(company.getId())){
+            try{
+                dbConnect = new DBConnect();
+                //language=TSQL
+                String deleteCompanyQuery = "DELETE FROM companies WHERE id=?;";
+                PreparedStatement preparedStatement = dbConnect.getConnection().prepareStatement(deleteCompanyQuery);
+                preparedStatement.setInt(1, company.getId());
+                preparedStatement.execute();
+                logChange("companies", company.getId(), ActionType.DELETE);
+                
+                new DBDepartments().deleteByCompanyID(company.getId());
+            } catch (ConnectionException | SQLException e) {
+                throw new ModelSyncException("Couldn't delete the company of id=" + company.getId(), e);
+            }
+        } else {
+            throw new DatabaseOutOfSyncException();
         }
+    }
+
+    @Override
+    protected boolean verifyIntegrity(int itemID) throws ModelSyncException {
+        return true; //TODO: to be implemented
     }
 }

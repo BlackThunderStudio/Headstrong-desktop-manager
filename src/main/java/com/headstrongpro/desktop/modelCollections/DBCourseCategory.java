@@ -2,9 +2,12 @@ package com.headstrongpro.desktop.modelCollections;
 
 import com.headstrongpro.desktop.core.connection.DBConnect;
 import com.headstrongpro.desktop.core.exception.ConnectionException;
+import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.model.CourseCategory;
+import com.headstrongpro.desktop.modelCollections.util.ActionType;
 import com.headstrongpro.desktop.modelCollections.util.IDataAccessObject;
+import com.headstrongpro.desktop.modelCollections.util.Synchronizable;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,7 +18,7 @@ import java.util.List;
 /**********************************
  * course category model collection
  *********************************/
-public class DBCourseCategory implements IDataAccessObject<CourseCategory> {
+public class DBCourseCategory extends Synchronizable implements IDataAccessObject<CourseCategory> {
 
     private DBConnect dbConnect;
 
@@ -55,6 +58,7 @@ public class DBCourseCategory implements IDataAccessObject<CourseCategory> {
     public CourseCategory create(CourseCategory newCourseCategory) throws ModelSyncException{
         try{
             dbConnect = new DBConnect();
+            //language=TSQL
             String createCourseCategoryQuery = "INSERT INTO s_categories(name) VALUES (?);";
             PreparedStatement preparedStatement = dbConnect.getConnection().prepareStatement(createCourseCategoryQuery, PreparedStatement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, newCourseCategory.getName());
@@ -62,6 +66,7 @@ public class DBCourseCategory implements IDataAccessObject<CourseCategory> {
             try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     newCourseCategory.setId(generatedKeys.getInt(1));
+                    logChange("s_categories", newCourseCategory.getId(), ActionType.CREATE);
                 } else {
                     throw new ModelSyncException("Creating course category failed. No ID retrieved!");
                 }
@@ -73,29 +78,44 @@ public class DBCourseCategory implements IDataAccessObject<CourseCategory> {
     }
 
     @Override
-    public void update(CourseCategory courseCategory) throws ModelSyncException{
-        try{
-            dbConnect = new DBConnect();
-            String updateCourseCategoryQuery = "UPDATE s_categories SET name=? WHERE id=?;";
-            PreparedStatement preparedStatement = dbConnect.getConnection().prepareStatement(updateCourseCategoryQuery);
-            preparedStatement.setString(1, courseCategory.getName());
-            dbConnect.uploadSafe(preparedStatement);
-        } catch (SQLException | ConnectionException e) {
-            throw new ModelSyncException("WARNING! Could not update the course category of id [" + courseCategory.getId() + "]!", e);
+    public void update(CourseCategory courseCategory) throws ModelSyncException, DatabaseOutOfSyncException {
+        if(verifyIntegrity(courseCategory.getId())){
+            try{
+                dbConnect = new DBConnect();
+                //language=TSQL
+                String updateCourseCategoryQuery = "UPDATE s_categories SET name=? WHERE id=?;";
+                PreparedStatement preparedStatement = dbConnect.getConnection().prepareStatement(updateCourseCategoryQuery);
+                preparedStatement.setString(1, courseCategory.getName());
+                dbConnect.uploadSafe(preparedStatement);
+                logChange("s_categories", courseCategory.getId(), ActionType.UPDATE);
+            } catch (SQLException | ConnectionException e) {
+                throw new ModelSyncException("WARNING! Could not update the course category of id [" + courseCategory.getId() + "]!", e);
+            }
+        } else {
+            throw new DatabaseOutOfSyncException();
         }
     }
 
     @Override
-    public void delete(CourseCategory courseCategory) throws ModelSyncException{
-        try{
-            dbConnect = new DBConnect();
-            String deleteCourseCategoryQuery = "DELETE FROM s_categories WHERE id=?;";
-            PreparedStatement preparedStatement = dbConnect.getConnection().prepareStatement(deleteCourseCategoryQuery);
-            preparedStatement.setInt(1, courseCategory.getId());
-            preparedStatement.execute();
-        } catch (ConnectionException | SQLException e) {
-            throw new ModelSyncException("Couldn't delete course category of id=" + courseCategory.getId(), e);
+    public void delete(CourseCategory courseCategory) throws ModelSyncException, DatabaseOutOfSyncException {
+        if(verifyIntegrity(courseCategory.getId())){
+            try{
+                dbConnect = new DBConnect();
+                String deleteCourseCategoryQuery = "DELETE FROM s_categories WHERE id=?;";
+                PreparedStatement preparedStatement = dbConnect.getConnection().prepareStatement(deleteCourseCategoryQuery);
+                preparedStatement.setInt(1, courseCategory.getId());
+                preparedStatement.execute();
+                logChange("s_categories", courseCategory.getId(), ActionType.DELETE);
+            } catch (ConnectionException | SQLException e) {
+                throw new ModelSyncException("Couldn't delete course category of id=" + courseCategory.getId(), e);
+            }
+        } else {
+            throw new DatabaseOutOfSyncException();
         }
     }
 
+    @Override
+    protected boolean verifyIntegrity(int itemID) throws ModelSyncException {
+        return true; //TODO: to be implemented
+    }
 }
