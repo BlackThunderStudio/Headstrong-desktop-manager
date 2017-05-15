@@ -1,4 +1,4 @@
-package com.headstrongpro.desktop.core.connection;
+package com.headstrongpro.desktop.modelCollections.util;
 
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 

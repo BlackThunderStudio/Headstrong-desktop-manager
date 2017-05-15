@@ -1,10 +1,10 @@
 package com.headstrongpro.desktop.modelCollections;
 
 import com.headstrongpro.desktop.core.connection.DBConnect;
-import com.headstrongpro.desktop.core.connection.IDataAccessObject;
 import com.headstrongpro.desktop.core.exception.ConnectionException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.model.Department;
+import com.headstrongpro.desktop.modelCollections.util.IDataAccessObject;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -29,10 +29,10 @@ public class DBDepartments implements IDataAccessObject<Department> {
             ResultSet rs = connect.getFromDataBase(query);
             while (rs.next()){
                 departments.add(new Department(
-                   rs.getInt("id"),
-                   rs.getString("name"),
-                   rs.getString("description"),
-                   rs.getInt("company_id")
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getString("description"),
+                        rs.getInt("company_id")
                 ));
             }
         } catch (ConnectionException | SQLException e){

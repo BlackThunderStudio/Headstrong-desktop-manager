@@ -1,7 +1,5 @@
 package com.headstrongpro.desktop.modelCollections;
 
-import com.headstrongpro.desktop.core.connection.IDataAccessObject;
-import com.headstrongpro.desktop.model.Course;
 import com.headstrongpro.desktop.model.CourseCategory;
 import org.junit.Before;
 import org.junit.Test;

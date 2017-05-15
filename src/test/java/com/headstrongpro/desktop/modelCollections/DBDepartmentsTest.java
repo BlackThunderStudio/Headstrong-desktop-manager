@@ -1,7 +1,5 @@
 package com.headstrongpro.desktop.modelCollections;
 
-import com.headstrongpro.desktop.core.connection.DBConnect;
-import com.headstrongpro.desktop.core.connection.IDataAccessObject;
 import com.headstrongpro.desktop.model.Department;
 import org.junit.Before;
 import org.junit.Ignore;

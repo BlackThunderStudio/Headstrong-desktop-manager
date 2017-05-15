@@ -1,14 +1,13 @@
 package com.headstrongpro.desktop.modelCollections;
 
 import com.headstrongpro.desktop.core.connection.DBConnect;
-import com.headstrongpro.desktop.core.connection.IDataAccessObject;
 import com.headstrongpro.desktop.core.exception.ConnectionException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.model.entity.Client;
 import com.headstrongpro.desktop.model.entity.EntityFactory;
 import com.headstrongpro.desktop.model.entity.Person;
+import com.headstrongpro.desktop.modelCollections.util.IDataAccessObject;
 
-import javax.ws.rs.DELETE;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,10 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Clients model collection
+ * Created by rajmu on 17.05.15.
  */
 public class DBClient implements IDataAccessObject<Person> {
-
     private DBConnect connect;
 
     @Override
@@ -57,16 +55,16 @@ public class DBClient implements IDataAccessObject<Person> {
             ResultSet rs = connect.getFromDataBase("SELECT * FROM clients WHERE id=" + id + ";");
             rs.next();
             client = new Client(rs.getInt("id"),
-                                rs.getString("name"),
-                                rs.getString("email"),
-                                String.valueOf(rs.getInt("phone_number")),
-                                String.valueOf(rs.getBoolean("gender")),
-                                rs.getString("login"),
-                                rs.getString("pass"),
-                                rs.getDate("date_registered"),
-                                rs.getInt("company_id"));
+                    rs.getString("name"),
+                    rs.getString("email"),
+                    String.valueOf(rs.getInt("phone_number")),
+                    String.valueOf(rs.getBoolean("gender")),
+                    rs.getString("login"),
+                    rs.getString("pass"),
+                    rs.getDate("date_registered"),
+                    rs.getInt("company_id"));
         } catch (ConnectionException | SQLException e) {
-          throw new ModelSyncException("Could not retrieve the clients!", e);
+            throw new ModelSyncException("Could not retrieve the clients!", e);
         }
         return client;
     }

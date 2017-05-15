@@ -1,10 +1,10 @@
 package com.headstrongpro.desktop.modelCollections;
 
 import com.headstrongpro.desktop.core.connection.DBConnect;
-import com.headstrongpro.desktop.core.connection.IDataAccessObject;
 import com.headstrongpro.desktop.core.exception.ConnectionException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.model.Session;
+import com.headstrongpro.desktop.modelCollections.util.IDataAccessObject;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

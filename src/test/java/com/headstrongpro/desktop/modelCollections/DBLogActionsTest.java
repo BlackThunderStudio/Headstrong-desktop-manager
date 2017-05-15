@@ -1,6 +1,5 @@
 package com.headstrongpro.desktop.modelCollections;
 
-import com.headstrongpro.desktop.core.connection.IDataAccessObject;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.model.Log;
 import org.junit.Before;
