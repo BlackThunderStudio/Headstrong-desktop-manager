@@ -1,10 +1,12 @@
 package com.headstrongpro.desktop.modelCollections;
 
 import com.headstrongpro.desktop.model.Department;
+import com.headstrongpro.desktop.model.entity.Company;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -14,10 +16,12 @@ import static org.junit.Assert.*;
  */
 public class DBDepartmentsTest {
     private DBDepartments departmentDAO;
+    private DBCompany companyDAO;
 
     @Before
     public void setUp() throws Exception {
         departmentDAO = new DBDepartments();
+        companyDAO = new DBCompany();
     }
 
     @Test
@@ -35,34 +39,48 @@ public class DBDepartmentsTest {
         assertNotNull(department);
     }
 
-    @Ignore(value = "To be implemented")
     @Test
-    public void create() throws Exception {
-
+    public void createDelete() throws Exception {
+        int oldSize = departmentDAO.getAll().size();
+        Department dummy = new Department("dummy department", "test purposes", 1);
+        departmentDAO.create(dummy);
+        int newSize = departmentDAO.getAll().size();
+        assertNotEquals("Department was not added", oldSize, newSize);
+        departmentDAO.delete(dummy);
+        assertEquals("Department was not deleted", oldSize, departmentDAO.getAll().size());
     }
 
-    @Ignore(value = "To be implemented")
     @Test
     public void update() throws Exception {
-
+        Department dummy = departmentDAO.getById(1);
+        int oldCompanyId = dummy.getCompanyID();
+        int newCompanyId = 2;
+        dummy.setCompanyID(newCompanyId);
+        departmentDAO.update(dummy);
+        assertEquals("Department's company Id was not updated", newCompanyId, departmentDAO.getById(1).getCompanyID());
+        dummy.setCompanyID(oldCompanyId);
+        departmentDAO.update(dummy);
+        assertEquals("Changes were not reverted", oldCompanyId, departmentDAO.getById(1).getCompanyID());
     }
 
-    @Ignore(value = "To be implemented")
-    @Test
-    public void delete() throws Exception {
-
-    }
-
-    @Ignore(value = "To be implemented")
     @Test
     public void getByCompanyID() throws Exception {
+        List<Department> departments = departmentDAO.getByCompanyID(1);
+        assertNotEquals("No departments have been found", 0 , departments.size());
 
     }
 
-    @Ignore(value = "To be implemented")
+    @Ignore("delete by company id needs fix")
     @Test
     public void deleteByCompanyID() throws Exception {
-
+        Company company = new Company("test company", "1234567890", "test street", "123", "dummyville", "dummyland");
+        companyDAO.create(company);
+        Department department = new Department("test department", "test", companyDAO.getAll().size());
+        int oldSize = departmentDAO.getAll().size();
+        departmentDAO.create(department);
+        departmentDAO.deleteByCompanyID(companyDAO.getAll().size());
+        assertEquals("Departments not deleted by company ID", oldSize, departmentDAO.getAll().size());
+        companyDAO.delete(company);
     }
 
 }
