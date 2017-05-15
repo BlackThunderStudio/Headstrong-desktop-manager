@@ -153,7 +153,7 @@ public class DBUser extends Synchronizable implements IDataAccessObject<Person> 
                 connect.upload("DELETE FROM employees_headstrong  WHERE id=" + object.getId() + ";");
                 logChange("employees_headstrong", object.getId(), ActionType.DELETE);
             } catch (ConnectionException e) {
-                throw new ModelSyncException("Could not delete a department!", e);
+                throw new ModelSyncException("Could not delete a user!", e);
             }
         } else {
             throw new DatabaseOutOfSyncException();
