@@ -26,12 +26,12 @@ public class DBSubscriptions extends Synchronizable implements IDataAccessObject
         List<Subscription> subscriptions = new ArrayList<>();
         try {
             dbConnect = new DBConnect();
-            String query = "SELECT * FROM [subscriptions]";
+            String query = "SELECT * FROM subscriptions";
             ResultSet rs = dbConnect.getFromDataBase(query);
             DBCompany dbCompany = new DBCompany();
-            Company company = dbCompany.getById(rs.getInt("company_id"));
-            PaymentRate rate = getPaymentRateByID(rs.getInt("rate_id"));
             while (rs.next()) {
+                Company company = dbCompany.getById(rs.getInt("company_id"));
+                PaymentRate rate = getPaymentRateByID(rs.getInt("rate_id"));
                 subscriptions.add(new Subscription(
                         rs.getInt("id"),
                         rs.getInt("no_of_users"),
@@ -134,6 +134,7 @@ public class DBSubscriptions extends Synchronizable implements IDataAccessObject
                 preparedStatement.setDate(4, object.getEndDate());
                 preparedStatement.setInt(5, object.getNoOfUsers());
                 preparedStatement.setInt(6, object.getRate().getId());
+                preparedStatement.setInt(7, object.getId());
                 dbConnect.uploadSafe(preparedStatement);
                 logChange("subscriptions", object.getId(), ActionType.UPDATE);
             } catch (ConnectionException | SQLException e) {
@@ -170,9 +171,9 @@ public class DBSubscriptions extends Synchronizable implements IDataAccessObject
             String query = "SELECT * FROM [subscriptions] WHERE company_id=" + companyId;
             ResultSet rs = dbConnect.getFromDataBase(query);
             DBCompany dbCompany = new DBCompany();
-            Company company = dbCompany.getById(rs.getInt("company_id"));
-            PaymentRate rate = getPaymentRateByID(rs.getInt("rate_id"));
             while (rs.next()) {
+                Company company = dbCompany.getById(rs.getInt("company_id"));
+                PaymentRate rate = getPaymentRateByID(rs.getInt("rate_id"));
                 subscriptions.add(new Subscription(
                         rs.getInt("id"),
                         rs.getInt("no_of_users"),
