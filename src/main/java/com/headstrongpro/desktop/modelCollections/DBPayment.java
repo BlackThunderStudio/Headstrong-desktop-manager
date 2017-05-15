@@ -29,8 +29,8 @@ public class DBPayment extends Synchronizable implements IDataAccessObject<Payme
             ResultSet rs = dbConnect.getFromDataBase(query);
             DBPayment dbPayment = new DBPayment();
             DBSubscriptions dbSubs = new DBSubscriptions();
-            Subscription subscription = dbSubs.getById(rs.getInt("subscription_id"));
             while (rs.next()) {
+                Subscription subscription = dbSubs.getById(rs.getInt("subscription_id"));
                 payments.add(new Payment(
                         rs.getInt("id"),
                         rs.getDouble("value"),
@@ -109,6 +109,7 @@ public class DBPayment extends Synchronizable implements IDataAccessObject<Payme
                 preparedStatement.setDate(3, object.getTimestamp());
                 preparedStatement.setDate(4, object.getDueDate());
                 preparedStatement.setBoolean(5, object.isPaid());
+                preparedStatement.setInt(6, object.getId());
                 dbConnect.uploadSafe(preparedStatement);
                 logChange("payments", object.getId(), ActionType.UPDATE);
             } catch (ConnectionException | SQLException e) {
@@ -145,8 +146,8 @@ public class DBPayment extends Synchronizable implements IDataAccessObject<Payme
             String query = "SELECT * FROM [payments] WHERE subscription_id=" + subscriptionId;
             ResultSet rs = dbConnect.getFromDataBase(query);
             DBSubscriptions dbSubs = new DBSubscriptions();
-            Subscription subscription = dbSubs.getById(rs.getInt("subscription_id"));
             while (rs.next()) {
+                Subscription subscription = dbSubs.getById(rs.getInt("subscription_id"));
                 payments.add(new Payment(
                         rs.getInt("id"),
                         rs.getDouble("value"),
