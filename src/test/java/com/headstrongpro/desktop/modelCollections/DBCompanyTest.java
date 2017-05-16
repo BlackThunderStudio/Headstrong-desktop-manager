@@ -42,7 +42,7 @@ public class DBCompanyTest {
         assertEquals(c.getName(), "Maersk");
     }
 
-    @Ignore ("needs fix")
+    //@Ignore ("needs fix")
     @Test
     public void createDelete() throws  Exception{
         Company company = new Company("test company", String.valueOf(new Random().nextInt()), "test street", "123", "dummyville", "dummyland");
@@ -50,7 +50,8 @@ public class DBCompanyTest {
 
         int oldSize = companyDAO.getAll().size();
 
-        companyDAO.create(company);
+        company = companyDAO.create(company);
+        department.setCompanyID(company.getId());
         departmentsDAO.create(department);
         assertNotEquals("Company has not been created", oldSize, companyDAO.getAll().size());
         companyDAO.delete(company);
