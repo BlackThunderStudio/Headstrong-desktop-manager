@@ -1,8 +1,12 @@
 package com.headstrongpro.desktop.modelCollections;
 
 import com.headstrongpro.desktop.model.Payment;
+import com.headstrongpro.desktop.model.Subscription;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.sql.Date;
+import java.util.Calendar;
 
 import static org.junit.Assert.*;
 
@@ -11,10 +15,12 @@ import static org.junit.Assert.*;
  */
 public class DBPaymentTest {
     DBPayment paymentDAO;
+    DBSubscriptions subDAO;
 
     @Before
     public void setUp() throws Exception {
         paymentDAO = new DBPayment();
+        subDAO = new DBSubscriptions();
     }
 
     @Test
@@ -30,6 +36,13 @@ public class DBPaymentTest {
 
     @Test
     public void createDelete() throws Exception {
+        java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+        Payment newPayment = new Payment(1000, 500, null, date, false, subDAO.getById(1));
+        int oldSize = paymentDAO.getAll().size();
+        paymentDAO.create(newPayment);
+        assertNotEquals("Subscription not created", oldSize, paymentDAO.getAll().size());
+        paymentDAO.delete(newPayment);
+        assertEquals("Subcription not deleted", oldSize, paymentDAO.getAll().size());
     }
 
     @Test
@@ -39,10 +52,10 @@ public class DBPaymentTest {
 
         payment.setValue(newValue);
         paymentDAO.update(payment);
-        assertNotEquals(oldValue, paymentDAO.getById(1).getValue(), 0);
+        assertNotEquals("Payment not changed", 0, oldValue - paymentDAO.getById(12).getValue());
         payment.setValue(oldValue);
         paymentDAO.update(payment);
-        assertEquals(oldValue, paymentDAO.getById(1).getValue(), 0);
+        assertTrue("Payment not reset", 0 == oldValue - paymentDAO.getById(12).getValue());
     }
 
     @Test
