@@ -9,10 +9,12 @@ import com.headstrongpro.desktop.modelCollections.util.ActionType;
 import com.headstrongpro.desktop.modelCollections.util.IDataAccessObject;
 import com.headstrongpro.desktop.modelCollections.util.Synchronizable;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -21,6 +23,11 @@ import java.util.List;
 public class DBCompany extends Synchronizable implements IDataAccessObject<Company> {
 
     private DBConnect dbConnect;
+    private Date timestamp;
+    
+    public DBCompany(){
+        timestamp = new Date(Calendar.getInstance().getTimeInMillis());
+    }
 
     @Override
     public List<Company> getAll() throws ModelSyncException {
@@ -37,6 +44,7 @@ public class DBCompany extends Synchronizable implements IDataAccessObject<Compa
                         companyRS.getString("postal"),
                         companyRS.getString("city"),
                         companyRS.getString("country")));
+            timestamp = setTimestamp();
         } catch (ConnectionException | SQLException e) {
             throw new ModelSyncException("Could not load companies.", e);
         }
@@ -58,6 +66,7 @@ public class DBCompany extends Synchronizable implements IDataAccessObject<Compa
                     rs.getString("postal"),
                     rs.getString("city"),
                     rs.getString("country"));
+            timestamp = setTimestamp();
         } catch (ConnectionException | SQLException e) {
             throw new ModelSyncException("Could not retrieve object by ID", e);
         }
@@ -140,6 +149,6 @@ public class DBCompany extends Synchronizable implements IDataAccessObject<Compa
 
     @Override
     protected boolean verifyIntegrity(int itemID) throws ModelSyncException {
-        return true; //TODO: to be implemented
+        return verifyIntegrity(itemID, timestamp, "companies");
     }
 }

@@ -9,9 +9,8 @@ import com.headstrongpro.desktop.model.Log;
 import com.headstrongpro.desktop.model.resource.*;
 import com.headstrongpro.desktop.modelCollections.util.IDataAccessObject;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.sql.Date;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -24,6 +23,11 @@ import static com.headstrongpro.desktop.model.resource.ResourceType.*;
 public class DBResources extends Synchronizable implements IDataAccessObject<Resource> {
 
     private DBConnect dbConnect;
+    private java.sql.Date timestamp;
+
+    public DBResources(){
+        timestamp = new Date(Calendar.getInstance().getTimeInMillis());
+    }
 
     private List<Resource> prepareResources(List<Resource> resources) throws ConnectionException, SQLException {
         //TODO: created a bit more optimised version of the query
@@ -145,7 +149,8 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
                         rs.getInt("type"));
                 resources.add(resource);
             }
-           resources = prepareResources(resources);
+            resources = prepareResources(resources);
+            timestamp = setTimestamp();
         } catch (ConnectionException | SQLException e) {
             throw new ModelSyncException("Could not load resources.", e);
         }
@@ -168,6 +173,7 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
                     rs.getInt("type"));
             r.add(resource);
             resource = prepareResources(r).get(0);
+            timestamp = setTimestamp();
         } catch (ConnectionException | SQLException e) {
             throw new ModelSyncException("Could not load resources.", e);
         }
@@ -430,20 +436,8 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
         return resources;
     }
 
-    //TODO: this shit needs to be REWORKED. I have no idea how is it supposed to check for date. Perhaps we anyway need a timestamp in each table, cause I don't see any other solution to it
     @Override
     protected boolean verifyIntegrity(int itemID) throws ModelSyncException {
-        List<Log> logs = new DBLogActions().getByTable("resources");
-        if(logs.size() == 0) return true;
-        else {
-            if(logs.stream().anyMatch(e -> e.getItemID() == itemID)){
-                long millis = logs.stream()
-                        .filter(e -> e.getItemID() == itemID)
-                        .sorted(Comparator.comparingLong(e -> e.getDate().getTime()))
-                        .findFirst().get().getDate().getTime(); //Retrieves the most recent change from the list
-                return millis < Calendar.getInstance().getTime().getTime(); //TODO: Now compating to current time but I don't think it's the right way to do
-                //stuck here for now
-            } else return true;
-        }
+        return verifyIntegrity(itemID, timestamp, "resources");
     }
 }

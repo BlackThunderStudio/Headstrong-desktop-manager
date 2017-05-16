@@ -10,15 +10,22 @@ import com.headstrongpro.desktop.modelCollections.util.ActionType;
 import com.headstrongpro.desktop.modelCollections.util.IDataAccessObject;
 import com.headstrongpro.desktop.modelCollections.util.Synchronizable;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class DBPayment extends Synchronizable implements IDataAccessObject<Payment> {
 
     private DBConnect dbConnect;
+    private Date timestamp;
+
+    public DBPayment(){
+        timestamp = new Date(Calendar.getInstance().getTimeInMillis());
+    }
 
     @Override
     public List<Payment> getAll() throws ModelSyncException {
@@ -40,6 +47,7 @@ public class DBPayment extends Synchronizable implements IDataAccessObject<Payme
                         subscription
                 ));
             }
+            timestamp = setTimestamp();
         } catch (ConnectionException | SQLException e) {
             throw new ModelSyncException("Could not load subscriptions.", e);
         }
@@ -63,6 +71,7 @@ public class DBPayment extends Synchronizable implements IDataAccessObject<Payme
                     rs.getBoolean("paid"),
                     subscription
             );
+            timestamp = setTimestamp();
         } catch (ConnectionException | SQLException e){
             throw new ModelSyncException("Could not retrieve a payment!", e);
         }
@@ -157,6 +166,7 @@ public class DBPayment extends Synchronizable implements IDataAccessObject<Payme
                         subscription
                 ));
             }
+            timestamp = setTimestamp();
         } catch (ConnectionException | SQLException e) {
             throw new ModelSyncException("Could not load subscriptions.", e);
         }
@@ -165,6 +175,6 @@ public class DBPayment extends Synchronizable implements IDataAccessObject<Payme
 
     @Override
     protected boolean verifyIntegrity(int itemID) throws ModelSyncException {
-        return true; //TODO: to be implemented
+        return verifyIntegrity(itemID, timestamp, "payments");
     }
 }

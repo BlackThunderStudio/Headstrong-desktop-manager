@@ -11,9 +11,11 @@ import com.headstrongpro.desktop.modelCollections.util.Synchronizable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Calendar;
 
 /**
  * DB Sessions
@@ -21,6 +23,11 @@ import java.sql.SQLException;
 public class DBSession extends Synchronizable implements IDataAccessObject<Session> {
 
     private DBConnect dbConnect;
+    private Date timestamp;
+
+    public DBSession(){
+        timestamp = new Date(Calendar.getInstance().getTimeInMillis());
+    }
 
     @Override
     public ObservableList<Session> getAll() throws ModelSyncException {
@@ -32,6 +39,7 @@ public class DBSession extends Synchronizable implements IDataAccessObject<Sessi
             while (resultSet.next()) {
                 sessions.add(createObject(resultSet));
             }
+            timestamp = setTimestamp();
         } catch (ConnectionException | SQLException e) {
             throw new ModelSyncException("Could not load sessions.", e);
         }
@@ -48,6 +56,7 @@ public class DBSession extends Synchronizable implements IDataAccessObject<Sessi
             if (resultSet.next()) {
                 session = createObject(resultSet);
             }
+            timestamp = setTimestamp();
         } catch (ConnectionException | SQLException e) {
             throw new ModelSyncException("Could not retrieve a session!", e);
         }
@@ -128,6 +137,6 @@ public class DBSession extends Synchronizable implements IDataAccessObject<Sessi
 
     @Override
     protected boolean verifyIntegrity(int itemID) throws ModelSyncException {
-        return true; //TODO: to be implemented
+        return verifyIntegrity(itemID, timestamp, "sessions");
     }
 }

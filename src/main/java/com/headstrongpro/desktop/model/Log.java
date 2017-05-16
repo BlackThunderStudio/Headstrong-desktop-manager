@@ -94,4 +94,12 @@ public class Log {
     public void setActionType(String actionType) {
         this.actionType = actionType;
     }
+
+    public String getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
+    }
 }

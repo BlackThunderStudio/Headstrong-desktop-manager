@@ -11,10 +11,12 @@ import com.headstrongpro.desktop.modelCollections.util.ActionType;
 import com.headstrongpro.desktop.modelCollections.util.IDataAccessObject;
 import com.headstrongpro.desktop.modelCollections.util.Synchronizable;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -23,6 +25,11 @@ import java.util.List;
 public class DBUser extends Synchronizable implements IDataAccessObject<Person> {
 
     private DBConnect connect;
+    private Date timestamp;
+
+    public DBUser(){
+        timestamp = new Date(Calendar.getInstance().getTimeInMillis());
+    }
 
     @Override
     public List<Person> getAll() throws ModelSyncException {
@@ -48,6 +55,7 @@ public class DBUser extends Synchronizable implements IDataAccessObject<Person> 
                         String.valueOf(rs.getBigDecimal("base_salary"))
                 ));
             }
+            timestamp = setTimestamp();
         } catch (ConnectionException | SQLException e) {
             throw new ModelSyncException("Could not retrieve the users!", e);
         }
@@ -75,6 +83,7 @@ public class DBUser extends Synchronizable implements IDataAccessObject<Person> 
                     rs.getString("bank_account_n"),
                     String.valueOf(rs.getBigDecimal("base_salary"))
             );
+            timestamp = setTimestamp();
         } catch (ConnectionException | SQLException e) {
             throw new ModelSyncException("Could not retrieve a user!", e);
         }
@@ -162,6 +171,6 @@ public class DBUser extends Synchronizable implements IDataAccessObject<Person> 
 
     @Override
     protected boolean verifyIntegrity(int itemID) throws ModelSyncException {
-        return true; //TODO: to be implemented
+        return verifyIntegrity(itemID, timestamp, "employees_headstrong");
     }
 }

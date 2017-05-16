@@ -9,10 +9,12 @@ import com.headstrongpro.desktop.modelCollections.util.ActionType;
 import com.headstrongpro.desktop.modelCollections.util.IDataAccessObject;
 import com.headstrongpro.desktop.modelCollections.util.Synchronizable;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -21,6 +23,11 @@ import java.util.List;
 public class DBDepartments extends Synchronizable implements IDataAccessObject<Department> {
 
     private DBConnect connect;
+    private Date timestamp;
+
+    public DBDepartments(){
+        timestamp = new Date(Calendar.getInstance().getTimeInMillis());
+    }
 
     @Override
     public List<Department> getAll() throws ModelSyncException {
@@ -38,6 +45,7 @@ public class DBDepartments extends Synchronizable implements IDataAccessObject<D
                         rs.getInt("company_id")
                 ));
             }
+            timestamp = setTimestamp();
         } catch (ConnectionException | SQLException e){
             throw new ModelSyncException("Could not retrieve departments!", e);
         }
@@ -57,6 +65,7 @@ public class DBDepartments extends Synchronizable implements IDataAccessObject<D
                     rs.getString("description"),
                     rs.getInt("company_id")
             );
+            timestamp = setTimestamp();
         } catch (ConnectionException | SQLException e){
             throw new ModelSyncException("Could not retrieve a department!", e);
         }
@@ -151,39 +160,43 @@ public class DBDepartments extends Synchronizable implements IDataAccessObject<D
         return departments;
     }
 
-    public void deleteByCompanyID(int id) throws ModelSyncException{
-        try {
-            connect = new DBConnect();
-            ResultSet rs = connect.getFromDataBase("SELECT id FROM departments WHERE company_id=" + id);
-            List<Integer> deptIDs = new ArrayList<>();
-            while (rs.next()){
-                deptIDs.add(rs.getInt(1));
-            }
-            String simplifiedDeptIDs = "";
-            for (int i = 0 ; i < deptIDs.size() - 1; i++){
-                simplifiedDeptIDs += deptIDs.get(i) + ",";
-            }
-            simplifiedDeptIDs += deptIDs.get(deptIDs.size() - 1);
+    public void deleteByCompanyID(int id) throws ModelSyncException, DatabaseOutOfSyncException {
+        if(verifyIntegrity(id)){
+            try {
+                connect = new DBConnect();
+                ResultSet rs = connect.getFromDataBase("SELECT id FROM departments WHERE company_id=" + id);
+                List<Integer> deptIDs = new ArrayList<>();
+                while (rs.next()){
+                    deptIDs.add(rs.getInt(1));
+                }
+                String simplifiedDeptIDs = "";
+                for (int i = 0 ; i < deptIDs.size() - 1; i++){
+                    simplifiedDeptIDs += deptIDs.get(i) + ",";
+                }
+                simplifiedDeptIDs += deptIDs.get(deptIDs.size() - 1);
 
-            //language=TSQL
-            String query = "SELECT id FROM departments WHERE company_id=" + id + "; DELETE FROM departments WHERE company_id=" + id + ";";
-            ResultSet x = connect.getFromDataBase(query);
-            while (x.next()){
-                logChange("departments", x.getInt(1), ActionType.DELETE);
-            }
+                //language=TSQL
+                String query = "SELECT id FROM departments WHERE company_id=" + id + "; DELETE FROM departments WHERE company_id=" + id + ";";
+                ResultSet x = connect.getFromDataBase(query);
+                while (x.next()){
+                    logChange("departments", x.getInt(1), ActionType.DELETE);
+                }
 
-            query = "SELECT id FROM departments_clients WHERE department_id IN (" + simplifiedDeptIDs + "); DELETE FROM departments_clients WHERE department_id IN(" + simplifiedDeptIDs + ");";
-            ResultSet x2 = connect.getFromDataBase(query);
-            while (x2.next()){
-                logChange("departments_clients", x2.getInt(1), ActionType.DELETE);
+                query = "SELECT id FROM departments_clients WHERE department_id IN (" + simplifiedDeptIDs + "); DELETE FROM departments_clients WHERE department_id IN(" + simplifiedDeptIDs + ");";
+                ResultSet x2 = connect.getFromDataBase(query);
+                while (x2.next()){
+                    logChange("departments_clients", x2.getInt(1), ActionType.DELETE);
+                }
+            } catch (ConnectionException | SQLException e){
+                throw new ModelSyncException("Could not fetch departments by company ID!", e);
             }
-        } catch (ConnectionException | SQLException e){
-            throw new ModelSyncException("Could not fetch departments by company ID!", e);
+        } else {
+            throw new DatabaseOutOfSyncException();
         }
     }
 
     @Override
     protected boolean verifyIntegrity(int itemID) throws ModelSyncException {
-        return true; //TODO: to be implemented
+        return verifyIntegrity(itemID, timestamp, "departments");
     }
 }

@@ -6,6 +6,7 @@ import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.model.Log;
 import com.headstrongpro.desktop.modelCollections.util.IDataAccessObject;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -33,7 +34,7 @@ public class DBLogActions implements IDataAccessObject<Log> {
                         rs.getInt(2),
                         rs.getString(3),
                         rs.getInt(4),
-                        rs.getDate(5),
+                        new Date(rs.getTimestamp(5).getTime()),
                         rs.getString(6),
                         rs.getString(7)
                 ));
@@ -56,7 +57,7 @@ public class DBLogActions implements IDataAccessObject<Log> {
                     rs.getInt(2),
                     rs.getString(3),
                     rs.getInt(4),
-                    rs.getDate(5),
+                    new Date(rs.getTimestamp(5).getTime()),
                     rs.getString(6),
                     rs.getString(7)
             );
@@ -118,7 +119,7 @@ public class DBLogActions implements IDataAccessObject<Log> {
                         rs.getInt(2),
                         rs.getString(3),
                         rs.getInt(4),
-                        rs.getDate(5),
+                        new Date(rs.getTimestamp(5).getTime()),
                         rs.getString(6),
                         rs.getString(7)
                 ));

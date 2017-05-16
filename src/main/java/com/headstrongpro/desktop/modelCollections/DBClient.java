@@ -4,6 +4,7 @@ import com.headstrongpro.desktop.core.connection.DBConnect;
 import com.headstrongpro.desktop.core.exception.ConnectionException;
 import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
+import com.headstrongpro.desktop.model.Log;
 import com.headstrongpro.desktop.model.entity.Client;
 import com.headstrongpro.desktop.model.entity.EntityFactory;
 import com.headstrongpro.desktop.model.entity.Person;
@@ -11,10 +12,13 @@ import com.headstrongpro.desktop.modelCollections.util.ActionType;
 import com.headstrongpro.desktop.modelCollections.util.IDataAccessObject;
 import com.headstrongpro.desktop.modelCollections.util.Synchronizable;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -22,6 +26,11 @@ import java.util.List;
  */
 public class DBClient extends Synchronizable implements IDataAccessObject<Person> {
     private DBConnect connect;
+    private Date timestamp;
+
+    public DBClient(){
+        timestamp = new Date(Calendar.getInstance().getTimeInMillis());
+    }
 
     @Override
     public List<Person> getAll() throws ModelSyncException {
@@ -44,6 +53,7 @@ public class DBClient extends Synchronizable implements IDataAccessObject<Person
                         rs.getInt("company_id")
                 ));
             }
+            timestamp = setTimestamp();
         } catch (ConnectionException | SQLException e) {
             throw new ModelSyncException("Could not retrieve the clients!", e);
         }
@@ -66,6 +76,7 @@ public class DBClient extends Synchronizable implements IDataAccessObject<Person
                     rs.getString("pass"),
                     rs.getDate("date_registered"),
                     rs.getInt("company_id"));
+            timestamp = setTimestamp();
         } catch (ConnectionException | SQLException e) {
             throw new ModelSyncException("Could not retrieve the clients!", e);
         }
@@ -189,6 +200,7 @@ public class DBClient extends Synchronizable implements IDataAccessObject<Person
                         rs.getInt("company_id")
                 ));
             }
+            timestamp = setTimestamp();
         } catch (ConnectionException | SQLException e) {
             throw new ModelSyncException("Could not fetch clients by a company ID!", e);
         }
@@ -197,6 +209,6 @@ public class DBClient extends Synchronizable implements IDataAccessObject<Person
 
     @Override
     protected boolean verifyIntegrity(int itemID) throws ModelSyncException {
-        return true; //TODO: to be implemented
+        return verifyIntegrity(itemID, timestamp, "clients");
     }
 }

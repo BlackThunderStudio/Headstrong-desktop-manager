@@ -11,15 +11,22 @@ import com.headstrongpro.desktop.modelCollections.util.ActionType;
 import com.headstrongpro.desktop.modelCollections.util.IDataAccessObject;
 import com.headstrongpro.desktop.modelCollections.util.Synchronizable;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class DBSubscriptions extends Synchronizable implements IDataAccessObject<Subscription> {
 
     private DBConnect dbConnect;
+    private Date timestamp;
+
+    public DBSubscriptions(){
+        timestamp = new Date(Calendar.getInstance().getTimeInMillis());
+    }
 
     @Override
     public List<Subscription> getAll() throws ModelSyncException {
@@ -42,6 +49,7 @@ public class DBSubscriptions extends Synchronizable implements IDataAccessObject
                         company
                 ));
             }
+            timestamp = setTimestamp();
         } catch (ConnectionException | SQLException e) {
             throw new ModelSyncException("Could not load subscriptions.", e);
         }
@@ -86,6 +94,7 @@ public class DBSubscriptions extends Synchronizable implements IDataAccessObject
                     rate,
                     company
             );
+            timestamp = setTimestamp();
         } catch (ConnectionException | SQLException e) {
             throw new ModelSyncException("Could not load resources.", e);
         }
@@ -184,6 +193,7 @@ public class DBSubscriptions extends Synchronizable implements IDataAccessObject
                         company
                 ));
             }
+            timestamp = setTimestamp();
         } catch (ConnectionException | SQLException e) {
             throw new ModelSyncException("Could not load subscriptions.", e);
         }
@@ -192,6 +202,6 @@ public class DBSubscriptions extends Synchronizable implements IDataAccessObject
 
     @Override
     protected boolean verifyIntegrity(int itemID) throws ModelSyncException {
-        return true; //TODO: to be implemented
+        return verifyIntegrity(itemID, timestamp, "subscriptions");
     }
 }

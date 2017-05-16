@@ -9,10 +9,12 @@ import com.headstrongpro.desktop.modelCollections.util.ActionType;
 import com.headstrongpro.desktop.modelCollections.util.IDataAccessObject;
 import com.headstrongpro.desktop.modelCollections.util.Synchronizable;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**********************************
@@ -21,6 +23,11 @@ import java.util.List;
 public class DBCourseCategory extends Synchronizable implements IDataAccessObject<CourseCategory> {
 
     private DBConnect dbConnect;
+    private Date timestamp;
+    
+    public DBCourseCategory(){
+        timestamp = new Date(Calendar.getInstance().getTimeInMillis());
+    }
 
     @Override
     public List<CourseCategory> getAll() throws ModelSyncException{
@@ -32,6 +39,7 @@ public class DBCourseCategory extends Synchronizable implements IDataAccessObjec
             while(ccRS.next())
                 courseCategories.add(new CourseCategory(ccRS.getInt("id"),
                                                         ccRS.getString("name")));
+            timestamp = setTimestamp();
         } catch (ConnectionException | SQLException e) {
             throw new ModelSyncException("Could not load course categories.", e);
         }
@@ -48,6 +56,7 @@ public class DBCourseCategory extends Synchronizable implements IDataAccessObjec
             rs.next();
             courseCategory = new CourseCategory(rs.getInt("id"),
                                                 rs.getString("name"));
+            timestamp = setTimestamp();
         } catch (ConnectionException | SQLException e) {
             throw new ModelSyncException("Could not retrieve object by ID", e);
         }
@@ -117,6 +126,6 @@ public class DBCourseCategory extends Synchronizable implements IDataAccessObjec
 
     @Override
     protected boolean verifyIntegrity(int itemID) throws ModelSyncException {
-        return true; //TODO: to be implemented
+        return verifyIntegrity(itemID, timestamp, "s_categories");
     }
 }
