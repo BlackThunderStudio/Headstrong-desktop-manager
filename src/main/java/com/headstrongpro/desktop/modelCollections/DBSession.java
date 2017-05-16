@@ -31,7 +31,7 @@ public class DBSession extends Synchronizable implements IDataAccessObject<Sessi
 
     @Override
     public ObservableList<Session> getAll() throws ModelSyncException {
-        ObservableList sessions = FXCollections.observableArrayList();
+        ObservableList<Session> sessions = FXCollections.observableArrayList();
         String selectQuery = "SELECT * FROM [sessions]";
         try {
             dbConnect = new DBConnect();
@@ -89,7 +89,7 @@ public class DBSession extends Synchronizable implements IDataAccessObject<Sessi
 
     @Override
     public void update(Session object) throws ModelSyncException, DatabaseOutOfSyncException {
-        if (verifyIntegrity(object.getId())){
+        if (verifyIntegrity(object.getId())) {
             try {
                 dbConnect = new DBConnect();
                 //language=TSQL
@@ -110,7 +110,7 @@ public class DBSession extends Synchronizable implements IDataAccessObject<Sessi
 
     @Override
     public void delete(Session object) throws ModelSyncException, DatabaseOutOfSyncException {
-        if (verifyIntegrity(object.getId())){
+        if (verifyIntegrity(object.getId())) {
             try {
                 dbConnect = new DBConnect();
                 //language=TSQL
