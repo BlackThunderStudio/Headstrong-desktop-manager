@@ -1,5 +1,6 @@
 package com.headstrongpro.desktop.modelCollections;
 
+import com.headstrongpro.desktop.model.Department;
 import com.headstrongpro.desktop.model.entity.Company;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -16,10 +17,12 @@ import static org.junit.Assert.assertNotNull;
  */
 public class DBCompanyTest {
     private DBCompany companyDAO;
+    private DBDepartments departmentsDAO;
 
     @Before
     public void setCompanies() throws Exception {
         companyDAO = new DBCompany();
+        departmentsDAO = new DBDepartments();
     }
 
     @Test
@@ -38,13 +41,16 @@ public class DBCompanyTest {
         assertEquals(c.getName(), "Maersk");
     }
 
-    @Ignore("department thingie needs fix")
+    @Ignore ("needs fix")
     @Test
     public void createDelete() throws  Exception{
         Company company = new Company("test company", "1234567890", "test street", "123", "dummyville", "dummyland");
+        Department department = new Department(12, "depo", "yest", 26);
+
         int oldSize = companyDAO.getAll().size();
 
         companyDAO.create(company);
+        departmentsDAO.create(department);
         assertNotEquals("Company has not been created", oldSize, companyDAO.getAll().size());
         companyDAO.delete(company);
         assertEquals("Company has not been removed", oldSize, companyDAO.getAll().size());

@@ -70,10 +70,10 @@ public class DBDepartmentsTest {
 
     }
 
-    @Ignore("delete by company id needs fix")
+    @Ignore("needs to be fixed")
     @Test
     public void deleteByCompanyID() throws Exception {
-        Company company = new Company("test company", "1234567890", "test street", "123", "dummyville", "dummyland");
+        Company company = new Company("test company", "1234565330", "test street", "123", "dummyville", "dummyland");
         companyDAO.create(company);
         Department department = new Department("test department", "test", companyDAO.getAll().size());
         int oldSize = departmentDAO.getAll().size();
