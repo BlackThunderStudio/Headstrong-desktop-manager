@@ -7,6 +7,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.List;
+import java.util.Random;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
@@ -44,7 +45,7 @@ public class DBCompanyTest {
     @Ignore ("needs fix")
     @Test
     public void createDelete() throws  Exception{
-        Company company = new Company("test company", "1234567890", "test street", "123", "dummyville", "dummyland");
+        Company company = new Company("test company", String.valueOf(new Random().nextInt()), "test street", "123", "dummyville", "dummyland");
         Department department = new Department(12, "depo", "yest", 26);
 
         int oldSize = companyDAO.getAll().size();

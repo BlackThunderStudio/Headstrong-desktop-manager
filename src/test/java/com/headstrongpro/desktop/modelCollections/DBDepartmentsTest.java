@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import static org.junit.Assert.*;
 
@@ -70,15 +71,15 @@ public class DBDepartmentsTest {
 
     }
 
-    @Ignore("needs to be fixed")
+    //@Ignore("needs to be fixed")
     @Test
     public void deleteByCompanyID() throws Exception {
-        Company company = new Company("test company", "1234565330", "test street", "123", "dummyville", "dummyland");
-        companyDAO.create(company);
-        Department department = new Department("test department", "test", companyDAO.getAll().size());
+        Company company = new Company("test company", String.valueOf(new Random().nextInt()), "test street", "123", "dummyville", "dummyland");
+        company = companyDAO.create(company);
+        Department department = new Department("test department", "test", company.getId());
         int oldSize = departmentDAO.getAll().size();
-        departmentDAO.create(department);
-        departmentDAO.deleteByCompanyID(companyDAO.getAll().size());
+        department = departmentDAO.create(department);
+        departmentDAO.deleteByCompanyID(department.getId());
         assertEquals("Departments not deleted by company ID", oldSize, departmentDAO.getAll().size());
         companyDAO.delete(company);
     }
