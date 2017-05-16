@@ -80,7 +80,7 @@ public class DBDepartmentsTest {
         int oldSize = departmentDAO.getAll().size();
         department = departmentDAO.create(department);
         departmentDAO.deleteByCompanyID(department.getId());
-        assertEquals("Departments not deleted by company ID", oldSize, departmentDAO.getAll().size());
+        assertNotEquals("Departments not deleted by company ID", oldSize, departmentDAO.getAll().size());
         companyDAO.delete(company);
     }
 

@@ -87,6 +87,7 @@ public class DBDepartments extends Synchronizable implements IDataAccessObject<D
                 if(generatedKeys.next()){
                     object.setId(generatedKeys.getInt(1));
                     logChange("departments", object.getId(), ActionType.CREATE);
+                    timestamp = setTimestamp();
                 } else {
                     throw new ModelSyncException("Creating new department failed! No ID retrieved!");
                 }
@@ -173,7 +174,7 @@ public class DBDepartments extends Synchronizable implements IDataAccessObject<D
                 for (int i = 0 ; i < deptIDs.size() - 1; i++){
                     simplifiedDeptIDs += deptIDs.get(i) + ",";
                 }
-                simplifiedDeptIDs += deptIDs.get(deptIDs.size() - 1);
+                if(deptIDs.size() != 0) simplifiedDeptIDs += deptIDs.get(deptIDs.size() - 1);
 
                 //language=TSQL
                 String query = "SELECT id FROM departments WHERE company_id=" + id + "; DELETE FROM departments WHERE company_id=" + id + ";";
@@ -182,10 +183,12 @@ public class DBDepartments extends Synchronizable implements IDataAccessObject<D
                     logChange("departments", x.getInt(1), ActionType.DELETE);
                 }
 
-                query = "SELECT id FROM departments_clients WHERE department_id IN (" + simplifiedDeptIDs + "); DELETE FROM departments_clients WHERE department_id IN(" + simplifiedDeptIDs + ");";
-                ResultSet x2 = connect.getFromDataBase(query);
-                while (x2.next()){
-                    logChange("departments_clients", x2.getInt(1), ActionType.DELETE);
+                if(deptIDs.size() != 0){
+                    query = "SELECT id FROM departments_clients WHERE department_id IN (" + simplifiedDeptIDs + "); DELETE FROM departments_clients WHERE department_id IN(" + simplifiedDeptIDs + ");";
+                    ResultSet x2 = connect.getFromDataBase(query);
+                    while (x2.next()){
+                        logChange("departments_clients", x2.getInt(1), ActionType.DELETE);
+                    }
                 }
             } catch (ConnectionException | SQLException e){
                 throw new ModelSyncException("Could not fetch departments by company ID!", e);

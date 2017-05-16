@@ -42,6 +42,7 @@ public abstract class Synchronizable {
             resultSet.next();
             timestamp = new Date(resultSet.getTimestamp(1).getTime());
         } catch (ConnectionException | SQLException e) {
+            e.printStackTrace();
         }
         return timestamp;
     }
