@@ -25,9 +25,9 @@ public class DBPayment extends Synchronizable implements IDataAccessObject<Payme
         List<Payment> payments = new ArrayList<>();
         try {
             dbConnect = new DBConnect();
-            String query = "SELECT * FROM [payments]";
+            String query = "SELECT * FROM payments";
             ResultSet rs = dbConnect.getFromDataBase(query);
-            DBPayment dbPayment = new DBPayment();
+            //DBPayment dbPayment = new DBPayment();
             DBSubscriptions dbSubs = new DBSubscriptions();
             while (rs.next()) {
                 Subscription subscription = dbSubs.getById(rs.getInt("subscription_id"));
@@ -51,7 +51,7 @@ public class DBPayment extends Synchronizable implements IDataAccessObject<Payme
         Payment payment = null;
         try {
             dbConnect = new DBConnect();
-            ResultSet rs = dbConnect.getFromDataBase("SELECT * FROM payments WHERE id=" + id);
+            ResultSet rs = dbConnect.getFromDataBase("SELECT * FROM payments WHERE id=" + id + ";");
             rs.next();
             DBSubscriptions dbSubs = new DBSubscriptions();
             Subscription subscription = dbSubs.getById(rs.getInt("subscription_id"));
@@ -64,7 +64,7 @@ public class DBPayment extends Synchronizable implements IDataAccessObject<Payme
                     subscription
             );
         } catch (ConnectionException | SQLException e){
-            throw new ModelSyncException("Could not retrieve a department!", e);
+            throw new ModelSyncException("Could not retrieve a payment!", e);
         }
         return payment;
     }
@@ -143,7 +143,7 @@ public class DBPayment extends Synchronizable implements IDataAccessObject<Payme
         List<Payment> payments = new ArrayList<>();
         try {
             dbConnect = new DBConnect();
-            String query = "SELECT * FROM [payments] WHERE subscription_id=" + subscriptionId;
+            String query = "SELECT * FROM payments WHERE subscription_id=" + subscriptionId;
             ResultSet rs = dbConnect.getFromDataBase(query);
             DBSubscriptions dbSubs = new DBSubscriptions();
             while (rs.next()) {
