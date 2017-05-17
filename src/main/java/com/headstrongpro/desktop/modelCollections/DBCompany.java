@@ -147,6 +147,19 @@ public class DBCompany extends Synchronizable implements IDataAccessObject<Compa
         }
     }
 
+    public String getCompanyNameByID(int id) throws ModelSyncException {
+        String result;
+        try {
+            dbConnect = new DBConnect();
+            ResultSet rs = dbConnect.getFromDataBase("SELECT name FROM companies WHERE id=" + id + ";");
+            rs.next();
+            result = rs.getString(1);
+        } catch (ConnectionException | SQLException e) {
+            throw new ModelSyncException("Couldn't fetch the company name of id=" + id, e);
+        }
+        return result;
+    }
+
     @Override
     protected boolean verifyIntegrity(int itemID) throws ModelSyncException {
         return verifyIntegrity(itemID, timestamp, "companies");

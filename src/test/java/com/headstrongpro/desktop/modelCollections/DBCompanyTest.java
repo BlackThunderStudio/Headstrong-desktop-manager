@@ -70,4 +70,12 @@ public class DBCompanyTest {
         companyDAO.update(company);
         assertEquals("Company renaming has not been reverted", oldName, companyDAO.getById(1).getName());
     }
+
+    @Test
+    public void getCompanyNameByIdTest() throws Exception {
+        String name = companyDAO.getCompanyNameByID(1);
+        String expected = "Neas Energy A/S";
+
+        assertEquals(expected, name);
+    }
 }
