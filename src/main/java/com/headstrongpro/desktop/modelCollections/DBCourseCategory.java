@@ -3,6 +3,7 @@ package com.headstrongpro.desktop.modelCollections;
 import com.headstrongpro.desktop.core.connection.DBConnect;
 import com.headstrongpro.desktop.core.exception.ConnectionException;
 import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
+import com.headstrongpro.desktop.core.exception.EmptyInputException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.model.CourseCategory;
 import com.headstrongpro.desktop.modelCollections.util.ActionType;
@@ -65,22 +66,29 @@ public class DBCourseCategory extends Synchronizable implements IDataAccessObjec
 
     @Override
     public CourseCategory create(CourseCategory newCourseCategory) throws ModelSyncException{
-        try{
-            dbConnect = new DBConnect();
-            //language=TSQL
-            String createCourseCategoryQuery = "INSERT INTO s_categories(name) VALUES (?);";
-            PreparedStatement preparedStatement = dbConnect.getConnection().prepareStatement(createCourseCategoryQuery, PreparedStatement.RETURN_GENERATED_KEYS);
-            preparedStatement.setString(1, newCourseCategory.getName());
-            preparedStatement.executeUpdate();
-            try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    newCourseCategory.setId(generatedKeys.getInt(1));
-                    logChange("s_categories", newCourseCategory.getId(), ActionType.CREATE);
-                } else {
-                    throw new ModelSyncException("Creating course category failed. No ID retrieved!");
+        try {
+            if (!newCourseCategory.getName().isEmpty()) {
+                dbConnect = new DBConnect();
+                //language=TSQL
+                String createCourseCategoryQuery = "INSERT INTO s_categories(name) VALUES (?);";
+                PreparedStatement preparedStatement = dbConnect.getConnection().prepareStatement(createCourseCategoryQuery, PreparedStatement.RETURN_GENERATED_KEYS);
+                preparedStatement.setString(1, newCourseCategory.getName());
+                preparedStatement.executeUpdate();
+                try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        newCourseCategory.setId(generatedKeys.getInt(1));
+                        logChange("s_categories", newCourseCategory.getId(), ActionType.CREATE);
+                    } else {
+                        throw new ModelSyncException("Creating course category failed. No ID retrieved!");
+                    }
                 }
+            } else {
+                throw new EmptyInputException("Name can not be empty");
             }
-        } catch (ConnectionException | SQLException e) {
+        }catch(EmptyInputException e){
+            throw new ModelSyncException("Name can not be   e m p t y");
+        }
+        catch (ConnectionException | SQLException e) {
             throw new ModelSyncException("Could not create new course category!", e);
         }
         return newCourseCategory;

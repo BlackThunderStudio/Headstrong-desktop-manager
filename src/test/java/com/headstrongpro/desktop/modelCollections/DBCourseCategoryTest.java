@@ -1,5 +1,6 @@
 package com.headstrongpro.desktop.modelCollections;
 
+import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.model.CourseCategory;
 import org.junit.Before;
 import org.junit.Test;
@@ -55,6 +56,11 @@ public class DBCourseCategoryTest {
         cc.setName(oldName);
         ccDAO.update(cc);
         assertEquals("Name was not reversed", oldName, ccDAO.getById(1).getName());
+    }
+
+    @Test(expected = ModelSyncException.class)
+    public void emptyNameCourse() throws Exception{
+        ccDAO.create(new CourseCategory(""));
     }
 
 }
