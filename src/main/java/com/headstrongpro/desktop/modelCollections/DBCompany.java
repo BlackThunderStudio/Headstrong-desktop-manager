@@ -3,6 +3,7 @@ package com.headstrongpro.desktop.modelCollections;
 import com.headstrongpro.desktop.core.connection.DBConnect;
 import com.headstrongpro.desktop.core.exception.ConnectionException;
 import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
+import com.headstrongpro.desktop.core.exception.EmptyInputException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.model.entity.Company;
 import com.headstrongpro.desktop.modelCollections.util.ActionType;
@@ -76,26 +77,32 @@ public class DBCompany extends Synchronizable implements IDataAccessObject<Compa
     @Override
     public Company create(Company newCompany) throws ModelSyncException{
         try{
-            dbConnect = new DBConnect();
-            //language=TSQL
-            String createCompanyQuery = "INSERT INTO companies(name, cvr, street, postal, city, country) VALUES (?, ?, ?, ?, ?, ?);";
-            PreparedStatement preparedStatement = dbConnect.getConnection().prepareStatement(createCompanyQuery, PreparedStatement.RETURN_GENERATED_KEYS);
-            preparedStatement.setString(1, newCompany.getName());
-            preparedStatement.setString(2, newCompany.getCvr());
-            preparedStatement.setString(3, newCompany.getStreet());
-            preparedStatement.setString(4, newCompany.getPostal());
-            preparedStatement.setString(5, newCompany.getCity());
-            preparedStatement.setString(6, newCompany.getCountry());
-            preparedStatement.executeUpdate();
-            try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    newCompany.setId(generatedKeys.getInt(1));
-                    logChange("companies", newCompany.getId(), ActionType.CREATE);
-                } else {
-                    throw new ModelSyncException("Creating company failed. No ID retrieved!");
+            if(!(newCompany.getName().isEmpty() && newCompany.getCvr().isEmpty() && newCompany.getStreet().isEmpty() && newCompany.getPostal().isEmpty() && newCompany.getCity().isEmpty() && newCompany.getCountry().isEmpty())) {
+                dbConnect = new DBConnect();
+                //language=TSQL
+                String createCompanyQuery = "INSERT INTO companies(name, cvr, street, postal, city, country) VALUES (?, ?, ?, ?, ?, ?);";
+                PreparedStatement preparedStatement = dbConnect.getConnection().prepareStatement(createCompanyQuery, PreparedStatement.RETURN_GENERATED_KEYS);
+                preparedStatement.setString(1, newCompany.getName());
+                preparedStatement.setString(2, newCompany.getCvr());
+                preparedStatement.setString(3, newCompany.getStreet());
+                preparedStatement.setString(4, newCompany.getPostal());
+                preparedStatement.setString(5, newCompany.getCity());
+                preparedStatement.setString(6, newCompany.getCountry());
+                preparedStatement.executeUpdate();
+                try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        newCompany.setId(generatedKeys.getInt(1));
+                        logChange("companies", newCompany.getId(), ActionType.CREATE);
+                    } else {
+                        throw new ModelSyncException("Creating company failed. No ID retrieved!");
+                    }
                 }
+            } else {
+                throw new EmptyInputException("All parameters must be filled in!");
             }
-        } catch (ConnectionException | SQLException e) {
+        }catch (EmptyInputException e){
+            throw new ModelSyncException("All parameters must be filled in!");
+        }catch (ConnectionException | SQLException e) {
             throw new ModelSyncException("Could not create new company!", e);
         }
         return newCompany;
