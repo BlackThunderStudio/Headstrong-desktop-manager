@@ -1,0 +1,19 @@
+.root {
+    -fx-background-image: url("img/login.jpg");
+    -fx-background-position: center;
+    -fx-background-size: cover;
+}
+
+.button {
+    -fx-border-radius: 2px;
+    -fx-text-fill: #2B4075;
+}
+
+.label {
+    -fx-text-fill: #ffffff;
+}
+
+.welcome {
+    -fx-fill: rgba(255, 255, 255, .5);
+    -fx-font-size: 18px;
+}
