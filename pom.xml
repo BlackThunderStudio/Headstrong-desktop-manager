@@ -46,6 +46,12 @@
             <artifactId>controlsfx</artifactId>
             <version>8.40.12</version>
         </dependency>
+        <dependency>
+            <groupId>eu.hansolo</groupId>
+            <artifactId>tilesfx</artifactId>
+            <version>1.0.7</version>
+        </dependency>
+
 
 
     </dependencies>
