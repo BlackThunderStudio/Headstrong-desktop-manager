@@ -2,6 +2,7 @@ package com.headstrongpro.desktop.modelCollections;
 
 import com.headstrongpro.desktop.core.connection.DBConnect;
 import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
+import com.headstrongpro.desktop.model.Session;
 import com.headstrongpro.desktop.modelCollections.util.Synchronizable;
 import com.headstrongpro.desktop.core.exception.ConnectionException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
@@ -434,6 +435,25 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
             throw new ModelSyncException("WARNING! Could not fetch resources of sessionID: " + sessionID + " !", e);
         }
         return resources;
+    }
+
+    public int assignToSession(Resource resource, Session session) throws ModelSyncException, DatabaseOutOfSyncException {
+        int id;
+        try {
+            dbConnect = new DBConnect();
+            PreparedStatement preparedStatement = dbConnect.getConnection().prepareStatement("INSERT INTO sessions_resources(session_id, resource_id) VALUES (?,?);", PreparedStatement.RETURN_GENERATED_KEYS);
+            preparedStatement.setInt(1, session.getId());
+            preparedStatement.setInt(1, resource.getID());
+            preparedStatement.executeUpdate();
+            try(ResultSet generatedKeys = preparedStatement.getGeneratedKeys()){
+                if(generatedKeys.next()){
+                    id = generatedKeys.getInt(1);
+                } else throw new DatabaseOutOfSyncException();
+            }
+        } catch (ConnectionException | SQLException e) {
+            throw new ModelSyncException(e);
+        }
+        return id;
     }
 
     @Override
