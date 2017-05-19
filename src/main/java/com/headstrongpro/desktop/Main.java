@@ -34,7 +34,8 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws IOException {
         SplashScreen.viewSplashScreen(3000, SplashScreen.Style.FADE, SplashScreen.Style.FADE);
         window = primaryStage;
-        Parent root = FXMLLoader.load(getClass().getResource("/layout/mainWindow.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/layout/navigationPane.fxml"));
+        root.getStylesheets().add("/style/navigationPane.css");
         primaryStage.setTitle("Headstrong Company Manager");
         primaryStage.setOnCloseRequest(e -> {
             e.consume();
