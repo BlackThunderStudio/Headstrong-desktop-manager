@@ -46,6 +46,13 @@
             <artifactId>controlsfx</artifactId>
             <version>8.40.12</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.firebase/firebase-client-jvm -->
+        <dependency>
+            <groupId>com.firebase</groupId>
+            <artifactId>firebase-client-jvm</artifactId>
+            <version>2.5.2</version>
+        </dependency>
+
 
 
     </dependencies>
