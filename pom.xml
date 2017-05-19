@@ -52,6 +52,13 @@
             <artifactId>camel-ftp</artifactId>
             <version>2.19.0</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/eu.hansolo/tilesfx -->
+        <dependency>
+            <groupId>eu.hansolo</groupId>
+            <artifactId>tilesfx</artifactId>
+            <version>1.0.7</version>
+        </dependency>
+
 
 
 
