@@ -20,20 +20,20 @@
       <Pane maxHeight="300.0" maxWidth="300.0" minHeight="300.0" minWidth="300.0" prefHeight="300.0" prefWidth="300.0" styleClass="logoBackground" GridPane.valignment="TOP">
          <children>
             <ImageView fitHeight="225.0" fitWidth="210.0" layoutX="46.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-                <Image url="/img/navpane_logo.png"/>
+                <Image url="/img/navpane_logo.png" />
             </ImageView>
          </children></Pane>
       <Pane maxHeight="400.0" maxWidth="300.0" minHeight="400.0" minWidth="300.0" prefHeight="400.0" prefWidth="300.0" styleClass="navSection" GridPane.rowIndex="1">
          <children>
-            <Button layoutX="70.0" layoutY="22.0" mnemonicParsing="false" styleClass="navButton" text="Dashboard" textFill="WHITE" />
-            <Button layoutX="70.0" layoutY="62.0" mnemonicParsing="false" styleClass="navButton" text="Companies" textFill="WHITE" />
-            <Button layoutX="70.0" layoutY="102.0" mnemonicParsing="false" styleClass="navButton" text="Clients" textFill="WHITE" />
-            <Button layoutX="70.0" layoutY="142.0" mnemonicParsing="false" styleClass="navButton" text="Subscriptions" textFill="WHITE" />
-            <Button layoutX="70.0" layoutY="182.0" mnemonicParsing="false" styleClass="navButton" text="Resources" textFill="WHITE" />
-            <Button layoutX="70.0" layoutY="222.0" mnemonicParsing="false" styleClass="navButton" text="Employees" textFill="WHITE" />
-            <Button layoutX="70.0" layoutY="262.0" mnemonicParsing="false" styleClass="navButton" text="Payments" textFill="WHITE" />
-            <Button layoutX="70.0" layoutY="342.0" mnemonicParsing="false" styleClass="navButton" text="About" textFill="WHITE" />
-            <Button layoutX="70.0" layoutY="302.0" mnemonicParsing="false" styleClass="navButton" text="Settings" textFill="WHITE" />
+            <Button fx:id="dashboardButton" layoutX="70.0" layoutY="22.0" mnemonicParsing="false" styleClass="navButton" text="Dashboard" textFill="WHITE" />
+            <Button fx:id="companiesButton" layoutX="70.0" layoutY="62.0" mnemonicParsing="false" styleClass="navButton" text="Companies" textFill="WHITE" />
+            <Button fx:id="clientsButton" layoutX="70.0" layoutY="102.0" mnemonicParsing="false" styleClass="navButton" text="Clients" textFill="WHITE" />
+            <Button fx:id="subscriptionsButton" layoutX="70.0" layoutY="142.0" mnemonicParsing="false" styleClass="navButton" text="Subscriptions" textFill="WHITE" />
+            <Button fx:id="resourcesButton" layoutX="70.0" layoutY="182.0" mnemonicParsing="false" styleClass="navButton" text="Resources" textFill="WHITE" />
+            <Button fx:id="employeesButton" layoutX="70.0" layoutY="222.0" mnemonicParsing="false" styleClass="navButton" text="Employees" textFill="WHITE" />
+            <Button fx:id="paymentsButton" layoutX="70.0" layoutY="262.0" mnemonicParsing="false" styleClass="navButton" text="Payments" textFill="WHITE" />
+            <Button fx:id="aboutButton" layoutX="70.0" layoutY="342.0" mnemonicParsing="false" styleClass="navButton" text="About" textFill="WHITE" />
+            <Button fx:id="settingsButton" layoutX="70.0" layoutY="302.0" mnemonicParsing="false" styleClass="navButton" text="Settings" textFill="WHITE" />
          </children></Pane>
    </children>
 

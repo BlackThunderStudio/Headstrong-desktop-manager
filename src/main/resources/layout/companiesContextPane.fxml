@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<GridPane maxHeight="700" maxWidth="300" minHeight="700" minWidth="271.0" prefHeight="700.0" prefWidth="271.0" stylesheets="/style/navigationPane.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.headstrongpro.desktop.controller.NavigationPaneController">
+    <columnConstraints>
+        <ColumnConstraints hgrow="NEVER" maxWidth="300.0" minWidth="300.0" percentWidth="100.0" prefWidth="300.0" />
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints maxHeight="390.0" minHeight="300.0" prefHeight="349.0" vgrow="NEVER" />
+        <RowConstraints maxHeight="400.0" minHeight="310.0" prefHeight="351.0" vgrow="SOMETIMES" />
+</rowConstraints>
+
+</GridPane>
