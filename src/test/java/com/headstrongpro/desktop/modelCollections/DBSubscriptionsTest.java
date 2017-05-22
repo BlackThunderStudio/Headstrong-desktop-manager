@@ -1,13 +1,10 @@
 package com.headstrongpro.desktop.modelCollections;
 
 import com.headstrongpro.desktop.model.Subscription;
-import com.headstrongpro.desktop.modelCollections.DBCompany;
-import com.headstrongpro.desktop.modelCollections.DBSubscriptions;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Calendar;
-import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -45,7 +42,7 @@ public class DBSubscriptionsTest {
         java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
         Subscription sub = new Subscription(300, true, date, date, subscriptionsDAO.getPaymentRateByID(1), companyDAO.getById(2));
         int oldSize = subscriptionsDAO.getAll().size();
-        subscriptionsDAO.create(sub);
+        subscriptionsDAO.persist(sub);
         assertNotEquals("Subscription was not creatod", oldSize, subscriptionsDAO.getAll().size());
         subscriptionsDAO.delete(sub);
         assertEquals("Subscription was not deleted", oldSize, subscriptionsDAO.getAll().size());

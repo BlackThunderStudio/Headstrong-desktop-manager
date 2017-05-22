@@ -39,7 +39,7 @@ public class DBCourseCategoryTest {
     public void createDelete() throws Exception {
         int oldSize = ccDAO.getAll().size(), newSize;
         CourseCategory newCat = new CourseCategory("dummy category");
-        ccDAO.create(newCat);
+        ccDAO.persist(newCat);
         assertNotEquals("Course category was not created", oldSize, ccDAO.getAll().size());
         ccDAO.delete(newCat);
         assertEquals("Course category was not deleted", oldSize, ccDAO.getAll().size());
@@ -60,7 +60,7 @@ public class DBCourseCategoryTest {
 
     @Test(expected = ModelSyncException.class)
     public void emptyNameCourse() throws Exception{
-        ccDAO.create(new CourseCategory(""));
+        ccDAO.persist(new CourseCategory(""));
     }
 
 }

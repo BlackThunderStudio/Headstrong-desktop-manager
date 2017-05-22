@@ -3,10 +3,8 @@ package com.headstrongpro.desktop.modelCollections;
 import com.headstrongpro.desktop.model.Department;
 import com.headstrongpro.desktop.model.entity.Company;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -44,7 +42,7 @@ public class DBDepartmentsTest {
     public void createDelete() throws Exception {
         int oldSize = departmentDAO.getAll().size();
         Department dummy = new Department("dummy department", "test purposes", 1);
-        departmentDAO.create(dummy);
+        departmentDAO.persist(dummy);
         int newSize = departmentDAO.getAll().size();
         assertNotEquals("Department was not added", oldSize, newSize);
         departmentDAO.delete(dummy);
@@ -75,10 +73,10 @@ public class DBDepartmentsTest {
     @Test
     public void deleteByCompanyID() throws Exception {
         Company company = new Company("test company", String.valueOf(new Random().nextInt()), "test street", "123", "dummyville", "dummyland");
-        company = companyDAO.create(company);
+        company = companyDAO.persist(company);
         Department department = new Department("test department", "test", company.getId());
         int oldSize = departmentDAO.getAll().size();
-        department = departmentDAO.create(department);
+        department = departmentDAO.persist(department);
         departmentDAO.deleteByCompanyID(department.getId());
         assertNotEquals("Departments not deleted by company ID", oldSize, departmentDAO.getAll().size());
         companyDAO.delete(company);

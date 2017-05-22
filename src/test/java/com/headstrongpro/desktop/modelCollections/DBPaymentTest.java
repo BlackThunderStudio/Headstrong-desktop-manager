@@ -1,11 +1,9 @@
 package com.headstrongpro.desktop.modelCollections;
 
 import com.headstrongpro.desktop.model.Payment;
-import com.headstrongpro.desktop.model.Subscription;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.sql.Date;
 import java.util.Calendar;
 
 import static org.junit.Assert.*;
@@ -39,7 +37,7 @@ public class DBPaymentTest {
         java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
         Payment newPayment = new Payment(1000, 500, null, date, false, subDAO.getById(1));
         int oldSize = paymentDAO.getAll().size();
-        paymentDAO.create(newPayment);
+        paymentDAO.persist(newPayment);
         assertNotEquals("Subscription not created", oldSize, paymentDAO.getAll().size());
         paymentDAO.delete(newPayment);
         assertEquals("Subcription not deleted", oldSize, paymentDAO.getAll().size());

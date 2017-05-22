@@ -6,14 +6,14 @@ import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import java.util.List;
 
 /**
- * Created by rajmu on 17.04.06.
+ * Data Access Object Interface
  */
 public interface IDataAccessObject<T> {
     List<T> getAll() throws ModelSyncException;
 
     T getById(int id) throws ModelSyncException;
 
-    T create(T object) throws ModelSyncException;
+    T persist(T object) throws ModelSyncException;
 
     void update(T object) throws ModelSyncException, DatabaseOutOfSyncException;
 

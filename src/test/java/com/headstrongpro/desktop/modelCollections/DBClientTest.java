@@ -3,7 +3,6 @@ package com.headstrongpro.desktop.modelCollections;
 import com.headstrongpro.desktop.model.entity.Client;
 import com.headstrongpro.desktop.model.entity.Person;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.Calendar;
@@ -42,7 +41,7 @@ public class DBClientTest {
         java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
         Client client = new Client("dummy dumson", "dummy@testing.dk", "332", "true", "dummy", "124", date, 1);
         int oldSize = clientDAO.getAll().size();
-        clientDAO.create(client);
+        clientDAO.persist(client);
         assertNotEquals("Client has not been added", oldSize, clientDAO.getAll().size());
         clientDAO.delete(client);
         assertEquals("Client has not been removed", oldSize, clientDAO.getAll().size());

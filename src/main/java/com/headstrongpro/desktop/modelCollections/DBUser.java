@@ -20,14 +20,14 @@ import java.util.Calendar;
 import java.util.List;
 
 /**
- * Created by Rajmund Staniek on 09-May-17.
+ * DB User
  */
 public class DBUser extends Synchronizable implements IDataAccessObject<Person> {
 
     private DBConnect connect;
     private Date timestamp;
 
-    public DBUser(){
+    public DBUser() {
         timestamp = new Date(Calendar.getInstance().getTimeInMillis());
     }
 
@@ -91,7 +91,7 @@ public class DBUser extends Synchronizable implements IDataAccessObject<Person> 
     }
 
     @Override
-    public Person create(Person object) throws ModelSyncException {
+    public Person persist(Person object) throws ModelSyncException {
         User user = (User) object;
         try {
             connect = new DBConnect();
@@ -119,7 +119,7 @@ public class DBUser extends Synchronizable implements IDataAccessObject<Person> 
                 }
             }
         } catch (ConnectionException | SQLException e) {
-            throw new ModelSyncException("Could not create a user!", e);
+            throw new ModelSyncException("Could not persist a user!", e);
         }
         return user;
     }
@@ -127,7 +127,7 @@ public class DBUser extends Synchronizable implements IDataAccessObject<Person> 
     @Override
     public void update(Person object) throws ModelSyncException, DatabaseOutOfSyncException {
         User user = (User) object;
-        if(verifyIntegrity(object.getId())){
+        if (verifyIntegrity(object.getId())) {
             try {
                 connect = new DBConnect();
                 //language=TSQL
@@ -156,7 +156,7 @@ public class DBUser extends Synchronizable implements IDataAccessObject<Person> 
 
     @Override
     public void delete(Person object) throws ModelSyncException, DatabaseOutOfSyncException {
-        if(verifyIntegrity(object.getId())){
+        if (verifyIntegrity(object.getId())) {
             try {
                 connect = new DBConnect();
                 connect.upload("DELETE FROM employees_headstrong  WHERE id=" + object.getId() + ";");

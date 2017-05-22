@@ -25,19 +25,19 @@ public class DBCompany extends Synchronizable implements IDataAccessObject<Compa
 
     private DBConnect dbConnect;
     private Date timestamp;
-    
-    public DBCompany(){
+
+    public DBCompany() {
         timestamp = new Date(Calendar.getInstance().getTimeInMillis());
     }
 
     @Override
     public List<Company> getAll() throws ModelSyncException {
         List<Company> companies = new ArrayList<>();
-        try{
+        try {
             dbConnect = new DBConnect();
             String query = "SELECT [id], [name], [cvr], [street], [postal], [city], [country] FROM [companies]";
             ResultSet companyRS = dbConnect.getFromDataBase(query);
-            while(companyRS.next())
+            while (companyRS.next())
                 companies.add(new Company(companyRS.getInt("id"),
                         companyRS.getString("name"),
                         companyRS.getString("cvr"),
@@ -51,9 +51,9 @@ public class DBCompany extends Synchronizable implements IDataAccessObject<Compa
         }
         return companies;
     }
-    
+
     @Override
-    public Company getById(int id) throws ModelSyncException{
+    public Company getById(int id) throws ModelSyncException {
         Company company = null;
         try {
             dbConnect = new DBConnect();
@@ -75,9 +75,9 @@ public class DBCompany extends Synchronizable implements IDataAccessObject<Compa
     }
 
     @Override
-    public Company create(Company newCompany) throws ModelSyncException{
-        try{
-            if(!(newCompany.getName().isEmpty() && newCompany.getCvr().isEmpty() && newCompany.getStreet().isEmpty() && newCompany.getPostal().isEmpty() && newCompany.getCity().isEmpty() && newCompany.getCountry().isEmpty())) {
+    public Company persist(Company newCompany) throws ModelSyncException {
+        try {
+            if (!(newCompany.getName().isEmpty() && newCompany.getCvr().isEmpty() && newCompany.getStreet().isEmpty() && newCompany.getPostal().isEmpty() && newCompany.getCity().isEmpty() && newCompany.getCountry().isEmpty())) {
                 dbConnect = new DBConnect();
                 //language=TSQL
                 String createCompanyQuery = "INSERT INTO companies(name, cvr, street, postal, city, country) VALUES (?, ?, ?, ?, ?, ?);";
@@ -100,18 +100,18 @@ public class DBCompany extends Synchronizable implements IDataAccessObject<Compa
             } else {
                 throw new EmptyInputException("All parameters must be filled in!");
             }
-        }catch (EmptyInputException e){
+        } catch (EmptyInputException e) {
             throw new ModelSyncException("All parameters must be filled in!");
-        }catch (ConnectionException | SQLException e) {
-            throw new ModelSyncException("Could not create new company!", e);
+        } catch (ConnectionException | SQLException e) {
+            throw new ModelSyncException("Could not persist new company!", e);
         }
         return newCompany;
     }
 
     @Override
     public void update(Company company) throws ModelSyncException, DatabaseOutOfSyncException {
-        if(verifyIntegrity(company.getId())){
-            try{
+        if (verifyIntegrity(company.getId())) {
+            try {
                 dbConnect = new DBConnect();
                 //language=TSQL
                 String updateCompanyQuery = "UPDATE companies SET name=?, cvr=?, street=?, postal=?, city=?, country=? WHERE id=?;";
@@ -135,8 +135,8 @@ public class DBCompany extends Synchronizable implements IDataAccessObject<Compa
 
     @Override
     public void delete(Company company) throws ModelSyncException, DatabaseOutOfSyncException {
-        if(verifyIntegrity(company.getId())){
-            try{
+        if (verifyIntegrity(company.getId())) {
+            try {
                 dbConnect = new DBConnect();
                 //language=TSQL
                 String deleteCompanyQuery = "DELETE FROM companies WHERE id=?;";
@@ -144,7 +144,7 @@ public class DBCompany extends Synchronizable implements IDataAccessObject<Compa
                 preparedStatement.setInt(1, company.getId());
                 preparedStatement.execute();
                 logChange("companies", company.getId(), ActionType.DELETE);
-                
+
                 new DBDepartments().deleteByCompanyID(company.getId());
             } catch (ConnectionException | SQLException e) {
                 throw new ModelSyncException("Couldn't delete the company of id=" + company.getId(), e);

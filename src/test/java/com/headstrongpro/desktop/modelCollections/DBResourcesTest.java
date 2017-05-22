@@ -42,7 +42,7 @@ public class DBResourcesTest {
         AudioResource resource = Resource.ofType(ResourceFactory.getResource("some test resource", "desc", false, 3));
         resource.setUrl("htttp://google.com/xxx.mp3");
         resource.setDuration(Time.valueOf("12:00:00"));
-        resourcesDAO.create(resource);
+        resourcesDAO.persist(resource);
 
         int newsize = resourcesDAO.getAll().size();
 
