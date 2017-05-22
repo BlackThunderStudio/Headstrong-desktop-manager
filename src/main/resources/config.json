@@ -9,4 +9,11 @@
     "user": "",
     "pass": ""
   }
+  "SFTP server": {
+    "host": "osoukup.com",
+    "user": "andrewskp",
+    "pass": "sefujupico420.",
+    "port": 22,
+    "root": "/headstrong/"
+  }
 }

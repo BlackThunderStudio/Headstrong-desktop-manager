@@ -5,20 +5,26 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import javax.management.AttributeList;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * DB Connection Utility
  */
-public class DBConnect {
+public class DBConnect extends Configurable {
 
     private static String url, username, password;
 
     public DBConnect() throws ConnectionException {
-        parseJson();
+        List<Object> credentials = getConfig();
+        url = (String) credentials.get(0);
+        username = (String) credentials.get(1);
+        password = (String) credentials.get(2);
     }
 
     /**
@@ -47,28 +53,6 @@ public class DBConnect {
             return true;
         } catch (SQLException ex) {
             return false;
-        }
-    }
-
-    /**
-     * Gets database credentials from the config file
-     *
-     * @throws ConnectionException Passes exception to the model layer
-     */
-    private void parseJson() throws ConnectionException {
-        JSONParser parser = new JSONParser();
-        try {
-            Object file = parser.parse(new InputStreamReader(new FileInputStream(getClass().getResource("/config.json").getFile())));
-
-            JSONObject fullJson = (JSONObject) file;
-            JSONObject dbJson = (JSONObject) fullJson.get("database_mssql");
-
-            url = (String) dbJson.get("url");
-            username = (String) dbJson.get("user");
-            password = (String) dbJson.get("pass");
-
-        } catch (ParseException | IOException e) {
-            throw new ConnectionException(e);
         }
     }
 
@@ -128,5 +112,15 @@ public class DBConnect {
         } catch (SQLException ex) {
             throw new ConnectionException("WARNING! exception occurred while uploading a query to the server.", ex);
         }
+    }
+
+    @Override
+    protected List<Object> getConfig() {
+        JSONObject creds = parseJsonConfig("/config.json", "database_mssql");
+        List<Object> result = new ArrayList<>();
+        result.add(creds.get("url"));
+        result.add(creds.get("user"));
+        result.add(creds.get("pass"));
+        return result;
     }
 }

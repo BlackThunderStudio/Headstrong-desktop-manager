@@ -1,6 +1,9 @@
 package com.headstrongpro.desktop.core.controller;
 
 
+import com.headstrongpro.desktop.core.connection.Configurable;
+import com.headstrongpro.desktop.core.connection.FTPUtils;
+import com.headstrongpro.desktop.core.exception.ConnectionException;
 import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.model.Session;
@@ -9,7 +12,14 @@ import com.headstrongpro.desktop.modelCollections.DBResources;
 import javafx.scene.image.Image;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.sql.Time;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -17,7 +27,7 @@ import java.util.stream.Collectors;
 /**
  * Created by rajmu on 17.05.19.
  */
-public class ResourcesController implements Refreshable {
+public class ResourcesController extends Configurable implements Refreshable {
     private List<Resource> resources;
     private DBResources resourcesDAO;
 
@@ -100,12 +110,27 @@ public class ResourcesController implements Refreshable {
      * @throws ModelSyncException throws it when shit goes south.
      */
     public Resource uploadLocalFile(File file, String name, String description, boolean isForAchievement, ResourceType type, List<Object> args) throws ModelSyncException {
-        //TODO: figure out server upload logic
-        //TODO: Do some magic over here
+        List<Object> ftpData = getConfig();
+        FTPUtils ftpUtils = new FTPUtils(
+                (String) ftpData.get(0),
+                (String) ftpData.get(1),
+                (String) ftpData.get(2),
+                (String) ftpData.get(4),
+                (int) ftpData.get(3)
+        );
         String url= "";
         if(!type.equals(ResourceType.TEXT)){
             //upload to the server
-            url = file.getAbsolutePath(); //DELETE THIS LINE WHEN FTP CONNECTIVITY IS IMPLEMENTED
+            String[] split = file.getName().split(".");
+            String extension = split[split.length];
+            try {
+                ftpUtils.upload(file, name + "." + extension); //kinda unchecked but should work
+            } catch (ConnectionException e) {
+                e.printStackTrace();
+                throw new ModelSyncException(e);
+            }
+
+            //url = file.getAbsolutePath(); //DELETE THIS LINE WHEN FTP CONNECTIVITY IS IMPLEMENTED
         }
 
         //load record into the database
@@ -180,4 +205,16 @@ public class ResourcesController implements Refreshable {
 
     //TODO: stopped at media playback. WIP. To be continued
 
+
+    @Override
+    protected List<Object> getConfig() {
+        JSONObject credentials = parseJsonConfig("/config.json", "SFTP server");
+        List<Object> results = new ArrayList<>();
+        results.add(credentials.get("host"));
+        results.add(credentials.get("user"));
+        results.add(credentials.get("pass"));
+        results.add(credentials.get("port"));
+        results.add(credentials.get("root"));
+        return results;
+    }
 }
