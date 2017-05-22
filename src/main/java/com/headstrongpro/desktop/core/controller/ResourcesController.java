@@ -149,7 +149,7 @@ public class ResourcesController extends Configurable implements Refreshable {
             audioResource.setDuration((Time)args.get(0));
             resource = audioResource;
         }
-        return resourcesDAO.create(resource);
+        return resourcesDAO.persist(resource);
     }
 
     /***

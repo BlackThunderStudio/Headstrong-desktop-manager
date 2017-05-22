@@ -3,7 +3,6 @@ package com.headstrongpro.desktop.modelCollections;
 import com.headstrongpro.desktop.model.Department;
 import com.headstrongpro.desktop.model.entity.Company;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.List;
@@ -50,9 +49,9 @@ public class DBCompanyTest {
 
         int oldSize = companyDAO.getAll().size();
 
-        company = companyDAO.create(company);
+        company = companyDAO.persist(company);
         department.setCompanyID(company.getId());
-        departmentsDAO.create(department);
+        departmentsDAO.persist(department);
         assertNotEquals("Company has not been created", oldSize, companyDAO.getAll().size());
         companyDAO.delete(company);
         assertEquals("Company has not been removed", oldSize, companyDAO.getAll().size());

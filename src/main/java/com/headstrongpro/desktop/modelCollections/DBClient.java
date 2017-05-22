@@ -4,7 +4,6 @@ import com.headstrongpro.desktop.core.connection.DBConnect;
 import com.headstrongpro.desktop.core.exception.ConnectionException;
 import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
-import com.headstrongpro.desktop.model.Log;
 import com.headstrongpro.desktop.model.entity.Client;
 import com.headstrongpro.desktop.model.entity.EntityFactory;
 import com.headstrongpro.desktop.model.entity.Person;
@@ -18,7 +17,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -28,7 +26,7 @@ public class DBClient extends Synchronizable implements IDataAccessObject<Person
     private DBConnect connect;
     private Date timestamp;
 
-    public DBClient(){
+    public DBClient() {
         timestamp = new Date(Calendar.getInstance().getTimeInMillis());
     }
 
@@ -63,7 +61,7 @@ public class DBClient extends Synchronizable implements IDataAccessObject<Person
     @Override
     public Person getById(int id) throws ModelSyncException {
         Person client = null;
-        try{
+        try {
             connect = new DBConnect();
             ResultSet rs = connect.getFromDataBase("SELECT * FROM clients WHERE id=" + id + ";");
             rs.next();
@@ -84,7 +82,7 @@ public class DBClient extends Synchronizable implements IDataAccessObject<Person
     }
 
     @Override
-    public Person create(Person object) throws ModelSyncException {
+    public Person persist(Person object) throws ModelSyncException {
         Client newClient = (Client) object;
         try {
             connect = new DBConnect();
@@ -108,7 +106,7 @@ public class DBClient extends Synchronizable implements IDataAccessObject<Person
                 }
             }
         } catch (ConnectionException | SQLException e) {
-            throw new ModelSyncException("Could not create a client!", e);
+            throw new ModelSyncException("Could not persist a client!", e);
         }
         return newClient;
     }
@@ -116,8 +114,8 @@ public class DBClient extends Synchronizable implements IDataAccessObject<Person
     @Override
     public void update(Person object) throws ModelSyncException, DatabaseOutOfSyncException {
         Client client = (Client) object;
-        if (verifyIntegrity(client.getId())){
-            try{
+        if (verifyIntegrity(client.getId())) {
+            try {
                 connect = new DBConnect();
                 String query = "UPDATE clients SET name=?, email=?, phone_number=?, gender=?, login=?, pass=?, date_registered=?, company_id=? WHERE id=?;";
                 PreparedStatement preparedStatement = connect.getConnection().prepareStatement(query);
@@ -142,34 +140,34 @@ public class DBClient extends Synchronizable implements IDataAccessObject<Person
 
     @Override
     public void delete(Person object) throws ModelSyncException, DatabaseOutOfSyncException {
-        if (verifyIntegrity(object.getId())){
-            try{
+        if (verifyIntegrity(object.getId())) {
+            try {
                 connect = new DBConnect();
                 int clientID = object.getId();
                 connect.upload("DELETE FROM clients WHERE id=" + clientID + ";");
                 logChange("clients", clientID, ActionType.DELETE);
 
                 ResultSet x = connect.getFromDataBase("SELECT id FROM achievements_clients WHERE client_id=" + clientID + "; " + "DELETE FROM achievements_clients WHERE client_id=" + clientID + ";");
-                while (x.next()){
+                while (x.next()) {
                     logChange("achievements_clients", x.getInt(1), ActionType.DELETE);
                 }
 
                 x = connect.getFromDataBase("SELECT id FROM departments_clients WHERE client_id=" + clientID + "; " + "DELETE FROM departments_clients WHERE client_id=" + clientID + ";");
-                while (x.next()){
+                while (x.next()) {
                     logChange("departments_clients", x.getInt(1), ActionType.DELETE);
                 }
 
                 x = connect.getFromDataBase("SELECT id FROM groups_clients WHERE client_id=" + clientID + "; " + "DELETE FROM groups_clients WHERE client_id=" + clientID + ";");
-                while (x.next()){
+                while (x.next()) {
                     logChange("groups_clients", x.getInt(1), ActionType.DELETE);
                 }
 
                 x = connect.getFromDataBase("SELECT id FROM payments_clients WHERE clients_id=" + clientID + "; " + "DELETE FROM payments_clients WHERE clients_id=" + clientID + ";");
-                while (x.next()){
+                while (x.next()) {
                     logChange("payments_clients", x.getInt(1), ActionType.DELETE);
                 }
                 x = connect.getFromDataBase("SELECT id FROM roles_clients WHERE client_id=" + clientID + "; " + "DELETE FROM roles_clients WHERE client_id=" + clientID + ";");
-                while (x.next()){
+                while (x.next()) {
                     logChange("roles_clients", x.getInt(1), ActionType.DELETE);
                 }
             } catch (ConnectionException | SQLException e) {

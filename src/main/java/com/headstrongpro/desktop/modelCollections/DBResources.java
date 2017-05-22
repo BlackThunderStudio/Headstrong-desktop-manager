@@ -1,22 +1,25 @@
 package com.headstrongpro.desktop.modelCollections;
 
 import com.headstrongpro.desktop.core.connection.DBConnect;
-import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
-import com.headstrongpro.desktop.model.Session;
-import com.headstrongpro.desktop.modelCollections.util.Synchronizable;
 import com.headstrongpro.desktop.core.exception.ConnectionException;
+import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
-import com.headstrongpro.desktop.model.Log;
+import com.headstrongpro.desktop.model.Session;
 import com.headstrongpro.desktop.model.resource.*;
 import com.headstrongpro.desktop.modelCollections.util.IDataAccessObject;
+import com.headstrongpro.desktop.modelCollections.util.Synchronizable;
 
-import java.sql.*;
 import java.sql.Date;
-import java.util.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.headstrongpro.desktop.modelCollections.util.ActionType.*;
 import static com.headstrongpro.desktop.model.resource.ResourceType.*;
+import static com.headstrongpro.desktop.modelCollections.util.ActionType.*;
 
 /**
  * Created by rajmu on 17.05.08.
@@ -26,7 +29,7 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
     private DBConnect dbConnect;
     private java.sql.Date timestamp;
 
-    public DBResources(){
+    public DBResources() {
         timestamp = new Date(Calendar.getInstance().getTimeInMillis());
     }
 
@@ -36,13 +39,13 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
         String query = "SELECT content,parent_id FROM text_resources WHERE parent_id IN (";
         String parentIDs = "";
         List<TextResource> textResources = resources.stream().filter(e -> e.getType().equals(TEXT)).map(TextResource.class::cast).collect(Collectors.toList());
-        if(textResources.size() != 0){
-            for (int i = 0; i < textResources.size() - 1; i++){
+        if (textResources.size() != 0) {
+            for (int i = 0; i < textResources.size() - 1; i++) {
                 parentIDs += textResources.get(i).getID() + ",";
             }
             parentIDs += textResources.get(textResources.size() - 1).getID();
             ResultSet resultSet = dbConnect.getFromDataBase(query + parentIDs + ");");
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 textResources.stream().filter(e -> {
                     try {
                         return e.getID() == resultSet.getInt(2);
@@ -59,17 +62,17 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
         List<ImageResource> imageResources = resources.stream().filter(e -> e.getType().equals(IMAGE)).map(ImageResource.class::cast).collect(Collectors.toList());
         query = "SELECT url, parent_id FROM image_resources WHERE parent_id IN (";
         parentIDs = "";
-        if(imageResources.size() != 0){
-            for (int i = 0; i < imageResources.size() - 1; i++){
+        if (imageResources.size() != 0) {
+            for (int i = 0; i < imageResources.size() - 1; i++) {
                 parentIDs += imageResources.get(i).getID() + ",";
             }
             parentIDs += imageResources.get(imageResources.size() - 1).getID();
             ResultSet resultSet = dbConnect.getFromDataBase(query + parentIDs + ");");
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 imageResources.stream().filter(e -> {
                     try {
                         return e.getID() == resultSet.getInt(2);
-                    } catch (SQLException e2){
+                    } catch (SQLException e2) {
                         e2.printStackTrace();
                     }
                     return false;
@@ -82,14 +85,14 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
         List<AudioResource> audioResources = resources.stream().filter(e -> e.getType().equals(AUDIO)).map(AudioResource.class::cast).collect(Collectors.toList());
         parentIDs = "";
         query = "SELECT url, duration, parent_id FROM multimedia_resources WHERE parent_id IN (";
-        if(audioResources.size() != 0){
-            for (int i = 0; i < audioResources.size() - 1; i++){
+        if (audioResources.size() != 0) {
+            for (int i = 0; i < audioResources.size() - 1; i++) {
                 parentIDs += audioResources.get(i).getID() + ",";
             }
             parentIDs += audioResources.get(audioResources.size() - 1).getID();
             ResultSet resultSet = dbConnect.getFromDataBase(query + parentIDs + ");");
-            while (resultSet.next()){
-                AudioResource ar =  audioResources.stream().filter(e -> {
+            while (resultSet.next()) {
+                AudioResource ar = audioResources.stream().filter(e -> {
                     try {
                         return e.getID() == resultSet.getInt(3);
                     } catch (SQLException e1) {
@@ -106,14 +109,14 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
         //resource segment: video
         List<VideoResource> videoResources = resources.stream().filter(e -> e.getType().equals(VIDEO)).map(VideoResource.class::cast).collect(Collectors.toList());
         parentIDs = "";
-        if(videoResources.size() != 0){
-            for (int i = 0; i < videoResources.size() - 1; i++){
+        if (videoResources.size() != 0) {
+            for (int i = 0; i < videoResources.size() - 1; i++) {
                 parentIDs += videoResources.get(i).getID() + ",";
             }
             parentIDs += videoResources.get(videoResources.size() - 1).getID();
             ResultSet resultSet = dbConnect.getFromDataBase(query + parentIDs + ");");
-            while (resultSet.next()){
-                VideoResource vr =  videoResources.stream().filter(e -> {
+            while (resultSet.next()) {
+                VideoResource vr = videoResources.stream().filter(e -> {
                     try {
                         return e.getID() == resultSet.getInt(3);
                     } catch (SQLException e1) {
@@ -138,11 +141,11 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
     @Override
     public List<Resource> getAll() throws ModelSyncException {
         List<Resource> resources = new ArrayList<>();
-        try{
+        try {
             dbConnect = new DBConnect();
             String query = "SELECT * FROM [resources]";
             ResultSet rs = dbConnect.getFromDataBase(query);
-            while(rs.next()){
+            while (rs.next()) {
                 Resource resource = ResourceFactory.getResource(rs.getInt("id"),
                         rs.getString("name"),
                         rs.getString("description"),
@@ -161,7 +164,7 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
     @Override
     public Resource getById(int id) throws ModelSyncException {
         Resource resource = null;
-        try{
+        try {
             dbConnect = new DBConnect();
             String query = "SELECT * FROM [resources] WHERE id=" + id + ";";
             ResultSet rs = dbConnect.getFromDataBase(query);
@@ -182,8 +185,8 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
     }
 
     @Override
-    public Resource create(Resource object) throws ModelSyncException {
-        try{
+    public Resource persist(Resource object) throws ModelSyncException {
+        try {
             dbConnect = new DBConnect();
             //language=TSQL
             String query = "INSERT INTO resources(name, description, is_for_achievement, type) VALUES (?, ?, ?, ?);";
@@ -198,7 +201,7 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
                     object.setID(generatedKeys.getInt(1));
 
                     //creating records in children tables!!!
-                    switch (object.getType().get()){
+                    switch (object.getType().get()) {
                         case 1:
                             TextResource textResource = Resource.ofType(object);
                             query = "INSERT INTO text_resources(content, parent_id) VALUES (?,?)";
@@ -206,10 +209,11 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
                             preparedStatement1.setString(1, textResource.getContent());
                             preparedStatement1.setInt(2, textResource.getID());
                             preparedStatement1.executeUpdate();
-                            try(ResultSet generatedKeys1 = preparedStatement1.getGeneratedKeys()) {
-                                if (generatedKeys1.next()){
+                            try (ResultSet generatedKeys1 = preparedStatement1.getGeneratedKeys()) {
+                                if (generatedKeys1.next()) {
                                     logChange(-1, "text_resources", generatedKeys1.getInt(1), CREATE);
-                                } else throw new ModelSyncException("Creating record in child table failed! No child ID received!");
+                                } else
+                                    throw new ModelSyncException("Creating record in child table failed! No child ID received!");
                             }
                             break;
                         case 2:
@@ -219,10 +223,11 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
                             preparedStatement2.setString(1, imageResource.getURL());
                             preparedStatement2.setInt(2, imageResource.getID());
                             preparedStatement2.executeUpdate();
-                            try(ResultSet generatedKeys2 = preparedStatement2.getGeneratedKeys()){
-                                if(generatedKeys2.next()){
+                            try (ResultSet generatedKeys2 = preparedStatement2.getGeneratedKeys()) {
+                                if (generatedKeys2.next()) {
                                     logChange(-1, "image_resources", generatedKeys2.getInt(1), CREATE);
-                                } else throw new ModelSyncException("Creating record in child table failed! No child ID received!");
+                                } else
+                                    throw new ModelSyncException("Creating record in child table failed! No child ID received!");
                             }
                             break;
                         case 3:
@@ -233,10 +238,11 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
                             preparedStatement3.setTime(2, audioResource.getDuration());
                             preparedStatement3.setInt(3, audioResource.getID());
                             preparedStatement3.executeUpdate();
-                            try(ResultSet generatedKeys3 = preparedStatement3.getGeneratedKeys()){
-                                if(generatedKeys3.next()){
+                            try (ResultSet generatedKeys3 = preparedStatement3.getGeneratedKeys()) {
+                                if (generatedKeys3.next()) {
                                     logChange(-1, "multimedia_resources", generatedKeys3.getInt(1), CREATE);
-                                } else throw new ModelSyncException("Creating record in child table failed! No child ID received!");
+                                } else
+                                    throw new ModelSyncException("Creating record in child table failed! No child ID received!");
                             }
                             break;
                         case 4:
@@ -247,10 +253,11 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
                             preparedStatement4.setTime(2, videoResource.getDuration());
                             preparedStatement4.setInt(3, videoResource.getID());
                             preparedStatement4.executeUpdate();
-                            try(ResultSet generatedKeys4 = preparedStatement4.getGeneratedKeys()){
-                                if(generatedKeys4.next()){
+                            try (ResultSet generatedKeys4 = preparedStatement4.getGeneratedKeys()) {
+                                if (generatedKeys4.next()) {
                                     logChange(-1, "multimedia_resources", generatedKeys4.getInt(1), CREATE);
-                                } else throw new ModelSyncException("Creating record in child table failed! No child ID received!");
+                                } else
+                                    throw new ModelSyncException("Creating record in child table failed! No child ID received!");
                             }
                             break;
                     } //end of switch
@@ -260,14 +267,14 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
             }
             logChange(-1, "resources", object.getID(), CREATE);
         } catch (ConnectionException | SQLException e) {
-            throw new ModelSyncException("Could not create new resource!", e);
+            throw new ModelSyncException("Could not persist new resource!", e);
         }
         return object;
     }
 
     @Override
     public void update(Resource object) throws ModelSyncException, DatabaseOutOfSyncException {
-        if (verifyIntegrity(object.getID())){
+        if (verifyIntegrity(object.getID())) {
             try {
                 dbConnect = new DBConnect();
                 //language=TSQL
@@ -281,7 +288,7 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
                 dbConnect.uploadSafe(preparedStatement);
 
                 //update the rest of it
-                switch (object.getType().get()){
+                switch (object.getType().get()) {
                     case 1:
                         TextResource textResource = Resource.ofType(object);
                         query = "UPDATE text_resources SET content=? WHERE parent_id=?";
@@ -340,8 +347,8 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
 
     @Override
     public void delete(Resource object) throws ModelSyncException, DatabaseOutOfSyncException {
-        if (verifyIntegrity(object.getID())){
-            try{
+        if (verifyIntegrity(object.getID())) {
+            try {
                 dbConnect = new DBConnect();
                 //language=TSQL
                 String query = "DELETE FROM resources WHERE id=?;";
@@ -350,7 +357,7 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
                 dbConnect.uploadSafe(preparedStatement);
                 logChange(-1, "resources", object.getID(), DELETE);
 
-                switch (object.getType().get()){
+                switch (object.getType().get()) {
                     case 1:
                         ResultSet x = dbConnect.getFromDataBase("SELECT id FROM text_resources WHERE parent_id=" + object.getID());
                         query = "DELETE FROM text_resources WHERE parent_id=" + object.getID();
@@ -383,12 +390,12 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
 
     public List<Resource> getbyType(int type) throws ModelSyncException {
         List<Resource> resources = new ArrayList<>();
-        try{
+        try {
             dbConnect = new DBConnect();
             //language=TSQL
             String query = "SELECT * FROM [resources] WHERE type=" + type;
             ResultSet rs = dbConnect.getFromDataBase(query);
-            while(rs.next()){
+            while (rs.next()) {
                 Resource resource = ResourceFactory.getResource(rs.getInt("id"),
                         rs.getString("name"),
                         rs.getString("description"),
@@ -406,23 +413,23 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
     public List<Resource> getBySessionID(int sessionID) throws ModelSyncException {
         ArrayList<Integer> resIDs = new ArrayList<>();
         List<Resource> resources = new ArrayList<>();
-        try{
+        try {
             dbConnect = new DBConnect();
             //language=TSQL
             String qry = "SELECT * FROM sessions_resources WHERE session_id=" + sessionID + ";";
             ResultSet rs = dbConnect.getFromDataBase(qry);
-            while (rs.next()){
+            while (rs.next()) {
                 resIDs.add(rs.getInt("resource_id"));
             }
 
             String simplifiedResIDs = "";
-            for (int i = 0; i < resIDs.size() - 1; i ++){
+            for (int i = 0; i < resIDs.size() - 1; i++) {
                 simplifiedResIDs += resIDs.get(i) + ",";
             }
             simplifiedResIDs += resIDs.get(resIDs.size() - 1);
             qry = "SELECT * FROM resources WHERE id IN(" + simplifiedResIDs + ");";
             rs = dbConnect.getFromDataBase(qry);
-            while (rs.next()){
+            while (rs.next()) {
                 Resource resource = ResourceFactory.getResource(rs.getInt("id"),
                         rs.getString("name"),
                         rs.getString("description"),
@@ -431,7 +438,7 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
                 resources.add(resource);
             }
             resources = prepareResources(resources);
-        } catch (ConnectionException | SQLException e){
+        } catch (ConnectionException | SQLException e) {
             throw new ModelSyncException("WARNING! Could not fetch resources of sessionID: " + sessionID + " !", e);
         }
         return resources;
@@ -445,8 +452,8 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
             preparedStatement.setInt(1, session.getId());
             preparedStatement.setInt(1, resource.getID());
             preparedStatement.executeUpdate();
-            try(ResultSet generatedKeys = preparedStatement.getGeneratedKeys()){
-                if(generatedKeys.next()){
+            try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
                     id = generatedKeys.getInt(1);
                 } else throw new DatabaseOutOfSyncException();
             }

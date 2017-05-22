@@ -24,7 +24,7 @@ public class DBSubscriptions extends Synchronizable implements IDataAccessObject
     private DBConnect dbConnect;
     private Date timestamp;
 
-    public DBSubscriptions(){
+    public DBSubscriptions() {
         timestamp = new Date(Calendar.getInstance().getTimeInMillis());
     }
 
@@ -102,7 +102,7 @@ public class DBSubscriptions extends Synchronizable implements IDataAccessObject
     }
 
     @Override
-    public Subscription create(Subscription object) throws ModelSyncException {
+    public Subscription persist(Subscription object) throws ModelSyncException {
         try {
             dbConnect = new DBConnect();
             //language=TSQL
@@ -124,14 +124,14 @@ public class DBSubscriptions extends Synchronizable implements IDataAccessObject
                 }
             }
         } catch (ConnectionException | SQLException e) {
-            throw new ModelSyncException("Could not create new subscription!", e);
+            throw new ModelSyncException("Could not persist new subscription!", e);
         }
         return object;
     }
 
     @Override
     public void update(Subscription object) throws ModelSyncException, DatabaseOutOfSyncException {
-        if (verifyIntegrity(object.getId())){
+        if (verifyIntegrity(object.getId())) {
             try {
                 dbConnect = new DBConnect();
                 //language=TSQL
@@ -156,7 +156,7 @@ public class DBSubscriptions extends Synchronizable implements IDataAccessObject
 
     @Override
     public void delete(Subscription object) throws ModelSyncException, DatabaseOutOfSyncException {
-        if (verifyIntegrity(object.getId())){
+        if (verifyIntegrity(object.getId())) {
             try {
                 dbConnect = new DBConnect();
                 //language=TSQL

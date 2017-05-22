@@ -23,7 +23,7 @@ public class DBPayment extends Synchronizable implements IDataAccessObject<Payme
     private DBConnect dbConnect;
     private Date timestamp;
 
-    public DBPayment(){
+    public DBPayment() {
         timestamp = new Date(Calendar.getInstance().getTimeInMillis());
     }
 
@@ -72,14 +72,14 @@ public class DBPayment extends Synchronizable implements IDataAccessObject<Payme
                     subscription
             );
             timestamp = setTimestamp();
-        } catch (ConnectionException | SQLException e){
+        } catch (ConnectionException | SQLException e) {
             throw new ModelSyncException("Could not retrieve a payment!", e);
         }
         return payment;
     }
 
     @Override
-    public Payment create(Payment object) throws ModelSyncException {
+    public Payment persist(Payment object) throws ModelSyncException {
         try {
             dbConnect = new DBConnect();
             //language=TSQL
@@ -100,14 +100,14 @@ public class DBPayment extends Synchronizable implements IDataAccessObject<Payme
                 }
             }
         } catch (ConnectionException | SQLException e) {
-            throw new ModelSyncException("Could not create new payment!", e);
+            throw new ModelSyncException("Could not persist new payment!", e);
         }
         return object;
     }
 
     @Override
     public void update(Payment object) throws ModelSyncException, DatabaseOutOfSyncException {
-        if (verifyIntegrity(object.getId())){
+        if (verifyIntegrity(object.getId())) {
             try {
                 dbConnect = new DBConnect();
                 //language=TSQL
@@ -131,7 +131,7 @@ public class DBPayment extends Synchronizable implements IDataAccessObject<Payme
 
     @Override
     public void delete(Payment object) throws ModelSyncException, DatabaseOutOfSyncException {
-        if (verifyIntegrity(object.getId())){
+        if (verifyIntegrity(object.getId())) {
             try {
                 dbConnect = new DBConnect();
                 //language=TSQL

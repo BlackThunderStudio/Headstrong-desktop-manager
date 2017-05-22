@@ -32,7 +32,7 @@ public class DBSessionTest {
     public void create() throws Exception {
         Session newSess = new Session(402, "test session", "how to dummy for sessions");
         int oldSize = sessionDAO.getAll().size();
-        sessionDAO.create(newSess);
+        sessionDAO.persist(newSess);
         assertNotEquals("Session has not been added", oldSize, sessionDAO.getAll().size());
         sessionDAO.delete(newSess);
         assertEquals("Session has not been removed", oldSize, sessionDAO.getAll().size());

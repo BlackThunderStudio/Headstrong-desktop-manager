@@ -25,21 +25,21 @@ public class DBCourseCategory extends Synchronizable implements IDataAccessObjec
 
     private DBConnect dbConnect;
     private Date timestamp;
-    
-    public DBCourseCategory(){
+
+    public DBCourseCategory() {
         timestamp = new Date(Calendar.getInstance().getTimeInMillis());
     }
 
     @Override
-    public List<CourseCategory> getAll() throws ModelSyncException{
+    public List<CourseCategory> getAll() throws ModelSyncException {
         List<CourseCategory> courseCategories = new ArrayList<>();
-        try{
+        try {
             dbConnect = new DBConnect();
             String getAllCourseCategoriesQuery = "SELECT * FROM s_categories";
             ResultSet ccRS = dbConnect.getFromDataBase(getAllCourseCategoriesQuery);
-            while(ccRS.next())
+            while (ccRS.next())
                 courseCategories.add(new CourseCategory(ccRS.getInt("id"),
-                                                        ccRS.getString("name")));
+                        ccRS.getString("name")));
             timestamp = setTimestamp();
         } catch (ConnectionException | SQLException e) {
             throw new ModelSyncException("Could not load course categories.", e);
@@ -48,15 +48,15 @@ public class DBCourseCategory extends Synchronizable implements IDataAccessObjec
     }
 
     @Override
-    public CourseCategory getById(int id) throws ModelSyncException{
+    public CourseCategory getById(int id) throws ModelSyncException {
         CourseCategory courseCategory = null;
-        try{
+        try {
             dbConnect = new DBConnect();
             String getByIdCourseCategoriesQuery = "SELECT * FROM s_categories WHERE id = " + id + ";";
             ResultSet rs = dbConnect.getFromDataBase(getByIdCourseCategoriesQuery);
             rs.next();
             courseCategory = new CourseCategory(rs.getInt("id"),
-                                                rs.getString("name"));
+                    rs.getString("name"));
             timestamp = setTimestamp();
         } catch (ConnectionException | SQLException e) {
             throw new ModelSyncException("Could not retrieve object by ID", e);
@@ -65,7 +65,7 @@ public class DBCourseCategory extends Synchronizable implements IDataAccessObjec
     }
 
     @Override
-    public CourseCategory create(CourseCategory newCourseCategory) throws ModelSyncException{
+    public CourseCategory persist(CourseCategory newCourseCategory) throws ModelSyncException {
         try {
             if (!newCourseCategory.getName().isEmpty()) {
                 dbConnect = new DBConnect();
@@ -85,19 +85,18 @@ public class DBCourseCategory extends Synchronizable implements IDataAccessObjec
             } else {
                 throw new EmptyInputException("Name can not be empty");
             }
-        }catch(EmptyInputException e){
+        } catch (EmptyInputException e) {
             throw new ModelSyncException("Name can not be   e m p t y");
-        }
-        catch (ConnectionException | SQLException e) {
-            throw new ModelSyncException("Could not create new course category!", e);
+        } catch (ConnectionException | SQLException e) {
+            throw new ModelSyncException("Could not persist new course category!", e);
         }
         return newCourseCategory;
     }
 
     @Override
     public void update(CourseCategory courseCategory) throws ModelSyncException, DatabaseOutOfSyncException {
-        if(verifyIntegrity(courseCategory.getId())){
-            try{
+        if (verifyIntegrity(courseCategory.getId())) {
+            try {
                 dbConnect = new DBConnect();
                 //language=TSQL
                 String updateCourseCategoryQuery = "UPDATE s_categories SET name=? WHERE id=?;";
@@ -116,8 +115,8 @@ public class DBCourseCategory extends Synchronizable implements IDataAccessObjec
 
     @Override
     public void delete(CourseCategory courseCategory) throws ModelSyncException, DatabaseOutOfSyncException {
-        if(verifyIntegrity(courseCategory.getId())){
-            try{
+        if (verifyIntegrity(courseCategory.getId())) {
+            try {
                 dbConnect = new DBConnect();
                 String deleteCourseCategoryQuery = "DELETE FROM s_categories WHERE id=?;";
                 PreparedStatement preparedStatement = dbConnect.getConnection().prepareStatement(deleteCourseCategoryQuery);

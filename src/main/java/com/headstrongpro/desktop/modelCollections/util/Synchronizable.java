@@ -20,20 +20,20 @@ public abstract class Synchronizable {
 
     //TODO: we need to resolve the issue of tracking which employee triggered this method. Possibly storing user session data ofType a singleton?
     protected static Log logChange(int empID, String tableName, int itemID, ActionType type) throws ModelSyncException {
-        return new DBLogActions().create(new Log(empID, tableName, itemID, type.getType()));
+        return new DBLogActions().persist(new Log(empID, tableName, itemID, type.getType()));
     }
 
     protected static Log logChange(String tableName, int itemID, ActionType type) throws ModelSyncException {
-        return new DBLogActions().create(new Log(tableName, itemID, type.getType()));
+        return new DBLogActions().persist(new Log(tableName, itemID, type.getType()));
     }
 
     protected static void logChange(String tableName, ActionType type, int... itemIDs) throws ModelSyncException {
-        for (int i : itemIDs){
-            new DBLogActions().create(new Log(tableName, i, type.getType()));
+        for (int i : itemIDs) {
+            new DBLogActions().persist(new Log(tableName, i, type.getType()));
         }
     }
 
-    protected static Date setTimestamp(){
+    protected static Date setTimestamp() {
         ResultSet resultSet = null;
         Date timestamp = new Date(Calendar.getInstance().getTimeInMillis());
         try {
@@ -51,9 +51,9 @@ public abstract class Synchronizable {
 
     protected boolean verifyIntegrity(int itemID, Date timestamp, String tableName) throws ModelSyncException {
         List<Log> logs = new DBLogActions().getByTable(tableName);
-        if(logs.size() == 0) return true;
+        if (logs.size() == 0) return true;
         else {
-            if(logs.stream().anyMatch(e -> e.getItemID() == itemID)){
+            if (logs.stream().anyMatch(e -> e.getItemID() == itemID)) {
                 long millis = logs.stream()
                         .filter(e -> e.getItemID() == itemID)
                         .sorted(Comparator.comparingLong(e -> e.getDate().getTime()))

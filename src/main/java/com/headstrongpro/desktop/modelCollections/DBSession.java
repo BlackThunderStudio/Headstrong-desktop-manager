@@ -25,7 +25,7 @@ public class DBSession extends Synchronizable implements IDataAccessObject<Sessi
     private DBConnect dbConnect;
     private Date timestamp;
 
-    public DBSession(){
+    public DBSession() {
         timestamp = new Date(Calendar.getInstance().getTimeInMillis());
     }
 
@@ -64,7 +64,7 @@ public class DBSession extends Synchronizable implements IDataAccessObject<Sessi
     }
 
     @Override
-    public Session create(Session object) throws ModelSyncException {
+    public Session persist(Session object) throws ModelSyncException {
         try {
             dbConnect = new DBConnect();
             //language=TSQL

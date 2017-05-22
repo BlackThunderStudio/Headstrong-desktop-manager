@@ -3,10 +3,8 @@ package com.headstrongpro.desktop.modelCollections;
 import com.headstrongpro.desktop.model.entity.Person;
 import com.headstrongpro.desktop.model.entity.User;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -41,7 +39,7 @@ public class DBUserTest {
     public void createDelete() throws Exception {
         User newUser = new User("john", "johnny@crash.com", "09778628", "true", "2507893435", "lil marco", "1233", "dummyville", "dummyland", "12121212", "12000");
         int oldSize = userDAO.getAll().size();
-        userDAO.create(newUser);
+        userDAO.persist(newUser);
         assertNotEquals("User has not been added", oldSize, userDAO.getAll().size());
         userDAO.delete(newUser);
         assertEquals("User has not been removed", oldSize, userDAO.getAll().size());

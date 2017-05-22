@@ -25,19 +25,19 @@ public class DBDepartments extends Synchronizable implements IDataAccessObject<D
     private DBConnect connect;
     private Date timestamp;
 
-    public DBDepartments(){
+    public DBDepartments() {
         timestamp = new Date(Calendar.getInstance().getTimeInMillis());
     }
 
     @Override
     public List<Department> getAll() throws ModelSyncException {
         List<Department> departments = new ArrayList<>();
-        try{
+        try {
             connect = new DBConnect();
             //language=TSQL
             String query = "SELECT * FROM departments";
             ResultSet rs = connect.getFromDataBase(query);
-            while (rs.next()){
+            while (rs.next()) {
                 departments.add(new Department(
                         rs.getInt("id"),
                         rs.getString("name"),
@@ -46,7 +46,7 @@ public class DBDepartments extends Synchronizable implements IDataAccessObject<D
                 ));
             }
             timestamp = setTimestamp();
-        } catch (ConnectionException | SQLException e){
+        } catch (ConnectionException | SQLException e) {
             throw new ModelSyncException("Could not retrieve departments!", e);
         }
         return departments;
@@ -66,15 +66,15 @@ public class DBDepartments extends Synchronizable implements IDataAccessObject<D
                     rs.getInt("company_id")
             );
             timestamp = setTimestamp();
-        } catch (ConnectionException | SQLException e){
+        } catch (ConnectionException | SQLException e) {
             throw new ModelSyncException("Could not retrieve a department!", e);
         }
         return department;
     }
 
     @Override
-    public Department create(Department object) throws ModelSyncException {
-        try{
+    public Department persist(Department object) throws ModelSyncException {
+        try {
             connect = new DBConnect();
             //language=TSQL
             String query = "INSERT INTO departments(name, description, company_id) VALUES (?,?,?);";
@@ -83,8 +83,8 @@ public class DBDepartments extends Synchronizable implements IDataAccessObject<D
             preparedStatement.setString(2, object.getDescription());
             preparedStatement.setInt(3, object.getCompanyID());
             preparedStatement.executeUpdate();
-            try(ResultSet generatedKeys = preparedStatement.getGeneratedKeys()){
-                if(generatedKeys.next()){
+            try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
                     object.setId(generatedKeys.getInt(1));
                     logChange("departments", object.getId(), ActionType.CREATE);
                     timestamp = setTimestamp();
@@ -92,15 +92,15 @@ public class DBDepartments extends Synchronizable implements IDataAccessObject<D
                     throw new ModelSyncException("Creating new department failed! No ID retrieved!");
                 }
             }
-        } catch (ConnectionException | SQLException e){
-            throw new ModelSyncException("Could not create a department!", e);
+        } catch (ConnectionException | SQLException e) {
+            throw new ModelSyncException("Could not persist a department!", e);
         }
         return object;
     }
 
     @Override
     public void update(Department object) throws ModelSyncException, DatabaseOutOfSyncException {
-        if (verifyIntegrity(object.getId())){
+        if (verifyIntegrity(object.getId())) {
             try {
                 connect = new DBConnect();
                 //language=TSQL
@@ -112,7 +112,7 @@ public class DBDepartments extends Synchronizable implements IDataAccessObject<D
                 preparedStatement.setInt(4, object.getId());
                 connect.uploadSafe(preparedStatement);
                 logChange("departments", object.getId(), ActionType.UPDATE);
-            } catch (ConnectionException | SQLException e){
+            } catch (ConnectionException | SQLException e) {
                 throw new ModelSyncException("Could not update a department!", e);
             }
         } else {
@@ -122,17 +122,17 @@ public class DBDepartments extends Synchronizable implements IDataAccessObject<D
 
     @Override
     public void delete(Department object) throws ModelSyncException, DatabaseOutOfSyncException {
-        if(verifyIntegrity(object.getId())){
+        if (verifyIntegrity(object.getId())) {
             try {
                 connect = new DBConnect();
                 connect.upload("DELETE FROM departments WHERE id=" + object.getId());
                 logChange("departments", object.getId(), ActionType.DELETE);
 
                 ResultSet x = connect.getFromDataBase("SELECT id FROM departments_clients WHERE department_id=" + object.getId() + "; " + "DELETE FROM departments_clients WHERE department_id=" + object.getId());
-                while (x.next()){
+                while (x.next()) {
                     logChange("departments_clients", x.getInt(1), ActionType.DELETE);
                 }
-            } catch (ConnectionException | SQLException e){
+            } catch (ConnectionException | SQLException e) {
                 throw new ModelSyncException("Could not delete a department!", e);
             }
         } else {
@@ -140,14 +140,14 @@ public class DBDepartments extends Synchronizable implements IDataAccessObject<D
         }
     }
 
-    public List<Department> getByCompanyID(int id) throws ModelSyncException{
+    public List<Department> getByCompanyID(int id) throws ModelSyncException {
         List<Department> departments = new ArrayList<>();
         try {
             connect = new DBConnect();
             //language=TSQL
             String query = "SELECT * FROM departments WHERE company_id=" + id + ";";
             ResultSet rs = connect.getFromDataBase(query);
-            while (rs.next()){
+            while (rs.next()) {
                 departments.add(new Department(
                         rs.getInt("id"),
                         rs.getString("name"),
@@ -155,42 +155,42 @@ public class DBDepartments extends Synchronizable implements IDataAccessObject<D
                         rs.getInt("company_id")
                 ));
             }
-        } catch (ConnectionException | SQLException e){
+        } catch (ConnectionException | SQLException e) {
             throw new ModelSyncException("Could not fetch departments by company ID!", e);
         }
         return departments;
     }
 
     public void deleteByCompanyID(int id) throws ModelSyncException, DatabaseOutOfSyncException {
-        if(verifyIntegrity(id)){
+        if (verifyIntegrity(id)) {
             try {
                 connect = new DBConnect();
                 ResultSet rs = connect.getFromDataBase("SELECT id FROM departments WHERE company_id=" + id);
                 List<Integer> deptIDs = new ArrayList<>();
-                while (rs.next()){
+                while (rs.next()) {
                     deptIDs.add(rs.getInt(1));
                 }
                 String simplifiedDeptIDs = "";
-                for (int i = 0 ; i < deptIDs.size() - 1; i++){
+                for (int i = 0; i < deptIDs.size() - 1; i++) {
                     simplifiedDeptIDs += deptIDs.get(i) + ",";
                 }
-                if(deptIDs.size() != 0) simplifiedDeptIDs += deptIDs.get(deptIDs.size() - 1);
+                if (deptIDs.size() != 0) simplifiedDeptIDs += deptIDs.get(deptIDs.size() - 1);
 
                 //language=TSQL
                 String query = "SELECT id FROM departments WHERE company_id=" + id + "; DELETE FROM departments WHERE company_id=" + id + ";";
                 ResultSet x = connect.getFromDataBase(query);
-                while (x.next()){
+                while (x.next()) {
                     logChange("departments", x.getInt(1), ActionType.DELETE);
                 }
 
-                if(deptIDs.size() != 0){
+                if (deptIDs.size() != 0) {
                     query = "SELECT id FROM departments_clients WHERE department_id IN (" + simplifiedDeptIDs + "); DELETE FROM departments_clients WHERE department_id IN(" + simplifiedDeptIDs + ");";
                     ResultSet x2 = connect.getFromDataBase(query);
-                    while (x2.next()){
+                    while (x2.next()) {
                         logChange("departments_clients", x2.getInt(1), ActionType.DELETE);
                     }
                 }
-            } catch (ConnectionException | SQLException e){
+            } catch (ConnectionException | SQLException e) {
                 throw new ModelSyncException("Could not fetch departments by company ID!", e);
             }
         } else {

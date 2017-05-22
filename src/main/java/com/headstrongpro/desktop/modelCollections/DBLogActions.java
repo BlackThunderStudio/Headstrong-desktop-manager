@@ -28,7 +28,7 @@ public class DBLogActions implements IDataAccessObject<Log> {
             //language=TSQL
             String query = "SELECT * FROM log_actions";
             ResultSet rs = connect.getFromDataBase(query);
-            while (rs.next()){
+            while (rs.next()) {
                 logs.add(new Log(
                         rs.getInt(1),
                         rs.getInt(2),
@@ -68,7 +68,7 @@ public class DBLogActions implements IDataAccessObject<Log> {
     }
 
     @Override
-    public Log create(Log object) throws ModelSyncException {
+    public Log persist(Log object) throws ModelSyncException {
         try {
             connect = new DBConnect();
             //language=TSQL
@@ -79,15 +79,15 @@ public class DBLogActions implements IDataAccessObject<Log> {
             preparedStatement.setInt(3, object.getItemID());
             preparedStatement.setString(4, object.getActionType());
             preparedStatement.executeUpdate();
-            try(ResultSet generatedKeys = preparedStatement.getGeneratedKeys()){
-                if(generatedKeys.next()){
+            try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
                     object.setId(generatedKeys.getInt(1));
                 } else {
                     throw new ModelSyncException("Creating a log record failed. No ID retrieved!");
                 }
             }
         } catch (ConnectionException | SQLException e) {
-            throw new ModelSyncException("Could not create a new log entry!", e);
+            throw new ModelSyncException("Could not persist a new log entry!", e);
         }
         return object;
     }
@@ -113,7 +113,7 @@ public class DBLogActions implements IDataAccessObject<Log> {
             //language=TSQL
             String query = "SELECT * FROM log_actions WHERE table_name='" + table + "';";
             ResultSet rs = connect.getFromDataBase(query);
-            while (rs.next()){
+            while (rs.next()) {
                 logs.add(new Log(
                         rs.getInt(1),
                         rs.getInt(2),
