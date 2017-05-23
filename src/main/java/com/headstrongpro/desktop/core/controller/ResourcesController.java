@@ -66,6 +66,8 @@ public class ResourcesController extends Configurable implements Refreshable {
      * @return A list of objects containing searched phrase
      */
     public List<Resource> searchByPhrase(String input){
+        if (input == null) throw new IllegalStateException("input query cannot be of null");
+        if (input.isEmpty()) return new ArrayList<Resource>();
         return resources.stream().filter(e -> {
             if(String.valueOf(e.getID()).equalsIgnoreCase(input) ||
                     e.getName().equalsIgnoreCase(input) ||
@@ -83,6 +85,7 @@ public class ResourcesController extends Configurable implements Refreshable {
      * @return List of resources
      */
     public List<Resource> filterByType(ResourceType type){
+        if (type == null) throw new IllegalStateException("Type cannot be null");
         return resources.stream().filter(e -> e.getType().equals(type)).collect(Collectors.toList());
     }
 
@@ -119,6 +122,15 @@ public class ResourcesController extends Configurable implements Refreshable {
      * @throws ModelSyncException throws it when shit goes south.
      */
     public Resource uploadLocalFile(File file, String name, String description, boolean isForAchievement, ResourceType type, List<Object> args) throws ModelSyncException, ConnectionException {
+
+        //retard protection
+        if (file == null || name == null || description == null || type == null || args == null)
+            throw new NullPointerException();
+        if (file.getAbsolutePath().isEmpty() || file.getName().isEmpty())
+            throw new IllegalStateException("File cannot be empty!");
+        if (name.isEmpty()) throw new IllegalStateException("Name cannot be empty");
+        if (description.isEmpty()) throw new IllegalStateException("Description cannot be empty");
+
         List<Object> ftpData = getConfig();
         SFTPUtils sftp = new SFTPUtils(
                 (String) ftpData.get(0),
@@ -139,14 +151,17 @@ public class ResourcesController extends Configurable implements Refreshable {
         Resource resource = ResourceFactory.getResource(file.getName(), description, isForAchievement, type.get());
         if(type.equals(ResourceType.TEXT)){
             TextResource textResource = Resource.ofType(resource);
+            assert textResource != null;
             textResource.setContent((String)args.get(0));
             resource = textResource;
         } else if(type.equals(ResourceType.IMAGE)){
             ImageResource imageResource = Resource.ofType(resource);
+            assert imageResource != null;
             imageResource.setURL(url);
             resource = imageResource;
         } else {
             AudioResource audioResource = Resource.ofType(resource);
+            assert audioResource != null;
             audioResource.setUrl(url);
             audioResource.setDuration((Time)args.get(0));
             resource = audioResource;
@@ -164,6 +179,8 @@ public class ResourcesController extends Configurable implements Refreshable {
      * @throws ModelSyncException
      */
     public void assignToCourse(Session session, Resource resource) throws DatabaseOutOfSyncException, ModelSyncException {
+        if (session == null) throw new IllegalStateException("Session cannot be null");
+        if (resource == null) throw new IllegalStateException("Resource cannot be null");
         resourcesDAO.assignToSession(resource, session);
     }
 
