@@ -13,9 +13,9 @@ public interface IDataAccessObject<T> {
 
     T getById(int id) throws ModelSyncException;
 
-    T persist(T object) throws ModelSyncException;
+    T persist(T t) throws ModelSyncException;
 
-    void update(T object) throws ModelSyncException, DatabaseOutOfSyncException;
+    void update(T t) throws ModelSyncException, DatabaseOutOfSyncException;
 
-    void delete(T object) throws ModelSyncException, DatabaseOutOfSyncException;
+    void delete(T t) throws ModelSyncException, DatabaseOutOfSyncException;
 }
