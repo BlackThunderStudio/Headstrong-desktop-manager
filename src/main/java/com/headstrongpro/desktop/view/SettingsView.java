@@ -1,4 +1,4 @@
-package com.headstrongpro.desktop.controller;
+package com.headstrongpro.desktop.view;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

@@ -1,4 +1,4 @@
-package com.headstrongpro.desktop.controller;
+package com.headstrongpro.desktop.view;
 
 import javafx.fxml.Initializable;
 
@@ -6,9 +6,9 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * Created by Ondřej Soukup on 19.05.2017.
+ * Login Controller
  */
-public class DashboardView implements Initializable {
+public class LoginView implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

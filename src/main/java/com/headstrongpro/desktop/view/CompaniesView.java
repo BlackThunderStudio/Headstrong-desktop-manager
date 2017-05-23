@@ -1,6 +1,5 @@
-package com.headstrongpro.desktop.controller;
+package com.headstrongpro.desktop.view;
 
-import com.sun.org.apache.bcel.internal.generic.IndexedInstruction;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;

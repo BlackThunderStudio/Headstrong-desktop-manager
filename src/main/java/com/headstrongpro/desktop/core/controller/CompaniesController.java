@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Companies controller
+ * Companies view
  */
 public class CompaniesController implements Refreshable {
     private List<Company> companies;

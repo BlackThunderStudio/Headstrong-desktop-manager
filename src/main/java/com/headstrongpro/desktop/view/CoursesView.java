@@ -1,4 +1,4 @@
-package com.headstrongpro.desktop.controller;
+package com.headstrongpro.desktop.view;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -13,17 +13,20 @@ import java.util.ResourceBundle;
 /**
  * Created by Ondřej Soukup on 23.05.2017.
  */
-public class PaymentsView implements Initializable {
+public class CoursesView implements Initializable {
 
     @FXML
-    public Text paymentsHeader;
+    public Text coursesHeader;
     @FXML
-    public TextField searchPaymentsTextfield;
+    public TextField searchCoursesTextfield;
     @FXML
-    public TableView paymentsTable;
+    public TableView coursesTable;
+    @FXML
+    public Button newCourseButton;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
     }
+
 }

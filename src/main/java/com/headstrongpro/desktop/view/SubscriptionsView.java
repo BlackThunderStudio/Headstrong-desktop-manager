@@ -1,9 +1,8 @@
-package com.headstrongpro.desktop.controller;
+package com.headstrongpro.desktop.view;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
@@ -14,18 +13,16 @@ import java.util.ResourceBundle;
 /**
  * Created by Ondřej Soukup on 23.05.2017.
  */
-public class ClientsView implements Initializable {
+public class SubscriptionsView implements Initializable {
 
     @FXML
-    public TextField searchClientsTextfield;
+    public Text subscriptionsHeader;
     @FXML
-    public TableView clientsTable;
+    public TextField searchSubscriptionsTextfield;
     @FXML
-    public Button newClientButton;
+    public TableView subscriptionsTable;
     @FXML
-    public Text clientsHeader;
-    @FXML
-    public Button assignMoreButton;
+    public Button newSubscriptionButton;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
