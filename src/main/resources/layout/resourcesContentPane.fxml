@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXProgressBar?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
@@ -13,7 +14,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<GridPane maxHeight="700" maxWidth="800" minHeight="700" minWidth="800" prefHeight="700.0" prefWidth="800.0" stylesheets="/style/resourcesContentPane.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.headstrongpro.desktop.view.ResourcesView">
+<GridPane maxHeight="700" maxWidth="800" minHeight="700" minWidth="800" prefHeight="700.0" prefWidth="800.0" stylesheets="/style/resourcesContentPane.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.headstrongpro.desktop.view.ResourcesView">
     <columnConstraints>
         <ColumnConstraints hgrow="NEVER" maxWidth="300.0" minWidth="300.0" percentWidth="100.0" prefWidth="300.0" />
     </columnConstraints>
@@ -39,15 +40,16 @@
             <Insets right="20.0" />
          </GridPane.margin>
       </ComboBox>
-      <TextField fx:id="searchResourcesTextfield" promptText="Search" GridPane.rowIndex="2">
+      <TextField fx:id="searchResourcesTextfield" onKeyReleased="#searchResourcesTextfield_onKeyReleased" promptText="Search" GridPane.rowIndex="2">
          <GridPane.margin>
             <Insets left="20.0" right="20.0" />
          </GridPane.margin>
       </TextField>
       <TableView fx:id="resourcesTable" maxWidth="4000.0" minWidth="200.0" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="3">
         <columns>
-          <TableColumn prefWidth="75.0" text="C1" />
-          <TableColumn prefWidth="75.0" text="C2" />
+          <TableColumn fx:id="nameCol" prefWidth="120" text="Name" />
+          <TableColumn fx:id="descCol" prefWidth="200" text="Description" />
+            <TableColumn fx:id="typeCol" prefWidth="50" text="Type" />
         </columns>
          <GridPane.margin>
             <Insets left="20.0" right="20.0" />
@@ -63,5 +65,10 @@
             <Insets right="150.0" />
          </GridPane.margin>
       </Button>
+      <JFXProgressBar fx:id="progressBar" prefHeight="30.0" prefWidth="300.0" progress="0.0" GridPane.rowIndex="4">
+         <GridPane.margin>
+            <Insets left="20.0" />
+         </GridPane.margin>
+      </JFXProgressBar>
    </children>
 </GridPane>

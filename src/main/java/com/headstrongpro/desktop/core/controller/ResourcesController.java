@@ -58,6 +58,10 @@ public class ResourcesController extends Configurable implements Refreshable {
     public void refresh() throws ModelSyncException {
         resources.addAll(resourcesDAO.getAll());
     }
+    
+    public List<Resource> getAll(){
+        return resources;
+    }
 
     /***
      *

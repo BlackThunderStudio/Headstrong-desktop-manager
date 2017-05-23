@@ -21,7 +21,7 @@ public class SFTPUtils {
         this.user = user;
         this.pass = pass;
         jsch = new JSch();
-        path = "/";
+        path = "";
         port = 22;
     }
 
