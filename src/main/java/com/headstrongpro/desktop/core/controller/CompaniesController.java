@@ -1,6 +1,7 @@
 package com.headstrongpro.desktop.core.controller;
 
 import com.headstrongpro.desktop.core.connection.Configurable;
+import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.model.Department;
 import com.headstrongpro.desktop.model.Group;
@@ -40,9 +41,25 @@ public class CompaniesController implements Refreshable {
     }
 
     //search
-    //add
-    //edit
+    public List<Company> search(String query) throws ModelSyncException{
+        companies = companyDAO.getAll();
+        List<Company> foundCompanies = new ArrayList<>();
+        for (Company c:
+             companies)
+            if((String.valueOf(c.getId()).contains(query)) || c.getName().contains(query) || c.getCvr().contains(query) || c.getStreet().contains(query) || c.getPostal().contains(query) || c.getCity().contains(query) || c.getCountry().contains(query))
+                foundCompanies.add(c);
+
+        return foundCompanies;
+    }
+    //add TODO
+
+    //edit TODO
+
     //delete
+    public void deleteCompany(int id) throws ModelSyncException, DatabaseOutOfSyncException{
+        companyDAO.delete(companyDAO.getById(id));
+        refresh();
+    }
 
     //get departments by company id
     public List<Department> getDepartmentsByCompanyId(int id) throws ModelSyncException{
