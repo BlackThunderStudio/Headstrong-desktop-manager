@@ -35,17 +35,17 @@
       </Pane>
       <TextField fx:id="searchGroupsTextfield" promptText="Search" GridPane.rowIndex="1">
          <GridPane.margin>
-            <Insets left="10.0" right="10.0" />
+            <Insets left="20.0" right="20.0" />
          </GridPane.margin>
       </TextField>
       <Button fx:id="newGroupButton" maxWidth="110.0" minWidth="110.0" mnemonicParsing="false" prefWidth="110.0" text="New" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
          <GridPane.margin>
-            <Insets right="10.0" />
+            <Insets right="20.0" />
          </GridPane.margin>
       </Button>
       <Button fx:id="setButton" maxWidth="110.0" minWidth="110.0" mnemonicParsing="false" prefWidth="110.0" text="Set" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
          <GridPane.margin>
-            <Insets right="130.0" />
+            <Insets right="150.0" />
          </GridPane.margin>
       </Button>
       <TreeTableView fx:id="groupsTreeTableView" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2">
@@ -54,7 +54,7 @@
           <TreeTableColumn prefWidth="75.0" text="C2" />
         </columns>
          <GridPane.margin>
-            <Insets left="10.0" right="10.0" />
+            <Insets left="20.0" right="20.0" />
          </GridPane.margin>
       </TreeTableView>
    </children>
