@@ -32,12 +32,12 @@ public class DBSession extends Synchronizable implements IDataAccessObject<Sessi
     @Override
     public ObservableList<Session> getAll() throws ModelSyncException {
         ObservableList<Session> sessions = FXCollections.observableArrayList();
-        String selectQuery = "SELECT * FROM [sessions]";
+        String selectQuery = "SELECT * FROM [sessions];";
         try {
             dbConnect = new DBConnect();
             ResultSet resultSet = dbConnect.getFromDataBase(selectQuery);
             while (resultSet.next()) {
-                sessions.add(createObject(resultSet));
+                sessions.add(create(resultSet));
             }
             timestamp = setTimestamp();
         } catch (ConnectionException | SQLException e) {
@@ -49,16 +49,16 @@ public class DBSession extends Synchronizable implements IDataAccessObject<Sessi
     @Override
     public Session getById(int id) throws ModelSyncException {
         Session session = null;
-        String selectQuery = "SELECT * FROM [sessions] WHERE id = " + id;
+        String selectQuery = "SELECT * FROM [sessions] WHERE id = " + id + ";";
         try {
             dbConnect = new DBConnect();
             ResultSet resultSet = dbConnect.getFromDataBase(selectQuery);
             if (resultSet.next()) {
-                session = createObject(resultSet);
+                session = create(resultSet);
             }
             timestamp = setTimestamp();
         } catch (ConnectionException | SQLException e) {
-            throw new ModelSyncException("Could not retrieve a session!", e);
+            throw new ModelSyncException("Could not retrieve the session!", e);
         }
         return session;
     }
@@ -82,7 +82,7 @@ public class DBSession extends Synchronizable implements IDataAccessObject<Sessi
                 }
             }
         } catch (ConnectionException | SQLException e) {
-            throw new ModelSyncException("Could not createObject new session!", e);
+            throw new ModelSyncException("Could not create new session!", e);
         }
         return object;
     }
@@ -127,16 +127,16 @@ public class DBSession extends Synchronizable implements IDataAccessObject<Sessi
         }
     }
 
-    private Session createObject(ResultSet resultSet) throws SQLException {
+    @Override
+    protected boolean verifyIntegrity(int itemID) throws ModelSyncException {
+        return verifyIntegrity(itemID, timestamp, "sessions");
+    }
+
+    private Session create(ResultSet resultSet) throws SQLException {
         Session session = new Session();
         session.setId(resultSet.getInt("id"));
         session.setName(resultSet.getString("name"));
         session.setDescription(resultSet.getString("description"));
         return session;
-    }
-
-    @Override
-    protected boolean verifyIntegrity(int itemID) throws ModelSyncException {
-        return verifyIntegrity(itemID, timestamp, "sessions");
     }
 }

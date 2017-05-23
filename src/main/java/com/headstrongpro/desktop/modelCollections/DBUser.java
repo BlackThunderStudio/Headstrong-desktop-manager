@@ -4,27 +4,26 @@ import com.headstrongpro.desktop.core.connection.DBConnect;
 import com.headstrongpro.desktop.core.exception.ConnectionException;
 import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
-import com.headstrongpro.desktop.model.entity.EntityFactory;
 import com.headstrongpro.desktop.model.entity.Person;
 import com.headstrongpro.desktop.model.entity.User;
 import com.headstrongpro.desktop.modelCollections.util.ActionType;
 import com.headstrongpro.desktop.modelCollections.util.IDataAccessObject;
 import com.headstrongpro.desktop.modelCollections.util.Synchronizable;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 /**
  * DB User
  */
 public class DBUser extends Synchronizable implements IDataAccessObject<Person> {
 
-    private DBConnect connect;
+    private DBConnect dbConnect;
     private Date timestamp;
 
     public DBUser() {
@@ -32,32 +31,18 @@ public class DBUser extends Synchronizable implements IDataAccessObject<Person> 
     }
 
     @Override
-    public List<Person> getAll() throws ModelSyncException {
-        List<Person> users = new ArrayList<>();
+    public ObservableList<Person> getAll() throws ModelSyncException {
+        ObservableList<Person> users = FXCollections.observableArrayList();
+        String selectQuery = "SELECT * FROM [employees_headstrong];";
         try {
-            connect = new DBConnect();
-            String query = "SELECT * FROM employees_headstrong;";
-
-            ResultSet rs = connect.getFromDataBase(query);
-            while (rs.next()) {
-                users.add(EntityFactory.getUser(
-                        rs.getInt("id"),
-                        rs.getString("name"),
-                        rs.getString("email"),
-                        rs.getString("phone_number"),
-                        String.valueOf(rs.getBoolean("gender")),
-                        String.valueOf(rs.getBigDecimal("cpr")),
-                        rs.getString("street"),
-                        rs.getString("postal"),
-                        rs.getString("city"),
-                        rs.getString("country"),
-                        rs.getString("bank_account_n"),
-                        String.valueOf(rs.getBigDecimal("base_salary"))
-                ));
+            dbConnect = new DBConnect();
+            ResultSet resultSet = dbConnect.getFromDataBase(selectQuery);
+            while (resultSet.next()) {
+                users.add(create(resultSet));
             }
             timestamp = setTimestamp();
         } catch (ConnectionException | SQLException e) {
-            throw new ModelSyncException("Could not retrieve the users!", e);
+            throw new ModelSyncException("Could not retrieve users!", e);
         }
         return users;
     }
@@ -65,27 +50,32 @@ public class DBUser extends Synchronizable implements IDataAccessObject<Person> 
     @Override
     public Person getById(int id) throws ModelSyncException {
         Person person = null;
+        String selectQuery = "SELECT * FROM [employees_headstrong] WHERE id = " + id + ";";
         try {
-            connect = new DBConnect();
-            ResultSet rs = connect.getFromDataBase("SELECT * FROM employees_headstrong WHERE id=" + id + ";");
-            rs.next();
-            person = EntityFactory.getUser(
-                    rs.getInt("id"),
-                    rs.getString("name"),
-                    rs.getString("email"),
-                    rs.getString("phone_number"),
-                    String.valueOf(rs.getBoolean("gender")),
-                    String.valueOf(rs.getBigDecimal("cpr")),
-                    rs.getString("street"),
-                    rs.getString("postal"),
-                    rs.getString("city"),
-                    rs.getString("country"),
-                    rs.getString("bank_account_n"),
-                    String.valueOf(rs.getBigDecimal("base_salary"))
-            );
+            dbConnect = new DBConnect();
+            ResultSet resultSet = dbConnect.getFromDataBase(selectQuery);
+            if (resultSet.next()) {
+                person = create(resultSet);
+            }
             timestamp = setTimestamp();
         } catch (ConnectionException | SQLException e) {
-            throw new ModelSyncException("Could not retrieve a user!", e);
+            throw new ModelSyncException("Could not retrieve the user!", e);
+        }
+        return person;
+    }
+
+    public Person getByUsername(String username) throws ModelSyncException {
+        Person person = null;
+        String selectQuery = "SELECT * FROM [employees_headstrong] WHERE username = " + username + ";";
+        try {
+            dbConnect = new DBConnect();
+            ResultSet resultSet = dbConnect.getFromDataBase(selectQuery);
+            if (resultSet.next()) {
+                person = create(resultSet);
+            }
+            timestamp = setTimestamp();
+        } catch (ConnectionException | SQLException e) {
+            throw new ModelSyncException("Could not retrieve the user!", e);
         }
         return person;
     }
@@ -94,10 +84,10 @@ public class DBUser extends Synchronizable implements IDataAccessObject<Person> 
     public Person persist(Person object) throws ModelSyncException {
         User user = (User) object;
         try {
-            connect = new DBConnect();
+            dbConnect = new DBConnect();
             //language=TSQL
             String query = "INSERT INTO employees_headstrong(name, cpr, street, postal, city, country, email, phone_number, bank_account_n, gender, base_salary) VALUES (?,?,?,?,?,?,?,?,?,?,?);";
-            PreparedStatement preparedStatement = connect.getConnection().prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
+            PreparedStatement preparedStatement = dbConnect.getConnection().prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, user.getName());
             preparedStatement.setString(2, user.getCpr());
             preparedStatement.setString(3, user.getStreet());
@@ -129,10 +119,10 @@ public class DBUser extends Synchronizable implements IDataAccessObject<Person> 
         User user = (User) object;
         if (verifyIntegrity(object.getId())) {
             try {
-                connect = new DBConnect();
+                dbConnect = new DBConnect();
                 //language=TSQL
                 String query = "UPDATE employees_headstrong SET name=?,street=?,postal=?,city=?,country=?,email=?,phone_number=?,bank_account_n=?,gender=?,base_salary=? WHERE id=?;";
-                PreparedStatement preparedStatement = connect.getConnection().prepareStatement(query);
+                PreparedStatement preparedStatement = dbConnect.getConnection().prepareStatement(query);
                 preparedStatement.setString(1, user.getName());
                 preparedStatement.setString(2, user.getStreet());
                 preparedStatement.setString(3, user.getPostal());
@@ -144,7 +134,7 @@ public class DBUser extends Synchronizable implements IDataAccessObject<Person> 
                 preparedStatement.setString(9, user.getGender());
                 preparedStatement.setString(10, user.getBaseSalary());
                 preparedStatement.setInt(11, user.getId());
-                connect.uploadSafe(preparedStatement);
+                dbConnect.uploadSafe(preparedStatement);
                 logChange("employees_headstrong", object.getId(), ActionType.UPDATE);
             } catch (ConnectionException | SQLException e) {
                 throw new ModelSyncException("Could not update a user!", e);
@@ -158,8 +148,8 @@ public class DBUser extends Synchronizable implements IDataAccessObject<Person> 
     public void delete(Person object) throws ModelSyncException, DatabaseOutOfSyncException {
         if (verifyIntegrity(object.getId())) {
             try {
-                connect = new DBConnect();
-                connect.upload("DELETE FROM employees_headstrong  WHERE id=" + object.getId() + ";");
+                dbConnect = new DBConnect();
+                dbConnect.upload("DELETE FROM employees_headstrong  WHERE id=" + object.getId() + ";");
                 logChange("employees_headstrong", object.getId(), ActionType.DELETE);
             } catch (ConnectionException e) {
                 throw new ModelSyncException("Could not delete a user!", e);
@@ -172,5 +162,22 @@ public class DBUser extends Synchronizable implements IDataAccessObject<Person> 
     @Override
     protected boolean verifyIntegrity(int itemID) throws ModelSyncException {
         return verifyIntegrity(itemID, timestamp, "employees_headstrong");
+    }
+
+    private User create(ResultSet resultSet) throws SQLException {
+        User user = new User();
+        user.setId(resultSet.getInt("id"));
+        user.setName(resultSet.getString("name"));
+        user.setEmail(resultSet.getString("email"));
+        user.setPhone(resultSet.getString("phone_number"));
+        user.setGender(String.valueOf(resultSet.getBoolean("gender")));
+        user.setCpr(String.valueOf(resultSet.getBigDecimal("cpr")));
+        user.setStreet(resultSet.getString("street"));
+        user.setPostal(resultSet.getString("postal"));
+        user.setCity(resultSet.getString("city"));
+        user.setCountry(resultSet.getString("country"));
+        user.setAccountNo(resultSet.getString("bank_account_n"));
+        user.setBaseSalary(String.valueOf(resultSet.getBigDecimal("base_salary")));
+        return user;
     }
 }

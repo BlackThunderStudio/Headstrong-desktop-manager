@@ -6,6 +6,9 @@ package com.headstrongpro.desktop.model.entity;
 public class User extends Person {
     private String cpr, street, postal, city, country, accountNo, baseSalary;
 
+    public User() {
+    }
+
     public User(int id, String name, String email, String phone, String gender, String cpr, String street, String postal, String city, String country, String accountNo, String baseSalary) {
         super(id, name, email, phone, gender);
         this.cpr = cpr;
