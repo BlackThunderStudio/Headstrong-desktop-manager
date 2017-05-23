@@ -2,30 +2,28 @@ package com.headstrongpro.desktop.controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TreeTableView;
 import javafx.scene.text.Text;
-
 import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
  * Created by Ondřej Soukup on 23.05.2017.
  */
-public class ResourcesView implements Initializable {
+public class GroupsView implements Initializable {
 
     @FXML
-    public TextField searchResourcesTextfield;
+    public Text groupsHeader;
     @FXML
-    public ComboBox resourcesComboBox;
+    public TextField searchGroupsTextfield;
     @FXML
-    public TableView resourcesTable;
+    public TreeTableView groupsTreeTableView;
     @FXML
-    public Button newResourceButton;
+    public Button newGroupButton;
     @FXML
-    public Text resourcesHeader;
-    @FXML
-    public Button assignToCourseButton;
+    public Button setButton;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
