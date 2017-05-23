@@ -7,6 +7,9 @@ public abstract class Person {
     private int id;
     private String name, email, phone, gender;
 
+    public Person() {
+    }
+
     public Person(int id, String name, String email, String phone, String gender) {
         this.id = id;
         this.name = name;
