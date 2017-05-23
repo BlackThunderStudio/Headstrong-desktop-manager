@@ -2,8 +2,10 @@ package com.headstrongpro.desktop.controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.*;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 
 import java.net.URL;
@@ -12,20 +14,18 @@ import java.util.ResourceBundle;
 /**
  * Created by Ondřej Soukup on 23.05.2017.
  */
-public class ResourcesView implements Initializable {
+public class ClientsView implements Initializable {
 
     @FXML
-    public TextField searchResourcesTextfield;
+    public TextField searchClientsTextfield;
     @FXML
-    public ComboBox resourcesComboBox;
+    public TableView clientsTable;
     @FXML
-    public TableView resourcesTable;
+    public Button newClientButton;
     @FXML
-    public Button newResourceButton;
+    public Text clientsHeader;
     @FXML
-    public Text resourcesHeader;
-    @FXML
-    public Button assignToCourseButton;
+    public Button assignMoreButton;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
