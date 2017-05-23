@@ -17,6 +17,7 @@ import org.bouncycastle.math.raw.Mod;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Companies view
@@ -42,18 +43,26 @@ public class CompaniesController implements Refreshable {
         refresh();
     }
 
-    //search
+    //lambda homosex'd up search
     public ObservableList<Company> search(String query) throws ModelSyncException{
-        companies = companyDAO.getAll();
-        List<Company> foundCompanies = new ArrayList<>();
-        for (Company c:
-             companies)
-            if((String.valueOf(c.getId()).contains(query)) || c.getName().contains(query) || c.getCvr().contains(query) || c.getStreet().contains(query) || c.getPostal().contains(query) || c.getCity().contains(query) || c.getCountry().contains(query))
-                foundCompanies.add(c);
-
-        return FXCollections.observableArrayList(foundCompanies);
+        if(query == null) throw new NullPointerException();
+        if(query.isEmpty()) return FXCollections.observableArrayList(companyDAO.getAll());
+        return FXCollections.observableArrayList(companies.stream().filter(e -> {
+            if(String.valueOf(e.getId()).equalsIgnoreCase(query) ||
+                                e.getName().equalsIgnoreCase(query) ||
+                                e.getCvr().equalsIgnoreCase(query) ||
+                                e.getStreet().equalsIgnoreCase(query) ||
+                                e.getPostal().equalsIgnoreCase(query) ||
+                                e.getCity().equalsIgnoreCase(query) ||
+                                e.getCountry().equalsIgnoreCase(query)
+                    )
+                return true;
+            else
+                return false;
+        }).collect(Collectors.toList()));
     }
 
+    //check if details input are valid
     private boolean validCompany(String name, String cvr, String street, String postal, String city, String country){
         boolean isValid = true;
         String basicRegex = "[A-Za-z0-9 ]";
@@ -67,8 +76,9 @@ public class CompaniesController implements Refreshable {
     public void addCompany(String name, String cvr, String street, String postal, String city, String country) throws ModelSyncException{
         if(validCompany(name, cvr, street, postal, city, country))
             companyDAO.persist(new Company(name, cvr, street, postal, city, country));
+        refresh();
     }
-    //create
+    //get all
     public ObservableList<Company> getCompanies() throws ModelSyncException{
         return FXCollections.observableArrayList(companyDAO.getAll());
     }
@@ -77,10 +87,12 @@ public class CompaniesController implements Refreshable {
         Company selectedCompany = companyDAO.getById(id);
         if(validCompany(name, cvr, street, postal, city, country))
             companyDAO.update(selectedCompany);
+        refresh();
     }
     //delete
     public void deleteCompany(int id) throws ModelSyncException, DatabaseOutOfSyncException{
         companyDAO.delete(companyDAO.getById(id));
+        refresh();
     }
 
     //get departments by company id
