@@ -3,6 +3,7 @@ package com.headstrongpro.desktop.core.controller;
 
 import com.headstrongpro.desktop.core.connection.Configurable;
 import com.headstrongpro.desktop.core.connection.FTPUtils;
+import com.headstrongpro.desktop.core.connection.SFTPUtils;
 import com.headstrongpro.desktop.core.exception.ConnectionException;
 import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
@@ -10,6 +11,8 @@ import com.headstrongpro.desktop.model.Session;
 import com.headstrongpro.desktop.model.resource.*;
 import com.headstrongpro.desktop.modelCollections.DBResources;
 import javafx.scene.image.Image;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.json.simple.JSONObject;
@@ -20,6 +23,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.sql.Time;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -30,6 +36,9 @@ import java.util.stream.Collectors;
 public class ResourcesController extends Configurable implements Refreshable {
     private List<Resource> resources;
     private DBResources resourcesDAO;
+
+    private Media media;
+    private MediaPlayer mediaPlayer;
 
     public ResourcesController() throws ModelSyncException {
         resources = new ArrayList<>();
@@ -109,28 +118,21 @@ public class ResourcesController extends Configurable implements Refreshable {
      * @return Resource type object with id fetched from the database already.
      * @throws ModelSyncException throws it when shit goes south.
      */
-    public Resource uploadLocalFile(File file, String name, String description, boolean isForAchievement, ResourceType type, List<Object> args) throws ModelSyncException {
+    public Resource uploadLocalFile(File file, String name, String description, boolean isForAchievement, ResourceType type, List<Object> args) throws ModelSyncException, ConnectionException {
         List<Object> ftpData = getConfig();
-        FTPUtils ftpUtils = new FTPUtils(
+        SFTPUtils sftp = new SFTPUtils(
                 (String) ftpData.get(0),
                 (String) ftpData.get(1),
                 (String) ftpData.get(2),
-                (String) ftpData.get(4),
-                (int) ftpData.get(3)
+                (String) ftpData.get(3)
         );
         String url= "";
         if(!type.equals(ResourceType.TEXT)){
             //upload to the server
             String[] split = file.getName().split(".");
             String extension = split[split.length];
-            try {
-                ftpUtils.upload(file, name + "." + extension); //kinda unchecked but should work
-            } catch (ConnectionException e) {
-                e.printStackTrace();
-                throw new ModelSyncException(e);
-            }
-
-            //url = file.getAbsolutePath(); //DELETE THIS LINE WHEN FTP CONNECTIVITY IS IMPLEMENTED
+            sftp.upload(file, name + "." + extension);
+            url = String.valueOf(ftpData.get(0)) + String.valueOf(ftpData.get(4)) + name + "." + extension;
         }
 
         //load record into the database
@@ -205,6 +207,13 @@ public class ResourcesController extends Configurable implements Refreshable {
 
     //TODO: stopped at media playback. WIP. To be continued
 
+    public void playSelected(Resource selected) throws MalformedURLException, URISyntaxException {
+        AudioResource resource = Resource.ofType(selected);
+        media = new Media(new URL(resource.getUrl()).toURI().toString());
+        mediaPlayer = new MediaPlayer(media);
+        mediaPlayer.setOnReady(() -> mediaPlayer.play());
+    }
+
 
     @Override
     protected List<Object> getConfig() {
@@ -213,8 +222,8 @@ public class ResourcesController extends Configurable implements Refreshable {
         results.add(credentials.get("host"));
         results.add(credentials.get("user"));
         results.add(credentials.get("pass"));
-        results.add(credentials.get("port"));
         results.add(credentials.get("root"));
+        results.add(credentials.get("path"));
         return results;
     }
 }
