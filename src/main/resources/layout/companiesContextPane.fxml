@@ -11,20 +11,20 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<GridPane minHeight="440" minWidth="250.0" prefHeight="700.0" prefWidth="300.0" stylesheets="/style/navigationPane.css" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.headstrongpro.desktop.view.CompaniesView">
+<GridPane minHeight="440" minWidth="250.0" prefHeight="700.0" prefWidth="300.0" stylesheets="/style/navigationPane.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.headstrongpro.desktop.view.CompaniesView">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="500.0" minWidth="250.0" percentWidth="100.0" prefWidth="300.0" />
     </columnConstraints>
     <rowConstraints>
-        <RowConstraints maxHeight="25.0" minHeight="25.0" prefHeight="25.0" vgrow="SOMETIMES" />
-        <RowConstraints maxHeight="75.0" minHeight="40.0" prefHeight="50.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="45.0" minHeight="45.0" prefHeight="45.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="50.0" minHeight="40.0" prefHeight="50.0" vgrow="SOMETIMES" />
         <RowConstraints maxHeight="75.0" minHeight="40.0" prefHeight="50.0" vgrow="SOMETIMES" />
         <RowConstraints maxHeight="75.0" minHeight="40.0" prefHeight="50.0" vgrow="SOMETIMES" />
         <RowConstraints maxHeight="75.0" minHeight="40.0" prefHeight="50.0" vgrow="SOMETIMES" />
         <RowConstraints maxHeight="75.0" minHeight="40.0" prefHeight="50.0" vgrow="SOMETIMES" />
         <RowConstraints maxHeight="75.0" minHeight="40.0" prefHeight="50.0" vgrow="SOMETIMES" />
         <RowConstraints maxHeight="50.0" minHeight="25.0" prefHeight="50.0" vgrow="SOMETIMES" />
-        <RowConstraints maxHeight="500.0" minHeight="40.0" prefHeight="175.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="500.0" minHeight="40.0" prefHeight="155.0" vgrow="SOMETIMES" />
         <RowConstraints maxHeight="500.0" minHeight="110.0" prefHeight="110.0" vgrow="SOMETIMES" />
 
 
@@ -59,9 +59,12 @@
       <TextField promptText="Country" GridPane.rowIndex="6" />
       <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.halignment="RIGHT">
          <children>
-            <Button contentDisplay="CENTER" maxWidth="60.0" minWidth="60.0" mnemonicParsing="false" prefWidth="60.0" text="Edit" />
-            <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="60.0" text="Delete" />
+            <Button contentDisplay="CENTER" maxWidth="90.0" minWidth="90.0" mnemonicParsing="false" prefWidth="90.0" text="Edit" />
+            <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="90.0" text="Delete" />
          </children>
+         <GridPane.margin>
+            <Insets />
+         </GridPane.margin>
       </HBox>
       <GridPane hgap="10.0" vgap="10.0" GridPane.rowIndex="9">
         <columnConstraints>
