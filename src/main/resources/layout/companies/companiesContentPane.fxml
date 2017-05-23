@@ -12,14 +12,14 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="300" minWidth="800" stylesheets="/style/companiesContentPane.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.headstrongpro.desktop.view.CompaniesView">
+<GridPane minHeight="500" prefHeight="700" minWidth="800" prefWidth="800" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.headstrongpro.desktop.view.CompaniesView">
     <columnConstraints>
-        <ColumnConstraints maxWidth="300.0" minWidth="300.0" percentWidth="100.0" prefWidth="300.0" />
+        <ColumnConstraints maxWidth="1500.0" minWidth="500.0" prefWidth="800.0" hgrow="ALWAYS" />
     </columnConstraints>
     <rowConstraints>
         <RowConstraints maxHeight="60.0" minHeight="60.0" prefHeight="60.0" vgrow="NEVER" />
         <RowConstraints maxHeight="60.0" minHeight="60.0" prefHeight="60.0" vgrow="NEVER" />
-        <RowConstraints maxHeight="4000.0" minHeight="200.0" prefHeight="500.0" vgrow="ALWAYS" />
+        <RowConstraints maxHeight="1000.0" minHeight="320.0" prefHeight="520.0" vgrow="ALWAYS" />
         <RowConstraints maxHeight="60.0" minHeight="60.0" prefHeight="60.0" vgrow="NEVER" />
 </rowConstraints>
    <children>
@@ -40,7 +40,7 @@
             <Insets />
          </opaqueInsets>
       </TextField>
-      <TableView fx:id="companiesTable" maxHeight="4000.0" maxWidth="4000.0" minHeight="200.0" minWidth="200.0" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2">
+      <TableView fx:id="companiesTable" maxHeight="4000.0" maxWidth="4000.0" minHeight="200.0" minWidth="200.0" prefHeight="520.0" prefWidth="200.0" GridPane.rowIndex="2">
         <columns>
           <TableColumn prefWidth="75.0" text="C1" />
           <TableColumn prefWidth="75.0" text="C2" />

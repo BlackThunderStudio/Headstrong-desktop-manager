@@ -33,12 +33,12 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws IOException {
 //        SplashScreen.viewSplashScreen(3000, SplashScreen.Style.FADE, SplashScreen.Style.FADE);
         window = primaryStage;
-        Parent root = FXMLLoader.load(getClass().getResource("/layout/navigationPane.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/layout/mainWindow.fxml"));
         primaryStage.setTitle("Headstrong Company Manager");
 
         // set minimum window size
-        primaryStage.setMinWidth(250);
-        primaryStage.setMinHeight(520);
+        primaryStage.setMinWidth(1400);
+        primaryStage.setMinHeight(720);
 
         primaryStage.setOnCloseRequest(e -> {
             e.consume();
