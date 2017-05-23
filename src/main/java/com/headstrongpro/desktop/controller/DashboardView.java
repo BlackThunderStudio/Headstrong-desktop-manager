@@ -8,7 +8,7 @@ import java.util.ResourceBundle;
 /**
  * Created by Ondřej Soukup on 19.05.2017.
  */
-public class DashboardPaneController implements Initializable {
+public class DashboardView implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

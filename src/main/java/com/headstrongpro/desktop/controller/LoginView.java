@@ -8,7 +8,7 @@ import java.util.ResourceBundle;
 /**
  * Login Controller
  */
-public class LoginController implements Initializable {
+public class LoginView implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

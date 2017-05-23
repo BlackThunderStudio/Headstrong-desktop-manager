@@ -4,16 +4,16 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
-import java.awt.*;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
  * Created by Ondřej Soukup on 19.05.2017.
  */
-public class NavigationPaneController implements Initializable {
+public class NavigationView implements Initializable {
 
     @FXML
     public Button dashboardButton;
