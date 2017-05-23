@@ -50,6 +50,24 @@ public class CompaniesView implements Initializable {
     @FXML
     public Button companySubscriptionsButton;
 
+    // "New" context view controls
+    @FXML
+    public TextField newCompanyNameTextfield;
+    @FXML
+    public TextField newCompanyCvrTextfield;
+    @FXML
+    public TextField newCompanyStreetTextfield;
+    @FXML
+    public TextField newCompanyPostalTextfield;
+    @FXML
+    public TextField newCompanyCityTextfield;
+    @FXML
+    public TextField newCompanyCountryTextfield;
+    @FXML
+    public Button companySaveButton;
+    @FXML
+    public Button companyCancelButton;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
