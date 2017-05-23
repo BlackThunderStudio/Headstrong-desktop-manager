@@ -8,13 +8,13 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane maxHeight="700" maxWidth="300" minHeight="700" minWidth="300" prefHeight="700.0" prefWidth="300.0" stylesheets="/style/navigationPane.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.headstrongpro.desktop.view.NavigationView">
+<GridPane maxHeight="-Infinity" maxWidth="300" minHeight="700" minWidth="300" prefHeight="700.0" prefWidth="300.0" stylesheets="/style/navigationPane.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.headstrongpro.desktop.view.NavigationView">
     <columnConstraints>
         <ColumnConstraints hgrow="NEVER" maxWidth="300.0" minWidth="300.0" percentWidth="100.0" prefWidth="300.0" />
     </columnConstraints>
     <rowConstraints>
         <RowConstraints maxHeight="300.0" minHeight="300.0" prefHeight="300.0" vgrow="NEVER" />
-        <RowConstraints maxHeight="400.0" minHeight="400.0" prefHeight="400.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="4000.0" minHeight="400.0" prefHeight="400.0" vgrow="SOMETIMES" />
 </rowConstraints>
    <children>
       <Pane maxHeight="300.0" maxWidth="300.0" minHeight="300.0" minWidth="300.0" prefHeight="300.0" prefWidth="300.0" styleClass="logoBackground" GridPane.valignment="TOP">
@@ -23,7 +23,7 @@
                 <Image url="/img/navpane_logo.png" />
             </ImageView>
          </children></Pane>
-      <Pane maxHeight="400.0" maxWidth="300.0" minHeight="400.0" minWidth="300.0" prefHeight="400.0" prefWidth="300.0" styleClass="navSection" GridPane.rowIndex="1">
+      <Pane maxHeight="4000.0" maxWidth="300.0" minHeight="400.0" minWidth="300.0" prefHeight="400.0" prefWidth="300.0" styleClass="navSection" GridPane.rowIndex="1">
          <children>
             <Button fx:id="dashboardButton" layoutX="70.0" layoutY="22.0" mnemonicParsing="false" styleClass="navButton" text="Dashboard" textFill="WHITE" />
             <Button fx:id="companiesButton" layoutX="70.0" layoutY="62.0" mnemonicParsing="false" styleClass="navButton" text="Companies" textFill="WHITE" />
