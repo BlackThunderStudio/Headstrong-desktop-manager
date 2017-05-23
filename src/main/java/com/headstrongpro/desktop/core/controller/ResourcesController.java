@@ -53,6 +53,7 @@ public class ResourcesController extends Configurable implements Refreshable {
      *
      * @throws ModelSyncException
      */
+    @Concurrent
     @Override
     public void refresh() throws ModelSyncException {
         resources.addAll(resourcesDAO.getAll());
@@ -68,13 +69,11 @@ public class ResourcesController extends Configurable implements Refreshable {
     public List<Resource> searchByPhrase(String input){
         if (input == null) throw new IllegalStateException("input query cannot be of null");
         if (input.isEmpty()) return new ArrayList<Resource>();
-        return resources.stream().filter(e -> {
-            if(String.valueOf(e.getID()).equalsIgnoreCase(input) ||
-                    e.getName().equalsIgnoreCase(input) ||
-                    e.getDescription().equalsIgnoreCase(input)){
-                return true;
-            } else return false;
-        }).collect(Collectors.toList());
+        return resources.stream()
+                .filter(e -> String.valueOf(e.getID()).toLowerCase().contains(input) ||
+                e.getName().toLowerCase().contains(input) ||
+                e.getDescription().toLowerCase().contains(input))
+                .collect(Collectors.toList());
     }
 
     /***
@@ -86,7 +85,29 @@ public class ResourcesController extends Configurable implements Refreshable {
      */
     public List<Resource> filterByType(ResourceType type){
         if (type == null) throw new IllegalStateException("Type cannot be null");
-        return resources.stream().filter(e -> e.getType().equals(type)).collect(Collectors.toList());
+        return resources.parallelStream()
+                .filter(e -> e.getType().equals(type))
+                .collect(Collectors.toList());
+    }
+
+    /***
+     *
+     * Prepares FileChooser object. Applies extension filters suitable for media type handled by headstrong app.
+     *
+     * @param title FileChooser window title
+     * @return FileChooser object
+     */
+    private FileChooser prepareFileChooser(String title){
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle(title);
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Images", "*.jpg", "*.jpeg", "*.png", "*.gif"),
+                new FileChooser.ExtensionFilter("Videos", "*.mp4", "*.avi", "*.webm"),
+                new FileChooser.ExtensionFilter("Text", "*.txt"),
+                new FileChooser.ExtensionFilter("Audio", "*.mp3", "*.wav"),
+                new FileChooser.ExtensionFilter("All files", "*.*")
+        );
+        return fileChooser;
     }
 
     /***
@@ -96,16 +117,23 @@ public class ResourcesController extends Configurable implements Refreshable {
      * @return File object
      */
     public File selectLocalFile(){
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Select local resource");
-        fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Images", "*.jpg", "*.jpeg", "*.png", "*.gif"),
-                new FileChooser.ExtensionFilter("Videos", "*.mp4", "*.avi", "*.webm"),
-                new FileChooser.ExtensionFilter("Text", "*.txt"),
-                new FileChooser.ExtensionFilter("Audio", "*.mp3", "*.wav"),
-                new FileChooser.ExtensionFilter("All files", "*.*")
-        );
-        return fileChooser.showOpenDialog(new Stage());
+        FileChooser fileChooser = prepareFileChooser("Select local resource");
+        File file = fileChooser.showOpenDialog(new Stage());
+        if(file == null) throw new IllegalStateException("No file selected");
+        return file;
+    }
+
+    /***
+     *
+     * Selects one or multiple files from a local storage
+     *
+     * @return List of files
+     */
+    public List<File> selectMultipleFiles(){
+        FileChooser fileChooser = prepareFileChooser("Select resources");
+        List<File> files = fileChooser.showOpenMultipleDialog(new Stage());
+        if(files.size() == 0) throw new IllegalStateException("No files selected");
+        return files;
     }
 
     /***
@@ -117,11 +145,15 @@ public class ResourcesController extends Configurable implements Refreshable {
      * @param description Description of the resource
      * @param isForAchievement dunno
      * @param type ResourceType element
-     * @param args list of arguments passed as Object. The order of objects in the list is equivalent to the order of columns in each of the tables.
+     * @param args list of arguments passed as Object. The order of objects in the list is equivalent to the order of
+     *             columns in each of the tables.
      * @return Resource type object with id fetched from the database already.
      * @throws ModelSyncException throws it when shit goes south.
      */
-    public Resource uploadLocalFile(File file, String name, String description, boolean isForAchievement, ResourceType type, List<Object> args) throws ModelSyncException, ConnectionException {
+    @Concurrent(info = "Handles both database and media server")
+    public Resource uploadLocalFile(File file, String name, String description, boolean isForAchievement,
+                                    ResourceType type, List<Object> args)
+            throws ModelSyncException, ConnectionException {
 
         //retard protection
         if (file == null || name == null || description == null || type == null || args == null)
@@ -178,7 +210,8 @@ public class ResourcesController extends Configurable implements Refreshable {
      * @throws DatabaseOutOfSyncException
      * @throws ModelSyncException
      */
-    public void assignToCourse(Session session, Resource resource) throws DatabaseOutOfSyncException, ModelSyncException {
+    public void assignToCourse(Session session, Resource resource)
+            throws DatabaseOutOfSyncException, ModelSyncException {
         if (session == null) throw new IllegalStateException("Session cannot be null");
         if (resource == null) throw new IllegalStateException("Resource cannot be null");
         resourcesDAO.assignToSession(resource, session);
@@ -193,7 +226,8 @@ public class ResourcesController extends Configurable implements Refreshable {
      * @throws DatabaseOutOfSyncException
      * @throws ModelSyncException
      */
-    public void assignToCourse(Session session, List<Resource> resources) throws DatabaseOutOfSyncException, ModelSyncException {
+    public void assignToCourse(Session session, List<Resource> resources)
+            throws DatabaseOutOfSyncException, ModelSyncException {
         for (Resource r : resources){
             resourcesDAO.assignToSession(r, session);
         }
@@ -207,8 +241,11 @@ public class ResourcesController extends Configurable implements Refreshable {
      * @throws DatabaseOutOfSyncException
      * @throws ModelSyncException
      */
-    public void editResource(Resource selectedResource) throws DatabaseOutOfSyncException, ModelSyncException {
+    @Concurrent
+    public void editResource(Resource selectedResource)
+            throws DatabaseOutOfSyncException, ModelSyncException {
         resourcesDAO.update(selectedResource);
+        refresh();
     }
 
     /***
