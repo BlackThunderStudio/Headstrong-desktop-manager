@@ -14,6 +14,7 @@ import java.util.ResourceBundle;
  */
 public class CompaniesView implements Initializable {
 
+    // Content view controls
     @FXML
     public TextField searchCompaniesTextfield;
     @FXML
@@ -22,6 +23,32 @@ public class CompaniesView implements Initializable {
     public Button newCompanyButton;
     @FXML
     public Text companiesHeader;
+
+    // Context view controls
+    @FXML
+    public Button companyEditButton;
+    @FXML
+    public Button companyDeleteButton;
+    @FXML
+    public TextField companyNameTextfield;
+    @FXML
+    public TextField companyCvrTextfield;
+    @FXML
+    public TextField companyStreetTextfield;
+    @FXML
+    public TextField companyPostalTextfield;
+    @FXML
+    public TextField companyCityTextfield;
+    @FXML
+    public TextField companyCountryTextfield;
+    @FXML
+    public Button companyDepartmentsButton;
+    @FXML
+    public Button companyClientsButton;
+    @FXML
+    public Button companyGroupsButton;
+    @FXML
+    public Button companySubscriptionsButton;
 
 
     @Override

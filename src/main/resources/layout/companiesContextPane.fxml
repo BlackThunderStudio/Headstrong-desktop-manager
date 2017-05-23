@@ -51,16 +51,16 @@
          <GridPane.margin>
             <Insets top="12.5" />
          </GridPane.margin></Separator>
-      <TextField promptText="Name" GridPane.rowIndex="1" />
-      <TextField promptText="CVR" GridPane.rowIndex="2" />
-      <TextField promptText="Street" GridPane.rowIndex="3" />
-      <TextField promptText="Postal code" GridPane.rowIndex="4" />
-      <TextField promptText="City" GridPane.rowIndex="5" />
-      <TextField promptText="Country" GridPane.rowIndex="6" />
+      <TextField fx:id="companyNameTextfield" promptText="Name" GridPane.rowIndex="1" />
+      <TextField fx:id="companyCvrTextfield" promptText="CVR" GridPane.rowIndex="2" />
+      <TextField fx:id="companyStreetTextfield" promptText="Street" GridPane.rowIndex="3" />
+      <TextField fx:id="companyPostalTextfield" promptText="Postal code" GridPane.rowIndex="4" />
+      <TextField fx:id="companyCityTextfield" promptText="City" GridPane.rowIndex="5" />
+      <TextField fx:id="companyCountryTextfield" promptText="Country" GridPane.rowIndex="6" />
       <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.halignment="RIGHT">
          <children>
-            <Button contentDisplay="CENTER" maxWidth="90.0" minWidth="90.0" mnemonicParsing="false" prefWidth="90.0" text="Edit" />
-            <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="90.0" text="Delete" />
+            <Button fx:id="companyEditButton" contentDisplay="CENTER" maxWidth="90.0" minWidth="90.0" mnemonicParsing="false" prefWidth="90.0" text="Edit" />
+            <Button fx:id="companyDeleteButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="90.0" text="Delete" />
          </children>
          <GridPane.margin>
             <Insets />
@@ -76,19 +76,19 @@
           <RowConstraints minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button minHeight="25.0" minWidth="90.0" mnemonicParsing="false" prefHeight="1000.0" prefWidth="1000.0" text="Clients" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+            <Button fx:id="companyClientsButton" minHeight="25.0" minWidth="90.0" mnemonicParsing="false" prefHeight="1000.0" prefWidth="1000.0" text="Clients" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
                <GridPane.margin>
                   <Insets />
                </GridPane.margin></Button>
-            <Button minHeight="25.0" minWidth="90.0" mnemonicParsing="false" prefHeight="1000.0" prefWidth="1000.0" text="Departments" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+            <Button fx:id="companyDepartmentsButton" minHeight="25.0" minWidth="90.0" mnemonicParsing="false" prefHeight="1000.0" prefWidth="1000.0" text="Departments" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
                <GridPane.margin>
                   <Insets />
                </GridPane.margin></Button>
-            <Button minHeight="25.0" minWidth="90.0" mnemonicParsing="false" prefHeight="1000.0" prefWidth="1000.0" text="Groups" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+            <Button fx:id="companyGroupsButton" minHeight="25.0" minWidth="90.0" mnemonicParsing="false" prefHeight="1000.0" prefWidth="1000.0" text="Groups" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
                <GridPane.margin>
                   <Insets />
                </GridPane.margin></Button>
-            <Button minHeight="25.0" minWidth="90.0" mnemonicParsing="false" prefHeight="1000.0" prefWidth="1000.0" text="Subscriptions" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+            <Button fx:id="companySubscriptionsButton" minHeight="25.0" minWidth="90.0" mnemonicParsing="false" prefHeight="1000.0" prefWidth="1000.0" text="Subscriptions" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
                <GridPane.margin>
                   <Insets />
                </GridPane.margin></Button>
