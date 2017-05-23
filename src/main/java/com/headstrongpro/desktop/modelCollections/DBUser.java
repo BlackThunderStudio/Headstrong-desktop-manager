@@ -64,14 +64,22 @@ public class DBUser extends Synchronizable implements IDataAccessObject<Person> 
         return person;
     }
 
-    public Person getByUsername(String username) throws ModelSyncException {
-        Person person = null;
-        String selectQuery = "SELECT * FROM [employees_headstrong] WHERE username = " + username + ";";
+    public Person getByCredentials(String username, String password) throws ModelSyncException {
+        Person person;
+        String selectQuery = "SELECT * FROM [employees_headstrong]" +
+                "WHERE login = " + username;
+        String selectQueryWithPassword = selectQuery + " AND pass = " + password + ";";
+        selectQuery += ";";
         try {
             dbConnect = new DBConnect();
-            ResultSet resultSet = dbConnect.getFromDataBase(selectQuery);
+            ResultSet resultSet = dbConnect.getFromDataBase(selectQueryWithPassword);
             if (resultSet.next()) {
                 person = create(resultSet);
+            } else {
+                dbConnect.getFromDataBase(selectQuery);
+                throw new ModelSyncException(
+                        resultSet.next() ? "The password entered is incorrect." : "The user does not exist."
+                );
             }
             timestamp = setTimestamp();
         } catch (ConnectionException | SQLException e) {
