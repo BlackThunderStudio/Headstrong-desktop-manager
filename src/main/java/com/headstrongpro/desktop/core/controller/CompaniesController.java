@@ -52,8 +52,13 @@ public class CompaniesController implements Refreshable {
         return foundCompanies;
     }
     //add TODO
+    public void addCompany(String name, String cvr, String street, String postal, String city, String country){
 
-    //edit TODO
+    }
+    //update TODO not sure if object or string arguments are to be passed
+    public void updateCompany(Company company) throws ModelSyncException, DatabaseOutOfSyncException{
+        companyDAO.update(company);
+    }
 
     //delete
     public void deleteCompany(int id) throws ModelSyncException, DatabaseOutOfSyncException{
