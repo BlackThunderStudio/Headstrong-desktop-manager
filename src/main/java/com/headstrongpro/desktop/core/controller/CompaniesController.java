@@ -11,6 +11,8 @@ import com.headstrongpro.desktop.model.entity.Client;
 import com.headstrongpro.desktop.model.entity.Company;
 import com.headstrongpro.desktop.model.entity.Person;
 import com.headstrongpro.desktop.modelCollections.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import org.bouncycastle.math.raw.Mod;
 
 import java.util.ArrayList;
@@ -41,7 +43,7 @@ public class CompaniesController implements Refreshable {
     }
 
     //search
-    public List<Company> search(String query) throws ModelSyncException{
+    public ObservableList<Company> search(String query) throws ModelSyncException{
         companies = companyDAO.getAll();
         List<Company> foundCompanies = new ArrayList<>();
         for (Company c:
@@ -49,54 +51,67 @@ public class CompaniesController implements Refreshable {
             if((String.valueOf(c.getId()).contains(query)) || c.getName().contains(query) || c.getCvr().contains(query) || c.getStreet().contains(query) || c.getPostal().contains(query) || c.getCity().contains(query) || c.getCountry().contains(query))
                 foundCompanies.add(c);
 
-        return foundCompanies;
-    }
-    //add TODO
-    public void addCompany(String name, String cvr, String street, String postal, String city, String country){
-
-    }
-    //update TODO not sure if object or string arguments are to be passed
-    public void updateCompany(Company company) throws ModelSyncException, DatabaseOutOfSyncException{
-        companyDAO.update(company);
+        return FXCollections.observableArrayList(foundCompanies);
     }
 
+    private boolean validCompany(String name, String cvr, String street, String postal, String city, String country){
+        boolean isValid = true;
+        String basicRegex = "[A-Za-z0-9 ]";
+        String cvrRegex = "^\\d{8}&";
+        if(!(name.matches(basicRegex) || cvr.matches(cvrRegex) || street.matches(basicRegex) || postal.matches(basicRegex) || city.matches(basicRegex) || country.matches(basicRegex)))
+            isValid = false;
+        return isValid;
+    }
+
+    //add
+    public void addCompany(String name, String cvr, String street, String postal, String city, String country) throws ModelSyncException{
+        if(validCompany(name, cvr, street, postal, city, country))
+            companyDAO.persist(new Company(name, cvr, street, postal, city, country));
+    }
+    //create
+    public ObservableList<Company> getCompanies() throws ModelSyncException{
+        return FXCollections.observableArrayList(companyDAO.getAll());
+    }
+    //update
+    public void updateCompany(int id, String name, String cvr, String street, String postal, String city, String country) throws ModelSyncException, DatabaseOutOfSyncException{
+        Company selectedCompany = companyDAO.getById(id);
+        if(validCompany(name, cvr, street, postal, city, country))
+            companyDAO.update(selectedCompany);
+    }
     //delete
     public void deleteCompany(int id) throws ModelSyncException, DatabaseOutOfSyncException{
         companyDAO.delete(companyDAO.getById(id));
-        refresh();
     }
 
     //get departments by company id
-    public List<Department> getDepartmentsByCompanyId(int id) throws ModelSyncException{
-        return (new DBDepartments().getByCompanyID(id));
+    public ObservableList<Department> getDepartmentsByCompanyId(int id) throws ModelSyncException{
+        return FXCollections.observableArrayList(new DBDepartments().getByCompanyID(id));
     }
     //groups
-    public List<Group> getGroupsByCompanyId(int id) throws ModelSyncException{
-        return (new DBGroups().getByCompanyID(id));
+    public ObservableList<Group> getGroupsByCompanyId(int id) throws ModelSyncException{
+        return FXCollections.observableArrayList(new DBGroups().getByCompanyID(id));
     }
     //subscriptions
-    public List<Subscription> getSubcriptionByCompanyId(int id) throws ModelSyncException{
-        return (new DBSubscriptions().getbyCompanyId(id));
+    public ObservableList<Subscription> getSubcriptionByCompanyId(int id) throws ModelSyncException{
+        return FXCollections.observableArrayList(new DBSubscriptions().getbyCompanyId(id));
     }
     //clients
-    public List<Person> getClientByCompanyId(int id) throws ModelSyncException{
-        return (new DBClient().getByCompanyId(id));
+    public ObservableList<Person> getClientByCompanyId(int id) throws ModelSyncException{
+        return FXCollections.observableArrayList(new DBClient().getByCompanyId(id));
     }
     //payments
-    public List<Payment> getPaymentsByCompanyId(int id) throws ModelSyncException{
+    public ObservableList<Payment> getPaymentsByCompanyId(int id) throws ModelSyncException{
         List<Subscription> subscriptions = new DBSubscriptions().getbyCompanyId(id);
         List<Payment> payments = new ArrayList<>();
         for (Subscription s:
              subscriptions) {
             payments.addAll(new DBPayment().getBySubscriptionId(s.getId()));
         }
-        return (payments);
+        return FXCollections.observableArrayList(payments);
     }
 
     @Override
     public void refresh() throws ModelSyncException{
         companies.addAll(companyDAO.getAll());
     }
-
-
 }
