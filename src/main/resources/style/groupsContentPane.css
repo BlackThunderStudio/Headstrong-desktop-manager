@@ -1,0 +1,8 @@
+.headerPane{
+    -fx-background-color: #ffffff;
+    -fx-effect: dropshadow(three-pass-box, #2b2b2b, 8, 0, 0, 0);
+}
+
+.contentPane{
+    -fx-background-color: #f1f1f1;
+}

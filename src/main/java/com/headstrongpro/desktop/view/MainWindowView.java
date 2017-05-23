@@ -1,4 +1,4 @@
-package com.headstrongpro.desktop.controller;
+package com.headstrongpro.desktop.view;
 
 import javafx.fxml.Initializable;
 import javafx.scene.web.WebEngine;
@@ -10,7 +10,7 @@ import java.util.ResourceBundle;
 /**
  * Created by rajmu on 17.04.06.
  */
-public class MainWindowController implements Initializable {
+public class MainWindowView implements Initializable {
     public WebView webViw;
 
     @Override

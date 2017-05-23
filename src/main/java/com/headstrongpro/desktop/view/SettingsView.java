@@ -1,4 +1,4 @@
-package com.headstrongpro.desktop.controller;
+package com.headstrongpro.desktop.view;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,7 +15,7 @@ import java.util.ResourceBundle;
 /**
  * Created by Rajmund Staniek on 19-May-17.
  */
-public class SettingsController implements Initializable {
+public class SettingsView implements Initializable {
     @FXML
     public TextField tf_path;
     @FXML
@@ -33,7 +33,7 @@ public class SettingsController implements Initializable {
         File file = fc.showOpenDialog(stage);
         tf_path.setText(file.getAbsolutePath());
 
-        String jarPath = SettingsController.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+        String jarPath = SettingsView.class.getProtectionDomain().getCodeSource().getLocation().getPath();
         String[] split = jarPath.split("/");
         String newPath = "";
         for (int i = 0; i < split.length - 1; i++) {
