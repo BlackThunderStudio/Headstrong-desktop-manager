@@ -11,6 +11,14 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Maven: org.apache.camel:camel-ftp:2.19.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.camel:camel-core:2.19.0" level="project" />
+    <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.22" level="project" />
+    <orderEntry type="library" name="Maven: com.jcraft:jsch:0.1.54" level="project" />
+    <orderEntry type="library" name="Maven: commons-net:commons-net:3.3" level="project" />
+    <orderEntry type="library" name="Maven: com.sun.xml.bind:jaxb-core:2.2.11" level="project" />
+    <orderEntry type="library" name="Maven: com.sun.xml.bind:jaxb-impl:2.2.11" level="project" />
+    <orderEntry type="library" name="Maven: eu.hansolo:tilesfx:1.0.7" level="project" />
     <orderEntry type="library" name="Maven: com.microsoft.sqlserver:mssql-jdbc:6.1.0.jre8" level="project" />
     <orderEntry type="library" name="Maven: com.microsoft.azure:azure-keyvault:0.9.3" level="project" />
     <orderEntry type="library" name="Maven: com.microsoft.azure:azure-core:0.9.3" level="project" />

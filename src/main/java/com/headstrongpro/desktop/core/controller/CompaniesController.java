@@ -1,19 +1,16 @@
 package com.headstrongpro.desktop.core.controller;
 
-import com.headstrongpro.desktop.core.connection.Configurable;
 import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.model.Department;
 import com.headstrongpro.desktop.model.Group;
 import com.headstrongpro.desktop.model.Payment;
 import com.headstrongpro.desktop.model.Subscription;
-import com.headstrongpro.desktop.model.entity.Client;
 import com.headstrongpro.desktop.model.entity.Company;
 import com.headstrongpro.desktop.model.entity.Person;
-import com.headstrongpro.desktop.modelCollections.*;
+import com.headstrongpro.desktop.DbLayer.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import org.bouncycastle.math.raw.Mod;
 
 import java.util.ArrayList;
 import java.util.List;

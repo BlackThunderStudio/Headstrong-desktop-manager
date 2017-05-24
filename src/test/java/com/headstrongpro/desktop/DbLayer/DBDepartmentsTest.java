@@ -1,4 +1,4 @@
-package com.headstrongpro.desktop.modelCollections;
+package com.headstrongpro.desktop.DbLayer;
 
 import com.headstrongpro.desktop.model.Department;
 import com.headstrongpro.desktop.model.entity.Company;

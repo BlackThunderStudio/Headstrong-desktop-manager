@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXProgressBar?>
+<?import com.jfoenix.controls.JFXSpinner?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -55,20 +56,28 @@
             <Insets left="20.0" right="20.0" />
          </GridPane.margin>
       </TableView>
-      <Button fx:id="newResourceButton" maxWidth="110.0" minWidth="110.0" mnemonicParsing="false" prefWidth="110.0" text="New" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
+      <Button fx:id="newResourceButton" maxWidth="110.0" minWidth="110.0" mnemonicParsing="false" onAction="#newResourceButton_onClick" prefWidth="110.0" text="New" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
          <GridPane.margin>
             <Insets right="20.0" />
          </GridPane.margin>
       </Button>
-      <Button fx:id="assignToCourseButton" maxWidth="150.0" minWidth="150.0" mnemonicParsing="false" prefWidth="150.0" text="Assign to course" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
+      <Button fx:id="assignToCourseButton" maxWidth="150.0" minWidth="150.0" mnemonicParsing="false" onAction="#assignToCourseButton_onClick" prefWidth="150.0" text="Assign to course" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
          <GridPane.margin>
             <Insets right="150.0" />
          </GridPane.margin>
       </Button>
-      <JFXProgressBar fx:id="progressBar" prefHeight="30.0" prefWidth="300.0" progress="0.0" GridPane.rowIndex="4">
+      <JFXSpinner fx:id="loadingSpinner" prefHeight="150.0" prefWidth="200.0" GridPane.rowIndex="4">
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
          <GridPane.margin>
             <Insets left="20.0" />
          </GridPane.margin>
-      </JFXProgressBar>
+      </JFXSpinner>
+      <Label fx:id="loadingLabel" text="Label" GridPane.rowIndex="4">
+         <GridPane.margin>
+            <Insets left="62.0" />
+         </GridPane.margin>
+      </Label>
    </children>
 </GridPane>

@@ -2,8 +2,8 @@ package com.headstrongpro.desktop.core.controller;
 
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.model.Session;
-import com.headstrongpro.desktop.modelCollections.DBResources;
-import com.headstrongpro.desktop.modelCollections.DBSession;
+import com.headstrongpro.desktop.DbLayer.DBResources;
+import com.headstrongpro.desktop.DbLayer.DBSession;
 
 import java.util.List;
 

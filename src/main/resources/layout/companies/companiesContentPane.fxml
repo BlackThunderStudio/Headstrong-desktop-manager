@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXSpinner?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -12,7 +14,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<GridPane maxWidth="1500" minHeight="500" minWidth="500" prefHeight="700" prefWidth="800" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.headstrongpro.desktop.view.CompaniesView">
+<GridPane maxWidth="1500" minHeight="500" minWidth="500" prefHeight="700" prefWidth="800" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.headstrongpro.desktop.view.CompaniesView">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="1500.0" minWidth="500.0" prefWidth="800.0" />
     </columnConstraints>
@@ -40,7 +42,7 @@
             <Insets />
          </opaqueInsets>
       </TextField>
-      <TableView fx:id="companiesTable" onMouseClicked="#companiesTableOnMouseClicked" maxHeight="4000.0" maxWidth="4000.0" minHeight="200.0" minWidth="460.0" prefHeight="520.0" prefWidth="760.0" GridPane.rowIndex="2">
+      <TableView fx:id="companiesTable" maxHeight="4000.0" maxWidth="4000.0" minHeight="200.0" minWidth="460.0" onMouseClicked="#companiesTableOnMouseClicked" prefHeight="520.0" prefWidth="760.0" GridPane.rowIndex="2">
         <columns>
           <TableColumn fx:id="companyIdCol" prefWidth="75.0" text="Id" />
             <TableColumn fx:id="companyNameCol" prefWidth="75.0" text="Name" />
@@ -59,5 +61,15 @@
             <Insets right="20.0" />
          </GridPane.margin>
       </Button>
+      <JFXSpinner fx:id="loadingSpinner" prefHeight="150.0" prefWidth="200.0" GridPane.rowIndex="3">
+         <GridPane.margin>
+            <Insets left="20.0" />
+         </GridPane.margin>
+      </JFXSpinner>
+      <Label fx:id="loadingLabel" text="Label" GridPane.rowIndex="3">
+         <GridPane.margin>
+            <Insets left="62.0" />
+         </GridPane.margin>
+      </Label>
    </children>
 </GridPane>

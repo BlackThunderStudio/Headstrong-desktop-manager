@@ -1,20 +1,25 @@
 package com.headstrongpro.desktop.view;
 
+import com.headstrongpro.desktop.core.Utils;
 import com.headstrongpro.desktop.core.controller.CompaniesController;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.model.entity.Company;
-import com.headstrongpro.desktop.modelCollections.DBCompany;
+import com.jfoenix.controls.JFXSpinner;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
+import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
-import org.bouncycastle.math.raw.Mod;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import static javafx.concurrent.Worker.State.*;
 
 /**
  * Created by Ondřej Soukup on 20.05.2017.
@@ -88,11 +93,16 @@ public class CompaniesView implements Initializable {
     public Button companySaveButton;
     @FXML
     public Button companyCancelButton;
+    @FXML
+    public JFXSpinner loadingSpinner;
+    @FXML
+    public Label loadingLabel;
 
-    CompaniesController companiesController;
+    private CompaniesController companiesController;
+    private ObservableList<Company> companies;
 
     @SuppressWarnings("unchecked")
-    private void loadTable(ObservableList<Company> companies) throws ModelSyncException{
+    private void loadTable(ObservableList<Company> companies){
         companiesTable.getColumns().removeAll(companyIdCol, companyNameCol, companyCvrCol, companyStreetCol, companyPostalCol, companyCityCol, companyCountryCol);
         companiesTable.setItems(companies);
         companyIdCol.setMinWidth(20);
@@ -114,12 +124,37 @@ public class CompaniesView implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        companies = FXCollections.observableArrayList();
+        loadingLabel.setVisible(false);
+        loadingSpinner.setVisible(false);
+        Utils.WaitingSpinner waitingSpinner = new Utils.WaitingSpinner(loadingSpinner, loadingLabel);
+        Task<Void> init = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                waitingSpinner.init("Loading companies...");
+                companiesController = new CompaniesController();
+                loadCompanies();
+                return null;
+            }
+        };
+
+        init.stateProperty().addListener(((observable, oldValue, newValue) -> {
+            if(newValue.equals(SUCCEEDED)){
+                waitingSpinner.close();
+                loadTable(companies);
+            }
+        }));
+
+        Thread th = new Thread(init);
+        th.start();
+    }
+
+    private void loadCompanies(){
         try {
-            companiesController = new CompaniesController();
-            loadTable(companiesController.getCompanies());
-        }catch (ModelSyncException e){
+            companies = companiesController.getCompanies();
+        } catch (ModelSyncException e) {
             e.printStackTrace();
-            //TODO: to be handled
+            //TODO: handle error
         }
     }
 
