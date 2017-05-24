@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 public class CompaniesController implements Refreshable {
     private List<Company> companies;
     private DBCompany companyDAO;
-    private int selectedCompanyId;
+    private Company selectedCompany;
 
 
     /**
@@ -48,7 +48,7 @@ public class CompaniesController implements Refreshable {
     public CompaniesController(int id) throws ModelSyncException{
         companies = new ArrayList<>();
         companyDAO = new DBCompany();
-        selectedCompanyId = id;
+        selectedCompany = companyDAO.getById(id);
         refresh();
     }
 
@@ -83,16 +83,17 @@ public class CompaniesController implements Refreshable {
      * @param country Company country
      * @return true if company details are valid, false otherwise
      */
-    private boolean validCompany(String name, String cvr, String street, String postal, String city, String country){
+    public boolean validCompany(String name, String cvr, String street, String postal, String city, String country){
         boolean isValid = true;
-        String basicRegex = "[A-Za-z0-9 ]";
-        String cvrRegex = "^\\d{8}&";
+        String basicRegex = "[A-Za-z0-9 .-]*";
+        String cvrRegex = "^[0-9]{8}$";
         if(!(name.matches(basicRegex) ||
-                cvr.matches(cvrRegex) ||
                 street.matches(basicRegex) ||
                 postal.matches(basicRegex) ||
                 city.matches(basicRegex) ||
                 country.matches(basicRegex)))
+            isValid = false;
+        if(!cvr.matches(cvrRegex))
             isValid = false;
         return isValid;
     }
@@ -138,8 +139,15 @@ public class CompaniesController implements Refreshable {
     public void updateCompany(int id, String name, String cvr, String street, String postal, String city, String country)
             throws ModelSyncException, DatabaseOutOfSyncException{
         Company selectedCompany = companyDAO.getById(id);
-        if(validCompany(name, cvr, street, postal, city, country))
+        if(validCompany(name, cvr, street, postal, city, country)) {
+            selectedCompany.setName(name);
+            selectedCompany.setCvr(cvr);
+            selectedCompany.setStreet(street);
+            selectedCompany.setPostal(postal);
+            selectedCompany.setCity(city);
+            selectedCompany.setCountry(country);
             companyDAO.update(selectedCompany);
+        }
         refresh();
     }
 
@@ -210,6 +218,13 @@ public class CompaniesController implements Refreshable {
         return FXCollections.observableArrayList(payments);
     }
 
+    /**
+     * gets the selected company
+     * @return
+     */
+    public Company getSelectedCompany(){
+        return selectedCompany;
+    }
     @Override
     public void refresh() throws ModelSyncException{
         companies.addAll(companyDAO.getAll());
