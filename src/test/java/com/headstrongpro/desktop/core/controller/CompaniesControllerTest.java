@@ -1,7 +1,7 @@
 package com.headstrongpro.desktop.core.controller;
 
 import com.headstrongpro.desktop.model.entity.Company;
-import com.headstrongpro.desktop.modelCollections.DBCompany;
+import com.headstrongpro.desktop.DbLayer.DBCompany;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
