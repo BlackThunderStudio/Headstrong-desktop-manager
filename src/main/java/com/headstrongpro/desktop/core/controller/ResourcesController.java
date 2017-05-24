@@ -30,10 +30,12 @@ import java.sql.Time;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.headstrongpro.desktop.model.resource.ResourceUploadAdapter.*;
+
 /**
  * Created by rajmu on 17.05.19.
  */
-public class ResourcesController extends Configurable implements Refreshable {
+public class ResourcesController implements Refreshable {
     private List<Resource> resources;
     private DBResources resourcesDAO;
 
@@ -145,7 +147,7 @@ public class ResourcesController extends Configurable implements Refreshable {
      * Uploads chosen file to the remote file server and adds a record to the database.
      *
      * @param file File object from the local machine
-     * @param name Resource name / filename
+     * @param remoteName Resource remoteName / filename
      * @param description Description of the resource
      * @param isForAchievement dunno
      * @param type ResourceType element
@@ -155,36 +157,30 @@ public class ResourcesController extends Configurable implements Refreshable {
      * @throws ModelSyncException throws it when shit goes south.
      */
     @Concurrent(info = "Handles both database and media server")
-    public Resource uploadLocalFile(File file, String name, String description, boolean isForAchievement,
+    public Resource uploadLocalFile(File file, String remoteName, String description, boolean isForAchievement,
                                     ResourceType type, List<Object> args)
             throws ModelSyncException, ConnectionException {
 
         //retard protection
-        if (file == null || name == null || description == null || type == null || args == null)
+        if (file == null || remoteName == null || description == null || type == null || args == null)
             throw new NullPointerException();
         if (file.getAbsolutePath().isEmpty() || file.getName().isEmpty())
             throw new IllegalStateException("File cannot be empty!");
-        if (name.isEmpty()) throw new IllegalStateException("Name cannot be empty");
+        if (remoteName.isEmpty()) throw new IllegalStateException("Name cannot be empty");
         if (description.isEmpty()) throw new IllegalStateException("Description cannot be empty");
 
-        List<Object> ftpData = getConfig();
-        SFTPUtils sftp = new SFTPUtils(
-                (String) ftpData.get(0),
-                (String) ftpData.get(1),
-                (String) ftpData.get(2),
-                (String) ftpData.get(3)
-        );
+        ResourceUploader resourceUploader = new ResourceUploader();
+
+        Resource resource = ResourceFactory.getResource(file.getName(), description, isForAchievement, type.get());
+        resource.setFile(file);
+        resource.setRemoteFileName(remoteName);
+
         String url= "";
         if(!type.equals(ResourceType.TEXT)){
-            //upload to the server
-            String[] split = file.getName().split(".");
-            String extension = split[split.length];
-            sftp.upload(file, name + "." + extension);
-            url = String.valueOf(ftpData.get(0)) + String.valueOf(ftpData.get(4)) + name + "." + extension;
+            url = (String) resourceUploader.upload(resource, Destination.MEDIA_SERVER);
         }
 
         //load record into the database
-        Resource resource = ResourceFactory.getResource(file.getName(), description, isForAchievement, type.get());
         if(type.equals(ResourceType.TEXT)){
             TextResource textResource = Resource.ofType(resource);
             assert textResource != null;
@@ -202,7 +198,7 @@ public class ResourcesController extends Configurable implements Refreshable {
             audioResource.setDuration((Time)args.get(0));
             resource = audioResource;
         }
-        return resourcesDAO.persist(resource);
+        return (Resource) resourceUploader.upload(resource, Destination.DATABASE);
     }
 
     /***
@@ -270,18 +266,5 @@ public class ResourcesController extends Configurable implements Refreshable {
         media = new Media(new URL(resource.getUrl()).toURI().toString());
         mediaPlayer = new MediaPlayer(media);
         mediaPlayer.setOnReady(() -> mediaPlayer.play());
-    }
-
-
-    @Override
-    protected List<Object> getConfig() {
-        JSONObject credentials = parseJsonConfig("/config.json", "SFTP server");
-        List<Object> results = new ArrayList<>();
-        results.add(credentials.get("host"));
-        results.add(credentials.get("user"));
-        results.add(credentials.get("pass"));
-        results.add(credentials.get("root"));
-        results.add(credentials.get("path"));
-        return results;
     }
 }

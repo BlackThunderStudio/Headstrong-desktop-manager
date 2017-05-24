@@ -9,6 +9,7 @@ import com.headstrongpro.desktop.model.resource.*;
 import com.headstrongpro.desktop.modelCollections.util.IDataAccessObject;
 import com.headstrongpro.desktop.modelCollections.util.Synchronizable;
 
+import java.io.File;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -24,7 +25,7 @@ import static com.headstrongpro.desktop.modelCollections.util.ActionType.*;
 /**
  * Created by rajmu on 17.05.08.
  */
-public class DBResources extends Synchronizable implements IDataAccessObject<Resource> {
+public class DBResources extends Synchronizable implements IDataAccessObject<Resource>, IResourceConnector {
 
     private DBConnect dbConnect;
     private java.sql.Date timestamp;
@@ -466,5 +467,16 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
     @Override
     protected boolean verifyIntegrity(int itemID) throws ModelSyncException {
         return verifyIntegrity(itemID, timestamp, "resources");
+    }
+
+    //adapter implementation
+    @Override
+    public String uploadMediaServer(File file, String remote) {
+        return null; //do nothing
+    }
+
+    @Override
+    public Resource uploadDataBase(Resource resource) throws ModelSyncException {
+        return persist(resource);
     }
 }

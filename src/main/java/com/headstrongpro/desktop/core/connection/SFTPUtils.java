@@ -1,6 +1,9 @@
 package com.headstrongpro.desktop.core.connection;
 
 import com.headstrongpro.desktop.core.exception.ConnectionException;
+import com.headstrongpro.desktop.core.exception.ModelSyncException;
+import com.headstrongpro.desktop.model.resource.IResourceConnector;
+import com.headstrongpro.desktop.model.resource.Resource;
 import com.jcraft.jsch.*;
 import javafx.scene.control.Alert;
 
@@ -10,7 +13,7 @@ import java.io.*;
 /**
  * Created by rajmu on 17.05.21.
  */
-public class SFTPUtils {
+public class SFTPUtils implements IResourceConnector {
 
     private String host, user, pass, path;
     private int port;
@@ -102,6 +105,21 @@ public class SFTPUtils {
             e.printStackTrace();
         }
         return sftp;
+    }
+
+    //adapter implementation
+    @Override
+    public String uploadMediaServer(File file, String remote) throws ConnectionException {
+        String[] split = file.getName().split(".");
+        String extension = split[split.length];
+        String url = host + "/" + path + remote + "." + extension;
+        upload(file, remote + "." + extension);
+        return url;
+    }
+
+    @Override
+    public Resource uploadDataBase(Resource resource) throws ModelSyncException {
+        return null; //do nothing
     }
 
     public class MyUserInfo implements UserInfo {

@@ -1,5 +1,7 @@
 package com.headstrongpro.desktop.model.resource;
 
+import java.io.File;
+
 import static com.headstrongpro.desktop.model.resource.ResourceType.*;
 
 /**
@@ -11,6 +13,10 @@ public interface Resource {
     boolean isForAchievement();
     ResourceType getType();
     int getID();
+    File getFile();
+    void setFile(File file);
+    String getRemoteFileName();
+    void setRemoteFileName(String path);
 
     void setID(int id);
 

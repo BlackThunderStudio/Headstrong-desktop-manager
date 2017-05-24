@@ -1,5 +1,6 @@
 package com.headstrongpro.desktop.model.resource;
 
+import java.io.File;
 import java.sql.Time;
 
 /**
@@ -14,6 +15,8 @@ public class VideoResource implements Resource {
     private String name, description, url;
     private boolean isForAchievement;
     private Time duration;
+    private File file;
+    private String path;
 
     VideoResource(String name, String description, boolean isForAchievement) {
         this.name = name;
@@ -53,6 +56,26 @@ public class VideoResource implements Resource {
     @Override
     public int getID() {
         return id;
+    }
+
+    @Override
+    public File getFile() {
+        return file;
+    }
+
+    @Override
+    public void setFile(File file) {
+        this.file = file;
+    }
+
+    @Override
+    public String getRemoteFileName() {
+        return path;
+    }
+
+    @Override
+    public void setRemoteFileName(String path) {
+        this.path = path;
     }
 
     @Override
