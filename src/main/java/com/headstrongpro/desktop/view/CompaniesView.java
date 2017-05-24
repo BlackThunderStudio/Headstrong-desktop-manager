@@ -91,6 +91,7 @@ public class CompaniesView implements Initializable {
 
     CompaniesController companiesController;
 
+    @SuppressWarnings("unchecked")
     private void loadTable(ObservableList<Company> companies) throws ModelSyncException{
         companiesTable.getColumns().removeAll(companyIdCol, companyNameCol, companyCvrCol, companyStreetCol, companyPostalCol, companyCityCol, companyCountryCol);
         companiesTable.setItems(companies);
@@ -117,7 +118,8 @@ public class CompaniesView implements Initializable {
             companiesController = new CompaniesController();
             loadTable(companiesController.getCompanies());
         }catch (ModelSyncException e){
-            System.out.println(e.fillInStackTrace());
+            e.printStackTrace();
+            //TODO: to be handled
         }
     }
 
