@@ -12,9 +12,9 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<GridPane minHeight="500" prefHeight="700" minWidth="500" prefWidth="800" maxWidth="1500" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.headstrongpro.desktop.view.CompaniesView">
+<GridPane maxWidth="1500" minHeight="500" minWidth="500" prefHeight="700" prefWidth="800" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.headstrongpro.desktop.view.CompaniesView">
     <columnConstraints>
-        <ColumnConstraints maxWidth="1500.0" minWidth="500.0" prefWidth="800.0" hgrow="SOMETIMES" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1500.0" minWidth="500.0" prefWidth="800.0" />
     </columnConstraints>
     <rowConstraints>
         <RowConstraints maxHeight="60.0" minHeight="60.0" prefHeight="60.0" vgrow="NEVER" />
@@ -42,8 +42,13 @@
       </TextField>
       <TableView fx:id="companiesTable" maxHeight="4000.0" maxWidth="4000.0" minHeight="200.0" minWidth="460.0" prefHeight="520.0" prefWidth="760.0" GridPane.rowIndex="2">
         <columns>
-          <TableColumn prefWidth="75.0" text="C1" />
-          <TableColumn prefWidth="75.0" text="C2" />
+          <TableColumn fx:id="companyIdCol" prefWidth="75.0" text="Id" />
+            <TableColumn fx:id="companyNameCol" prefWidth="75.0" text="Name" />
+            <TableColumn fx:id="companyCvrCol" prefWidth="75.0" text="CVR" />
+            <TableColumn fx:id="companyStreetCol" prefWidth="75.0" text="Street" />
+            <TableColumn fx:id="companyPostalCol" prefWidth="75.0" text="Postal" />
+            <TableColumn fx:id="companyCityCol" prefWidth="75.0" text="City" />
+            <TableColumn fx:id="companyCountryCol" prefWidth="75.0" text="Country" />
         </columns>
          <GridPane.margin>
             <Insets left="20.0" right="20.0" />

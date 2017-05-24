@@ -1,9 +1,15 @@
 package com.headstrongpro.desktop.view;
 
+import com.headstrongpro.desktop.core.controller.CompaniesController;
+import com.headstrongpro.desktop.core.exception.ModelSyncException;
+import com.headstrongpro.desktop.model.entity.Company;
+import com.headstrongpro.desktop.modelCollections.DBCompany;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 
 import java.net.URL;
@@ -19,6 +25,20 @@ public class CompaniesView implements Initializable {
     public TextField searchCompaniesTextfield;
     @FXML
     public TableView companiesTable;
+    @FXML
+    public TableColumn companyIdCol;
+    @FXML
+    public TableColumn companyNameCol;
+    @FXML
+    public TableColumn companyCvrCol;
+    @FXML
+    public TableColumn companyStreetCol;
+    @FXML
+    public TableColumn companyPostalCol;
+    @FXML
+    public TableColumn companyCityCol;
+    @FXML
+    public TableColumn companyCountryCol;
     @FXML
     public Button newCompanyButton;
     @FXML
@@ -68,9 +88,28 @@ public class CompaniesView implements Initializable {
     @FXML
     public Button companyCancelButton;
 
+    CompaniesController companiesController;
+
+    private void loadTable(ObservableList<Company> companies) throws ModelSyncException{
+        companiesTable.getColumns().removeAll(companyIdCol, companyNameCol, companyCvrCol, companyStreetCol, companyPostalCol, companyCityCol, companyCountryCol);
+        companiesTable.setItems(companies);
+        companyIdCol.setCellValueFactory(new PropertyValueFactory<>("id"));
+        companyNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+        companyCvrCol.setCellValueFactory(new PropertyValueFactory<>("cvr"));
+        companyStreetCol.setCellValueFactory(new PropertyValueFactory<>("street"));
+        companyPostalCol.setCellValueFactory(new PropertyValueFactory<>("postal"));
+        companyCityCol.setCellValueFactory(new PropertyValueFactory<>("city"));
+        companyCountryCol.setCellValueFactory(new PropertyValueFactory<>("country"));
+        companiesTable.getColumns().addAll(companyIdCol, companyNameCol, companyCvrCol, companyStreetCol, companyPostalCol, companyCityCol, companyCountryCol);
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        try {
+            companiesController = new CompaniesController();
+            loadTable(companiesController.getCompanies());
+        }catch (ModelSyncException e){
+            //fancy message box displaying error
+        }
     }
 }
