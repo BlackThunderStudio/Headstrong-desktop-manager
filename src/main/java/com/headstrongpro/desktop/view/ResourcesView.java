@@ -2,15 +2,18 @@ package com.headstrongpro.desktop.view;
 
 import com.headstrongpro.desktop.core.Utils;
 import com.headstrongpro.desktop.core.controller.ResourcesController;
+import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.model.resource.Resource;
 import com.jfoenix.controls.JFXProgressBar;
+import com.jfoenix.controls.JFXSpinner;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.concurrent.Worker;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
@@ -42,8 +45,6 @@ public class ResourcesView implements Initializable {
     public Text resourcesHeader;
     @FXML
     public Button assignToCourseButton;
-    @FXML
-    public JFXProgressBar progressBar;
 
     //Table columns
     @FXML
@@ -52,27 +53,34 @@ public class ResourcesView implements Initializable {
     public TableColumn descCol;
     @FXML
     public TableColumn typeCol;
+    @FXML
+    public JFXSpinner loadingSpinner;
+    @FXML
+    public Label loadingLabel;
 
     private ResourcesController controller;
+    private ObservableList<Resource> resources;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        progressBar.setVisible(false);
-        progressBar.setProgress(-1.0f);
-        Utils.WaitingBar waitingBar = new Utils.WaitingBar(progressBar);
+        loadingSpinner.setVisible(false);
+        loadingLabel.setVisible(false);
+        this.resources = FXCollections.observableArrayList();
+        Utils.WaitingSpinner waitingSpinner = new Utils.WaitingSpinner(loadingSpinner, loadingLabel);
         Task<Void> init = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
-                waitingBar.init();
+                waitingSpinner.init("Loading resources...");
                 controller = new ResourcesController();
+                loadResources();
                 return null;
             }
         };
 
         init.stateProperty().addListener((observable, oldValue, newValue) -> {
             if(newValue.equals(SUCCEEDED)){
-                waitingBar.close();
-                initTable(FXCollections.observableArrayList(controller.getAll()));
+                waitingSpinner.close();
+                initTable(this.resources);
             } else if(newValue.equals(FAILED) || newValue.equals(CANCELLED)){
                 //TODO: handle error
             }
@@ -80,6 +88,10 @@ public class ResourcesView implements Initializable {
 
         Thread initThread = new Thread(init);
         initThread.start();
+    }
+
+    private void loadResources(){
+        resources = FXCollections.observableArrayList(controller.getAll());
     }
 
     @SuppressWarnings("unchecked")
@@ -97,5 +109,28 @@ public class ResourcesView implements Initializable {
     @FXML
     public void searchResourcesTextfield_onKeyReleased(KeyEvent keyEvent) {
         initTable(FXCollections.observableArrayList(controller.searchByPhrase(searchResourcesTextfield.getText())));
+    }
+
+    @FXML
+    public void assignToCourseButton_onClick(ActionEvent actionEvent) {
+        Resource selected = (Resource) resourcesTable.getSelectionModel().getSelectedItem();
+        if(selected != null){
+            //TODO: assign to course
+
+            try {
+                controller.assignToCourse(null, selected); //TODO: correct session to be given
+            } catch (DatabaseOutOfSyncException e) {
+                e.printStackTrace();
+                //TODO: handle error
+            } catch (ModelSyncException e) {
+                e.printStackTrace();
+                //TODO: handle error
+            }
+        }
+    }
+
+    @FXML
+    public void newResourceButton_onClick(ActionEvent actionEvent) {
+        //TODO: to be implemented
     }
 }

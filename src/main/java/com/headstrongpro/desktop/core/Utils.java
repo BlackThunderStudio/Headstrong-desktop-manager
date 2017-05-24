@@ -1,8 +1,12 @@
 package com.headstrongpro.desktop.core;
 
 import com.jfoenix.controls.JFXProgressBar;
+import com.jfoenix.controls.JFXSpinner;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
+import javafx.scene.control.Label;
+
+import java.util.function.Predicate;
 
 /**
  * Created by rajmu on 17.04.06.
@@ -35,6 +39,60 @@ public class Utils {
             wait.start();
         }
         
+        public void close(){
+            isAlive = false;
+        }
+    }
+
+    public static class WaitingSpinner{
+        private JFXSpinner spinner;
+        private Label label;
+        private boolean isAlive = false;
+
+        public WaitingSpinner(JFXSpinner spinner, Label label){
+            this.spinner = spinner;
+            this.label = label;
+        }
+
+        public void init(){
+            spinner.setVisible(true);
+            isAlive = true;
+            Task<Void> waitForTrigger = new Task<Void>() {
+                @Override
+                protected Void call() throws Exception {
+                    while (isAlive){
+                        Thread.sleep(10);
+                    }
+                    Platform.runLater(() -> spinner.setVisible(false));
+                    return null;
+                }
+            };
+            Thread th = new Thread(waitForTrigger);
+            th.start();
+        }
+
+        public void init(String message){
+            spinner.setVisible(true);
+            label.setVisible(true);
+            label.setText(message);
+            isAlive = true;
+            Task<Void> waitForTrigger = new Task<Void>() {
+                @Override
+                protected Void call() throws Exception {
+                    while (isAlive){
+                        Thread.sleep(10);
+                    }
+                    Platform.runLater(() -> {
+                        spinner.setVisible(false);
+                        label.setVisible(false);
+                    });
+                    return null;
+                }
+            };
+            Thread th = new Thread(waitForTrigger);
+            th.start();
+        }
+
         public void close(){
             isAlive = false;
         }
