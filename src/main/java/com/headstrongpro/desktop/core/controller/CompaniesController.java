@@ -63,13 +63,13 @@ public class CompaniesController implements Refreshable {
         if(keyword == null) throw new NullPointerException();
         if(keyword.isEmpty()) return FXCollections.observableArrayList(companyDAO.getAll());
         return FXCollections.observableArrayList(companies.stream()
-                .filter(e -> String.valueOf(e.getId()).toLowerCase().contains(keyword) ||
-                e.getName().toLowerCase().contains(keyword) ||
-                e.getCvr().toLowerCase().contains(keyword) ||
-                e.getStreet().toLowerCase().contains(keyword) ||
-                e.getPostal().toLowerCase().contains(keyword) ||
-                e.getCity().toLowerCase().contains(keyword) ||
-                e.getCountry().toLowerCase().contains(keyword))
+                .filter(e -> String.valueOf(e.getId()).contains(keyword) ||
+                e.getName().toLowerCase().contains(keyword.toLowerCase()) ||
+                e.getCvr().toLowerCase().contains(keyword.toLowerCase()) ||
+                e.getStreet().toLowerCase().contains(keyword.toLowerCase()) ||
+                e.getPostal().toLowerCase().contains(keyword.toLowerCase()) ||
+                e.getCity().toLowerCase().contains(keyword.toLowerCase()) ||
+                e.getCountry().toLowerCase().contains(keyword.toLowerCase()))
                 .collect(Collectors.toList()));
     }
 

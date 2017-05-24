@@ -74,9 +74,9 @@ public class ResourcesController extends Configurable implements Refreshable {
         if (input == null) throw new IllegalStateException("input query cannot be of null");
         if (input.isEmpty()) return new ArrayList<Resource>();
         return resources.stream()
-                .filter(e -> String.valueOf(e.getID()).toLowerCase().contains(input) ||
-                e.getName().toLowerCase().contains(input) ||
-                e.getDescription().toLowerCase().contains(input))
+                .filter(e -> String.valueOf(e.getID()).contains(input) ||
+                e.getName().toLowerCase().contains(input.toLowerCase()) ||
+                e.getDescription().toLowerCase().contains(input.toLowerCase()))
                 .collect(Collectors.toList());
     }
 
