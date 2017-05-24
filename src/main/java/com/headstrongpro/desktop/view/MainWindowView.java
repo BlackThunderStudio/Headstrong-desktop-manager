@@ -33,14 +33,13 @@ public class MainWindowView implements Initializable {
     @FXML
     public Pane contextBar;
 
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         System.out.println("stuff");
         try {
             navigationBar = FXMLLoader.load(getClass().getResource("/layout/navigationPane.fxml"));
             contentBar = FXMLLoader.load(getClass().getResource("/layout/companies/companiesContentPane.fxml"));
-            contextBar = FXMLLoader.load(getClass().getResource("/layout/companies/companiesNewPane.fxml"));
+            contextBar = FXMLLoader.load(getClass().getResource("/layout/resources/resourcesAudioPane.fxml"));
         } catch (Exception e) {
             e.printStackTrace();
         }
