@@ -11,6 +11,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
+import org.bouncycastle.math.raw.Mod;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -93,6 +94,13 @@ public class CompaniesView implements Initializable {
     private void loadTable(ObservableList<Company> companies) throws ModelSyncException{
         companiesTable.getColumns().removeAll(companyIdCol, companyNameCol, companyCvrCol, companyStreetCol, companyPostalCol, companyCityCol, companyCountryCol);
         companiesTable.setItems(companies);
+        companyIdCol.setMinWidth(20);
+        companyNameCol.setMinWidth(150);
+        companyCvrCol.setMinWidth(65);
+        companyStreetCol.setMinWidth(120);
+        companyPostalCol.setMinWidth(50);
+        companyCityCol.setMinWidth(20);
+        companyCountryCol.setMinWidth(65);
         companyIdCol.setCellValueFactory(new PropertyValueFactory<>("id"));
         companyNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         companyCvrCol.setCellValueFactory(new PropertyValueFactory<>("cvr"));
@@ -109,7 +117,15 @@ public class CompaniesView implements Initializable {
             companiesController = new CompaniesController();
             loadTable(companiesController.getCompanies());
         }catch (ModelSyncException e){
-            //fancy message box displaying error
+            System.out.println(e.fillInStackTrace());
         }
+    }
+
+    public void companiesTableOnMouseClicked(){
+
+    }
+
+    public void companySearch() throws ModelSyncException{
+        loadTable(companiesController.search(searchCompaniesTextfield.getText()));
     }
 }
