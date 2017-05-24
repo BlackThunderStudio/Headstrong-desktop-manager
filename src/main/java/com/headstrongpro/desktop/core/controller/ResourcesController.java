@@ -1,28 +1,19 @@
 package com.headstrongpro.desktop.core.controller;
 
 
-import com.headstrongpro.desktop.core.connection.Configurable;
-import com.headstrongpro.desktop.core.connection.FTPUtils;
-import com.headstrongpro.desktop.core.connection.SFTPUtils;
 import com.headstrongpro.desktop.core.exception.ConnectionException;
 import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.model.Session;
 import com.headstrongpro.desktop.model.resource.*;
-import com.headstrongpro.desktop.modelCollections.DBResources;
+import com.headstrongpro.desktop.DbLayer.DBResources;
 import javafx.scene.image.Image;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;

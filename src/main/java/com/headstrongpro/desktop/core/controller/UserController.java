@@ -2,7 +2,7 @@ package com.headstrongpro.desktop.core.controller;
 
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.model.entity.Person;
-import com.headstrongpro.desktop.modelCollections.DBUser;
+import com.headstrongpro.desktop.DbLayer.DBUser;
 
 /**
  * User Controller

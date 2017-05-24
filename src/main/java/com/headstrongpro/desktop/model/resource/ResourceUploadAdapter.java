@@ -4,7 +4,7 @@ import com.headstrongpro.desktop.core.connection.Configurable;
 import com.headstrongpro.desktop.core.connection.SFTPUtils;
 import com.headstrongpro.desktop.core.exception.ConnectionException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
-import com.headstrongpro.desktop.modelCollections.DBResources;
+import com.headstrongpro.desktop.DbLayer.DBResources;
 import org.json.simple.JSONObject;
 
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.headstrongpro.desktop.modelCollections.util;
+package com.headstrongpro.desktop.DbLayer.util;
 
 import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;

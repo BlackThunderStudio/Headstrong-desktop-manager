@@ -1,4 +1,4 @@
-package com.headstrongpro.desktop.modelCollections;
+package com.headstrongpro.desktop.DbLayer;
 
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.model.Log;

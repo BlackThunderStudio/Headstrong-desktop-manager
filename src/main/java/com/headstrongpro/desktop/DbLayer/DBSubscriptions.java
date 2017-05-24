@@ -1,4 +1,4 @@
-package com.headstrongpro.desktop.modelCollections;
+package com.headstrongpro.desktop.DbLayer;
 
 import com.headstrongpro.desktop.core.connection.DBConnect;
 import com.headstrongpro.desktop.core.exception.ConnectionException;
@@ -7,9 +7,9 @@ import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.model.PaymentRate;
 import com.headstrongpro.desktop.model.Subscription;
 import com.headstrongpro.desktop.model.entity.Company;
-import com.headstrongpro.desktop.modelCollections.util.ActionType;
-import com.headstrongpro.desktop.modelCollections.util.IDataAccessObject;
-import com.headstrongpro.desktop.modelCollections.util.Synchronizable;
+import com.headstrongpro.desktop.DbLayer.util.ActionType;
+import com.headstrongpro.desktop.DbLayer.util.IDataAccessObject;
+import com.headstrongpro.desktop.DbLayer.util.Synchronizable;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;

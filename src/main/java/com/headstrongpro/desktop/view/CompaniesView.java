@@ -3,7 +3,6 @@ package com.headstrongpro.desktop.view;
 import com.headstrongpro.desktop.core.controller.CompaniesController;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.model.entity.Company;
-import com.headstrongpro.desktop.modelCollections.DBCompany;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -11,7 +10,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
-import org.bouncycastle.math.raw.Mod;
 
 import java.net.URL;
 import java.util.ResourceBundle;

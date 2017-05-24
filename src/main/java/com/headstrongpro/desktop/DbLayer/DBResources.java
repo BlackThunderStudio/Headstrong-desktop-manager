@@ -1,4 +1,4 @@
-package com.headstrongpro.desktop.modelCollections;
+package com.headstrongpro.desktop.DbLayer;
 
 import com.headstrongpro.desktop.core.connection.DBConnect;
 import com.headstrongpro.desktop.core.exception.ConnectionException;
@@ -6,8 +6,8 @@ import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.model.Session;
 import com.headstrongpro.desktop.model.resource.*;
-import com.headstrongpro.desktop.modelCollections.util.IDataAccessObject;
-import com.headstrongpro.desktop.modelCollections.util.Synchronizable;
+import com.headstrongpro.desktop.DbLayer.util.IDataAccessObject;
+import com.headstrongpro.desktop.DbLayer.util.Synchronizable;
 
 import java.io.File;
 import java.sql.Date;
@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.headstrongpro.desktop.model.resource.ResourceType.*;
-import static com.headstrongpro.desktop.modelCollections.util.ActionType.*;
+import static com.headstrongpro.desktop.DbLayer.util.ActionType.*;
 
 /**
  * Created by rajmu on 17.05.08.

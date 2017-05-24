@@ -1,4 +1,4 @@
-package com.headstrongpro.desktop.modelCollections.util;
+package com.headstrongpro.desktop.DbLayer.util;
 
 public enum ActionType {
     CREATE("CREATE"),
