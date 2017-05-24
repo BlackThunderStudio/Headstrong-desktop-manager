@@ -158,8 +158,8 @@ public class CompaniesView implements Initializable {
         }
     }
 
-    public void companiesTableOnMouseClicked(){
-
+    public void companiesTableOnMouseClicked() throws ModelSyncException{
+        companyNameTextfield.setText(String.valueOf(companiesController.getCompanyById(((Company)companiesTable.getSelectionModel().getSelectedItem()).getId()).getId()));
     }
 
     public void companySearch() throws ModelSyncException{

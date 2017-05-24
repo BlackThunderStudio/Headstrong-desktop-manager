@@ -219,8 +219,8 @@ public class CompaniesController implements Refreshable {
      * gets the selected company
      * @return
      */
-    public Company getSelectedCompany(){
-        return selectedCompany;
+    public Company getCompanyById(int id) throws ModelSyncException{
+        return companyDAO.getById(id);
     }
     @Override
     public void refresh() throws ModelSyncException{
