@@ -37,8 +37,10 @@ public class Main extends Application {
         primaryStage.setTitle("Headstrong Company Manager");
 
         // set minimum window size
-        primaryStage.setMinWidth(1400);
+        primaryStage.setMinWidth(1000);
         primaryStage.setMinHeight(720);
+        primaryStage.setWidth(1400);
+        primaryStage.setHeight(750);
 
         primaryStage.setOnCloseRequest(e -> {
             e.consume();

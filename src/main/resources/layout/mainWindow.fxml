@@ -1,22 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.RowConstraints?>
 
-<GridPane fx:id="layout" minHeight="700" minWidth="1400"  prefHeight="700.0" prefWidth="1400.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.headstrongpro.desktop.view.MainWindowView">
-    <columnConstraints>
-        <ColumnConstraints minWidth="300.0" prefWidth="300.0" maxWidth="300"/>
-        <ColumnConstraints minWidth="700.0" prefWidth="800.0" maxWidth="1500" hgrow="SOMETIMES"/>
-        <ColumnConstraints minWidth="250.0" prefWidth="300.0" maxWidth="400" hgrow="SOMETIMES"/>
-    </columnConstraints>
-    <rowConstraints>
-        <RowConstraints minHeight="650" maxHeight="4000.0" vgrow="ALWAYS" />
-    </rowConstraints>
-   <children>
-      <Pane fx:id="navigationBar" prefHeight="800.0" prefWidth="300.0" maxWidth="300.0" GridPane.columnIndex="0"  />
-      <Pane fx:id="contentBar" prefHeight="800.0" prefWidth="700.0" GridPane.columnIndex="1" />
-      <Pane fx:id="contextBar" prefHeight="800.0" prefWidth="300.0" maxWidth="400" GridPane.columnIndex="2" />
-   </children>
-</GridPane>
+<SplitPane fx:id="layout" minHeight="700" minWidth="500" prefHeight="700.0" prefWidth="1400.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.headstrongpro.desktop.view.MainWindowView">
+    <!--<columnConstraints>-->
+        <!--<ColumnConstraints minWidth="300.0" prefWidth="300.0" maxWidth="300"/>-->
+        <!--<ColumnConstraints minWidth="700.0" prefWidth="800.0" maxWidth="1500" hgrow="SOMETIMES"/>-->
+        <!--<ColumnConstraints minWidth="250.0" prefWidth="300.0" maxWidth="400" hgrow="SOMETIMES"/>-->
+    <!--</columnConstraints>-->
+    <!--<rowConstraints>-->
+        <!--<RowConstraints minHeight="650" maxHeight="4000.0" vgrow="ALWAYS" />-->
+    <!--</rowConstraints>-->
+   <items>
+      <Pane fx:id="navigationBar" minWidth="300" prefWidth="300.0" maxWidth="300.0" prefHeight="800.0" />
+      <Pane fx:id="contentBar" minWidth="500"  prefWidth="800.0" prefHeight="800.0"/>
+      <Pane fx:id="contextBar"  minWidth="250" prefWidth="300.0" maxWidth="400" prefHeight="800" />
+   </items>
+</SplitPane>

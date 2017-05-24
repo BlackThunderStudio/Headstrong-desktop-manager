@@ -11,9 +11,9 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<GridPane minHeight="460" minWidth="250.0" prefHeight="700.0" prefWidth="300.0" maxWidth="400"  xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.headstrongpro.desktop.view.CompaniesView">
+<GridPane minHeight="460" minWidth="250.0" prefHeight="700.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.headstrongpro.desktop.view.CompaniesView">
     <columnConstraints>
-        <ColumnConstraints hgrow="SOMETIMES" maxWidth="500.0" minWidth="250.0" percentWidth="100.0" prefWidth="300.0" />
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="250.0" prefWidth="300.0" />
     </columnConstraints>
     <rowConstraints>
         <RowConstraints maxHeight="45.0" minHeight="45.0" prefHeight="45.0" vgrow="SOMETIMES" />

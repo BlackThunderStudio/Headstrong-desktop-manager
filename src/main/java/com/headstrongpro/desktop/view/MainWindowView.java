@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.SplitPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.web.WebEngine;
@@ -21,7 +22,7 @@ public class MainWindowView implements Initializable {
 
 
     @FXML
-    public GridPane layout;
+    public SplitPane layout;
 
     @FXML
     public Pane navigationBar;
@@ -43,8 +44,10 @@ public class MainWindowView implements Initializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        layout.add(navigationBar,0,0);
-        layout.add(contentBar,1,0);
-        layout.add(contextBar,2,0);
+        layout.getItems().set(0, navigationBar);
+        layout.getItems().set(1, contentBar);
+        layout.getItems().set(2, contextBar);
+        layout.setDividerPosition(0, 0.20);
+        layout.setDividerPosition(1, 0.78);
     }
 }
