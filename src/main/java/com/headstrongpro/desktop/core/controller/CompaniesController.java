@@ -28,14 +28,23 @@ public class CompaniesController implements Refreshable {
     private int selectedCompanyId;
 
 
-
-    //constructor from main window
+    /**
+     * Default constructor
+     * @throws ModelSyncException
+     */
     public CompaniesController() throws ModelSyncException{
         companies = new ArrayList<>();
         companyDAO = new DBCompany();
         refresh();
     }
-    //constructor from other windows
+
+    /**
+     * Constructor selecting the selected company,
+     * may be useful if window is initialised
+     * from another window
+     * @param id Selected company id
+     * @throws ModelSyncException
+     */
     public CompaniesController(int id) throws ModelSyncException{
         companies = new ArrayList<>();
         companyDAO = new DBCompany();
@@ -43,22 +52,37 @@ public class CompaniesController implements Refreshable {
         refresh();
     }
 
-    //lambda homosex'd up search
-    public ObservableList<Company> search(String query) throws ModelSyncException{
-        if(query == null) throw new NullPointerException();
-        if(query.isEmpty()) return FXCollections.observableArrayList(companyDAO.getAll());
+    /**
+     * Search keyword in all companies details
+     * searches thru the companies by a keyword
+     * @param keyword Searched expression
+     * @return Observable Array list of all companies containing the keyword
+     * @throws ModelSyncException
+     */
+    public ObservableList<Company> search(String keyword) throws ModelSyncException{
+        if(keyword == null) throw new NullPointerException();
+        if(keyword.isEmpty()) return FXCollections.observableArrayList(companyDAO.getAll());
         return FXCollections.observableArrayList(companies.stream()
-                .filter(e -> String.valueOf(e.getId()).toLowerCase().contains(query) ||
-                e.getName().toLowerCase().contains(query) ||
-                e.getCvr().toLowerCase().contains(query) ||
-                e.getStreet().toLowerCase().contains(query) ||
-                e.getPostal().toLowerCase().contains(query) ||
-                e.getCity().toLowerCase().contains(query) ||
-                e.getCountry().toLowerCase().contains(query))
+                .filter(e -> String.valueOf(e.getId()).toLowerCase().contains(keyword) ||
+                e.getName().toLowerCase().contains(keyword) ||
+                e.getCvr().toLowerCase().contains(keyword) ||
+                e.getStreet().toLowerCase().contains(keyword) ||
+                e.getPostal().toLowerCase().contains(keyword) ||
+                e.getCity().toLowerCase().contains(keyword) ||
+                e.getCountry().toLowerCase().contains(keyword))
                 .collect(Collectors.toList()));
     }
 
-    //check if details input are valid
+    /**
+     * Validator for creating/updating company
+     * @param name Company name
+     * @param cvr Company cvr
+     * @param street Company street
+     * @param postal Company postal code
+     * @param city Company city
+     * @param country Company country
+     * @return true if company details are valid, false otherwise
+     */
     private boolean validCompany(String name, String cvr, String street, String postal, String city, String country){
         boolean isValid = true;
         String basicRegex = "[A-Za-z0-9 ]";
@@ -73,18 +97,44 @@ public class CompaniesController implements Refreshable {
         return isValid;
     }
 
-    //add
-    public void addCompany(String name, String cvr, String street, String postal, String city, String country)
+    /**
+     * Create a company if details are valid
+     * @param name Company name
+     * @param cvr Company cvr
+     * @param street Company street
+     * @param postal Company postal code
+     * @param city Company city
+     * @param country Company country
+     * @throws ModelSyncException
+     */
+    public void createCompany(String name, String cvr, String street, String postal, String city, String country)
             throws ModelSyncException{
         if(validCompany(name, cvr, street, postal, city, country))
             companyDAO.persist(new Company(name, cvr, street, postal, city, country));
         refresh();
     }
-    //get all
+
+    /**
+     * Read all the companies
+     * @return Observable array list of existing companies
+     * @throws ModelSyncException
+     */
     public ObservableList<Company> getCompanies() throws ModelSyncException{
         return FXCollections.observableArrayList(companyDAO.getAll());
     }
-    //update
+
+    /**
+     * Update a company if new details are valid
+     * @param id Company ID
+     * @param name Company name
+     * @param cvr Company cvr
+     * @param street Company street
+     * @param postal Company postal code
+     * @param city Company city
+     * @param country Company country
+     * @throws ModelSyncException
+     * @throws DatabaseOutOfSyncException
+     */
     public void updateCompany(int id, String name, String cvr, String street, String postal, String city, String country)
             throws ModelSyncException, DatabaseOutOfSyncException{
         Company selectedCompany = companyDAO.getById(id);
@@ -92,29 +142,64 @@ public class CompaniesController implements Refreshable {
             companyDAO.update(selectedCompany);
         refresh();
     }
-    //delete
+
+    /**
+     * Delete a company by ID
+     * @param id Company ID
+     * @throws ModelSyncException
+     * @throws DatabaseOutOfSyncException
+     */
     public void deleteCompany(int id) throws ModelSyncException, DatabaseOutOfSyncException{
         companyDAO.delete(companyDAO.getById(id));
         refresh();
     }
 
-    //get departments by company id
+    /**
+     * Get departments by company ID
+     * @param id Company ID
+     * @return Observable array list of departments
+     * @throws ModelSyncException
+     */
     public ObservableList<Department> getDepartmentsByCompanyId(int id) throws ModelSyncException{
         return FXCollections.observableArrayList(new DBDepartments().getByCompanyID(id));
     }
-    //groups
+
+    /**
+     * Get groups by company ID
+     * @param id Company ID
+     * @return Observable array list of groups
+     * @throws ModelSyncException
+     */
     public ObservableList<Group> getGroupsByCompanyId(int id) throws ModelSyncException{
         return FXCollections.observableArrayList(new DBGroups().getByCompanyID(id));
     }
-    //subscriptions
+
+    /**
+     * Get subscriptions by company ID
+     * @param id Company ID
+     * @return Observable array list of subscriptions
+     * @throws ModelSyncException
+     */
     public ObservableList<Subscription> getSubcriptionByCompanyId(int id) throws ModelSyncException{
         return FXCollections.observableArrayList(new DBSubscriptions().getbyCompanyId(id));
     }
-    //clients
+
+    /**
+     * Get clients by company ID
+     * @param id Company ID
+     * @return Observable array list of clients
+     * @throws ModelSyncException
+     */
     public ObservableList<Person> getClientByCompanyId(int id) throws ModelSyncException{
         return FXCollections.observableArrayList(new DBClient().getByCompanyId(id));
     }
-    //payments
+
+    /**
+     * Get payments by company ID
+     * @param id Company ID
+     * @return Observable array list of payments
+     * @throws ModelSyncException
+     */
     public ObservableList<Payment> getPaymentsByCompanyId(int id) throws ModelSyncException{
         List<Subscription> subscriptions = new DBSubscriptions().getbyCompanyId(id);
         List<Payment> payments = new ArrayList<>();
