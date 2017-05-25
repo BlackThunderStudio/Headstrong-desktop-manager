@@ -1,6 +1,7 @@
 package com.headstrongpro.desktop.view.companies;
 
 import com.headstrongpro.desktop.model.entity.Company;
+import com.headstrongpro.desktop.view.ContextView;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -10,9 +11,9 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * Created by 1062085 on 25-May-17.
+ * Companies ContextView
  */
-public class CompaniesContextView implements Initializable { // Context view controls
+public class CompaniesContextView extends ContextView<Company> implements Initializable {
     @FXML
     public Button companyEditButton;
     @FXML
@@ -38,14 +39,15 @@ public class CompaniesContextView implements Initializable { // Context view con
     @FXML
     public Button companySubscriptionsButton;
 
-    public void setFields(Company company){
-        companyNameTextfield.setText(company.getName());
-        companyCvrTextfield.setText(company.getCvr());
-        companyStreetTextfield.setText(company.getStreet());
-        companyPostalTextfield.setText(company.getPostal());
-        companyCityTextfield.setText(company.getCity());
-        companyCountryTextfield.setText(company.getCountry());
-        System.out.println(company.getName());
+    @Override
+    public void setFields() {
+        companyNameTextfield.setText(contextItem.getName());
+        companyCvrTextfield.setText(contextItem.getCvr());
+        companyStreetTextfield.setText(contextItem.getStreet());
+        companyPostalTextfield.setText(contextItem.getPostal());
+        companyCityTextfield.setText(contextItem.getCity());
+        companyCountryTextfield.setText(contextItem.getCountry());
+        System.out.println(contextItem.getName());
     }
 
     @Override

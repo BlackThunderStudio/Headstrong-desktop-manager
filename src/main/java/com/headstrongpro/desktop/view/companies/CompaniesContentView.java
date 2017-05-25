@@ -1,33 +1,31 @@
 package com.headstrongpro.desktop.view.companies;
 
-import com.headstrongpro.desktop.core.Utils;
 import com.headstrongpro.desktop.core.controller.CompaniesController;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.core.fxControls.Footer;
-import com.headstrongpro.desktop.core.fxControls.LoadingBar;
 import com.headstrongpro.desktop.model.entity.Company;
-import com.jfoenix.controls.JFXSpinner;
+import com.headstrongpro.desktop.view.ContentView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 import static javafx.concurrent.Worker.State.*;
 
 /**
- * Created by Ondřej Soukup on 20.05.2017.
+ * Companies ContentView
  */
-public class CompaniesContentView implements Initializable {
+public class CompaniesContentView extends ContentView implements Initializable {
 
     // Content view controls
     @FXML
@@ -57,10 +55,9 @@ public class CompaniesContentView implements Initializable {
 
     private CompaniesController companiesController;
     private ObservableList<Company> companies;
-    CompaniesContextView contextController;
 
     @SuppressWarnings("unchecked")
-    private void loadTable(ObservableList<Company> companies){
+    private void loadTable(ObservableList<Company> companies) {
         companiesTable.getColumns().removeAll(companyIdCol, companyNameCol, companyCvrCol, companyStreetCol, companyPostalCol, companyCityCol, companyCountryCol);
         companiesTable.setItems(companies);
         companyIdCol.setMinWidth(20);
@@ -80,21 +77,8 @@ public class CompaniesContentView implements Initializable {
         companiesTable.getColumns().addAll(companyIdCol, companyNameCol, companyCvrCol, companyStreetCol, companyPostalCol, companyCityCol, companyCountryCol);
     }
 
-    private void loadLoaders(){
-        FXMLLoader contextLoader, newLoader;
-        contextLoader = new FXMLLoader();
-        contextLoader.setLocation(getClass().getResource("/layout/companies/companiesContextPane.fxml"));
-        try{
-            contextLoader.load();
-        }catch (IOException e){
-            e.fillInStackTrace();
-        }
-        contextController = contextLoader.getController();
-    }
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        loadLoaders();
         companies = FXCollections.observableArrayList();
         Task<Void> init = new Task<Void>() {
             @Override
@@ -107,10 +91,10 @@ public class CompaniesContentView implements Initializable {
         };
 
         init.stateProperty().addListener(((observable, oldValue, newValue) -> {
-            if(newValue.equals(SUCCEEDED)){
+            if (newValue.equals(SUCCEEDED)) {
                 loadTable(companies);
                 footer.show("Companies loaded successfully!", Footer.NotificationType.COMPLETED);
-            } else if(newValue.equals(FAILED) || newValue.equals(CANCELLED)){
+            } else if (newValue.equals(FAILED) || newValue.equals(CANCELLED)) {
                 footer.show("Error while loading comapnie!", Footer.NotificationType.ERROR, Footer.FADE_LONG);
             }
         }));
@@ -120,7 +104,7 @@ public class CompaniesContentView implements Initializable {
         th.start();
     }
 
-    private void loadCompanies(){
+    private void loadCompanies() {
         try {
             companies = companiesController.getCompanies();
         } catch (ModelSyncException e) {
@@ -129,14 +113,14 @@ public class CompaniesContentView implements Initializable {
         }
     }
 
-    public void companiesTableOnMouseClicked() throws ModelSyncException{
+    public void companiesTableOnMouseClicked() throws ModelSyncException {
         //companyNameTextfield.setText(String.valueOf(companiesController.getCompanyById(((Company)companiesTable.getSelectionModel().getSelectedItem()).getId()).getId()));
         Company company = (Company) companiesTable.getSelectionModel().getSelectedItem();
         footer.show(company.getName() + " selected.", Footer.NotificationType.INFORMATION, Footer.FADE_SUPER_QUICK);
-        contextController.setFields(company);
+        contextView.changeContextItem(company);
     }
 
-    public void companySearch() throws ModelSyncException{
+    public void companySearch() throws ModelSyncException {
         loadTable(companiesController.search(searchCompaniesTextfield.getText()));
     }
 }

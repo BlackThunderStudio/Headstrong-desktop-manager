@@ -9,11 +9,11 @@ import com.headstrongpro.desktop.DbLayer.DBUser;
  */
 public class UserController {
 
-    private DBUser dbUser = new DBUser();
+    private static DBUser dbUser = new DBUser();
 
     private static Person loggedUser;
 
-    private boolean validateUser(String username, String password) throws ModelSyncException {
+    public static boolean validateUser(String username, String password) {
         try {
             loggedUser = dbUser.getByCredentials(username, password);
         } catch (ModelSyncException ex) {
@@ -27,7 +27,7 @@ public class UserController {
         return loggedUser;
     }
 
-    static boolean isLoggedIn() {
+    public static boolean isLoggedIn() {
         return (loggedUser != null);
     }
 }
