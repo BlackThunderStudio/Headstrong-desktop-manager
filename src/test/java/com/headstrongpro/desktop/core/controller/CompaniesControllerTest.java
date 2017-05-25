@@ -26,7 +26,7 @@ public class CompaniesControllerTest {
 
     @Test
     public void constructor2() throws Exception{
-        assertEquals("Maersk", new CompaniesController(2).getSelectedCompany().getName());
+        assertEquals("Maersk", new CompaniesController(2).getCompanyById(2).getName());
     }
 
     @Test

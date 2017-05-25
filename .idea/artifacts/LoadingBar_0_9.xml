@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="LoadingBar-0.9">
+    <output-path>$PROJECT_DIR$/out/artifacts/LoadingBar_0_9</output-path>
+    <root id="archive" name="LoadingBar-0.9.jar">
+      <element id="dir-copy" path="$PROJECT_DIR$/src/main/java/com/headstrongpro/desktop/core/fxControls" />
+    </root>
+  </artifact>
+</component>
