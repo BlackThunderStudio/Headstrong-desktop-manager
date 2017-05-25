@@ -3,6 +3,7 @@ package com.headstrongpro.desktop.view.companies;
 import com.headstrongpro.desktop.core.Utils;
 import com.headstrongpro.desktop.core.controller.CompaniesController;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
+import com.headstrongpro.desktop.core.fxControls.LoadingBar;
 import com.headstrongpro.desktop.model.entity.Company;
 import com.jfoenix.controls.JFXSpinner;
 import javafx.collections.FXCollections;
@@ -53,6 +54,8 @@ public class CompaniesContentView implements Initializable {
     public JFXSpinner loadingSpinner;
     @FXML
     public Label loadingLabel;
+    @FXML
+    public LoadingBar loadingBar;
 
     private CompaniesController companiesController;
     private ObservableList<Company> companies;
@@ -90,6 +93,7 @@ public class CompaniesContentView implements Initializable {
             @Override
             protected Void call() throws Exception {
                 waitingSpinner.init("Loading companies...");
+                loadingBar.show("Loading companies");
                 companiesController = new CompaniesController();
                 loadCompanies();
                 return null;
@@ -99,6 +103,7 @@ public class CompaniesContentView implements Initializable {
         init.stateProperty().addListener(((observable, oldValue, newValue) -> {
             if(newValue.equals(SUCCEEDED)){
                 waitingSpinner.close();
+                loadingBar.hide();
                 loadTable(companies);
             }
         }));
