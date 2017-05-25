@@ -19,6 +19,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
 
@@ -57,6 +58,8 @@ public class ResourcesView implements Initializable {
     public JFXSpinner loadingSpinner;
     @FXML
     public Label loadingLabel;
+
+
 
     private ResourcesController controller;
     private ObservableList<Resource> resources;
