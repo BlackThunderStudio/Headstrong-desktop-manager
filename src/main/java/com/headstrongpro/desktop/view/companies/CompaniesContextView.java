@@ -3,14 +3,18 @@ package com.headstrongpro.desktop.view.companies;
 import com.headstrongpro.desktop.core.controller.CompaniesController;
 import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
+import com.headstrongpro.desktop.core.fxControls.Footer;
 import com.headstrongpro.desktop.model.entity.Company;
 import com.headstrongpro.desktop.view.ContextView;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 /**
@@ -57,12 +61,7 @@ public class CompaniesContextView extends ContextView<Company> implements Initia
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        companyNameTextfield.setText("");
-        companyCvrTextfield.setText("");
-        companyStreetTextfield.setText("");
-        companyPostalTextfield.setText("");
-        companyCityTextfield.setText("");
-        companyCountryTextfield.setText("");
+        clearFields();
         try {
             companiesController = new CompaniesController();
         } catch (ModelSyncException e){
@@ -71,11 +70,52 @@ public class CompaniesContextView extends ContextView<Company> implements Initia
     }
 
     public void companiesContextEditButtonPress(){
-        if(companiesController.validCompany(companyNameTextfield.getText(), companyCvrTextfield.getText(), companyStreetTextfield.getText(), companyPostalTextfield.getText(), companyCityTextfield.getText(), companyCountryTextfield.getText()))
+        if(companiesController.validCompany(companyNameTextfield.getText(),
+                companyCvrTextfield.getText(),
+                companyStreetTextfield.getText(),
+                companyPostalTextfield.getText(),
+                companyCityTextfield.getText(),
+                companyCountryTextfield.getText()))
             try {
-                companiesController.updateCompany(contextItem.getId(), companyNameTextfield.getText(), companyCvrTextfield.getText(), companyStreetTextfield.getText(), companyPostalTextfield.getText(), companyCityTextfield.getText(), companyCountryTextfield.getText());
-            } catch(ModelSyncException | DatabaseOutOfSyncException e){
+                //footer.show("Updating company...", Footer.NotificationType.LOADING);
+                companiesController.updateCompany(contextItem.getId(),
+                        companyNameTextfield.getText(),
+                        companyCvrTextfield.getText(),
+                        companyStreetTextfield.getText(),
+                        companyPostalTextfield.getText(),
+                        companyCityTextfield.getText(),
+                        companyCountryTextfield.getText());
+                //footer.show("Company updated.", Footer.NotificationType.COMPLETED);
+            } catch(ModelSyncException e){
                 e.fillInStackTrace();
+                //footer.show("Error! Could not update company!", Footer.NotificationType.ERROR, Footer.FADE_LONG);
+            } catch (DatabaseOutOfSyncException e) {
+                Alert a = new Alert(Alert.AlertType.CONFIRMATION);
+                //footer.show("Warning! Data inconsistency!", Footer.NotificationType.WARNING);
+                a.setHeaderText("Warning! Database contains newer data.");
+                a.setContentText("Do you want to reload the data? Clicking 'Cancel' will clear all the input");
+                Optional<ButtonType> response = a.showAndWait();
+                response.ifPresent(btn ->{
+                    if(ButtonType.OK.equals(btn)){
+                        try {
+                            changeContextItem(companiesController.getCompanyById(contextItem.getId()));
+                        } catch (ModelSyncException e1) {
+                            e1.printStackTrace();
+                            //TODO: handle error: couldn't reload the company
+                        }
+                    } else {
+                        clearFields();
+                    }
+                });
             }
+    }
+
+    private void clearFields(){
+        companyCityTextfield.clear();
+        companyCountryTextfield.clear();
+        companyCvrTextfield.clear();
+        companyNameTextfield.clear();
+        companyPostalTextfield.clear();
+        companyStreetTextfield.clear();
     }
 }
