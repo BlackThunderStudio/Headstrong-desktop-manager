@@ -2,6 +2,7 @@ package com.headstrongpro.desktop.core.controller;
 
 import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
+import com.headstrongpro.desktop.core.exception.SyncException;
 import com.headstrongpro.desktop.model.Department;
 import com.headstrongpro.desktop.model.Group;
 import com.headstrongpro.desktop.model.Payment;
@@ -56,9 +57,9 @@ public class CompaniesController implements Refreshable {
      * @return Observable Array list of all companies containing the keyword
      * @throws ModelSyncException
      */
-    public ObservableList<Company> search(String keyword) throws ModelSyncException{
+    public ObservableList<Company> search(String keyword) throws ModelSyncException, SyncException {
         if(keyword == null) throw new NullPointerException();
-        if(keyword.isEmpty()) return FXCollections.observableArrayList(companyDAO.getAll());
+        if(keyword.isEmpty()) throw new SyncException();
         return FXCollections.observableArrayList(companies.stream()
                 .filter(e -> String.valueOf(e.getId()).contains(keyword) ||
                 e.getName().toLowerCase().contains(keyword.toLowerCase()) ||

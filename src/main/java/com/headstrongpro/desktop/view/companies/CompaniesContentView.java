@@ -2,6 +2,7 @@ package com.headstrongpro.desktop.view.companies;
 
 import com.headstrongpro.desktop.core.controller.CompaniesController;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
+import com.headstrongpro.desktop.core.exception.SyncException;
 import com.headstrongpro.desktop.core.fxControls.Footer;
 import com.headstrongpro.desktop.model.entity.Company;
 import com.headstrongpro.desktop.view.ContentView;
@@ -122,7 +123,29 @@ public class CompaniesContentView extends ContentView implements Initializable {
         }
     }
 
-    public void companySearch() throws ModelSyncException {
-        loadTable(companiesController.search(searchCompaniesTextfield.getText()));
+    public void companySearch() {
+        try {
+            loadTable(companiesController.search(searchCompaniesTextfield.getText()));
+        } catch (SyncException e) {
+            Task<Void> sync = new Task<Void>() {
+                @Override
+                protected Void call() throws Exception {
+                    footer.show("Synchronising data...", Footer.NotificationType.LOADING);
+                    loadCompanies();
+                    return null;
+                }
+            };
+
+            sync.stateProperty().addListener((q,w,r) -> {
+                if(r.equals(SUCCEEDED)){
+                    footer.hide();
+                }
+            });
+
+            new Thread(sync).start();
+        } catch (ModelSyncException e2){
+            e2.printStackTrace();
+            //TODO: handle the error
+        }
     }
 }
