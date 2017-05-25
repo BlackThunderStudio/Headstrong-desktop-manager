@@ -4,6 +4,7 @@ import com.headstrongpro.desktop.core.Utils;
 import com.headstrongpro.desktop.core.controller.ResourcesController;
 import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
+import com.headstrongpro.desktop.core.fxControls.LoadingBar;
 import com.headstrongpro.desktop.model.resource.Resource;
 import com.jfoenix.controls.JFXProgressBar;
 import com.jfoenix.controls.JFXSpinner;
@@ -55,10 +56,7 @@ public class ResourcesView implements Initializable {
     @FXML
     public TableColumn typeCol;
     @FXML
-    public JFXSpinner loadingSpinner;
-    @FXML
-    public Label loadingLabel;
-
+    public LoadingBar loadingBar;
 
 
     private ResourcesController controller;
@@ -66,14 +64,11 @@ public class ResourcesView implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        loadingSpinner.setVisible(false);
-        loadingLabel.setVisible(false);
         this.resources = FXCollections.observableArrayList();
-        Utils.WaitingSpinner waitingSpinner = new Utils.WaitingSpinner(loadingSpinner, loadingLabel);
         Task<Void> init = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
-                waitingSpinner.init("Loading resources...");
+                loadingBar.show("Lading resources...");
                 controller = new ResourcesController();
                 loadResources();
                 return null;
@@ -82,7 +77,7 @@ public class ResourcesView implements Initializable {
 
         init.stateProperty().addListener((observable, oldValue, newValue) -> {
             if(newValue.equals(SUCCEEDED)){
-                waitingSpinner.close();
+                loadingBar.hide();
                 initTable(this.resources);
             } else if(newValue.equals(FAILED) || newValue.equals(CANCELLED)){
                 //TODO: handle error

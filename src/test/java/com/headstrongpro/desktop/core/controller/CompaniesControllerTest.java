@@ -1,7 +1,9 @@
 package com.headstrongpro.desktop.core.controller;
 
+import com.headstrongpro.desktop.model.entity.Company;
 import com.headstrongpro.desktop.DbLayer.DBCompany;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.Random;
@@ -71,7 +73,7 @@ public class CompaniesControllerTest {
     }
 
     @Test
-    public void getSubscriptionByCompanyId() throws Exception {
+    public void getSubcriptionByCompanyId() throws Exception {
         assertEquals(1, companiesController.getSubcriptionByCompanyId(1).size());
     }
 
