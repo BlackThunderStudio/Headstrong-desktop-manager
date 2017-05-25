@@ -14,6 +14,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
+<?import com.headstrongpro.desktop.core.fxControls.*?>
 <GridPane maxWidth="1500" minHeight="500" minWidth="500" prefHeight="700" prefWidth="800" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.headstrongpro.desktop.view.companies.CompaniesContentView">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="1500.0" minWidth="500.0" prefWidth="800.0" />
@@ -61,15 +62,18 @@
             <Insets right="20.0" />
          </GridPane.margin>
       </Button>
-      <JFXSpinner fx:id="loadingSpinner" prefHeight="150.0" prefWidth="200.0" GridPane.rowIndex="3">
-         <GridPane.margin>
-            <Insets left="20.0" />
-         </GridPane.margin>
-      </JFXSpinner>
-      <Label fx:id="loadingLabel" text="Label" GridPane.rowIndex="3">
-         <GridPane.margin>
-            <Insets left="62.0" />
-         </GridPane.margin>
-      </Label>
+       <!--<JFXSpinner fx:id="loadingSpinner" prefHeight="150.0" prefWidth="200.0" GridPane.rowIndex="3">
+          <GridPane.margin>
+             <Insets left="20.0" />
+          </GridPane.margin>
+       </JFXSpinner>
+       <Label fx:id="loadingLabel" text="Label" GridPane.rowIndex="3">
+          <GridPane.margin>
+             <Insets left="62.0" />
+          </GridPane.margin>
+       </Label>-->
+       <LoadingBar fx:id="loadingBar" maxHeight="32.0" maxWidth="200.0" prefHeight="32.0" prefWidth="200.0"
+                   GridPane.rowIndex="3" GridPane.halignment="LEFT">
+       </LoadingBar>
    </children>
 </GridPane>

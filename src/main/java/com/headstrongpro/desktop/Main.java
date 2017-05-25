@@ -35,12 +35,9 @@ public class Main extends Application {
         window = primaryStage;
         Parent root = FXMLLoader.load(getClass().getResource("/layout/mainWindow.fxml"));
         primaryStage.setTitle("Headstrong Company Manager");
-
         // set minimum window size
-        primaryStage.setMinWidth(1000);
-        primaryStage.setMinHeight(720);
-        primaryStage.setWidth(1400);
-        primaryStage.setHeight(750);
+        primaryStage.setMinHeight(700);
+        primaryStage.setMinWidth(800);
 
         primaryStage.setOnCloseRequest(e -> {
             e.consume();
