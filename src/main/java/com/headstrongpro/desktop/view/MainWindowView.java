@@ -35,7 +35,6 @@ public class MainWindowView implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        System.out.println("stuff");
         try {
             navigationBar = FXMLLoader.load(getClass().getResource("/layout/navigationPane.fxml"));
             contentBar = FXMLLoader.load(getClass().getResource("/layout/companies/companiesContentPane.fxml"));
@@ -49,4 +48,5 @@ public class MainWindowView implements Initializable {
         layout.setDividerPosition(0, 0.20);
         layout.setDividerPosition(1, 0.75);
     }
+
 }

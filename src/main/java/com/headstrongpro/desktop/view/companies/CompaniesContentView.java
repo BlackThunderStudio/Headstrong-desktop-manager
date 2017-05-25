@@ -9,12 +9,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -56,7 +58,7 @@ public class CompaniesContentView implements Initializable {
 
     private CompaniesController companiesController;
     private ObservableList<Company> companies;
-    private CompaniesContextView companiesContextView;
+    CompaniesContextView contextController;
 
     @SuppressWarnings("unchecked")
     private void loadTable(ObservableList<Company> companies){
@@ -79,10 +81,22 @@ public class CompaniesContentView implements Initializable {
         companiesTable.getColumns().addAll(companyIdCol, companyNameCol, companyCvrCol, companyStreetCol, companyPostalCol, companyCityCol, companyCountryCol);
     }
 
+    private void loadLoaders(){
+        FXMLLoader contextLoader, newLoader;
+        contextLoader = new FXMLLoader();
+        contextLoader.setLocation(getClass().getResource("/layout/companies/companiesContextPane.fxml"));
+        try{
+            contextLoader.load();
+        }catch (IOException e){
+            e.fillInStackTrace();
+        }
+        contextController = contextLoader.getController();
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        loadLoaders();
         companies = FXCollections.observableArrayList();
-        companiesContextView = new CompaniesContextView();
         loadingLabel.setVisible(false);
         loadingSpinner.setVisible(false);
         Utils.WaitingSpinner waitingSpinner = new Utils.WaitingSpinner(loadingSpinner, loadingLabel);
@@ -119,7 +133,7 @@ public class CompaniesContentView implements Initializable {
     public void companiesTableOnMouseClicked() throws ModelSyncException{
         //companyNameTextfield.setText(String.valueOf(companiesController.getCompanyById(((Company)companiesTable.getSelectionModel().getSelectedItem()).getId()).getId()));
         Company company = (Company) companiesTable.getSelectionModel().getSelectedItem();
-        companiesContextView.setFields(company);
+        contextController.setFields(company);
     }
 
     public void companySearch() throws ModelSyncException{
