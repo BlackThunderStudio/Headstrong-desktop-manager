@@ -3,25 +3,26 @@ package com.headstrongpro.desktop.core.fxControls;
 import com.jfoenix.controls.JFXSpinner;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.layout.HBox;
-import org.omg.PortableInterceptor.ServerRequestInfo;
+import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 
-import java.awt.*;
 import java.io.IOException;
 
 /**
  * Created by Rajmund Staniek on 25-May-17.
  */
-public class LoadingBar extends HBox {
+public class LoadingBar extends AnchorPane {
 
     @FXML
-    protected Label label;
+    private AnchorPane myAnchorPane;
     @FXML
-    protected JFXSpinner spinner;
+    public Label label;
+    @FXML
+    public JFXSpinner spinner;
 
     public LoadingBar() {
         FXMLLoader fxmlLoader = new FXMLLoader(
-                getClass().getResource("/com/headstrongpro/desktop/core/fxControls/loadingBar.fxml"));
+                getClass().getResource("/layout/loadingBar.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
         try {
