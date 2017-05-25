@@ -109,6 +109,7 @@ public class CompaniesContentView implements Initializable {
         }));
 
         Thread th = new Thread(init);
+        th.setDaemon(true);
         th.start();
     }
 

@@ -85,6 +85,7 @@ public class ResourcesView implements Initializable {
         });
 
         Thread initThread = new Thread(init);
+        initThread.setDaemon(true);
         initThread.start();
     }
 
