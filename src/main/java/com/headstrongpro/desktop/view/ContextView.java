@@ -12,7 +12,5 @@ public abstract class ContextView<T> {
         setFields();
     }
 
-    public void setFields() {
-
-    }
+    public abstract void setFields();
 }
