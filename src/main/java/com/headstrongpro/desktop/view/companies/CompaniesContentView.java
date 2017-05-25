@@ -1,5 +1,6 @@
 package com.headstrongpro.desktop.view.companies;
 
+import com.headstrongpro.desktop.core.Drawables;
 import com.headstrongpro.desktop.core.controller.CompaniesController;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.core.exception.SyncException;
@@ -11,6 +12,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -18,6 +20,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 
 import java.net.URL;
@@ -55,6 +59,8 @@ public class CompaniesContentView extends ContentView implements Initializable {
     public Text companiesHeader;
     @FXML
     public Footer footer;
+    @FXML
+    public Button btnRefresh;
 
     private CompaniesController companiesController;
     private ObservableList<Company> companies;
@@ -98,7 +104,7 @@ public class CompaniesContentView extends ContentView implements Initializable {
                 loadTable(companies);
                 footer.show("Companies loaded successfully!", Footer.NotificationType.COMPLETED);
             } else if (newValue.equals(FAILED) || newValue.equals(CANCELLED)) {
-                footer.show("Error while loading comapnie!", Footer.NotificationType.ERROR, Footer.FADE_LONG);
+                footer.show("Error while loading companies!", Footer.NotificationType.ERROR, Footer.FADE_LONG);
             }
         }));
 
@@ -126,26 +132,34 @@ public class CompaniesContentView extends ContentView implements Initializable {
     public void companySearch() {
         try {
             loadTable(companiesController.search(searchCompaniesTextfield.getText()));
-        } catch (SyncException e) {
-            Task<Void> sync = new Task<Void>() {
-                @Override
-                protected Void call() throws Exception {
-                    footer.show("Synchronising data...", Footer.NotificationType.LOADING);
-                    loadCompanies();
-                    return null;
-                }
-            };
-
-            sync.stateProperty().addListener((q,w,r) -> {
-                if(r.equals(SUCCEEDED)){
-                    footer.hide();
-                }
-            });
-
-            new Thread(sync).start();
         } catch (ModelSyncException e2){
             e2.printStackTrace();
             //TODO: handle the error
         }
+    }
+
+    @FXML
+    public void btnRefresh_onClick(ActionEvent actionEvent) {
+        Task<Void> sync = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                footer.show("Synchronising data...", Footer.NotificationType.LOADING);
+                loadCompanies();
+                loadTable(companies);
+                return null;
+            }
+        };
+
+        sync.stateProperty().addListener((q,w,e) ->{
+            if(e.equals(SUCCEEDED)){
+                footer.show("Companies reloaded successfully!", Footer.NotificationType.COMPLETED, Footer.FADE_NORMAL);
+            } else if(e.equals(FAILED) || e.equals(CANCELLED)){
+                footer.show("Error while loading companies!", Footer.NotificationType.ERROR, Footer.FADE_LONG);
+            }
+        });
+
+        Thread th = new Thread(sync);
+        th.setDaemon(true);
+        th.start();
     }
 }

@@ -57,9 +57,8 @@ public class CompaniesController implements Refreshable {
      * @return Observable Array list of all companies containing the keyword
      * @throws ModelSyncException
      */
-    public ObservableList<Company> search(String keyword) throws ModelSyncException, SyncException {
+    public ObservableList<Company> search(String keyword) throws ModelSyncException {
         if(keyword == null) throw new NullPointerException();
-        if(keyword.isEmpty()) throw new SyncException();
         return FXCollections.observableArrayList(companies.stream()
                 .filter(e -> String.valueOf(e.getId()).contains(keyword) ||
                 e.getName().toLowerCase().contains(keyword.toLowerCase()) ||

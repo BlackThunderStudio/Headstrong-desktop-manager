@@ -1,5 +1,6 @@
 package com.headstrongpro.desktop.core.fxControls;
 
+import com.headstrongpro.desktop.core.Drawables;
 import com.jfoenix.controls.JFXSpinner;
 import javafx.animation.FadeTransition;
 import javafx.application.Platform;
@@ -60,19 +61,16 @@ public class Footer extends AnchorPane {
         if(image.isVisible() || label.isVisible() || spinner.isVisible()){
             hide();
         }
+        label.setText(message);
         if(type.equals(NotificationType.LOADING)){
+            label.setVisible(true);
             image.setVisible(false);
             spinner.setVisible(true);
-            label.setText(message);
-            label.setVisible(true);
-        } else if(type.equals(NotificationType.COMPLETED) ||
-                type.equals(NotificationType.ERROR) ||
-                type.equals(NotificationType.WARNING) ||
-                type.equals(NotificationType.INFORMATION)) {
+            System.out.println(label.getText());
+        } else {
             spinner.setVisible(false);
             image.setImage(new Image(type.getPath()));
             image.setVisible(true);
-            label.setText(message);
             label.setVisible(true);
             if(milliseconds != -1){
                 fadingTime = milliseconds;
@@ -93,6 +91,7 @@ public class Footer extends AnchorPane {
 
     public void hide(){
         FadeTransition ft = new FadeTransition(Duration.millis(FADE_TIME), this);
+        label.setText("");
         if(fadingTime != 0){
             ft.setFromValue(1.0);
             ft.setToValue(0.0);
@@ -102,8 +101,7 @@ public class Footer extends AnchorPane {
             image.setVisible(false);
             spinner.setVisible(false);
             label.setVisible(false);
-            label.setText("");
-            ft.setDuration(Duration.millis(10));
+            ft.setDuration(Duration.millis(1));
             ft.setFromValue(0.0);
             ft.setToValue(1.0);
             ft.play();
