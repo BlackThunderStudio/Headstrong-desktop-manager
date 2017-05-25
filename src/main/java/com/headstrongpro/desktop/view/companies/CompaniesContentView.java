@@ -5,6 +5,8 @@ import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.core.fxControls.Footer;
 import com.headstrongpro.desktop.model.entity.Company;
 import com.headstrongpro.desktop.view.ContentView;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -31,7 +33,7 @@ public class CompaniesContentView extends ContentView implements Initializable {
     @FXML
     public TextField searchCompaniesTextfield;
     @FXML
-    public TableView companiesTable;
+    public TableView<Company> companiesTable;
     @FXML
     public TableColumn companyIdCol;
     @FXML
@@ -99,6 +101,13 @@ public class CompaniesContentView extends ContentView implements Initializable {
             }
         }));
 
+        companiesTable.getSelectionModel().selectedItemProperty().addListener((o, e, c) -> {
+            if(c != null){
+                footer.show(c.getName() + " selected.", Footer.NotificationType.INFORMATION, Footer.FADE_SUPER_QUICK);
+                contextView.changeContextItem(c);
+            }
+        });
+
         Thread th = new Thread(init);
         th.setDaemon(true);
         th.start();
@@ -111,13 +120,6 @@ public class CompaniesContentView extends ContentView implements Initializable {
             e.printStackTrace();
             //TODO: handle error
         }
-    }
-
-    public void companiesTableOnMouseClicked() throws ModelSyncException {
-        //companyNameTextfield.setText(String.valueOf(companiesController.getCompanyById(((Company)companiesTable.getSelectionModel().getSelectedItem()).getId()).getId()));
-        Company company = (Company) companiesTable.getSelectionModel().getSelectedItem();
-        footer.show(company.getName() + " selected.", Footer.NotificationType.INFORMATION, Footer.FADE_SUPER_QUICK);
-        contextView.changeContextItem(company);
     }
 
     public void companySearch() throws ModelSyncException {
