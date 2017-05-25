@@ -102,6 +102,7 @@ public class Footer extends AnchorPane {
             image.setVisible(false);
             spinner.setVisible(false);
             label.setVisible(false);
+            label.setText("");
             ft.setDuration(Duration.millis(10));
             ft.setFromValue(0.0);
             ft.setToValue(1.0);
