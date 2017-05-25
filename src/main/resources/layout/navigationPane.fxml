@@ -8,13 +8,13 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane maxWidth="300" minHeight="700" minWidth="300" prefHeight="720.0" prefWidth="300.0" stylesheets="/style/navigationPane.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.headstrongpro.desktop.view.NavigationView">
+<GridPane maxWidth="300" minHeight="700" minWidth="300" prefHeight="720.0" prefWidth="300.0" stylesheets="/style/navigationPane.css, " xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.headstrongpro.desktop.view.NavigationView">
     <columnConstraints>
         <ColumnConstraints hgrow="NEVER" maxWidth="300.0" minWidth="300.0" percentWidth="100.0" prefWidth="300.0" />
     </columnConstraints>
     <rowConstraints>
         <RowConstraints maxHeight="300.0" minHeight="300.0" prefHeight="300.0" vgrow="NEVER" />
-        <RowConstraints maxHeight="4000.0" minHeight="400.0" prefHeight="400.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="4000.0" minHeight="400.0" prefHeight="400.0" vgrow="ALWAYS" />
 </rowConstraints>
    <children>
       <Pane maxHeight="300.0" maxWidth="300.0" minHeight="300.0" minWidth="300.0" prefHeight="300.0" prefWidth="300.0" styleClass="logoBackground" GridPane.valignment="TOP">

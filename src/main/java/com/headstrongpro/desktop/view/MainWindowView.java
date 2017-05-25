@@ -39,7 +39,7 @@ public class MainWindowView implements Initializable {
         try {
             navigationBar = FXMLLoader.load(getClass().getResource("/layout/navigationPane.fxml"));
             contentBar = FXMLLoader.load(getClass().getResource("/layout/companies/companiesContentPane.fxml"));
-            contextBar = FXMLLoader.load(getClass().getResource("/layout/companies/companiesContextPane.fxml"));
+            contextBar = FXMLLoader.load(getClass().getResource("/layout/resources/resourcesTextPane.fxml"));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -47,6 +47,6 @@ public class MainWindowView implements Initializable {
         layout.getItems().set(1, contentBar);
         layout.getItems().set(2, contextBar);
         layout.setDividerPosition(0, 0.20);
-        layout.setDividerPosition(1, 0.75);
+        layout.setDividerPosition(1, 0.50);
     }
 }
