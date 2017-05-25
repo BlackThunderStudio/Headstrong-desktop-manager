@@ -56,6 +56,7 @@ public class CompaniesContentView implements Initializable {
 
     private CompaniesController companiesController;
     private ObservableList<Company> companies;
+    private CompaniesContextView companiesContextView;
 
     @SuppressWarnings("unchecked")
     private void loadTable(ObservableList<Company> companies){
@@ -81,6 +82,7 @@ public class CompaniesContentView implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         companies = FXCollections.observableArrayList();
+        companiesContextView = new CompaniesContextView();
         loadingLabel.setVisible(false);
         loadingSpinner.setVisible(false);
         Utils.WaitingSpinner waitingSpinner = new Utils.WaitingSpinner(loadingSpinner, loadingLabel);
@@ -116,6 +118,8 @@ public class CompaniesContentView implements Initializable {
 
     public void companiesTableOnMouseClicked() throws ModelSyncException{
         //companyNameTextfield.setText(String.valueOf(companiesController.getCompanyById(((Company)companiesTable.getSelectionModel().getSelectedItem()).getId()).getId()));
+        Company company = (Company) companiesTable.getSelectionModel().getSelectedItem();
+        companiesContextView.setFields(company);
     }
 
     public void companySearch() throws ModelSyncException{
