@@ -6,8 +6,8 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Text?>
-<GridPane fx:controller="com.headstrongpro.desktop.view.LoginView" xmlns:fx="http://javafx.com/fxml"
-          alignment="center" hgap="10" vgap="10" stylesheets="/style/login.css">
+<GridPane fx:controller="com.headstrongpro.desktop.view.MainWindowView" xmlns:fx="http://javafx.com/fxml"
+          fx:id="login" alignment="center" hgap="10" vgap="10" stylesheets="/style/login.css">
     <padding>
         <Insets top="25" right="25" bottom="10" left="25"/>
     </padding>

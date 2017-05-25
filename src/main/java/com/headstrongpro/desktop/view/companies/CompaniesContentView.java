@@ -47,14 +47,6 @@ public class CompaniesContentView extends ContentView implements Initializable {
     public TableColumn<Company, String> companyCityCol;
     @FXML
     public TableColumn<Company, String> companyCountryCol;
-    @FXML
-    public Button newCompanyButton;
-    @FXML
-    public Text companiesHeader;
-    @FXML
-    public Footer footer;
-    @FXML
-    public Button btnRefresh;
 
     private CompaniesController companiesController;
     private ObservableList<Company> companies;
