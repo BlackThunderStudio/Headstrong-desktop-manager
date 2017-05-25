@@ -62,8 +62,5 @@
             <Insets right="20.0" />
          </GridPane.margin>
       </Button>
-       <LoadingBar fx:id="loadingBar" maxHeight="32.0" maxWidth="200.0" prefHeight="32.0" prefWidth="200.0"
-                   GridPane.rowIndex="3" GridPane.halignment="LEFT">
-       </LoadingBar>
    </children>
 </GridPane>

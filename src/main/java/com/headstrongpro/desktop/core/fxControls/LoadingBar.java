@@ -27,6 +27,7 @@ public class LoadingBar extends AnchorPane {
         fxmlLoader.setController(this);
         try {
             fxmlLoader.load();
+            //renders element invisible in the FXML builder
             label.setVisible(false);
             spinner.setVisible(false);
         } catch (IOException exception) {

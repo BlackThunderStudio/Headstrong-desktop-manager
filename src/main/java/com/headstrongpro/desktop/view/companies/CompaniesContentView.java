@@ -52,13 +52,6 @@ public class CompaniesContentView implements Initializable {
     @FXML
     public Text companiesHeader;
 
-    @FXML
-    public JFXSpinner loadingSpinner;
-    @FXML
-    public Label loadingLabel;
-    @FXML
-    public LoadingBar loadingBar;
-
     private CompaniesController companiesController;
     private ObservableList<Company> companies;
     CompaniesContextView contextController;
