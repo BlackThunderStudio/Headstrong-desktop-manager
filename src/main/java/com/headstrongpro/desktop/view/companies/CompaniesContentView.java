@@ -1,4 +1,4 @@
-package com.headstrongpro.desktop.view;
+package com.headstrongpro.desktop.view.companies;
 
 import com.headstrongpro.desktop.core.Utils;
 import com.headstrongpro.desktop.core.controller.CompaniesController;
@@ -8,7 +8,6 @@ import com.jfoenix.controls.JFXSpinner;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
-import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -24,7 +23,7 @@ import static javafx.concurrent.Worker.State.*;
 /**
  * Created by Ondřej Soukup on 20.05.2017.
  */
-public class CompaniesView implements Initializable {
+public class CompaniesContentView implements Initializable {
 
     // Content view controls
     @FXML
@@ -50,49 +49,6 @@ public class CompaniesView implements Initializable {
     @FXML
     public Text companiesHeader;
 
-    // Context view controls
-    @FXML
-    public Button companyEditButton;
-    @FXML
-    public Button companyDeleteButton;
-    @FXML
-    public TextField companyNameTextfield;
-    @FXML
-    public TextField companyCvrTextfield;
-    @FXML
-    public TextField companyStreetTextfield;
-    @FXML
-    public TextField companyPostalTextfield;
-    @FXML
-    public TextField companyCityTextfield;
-    @FXML
-    public TextField companyCountryTextfield;
-    @FXML
-    public Button companyDepartmentsButton;
-    @FXML
-    public Button companyClientsButton;
-    @FXML
-    public Button companyGroupsButton;
-    @FXML
-    public Button companySubscriptionsButton;
-
-    // "New" context view controls
-    @FXML
-    public TextField newCompanyNameTextfield;
-    @FXML
-    public TextField newCompanyCvrTextfield;
-    @FXML
-    public TextField newCompanyStreetTextfield;
-    @FXML
-    public TextField newCompanyPostalTextfield;
-    @FXML
-    public TextField newCompanyCityTextfield;
-    @FXML
-    public TextField newCompanyCountryTextfield;
-    @FXML
-    public Button companySaveButton;
-    @FXML
-    public Button companyCancelButton;
     @FXML
     public JFXSpinner loadingSpinner;
     @FXML
@@ -159,7 +115,7 @@ public class CompaniesView implements Initializable {
     }
 
     public void companiesTableOnMouseClicked() throws ModelSyncException{
-        companyNameTextfield.setText(String.valueOf(companiesController.getCompanyById(((Company)companiesTable.getSelectionModel().getSelectedItem()).getId()).getId()));
+        //companyNameTextfield.setText(String.valueOf(companiesController.getCompanyById(((Company)companiesTable.getSelectionModel().getSelectedItem()).getId()).getId()));
     }
 
     public void companySearch() throws ModelSyncException{

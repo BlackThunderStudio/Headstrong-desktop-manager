@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Companies view
+ * companies view
  */
 public class CompaniesController implements Refreshable {
     private List<Company> companies;
