@@ -100,14 +100,9 @@ public class CompaniesContentView implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         loadLoaders();
         companies = FXCollections.observableArrayList();
-        loadingLabel.setVisible(false);
-        loadingSpinner.setVisible(false);
-        Utils.WaitingSpinner waitingSpinner = new Utils.WaitingSpinner(loadingSpinner, loadingLabel);
         Task<Void> init = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
-                waitingSpinner.init("Loading companies...");
-                loadingBar.show("Loading companies");
                 companiesController = new CompaniesController();
                 loadCompanies();
                 return null;
@@ -116,8 +111,6 @@ public class CompaniesContentView implements Initializable {
 
         init.stateProperty().addListener(((observable, oldValue, newValue) -> {
             if(newValue.equals(SUCCEEDED)){
-                waitingSpinner.close();
-                loadingBar.hide();
                 loadTable(companies);
             }
         }));
