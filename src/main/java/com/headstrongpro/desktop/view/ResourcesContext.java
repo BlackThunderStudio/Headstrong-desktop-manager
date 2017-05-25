@@ -4,10 +4,7 @@ import com.sun.org.apache.xml.internal.security.Init;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Slider;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToolBar;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.web.HTMLEditor;
 import javafx.scene.web.WebView;
@@ -40,6 +37,7 @@ public class ResourcesContext implements Initializable {
     @FXML
     public Button plauPauseButton;
 
+    //text resources
     @FXML
     public HTMLEditor textResourcesEditor;
     @FXML
@@ -50,10 +48,24 @@ public class ResourcesContext implements Initializable {
     public Button textResourcesEditButton;
     @FXML
     public Button textResourcesDeleteButton;
+
+    //new image
     @FXML
+    public Button selectFileButton;
+    @FXML
+    public Button newImageSaveButton;
+    @FXML
+    public Button newImageCancelButton;
+    @FXML
+    public Label newImageFilenameLabel;
+    @FXML
+    public TextField newImageNameTextfield;
+    @FXML
+    public TextField newImageDescriptionTextfield;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        // TODO: Figure out why does this throw the loadStylesheetUnprivileged error
         Platform.runLater(()->{
             textResourcesEditor.lookupAll("ToolBar")
                     .forEach(node->((ToolBar)node).setPrefWidth(259));
