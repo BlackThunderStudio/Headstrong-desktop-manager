@@ -3,7 +3,6 @@ package com.headstrongpro.desktop.view.companies;
 import com.headstrongpro.desktop.core.controller.CompaniesController;
 import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
-import com.headstrongpro.desktop.core.fxControls.Footer;
 import com.headstrongpro.desktop.model.entity.Company;
 import com.headstrongpro.desktop.view.ContextView;
 import javafx.fxml.FXML;
@@ -64,13 +63,13 @@ public class CompaniesContextView extends ContextView<Company> implements Initia
         clearFields();
         try {
             companiesController = new CompaniesController();
-        } catch (ModelSyncException e){
+        } catch (ModelSyncException e) {
             e.fillInStackTrace();
         }
     }
 
-    public void companiesContextEditButtonPress(){
-        if(companiesController.validCompany(companyNameTextfield.getText(),
+    public void companiesContextEditButtonPress() {
+        if (companiesController.validCompany(companyNameTextfield.getText(),
                 companyCvrTextfield.getText(),
                 companyStreetTextfield.getText(),
                 companyPostalTextfield.getText(),
@@ -86,7 +85,7 @@ public class CompaniesContextView extends ContextView<Company> implements Initia
                         companyCityTextfield.getText(),
                         companyCountryTextfield.getText());
                 //footer.show("Company updated.", Footer.NotificationType.COMPLETED);
-            } catch(ModelSyncException e){
+            } catch (ModelSyncException e) {
                 e.fillInStackTrace();
                 //footer.show("Error! Could not update company!", Footer.NotificationType.ERROR, Footer.FADE_LONG);
             } catch (DatabaseOutOfSyncException e) {
@@ -95,8 +94,8 @@ public class CompaniesContextView extends ContextView<Company> implements Initia
                 a.setHeaderText("Warning! Database contains newer data.");
                 a.setContentText("Do you want to reload the data? Clicking 'Cancel' will clear all the input");
                 Optional<ButtonType> response = a.showAndWait();
-                response.ifPresent(btn ->{
-                    if(ButtonType.OK.equals(btn)){
+                response.ifPresent(btn -> {
+                    if (ButtonType.OK.equals(btn)) {
                         try {
                             changeContextItem(companiesController.getCompanyById(contextItem.getId()));
                         } catch (ModelSyncException e1) {
@@ -110,7 +109,7 @@ public class CompaniesContextView extends ContextView<Company> implements Initia
             }
     }
 
-    private void clearFields(){
+    private void clearFields() {
         companyCityTextfield.clear();
         companyCountryTextfield.clear();
         companyCvrTextfield.clear();

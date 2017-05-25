@@ -15,7 +15,6 @@ import java.util.ResourceBundle;
  */
 public class MainWindowView implements Initializable {
 
-    private static MainWindowView ourInstance = new MainWindowView();
     @FXML
     public SplitPane layout;
     @FXML
@@ -25,12 +24,8 @@ public class MainWindowView implements Initializable {
     @FXML
     public Pane contextBar;
 
-    private FXMLLoader contentBarLoader;
-    private FXMLLoader contextBarLoader;
-
-    public static MainWindowView getInstance() {
-        return ourInstance;
-    }
+    private ContentView contentView;
+    private ContextView contextView;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -47,13 +42,19 @@ public class MainWindowView implements Initializable {
         layout.setDividerPosition(1, 0.75);
     }
 
+    /**
+     * Changes content of the main wrapper consisting of ContentView and ContextView
+     *
+     * @param contentSource Enum type of the content source
+     */
     public void changeContent(ContentSource contentSource) {
-        contentBarLoader = new FXMLLoader();
+        // Prepare FXML Loaders and set locations of content and context views
+        FXMLLoader contentBarLoader = new FXMLLoader();
         contentBarLoader.setLocation(getClass().getResource(contentSource.getContentView()));
-
-        contextBarLoader = new FXMLLoader();
+        FXMLLoader contextBarLoader = new FXMLLoader();
         contextBarLoader.setLocation(getClass().getResource(contentSource.getContextView()));
 
+        // Try to load content and context views from FXML resources
         try {
             contentBar = contentBarLoader.load();
             contextBar = contextBarLoader.load();
@@ -61,8 +62,24 @@ public class MainWindowView implements Initializable {
             e.printStackTrace();
         }
 
-        ContentView contentView = contentBarLoader.getController();
-        contentView.setContextView(contextBarLoader.getController());
+        // Give both content and context view controllers access to the MainWindowView
+        contentView = contentBarLoader.getController();
+        contentView.setMainWindowView(this);
+        contextView = contextBarLoader.getController();
+        contextView.setMainWindowView(this);
     }
 
+    /**
+     * @return Returns the content view of currently loaded source
+     */
+    public ContentView getContentView() {
+        return contentView;
+    }
+
+    /**
+     * @return Returns the context view of currently loaded source
+     */
+    public ContextView getContextView() {
+        return contextView;
+    }
 }

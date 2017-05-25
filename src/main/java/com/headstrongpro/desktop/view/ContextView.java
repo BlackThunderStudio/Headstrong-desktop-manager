@@ -1,22 +1,20 @@
 package com.headstrongpro.desktop.view;
 
-import com.headstrongpro.desktop.core.fxControls.Footer;
-
 /**
  * ContextView
  */
 public abstract class ContextView<T> {
 
     protected T contextItem = null;
-    protected Footer footer;
+    protected MainWindowView mainWindowView;
 
     public void changeContextItem(T t) {
         this.contextItem = t;
         setFields();
     }
 
-    public void setFooter(Footer footer){
-        this.footer = footer;
+    public void setMainWindowView(MainWindowView mainWindowView) {
+        this.mainWindowView = mainWindowView;
     }
 
     public abstract void setFields();

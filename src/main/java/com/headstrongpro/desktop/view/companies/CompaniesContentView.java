@@ -1,14 +1,10 @@
 package com.headstrongpro.desktop.view.companies;
 
-import com.headstrongpro.desktop.core.Drawables;
 import com.headstrongpro.desktop.core.controller.CompaniesController;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
-import com.headstrongpro.desktop.core.exception.SyncException;
 import com.headstrongpro.desktop.core.fxControls.Footer;
 import com.headstrongpro.desktop.model.entity.Company;
 import com.headstrongpro.desktop.view.ContentView;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -20,8 +16,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 
 import java.net.URL;
@@ -40,19 +34,19 @@ public class CompaniesContentView extends ContentView implements Initializable {
     @FXML
     public TableView<Company> companiesTable;
     @FXML
-    public TableColumn companyIdCol;
+    public TableColumn<Company, Integer> companyIdCol;
     @FXML
-    public TableColumn companyNameCol;
+    public TableColumn<Company, String> companyNameCol;
     @FXML
-    public TableColumn companyCvrCol;
+    public TableColumn<Company, String> companyCvrCol;
     @FXML
-    public TableColumn companyStreetCol;
+    public TableColumn<Company, String> companyStreetCol;
     @FXML
-    public TableColumn companyPostalCol;
+    public TableColumn<Company, String> companyPostalCol;
     @FXML
-    public TableColumn companyCityCol;
+    public TableColumn<Company, String> companyCityCol;
     @FXML
-    public TableColumn companyCountryCol;
+    public TableColumn<Company, String> companyCountryCol;
     @FXML
     public Button newCompanyButton;
     @FXML
@@ -109,9 +103,9 @@ public class CompaniesContentView extends ContentView implements Initializable {
         }));
 
         companiesTable.getSelectionModel().selectedItemProperty().addListener((o, e, c) -> {
-            if(c != null){
+            if (c != null) {
                 footer.show(c.getName() + " selected.", Footer.NotificationType.INFORMATION, Footer.FADE_SUPER_QUICK);
-                contextView.changeContextItem(c);
+                mainWindowView.getContextView().changeContextItem(c);
             }
         });
 
@@ -132,7 +126,7 @@ public class CompaniesContentView extends ContentView implements Initializable {
     public void companySearch() {
         try {
             loadTable(companiesController.search(searchCompaniesTextfield.getText()));
-        } catch (ModelSyncException e2){
+        } catch (ModelSyncException e2) {
             e2.printStackTrace();
             //TODO: handle the error
         }
@@ -150,10 +144,10 @@ public class CompaniesContentView extends ContentView implements Initializable {
             }
         };
 
-        sync.stateProperty().addListener((q,w,e) ->{
-            if(e.equals(SUCCEEDED)){
+        sync.stateProperty().addListener((q, w, e) -> {
+            if (e.equals(SUCCEEDED)) {
                 footer.show("Companies reloaded successfully!", Footer.NotificationType.COMPLETED, Footer.FADE_NORMAL);
-            } else if(e.equals(FAILED) || e.equals(CANCELLED)){
+            } else if (e.equals(FAILED) || e.equals(CANCELLED)) {
                 footer.show("Error while loading companies!", Footer.NotificationType.ERROR, Footer.FADE_LONG);
             }
         });

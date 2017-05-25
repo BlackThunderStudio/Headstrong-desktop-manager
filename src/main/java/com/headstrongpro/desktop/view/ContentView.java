@@ -5,9 +5,10 @@ package com.headstrongpro.desktop.view;
  */
 public abstract class ContentView {
 
-    protected ContextView contextView;
+    protected MainWindowView mainWindowView;
 
-    void setContextView(ContextView contextView) {
-        this.contextView = contextView;
+    public void setMainWindowView(MainWindowView mainWindowView) {
+        this.mainWindowView = mainWindowView;
     }
+
 }
