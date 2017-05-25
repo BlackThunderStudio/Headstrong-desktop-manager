@@ -51,6 +51,8 @@ public class CompaniesContentView implements Initializable {
     public Button newCompanyButton;
     @FXML
     public Text companiesHeader;
+    @FXML
+    public LoadingBar loadingBar;
 
     private CompaniesController companiesController;
     private ObservableList<Company> companies;
@@ -96,6 +98,7 @@ public class CompaniesContentView implements Initializable {
         Task<Void> init = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
+                loadingBar.show("Loading companies");
                 companiesController = new CompaniesController();
                 loadCompanies();
                 return null;
@@ -105,6 +108,7 @@ public class CompaniesContentView implements Initializable {
         init.stateProperty().addListener(((observable, oldValue, newValue) -> {
             if(newValue.equals(SUCCEEDED)){
                 loadTable(companies);
+                loadingBar.hide();
             }
         }));
 
