@@ -3,6 +3,7 @@ package com.headstrongpro.desktop.view.companies;
 import com.headstrongpro.desktop.core.Utils;
 import com.headstrongpro.desktop.core.controller.CompaniesController;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
+import com.headstrongpro.desktop.core.fxControls.Footer;
 import com.headstrongpro.desktop.core.fxControls.LoadingBar;
 import com.headstrongpro.desktop.model.entity.Company;
 import com.jfoenix.controls.JFXSpinner;
@@ -52,7 +53,9 @@ public class CompaniesContentView implements Initializable {
     @FXML
     public Text companiesHeader;
     @FXML
-    public LoadingBar loadingBar;
+    public Footer footer;
+    /*@FXML
+    public LoadingBar loadingBar;*/
 
     private CompaniesController companiesController;
     private ObservableList<Company> companies;
@@ -98,7 +101,8 @@ public class CompaniesContentView implements Initializable {
         Task<Void> init = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
-                loadingBar.show("Loading companies");
+                //loadingBar.show("Loading companies");
+                footer.show("Loading companies...", Footer.NotificationType.LOADING, Footer.FADE_MANUAL);
                 companiesController = new CompaniesController();
                 loadCompanies();
                 return null;
@@ -108,7 +112,9 @@ public class CompaniesContentView implements Initializable {
         init.stateProperty().addListener(((observable, oldValue, newValue) -> {
             if(newValue.equals(SUCCEEDED)){
                 loadTable(companies);
-                loadingBar.hide();
+                //loadingBar.hide();
+                footer.hide();
+                footer.show("Companies loaded successfully!", Footer.NotificationType.COMPLETED, Footer.FADE_NORMAL);
             }
         }));
 

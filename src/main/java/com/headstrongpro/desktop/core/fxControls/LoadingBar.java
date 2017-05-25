@@ -23,7 +23,7 @@ public class LoadingBar extends HBox {
 
     public LoadingBar() {
         FXMLLoader fxmlLoader = new FXMLLoader(
-                getClass().getResource("/layout/loadingBar.fxml"));
+                getClass().getResource("/layout/customControls/loadingBar.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
         try {
