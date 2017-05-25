@@ -30,6 +30,7 @@ public class Footer extends AnchorPane {
     public static final int FADE_QUICK = 1500;
     public static final int FADE_NORMAL = 3000;
     public static final int FADE_LONG = 5000;
+    public static final int FADE_SUPER_QUICK = 500;
 
     private static final int FADE_TIME = 250;
 
@@ -56,7 +57,9 @@ public class Footer extends AnchorPane {
     }
 
     public void show(String message, NotificationType type, int milliseconds){
-        hide();
+        if(image.isVisible() || label.isVisible() || spinner.isVisible()){
+            hide();
+        }
         if(type.equals(NotificationType.LOADING)){
             image.setVisible(false);
             spinner.setVisible(true);
@@ -64,7 +67,8 @@ public class Footer extends AnchorPane {
             label.setVisible(true);
         } else if(type.equals(NotificationType.COMPLETED) ||
                 type.equals(NotificationType.ERROR) ||
-                type.equals(NotificationType.WARNING)) {
+                type.equals(NotificationType.WARNING) ||
+                type.equals(NotificationType.INFORMATION)) {
             spinner.setVisible(false);
             image.setImage(new Image(type.getPath()));
             image.setVisible(true);
@@ -88,8 +92,8 @@ public class Footer extends AnchorPane {
     }
 
     public void hide(){
+        FadeTransition ft = new FadeTransition(Duration.millis(FADE_TIME), this);
         if(fadingTime != 0){
-            FadeTransition ft = new FadeTransition(Duration.millis(FADE_TIME), this);
             ft.setFromValue(1.0);
             ft.setToValue(0.0);
             ft.play();
@@ -98,6 +102,10 @@ public class Footer extends AnchorPane {
             image.setVisible(false);
             spinner.setVisible(false);
             label.setVisible(false);
+            ft.setDuration(Duration.millis(10));
+            ft.setFromValue(0.0);
+            ft.setToValue(1.0);
+            ft.play();
         }
     }
 
@@ -109,6 +117,7 @@ public class Footer extends AnchorPane {
         LOADING,
         ERROR("/img/icons/err-icon.png"),
         COMPLETED("/img/icons/check-icon.png"),
+        INFORMATION("img/icons/info-icon.png"),
         WARNING("/img/icons/warning-icon.png");
 
         private String path;

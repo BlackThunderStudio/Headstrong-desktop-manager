@@ -132,6 +132,7 @@ public class CompaniesContentView implements Initializable {
     public void companiesTableOnMouseClicked() throws ModelSyncException{
         //companyNameTextfield.setText(String.valueOf(companiesController.getCompanyById(((Company)companiesTable.getSelectionModel().getSelectedItem()).getId()).getId()));
         Company company = (Company) companiesTable.getSelectionModel().getSelectedItem();
+        footer.show(company.getName() + " selected.", Footer.NotificationType.INFORMATION, Footer.FADE_SUPER_QUICK);
         contextController.setFields(company);
     }
 
