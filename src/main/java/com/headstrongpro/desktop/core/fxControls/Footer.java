@@ -51,7 +51,12 @@ public class Footer extends AnchorPane {
         }
     }
 
+    public void show(String message, NotificationType type){
+        show(message, type, FADE_NORMAL);
+    }
+
     public void show(String message, NotificationType type, int milliseconds){
+        hide();
         if(type.equals(NotificationType.LOADING)){
             image.setVisible(false);
             spinner.setVisible(true);
@@ -97,6 +102,9 @@ public class Footer extends AnchorPane {
     }
 
 
+    /***
+     * Enum containing types notification and paths to resource files
+     */
     public enum NotificationType{
         LOADING,
         ERROR("/img/icons/err-icon.png"),

@@ -99,7 +99,7 @@ public class CompaniesContentView implements Initializable {
         Task<Void> init = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
-                footer.show("Loading companies...", Footer.NotificationType.LOADING, Footer.FADE_MANUAL);
+                footer.show("Loading companies...", Footer.NotificationType.LOADING);
                 companiesController = new CompaniesController();
                 loadCompanies();
                 return null;
@@ -109,8 +109,9 @@ public class CompaniesContentView implements Initializable {
         init.stateProperty().addListener(((observable, oldValue, newValue) -> {
             if(newValue.equals(SUCCEEDED)){
                 loadTable(companies);
-                footer.hide();
-                footer.show("Companies loaded successfully!", Footer.NotificationType.COMPLETED, Footer.FADE_NORMAL);
+                footer.show("Companies loaded successfully!", Footer.NotificationType.COMPLETED);
+            } else if(newValue.equals(FAILED) || newValue.equals(CANCELLED)){
+                footer.show("Error while loading comapnie!", Footer.NotificationType.ERROR, Footer.FADE_LONG);
             }
         }));
 
