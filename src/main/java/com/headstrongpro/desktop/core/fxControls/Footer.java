@@ -1,6 +1,7 @@
 package com.headstrongpro.desktop.core.fxControls;
 
 import com.jfoenix.controls.JFXSpinner;
+import javafx.animation.FadeTransition;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
@@ -9,6 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.util.Duration;
 
 import java.io.IOException;
 
@@ -24,10 +26,14 @@ public class Footer extends AnchorPane {
     @FXML
     protected ImageView image;
 
-    public static final int FADE_MANUAL = -1;
-    public static final int FADE_QUICK = 2000;
-    public static final int FADE_NORMAL = 4000;
-    public static final int FADE_LONG = 8000;
+    public static final int FADE_MANUAL = 0;
+    public static final int FADE_QUICK = 1500;
+    public static final int FADE_NORMAL = 3000;
+    public static final int FADE_LONG = 5000;
+
+    private static final int FADE_TIME = 250;
+
+    private int fadingTime = 0;
 
     public Footer(){
         FXMLLoader loader = new FXMLLoader(
@@ -60,6 +66,7 @@ public class Footer extends AnchorPane {
             label.setText(message);
             label.setVisible(true);
             if(milliseconds != -1){
+                fadingTime = milliseconds;
                 Task<Void> waitForTime = new Task<Void>() {
                     @Override
                     protected Void call() throws Exception {
@@ -76,9 +83,17 @@ public class Footer extends AnchorPane {
     }
 
     public void hide(){
-        image.setVisible(false);
-        spinner.setVisible(false);
-        label.setVisible(false);
+        if(fadingTime != 0){
+            FadeTransition ft = new FadeTransition(Duration.millis(FADE_TIME), this);
+            ft.setFromValue(1.0);
+            ft.setToValue(0.0);
+            ft.play();
+            fadingTime = 0;
+        } else {
+            image.setVisible(false);
+            spinner.setVisible(false);
+            label.setVisible(false);
+        }
     }
 
 

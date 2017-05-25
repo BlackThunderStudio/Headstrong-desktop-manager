@@ -63,12 +63,6 @@
             <Insets right="20.0" />
          </GridPane.margin>
       </Button>
-       <!--<LoadingBar fx:id="loadingBar" prefHeight="32.0" prefWidth="200.0" GridPane.halignment="LEFT"
-                   GridPane.rowIndex="3">
-           <GridPane.margin>
-               <Insets left="20.0"/>
-           </GridPane.margin>
-       </LoadingBar>-->
        <Footer fx:id="footer" prefHeight="32.0" prefWidth="200.0" GridPane.halignment="LEFT" GridPane.rowIndex="3">
            <GridPane.margin>
                <Insets left="20.0"/>
