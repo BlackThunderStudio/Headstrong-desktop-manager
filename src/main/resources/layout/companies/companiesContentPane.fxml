@@ -47,7 +47,7 @@
             <Insets left="20.0" right="20.0" />
          </GridPane.margin>
       </TableView>
-      <Button fx:id="newCompanyButton" maxWidth="110.0" minWidth="110.0" mnemonicParsing="false" prefWidth="110.0" text="New" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
+      <Button fx:id="newCompanyButton" onAction="#newCompanyButton_onClick" maxWidth="110.0" minWidth="110.0" mnemonicParsing="false" prefWidth="110.0" text="New" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
          <GridPane.margin>
             <Insets right="20.0" />
          </GridPane.margin>

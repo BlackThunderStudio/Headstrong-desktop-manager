@@ -156,4 +156,9 @@ public class CompaniesContentView extends ContentView implements Initializable {
         th.setDaemon(true);
         th.start();
     }
+
+    @FXML
+    public void newCompanyButton_onClick() {
+        //TODO: load companiesNewPane.fxml and display it in the context bar
+    }
 }
