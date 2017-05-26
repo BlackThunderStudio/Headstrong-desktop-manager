@@ -99,6 +99,7 @@ public class ClientsContentView extends ContentView implements Initializable {
         clientsTable.getSelectionModel().selectedItemProperty().addListener((o, e, c) -> {
             if (c != null) {
                 footer.show(c.getName() + " selected.", Footer.NotificationType.INFORMATION, Footer.FADE_SUPER_QUICK);
+                //TODO: context bar
                 mainWindowView.getContextView().changeContextItem(c);
             }
         });
@@ -106,7 +107,16 @@ public class ClientsContentView extends ContentView implements Initializable {
         Thread th = new Thread(init);
         th.setDaemon(true);
         th.start();
+    }
 
+    public void clientSearch(){
+        try{
 
+            System.out.println("before" + clients.size());
+            loadTable(clientsController.search(searchClientsTextfield.getText()));
+        } catch (ModelSyncException e) {
+            e.printStackTrace();
+            //TODO: handle dis with care too~
+        }
     }
 }

@@ -9,6 +9,7 @@ import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Clients controller
@@ -23,7 +24,18 @@ public class ClientsController implements Refreshable{
     }
 
     public ObservableList<Person> getClients() throws ModelSyncException {
+        //System.out.println("cl" + clientsDAO.getAll().size());
         return FXCollections.observableArrayList(clientsDAO.getAll());
+    }
+
+    //TODO fixxx
+    public ObservableList<Person> search(String keyword) throws ModelSyncException{
+        if(keyword == null) throw new NullPointerException();
+        return FXCollections.observableArrayList(clients.stream().filter(e -> String.valueOf(e.getId()).contains(keyword) ||
+                e.getName().toLowerCase().contains(keyword.toLowerCase()) ||
+                e.getEmail().toLowerCase().contains(keyword.toLowerCase()) ||
+                e.getPhone().toLowerCase().contains(keyword.toLowerCase()) ||
+                e.getGender().toLowerCase().contains(keyword.toLowerCase())).collect(Collectors.toList()));
     }
 
     @Override
