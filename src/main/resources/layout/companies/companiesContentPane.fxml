@@ -49,8 +49,8 @@
       </TableView>
       <GridPane GridPane.rowIndex="1">
         <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="395.0" minWidth="10.0" prefWidth="59.0" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="738.0" minWidth="10.0" prefWidth="701.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="60.0" minWidth="60.0" prefWidth="60.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="750.0" minWidth="100.0" prefWidth="700.0" />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -61,13 +61,13 @@
          <children>
             <TextField fx:id="searchCompaniesTextfield" onKeyReleased="#companySearch" prefHeight="25.0" promptText="Search" GridPane.columnIndex="1">
                <GridPane.margin>
-                  <Insets left="20.0" />
+                  <Insets left="10.0" />
                </GridPane.margin>
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
             </TextField>
-            <Button fx:id="refreshButton" mnemonicParsing="false" onAction="#btnRefresh_onClick" prefHeight="20.0" text="Refresh" />
+            <Button fx:id="refreshButton" maxWidth="60.0" minWidth="60.0" mnemonicParsing="false" onAction="#btnRefresh_onClick" prefHeight="20.0" prefWidth="60.0" text="Refresh" />
          </children>
       </GridPane>
       <GridPane GridPane.rowIndex="3">

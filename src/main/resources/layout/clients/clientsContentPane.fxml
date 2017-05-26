@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.headstrongpro.desktop.core.fxControls.Footer?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TableColumn?>
@@ -40,20 +41,25 @@
       </TextField>
       <TableView fx:id="clientsTable" maxWidth="4000.0" minWidth="200.0" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2">
         <columns>
-          <TableColumn fx:id="clientIdCol" prefWidth="44.0" text="Id" />
-          <TableColumn fx:id="clientNameCol" prefWidth="106.0" text="Name" />
-            <TableColumn fx:id="clientEmailCol" prefWidth="75.0" text="Email" />
-            <TableColumn fx:id="clientPhoneCol" prefWidth="75.0" text="Phone No" />
-            <TableColumn fx:id="clientGenderCol" prefWidth="75.0" text="Gender" />
-            <TableColumn fx:id="clientLoginCol" prefWidth="75.0" text="Login" />
-            <TableColumn fx:id="clientPassCol" prefWidth="75.0" text="Pass" />
-            <TableColumn fx:id="clientDateCol" prefWidth="75.0" text="Date registered" />
-            <TableColumn fx:id="clientCompanyCol" prefWidth="75.0" text="Company Id" />
+          <TableColumn fx:id="clientIdCol" prefWidth="39.00001525878906" text="Id" />
+          <TableColumn fx:id="clientNameCol" prefWidth="110.99998474121094" text="Name" />
+            <TableColumn fx:id="clientEmailCol" prefWidth="130.0" text="Email" />
+            <TableColumn fx:id="clientPhoneCol" prefWidth="94.0" text="Phone No" />
+            <TableColumn fx:id="clientGenderCol" prefWidth="51.0" text="Gender" />
+            <!--<TableColumn fx:id="clientLoginCol" prefWidth="75.0" text="Login" />
+            <TableColumn fx:id="clientPassCol" prefWidth="75.0" text="Pass" />-->
+            <TableColumn fx:id="clientDateCol" prefWidth="126.0" text="Registration date" />
+            <TableColumn fx:id="clientCompanyCol" prefWidth="72.0" text="Company Id" />
         </columns>
          <GridPane.margin>
             <Insets left="20.0" right="20.0" />
          </GridPane.margin>
       </TableView>
+       <Footer fx:id="footer" focusTraversable="true" prefHeight="32.0" prefWidth="614.0" GridPane.halignment="LEFT" GridPane.rowIndex="3">
+           <GridPane.margin>
+               <Insets left="20.0" />
+           </GridPane.margin>
+       </Footer>
       <Button fx:id="newClientButton" maxWidth="110.0" minWidth="110.0" mnemonicParsing="false" prefWidth="110.0" text="New" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
          <GridPane.margin>
             <Insets right="20.0" />
