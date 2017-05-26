@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXSlider?>
+<?import com.jfoenix.controls.JFXSpinner?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -30,24 +32,25 @@
     <children>
         <TextField fx:id="nameField" promptText="Name" GridPane.rowIndex="4" />
         <TextField fx:id="descriptionField" alignment="TOP_LEFT" maxHeight="120.0" minHeight="75.0" prefHeight="100.0" promptText="Description" GridPane.rowIndex="5" />
-        <TextField fx:id="urlField" disable="true" editable="false" promptText="Path" GridPane.rowIndex="6" />
         <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
             <children>
-                <Button fx:id="editButton" onAction="#editButtonOnClick" contentDisplay="CENTER" maxWidth="90.0" minWidth="90.0" mnemonicParsing="false" prefWidth="90.0" text="Edit" />
-                <Button fx:id="deleteButton" onAction="#deleteButtonOnClick" mnemonicParsing="false" prefHeight="25.0" prefWidth="90.0" text="Delete" />
+                <Button fx:id="editButton" contentDisplay="CENTER" maxWidth="90.0" minWidth="90.0" mnemonicParsing="false" onAction="#editOnClick" prefWidth="90.0" text="Edit" />
+                <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#deleteOnClick" prefHeight="25.0" prefWidth="90.0" text="Delete" />
             </children>
             <GridPane.margin>
                 <Insets />
             </GridPane.margin>
         </HBox>
         <Separator maxWidth="1.7976931348623157E308" GridPane.rowIndex="2" GridPane.valignment="TOP" />
-        <Button fx:id="changeFileButton" onAction="#changeFileButtonOnClick" mnemonicParsing="false" text="Change file" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="TOP" />
-      <Slider fx:id="audioSeekbarSlider" GridPane.valignment="BOTTOM" />
-      <Button fx:id="playPauseButton" onAction="#playPauseButtonOnClick" mnemonicParsing="false" prefWidth="90.0" text="Play/Pause" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
+      <JFXSlider fx:id="audioSeekbarSlider" GridPane.valignment="BOTTOM" />
+      <Button fx:id="playPauseButton" mnemonicParsing="false" onAction="#playPauseOnClick" prefWidth="90.0" text="Play/Pause" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
          <GridPane.margin>
             <Insets top="10.0" />
          </GridPane.margin>
       </Button>
+      <Label fx:id="labelCurrentPlaybackTime" text="Label" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="TOP" />
+      <Label fx:id="labelDuration" text="Label" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="TOP" />
+      <JFXSpinner fx:id="fileLoader" prefHeight="150.0" prefWidth="200.0" radius="48.0" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER" />
     </children>
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />

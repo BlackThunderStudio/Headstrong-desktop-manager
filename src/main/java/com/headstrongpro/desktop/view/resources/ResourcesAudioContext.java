@@ -7,43 +7,158 @@ import com.headstrongpro.desktop.core.fxControls.Footer;
 import com.headstrongpro.desktop.model.resource.AudioResource;
 import com.headstrongpro.desktop.model.resource.Resource;
 import com.headstrongpro.desktop.view.ContextView;
+import com.jfoenix.controls.JFXSlider;
+import com.jfoenix.controls.JFXSpinner;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.control.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.util.Duration;
 
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-
 /**
- * Created by jakub on 26/05/2017.
+ * desktop-manager
+ * <p>
+ * <p>
+ * Created by rajmu on 17.05.26.
  */
 public class ResourcesAudioContext extends ContextView<AudioResource> implements Initializable {
+
+    private static final String BTN_PLAY = "Play";
+    private static final String BTN_PAUSE = "Pause";
+
+
     @FXML
     public TextField nameField;
+
     @FXML
     public TextField descriptionField;
+
     @FXML
-    public TextField urlField;
+    public Button editButton;
+
     @FXML
-    public Button changeFileButton;
+    public Button deleteButton;
+
+    @FXML
+    public JFXSlider audioSeekbarSlider;
+
     @FXML
     public Button playPauseButton;
 
+    @FXML
+    public Label labelCurrentPlaybackTime;
+
+    @FXML
+    public Label labelDuration;
+
+    @FXML
+    public JFXSpinner fileLoader;
+
     private ResourcesController controller;
+    private Media media;
+    private MediaPlayer mediaPlayer;
+    private boolean isPlaying;
+
+    @Override
+    public void setFields() {
+        nameField.setText(contextItem.getName());
+        descriptionField.setText(contextItem.getDescription());
+        initPlayer();
+    }
+
+    private void initPlayer() {
+        fileLoader.setVisible(true);
+        playPauseButton.setDisable(true);
+        audioSeekbarSlider.setDisable(true);
+        playPauseButton.setText(BTN_PLAY);
+        labelCurrentPlaybackTime.setText("");
+        labelDuration.setText("");
+        try {
+            URL audioURL = new URL(contextItem.getUrl());
+            media = new Media(audioURL.toURI().toString());
+            mediaPlayer = new MediaPlayer(media);
+        } catch (MalformedURLException | URISyntaxException e) {
+            e.printStackTrace();
+        }
+        isPlaying = false;
+
+        mediaPlayer.setOnReady(() -> {
+            audioSeekbarSlider.setMin(0);
+            audioSeekbarSlider.setValue(0.0);
+            System.out.println("Media duration: " + media.getDuration().toSeconds());
+            setDurationLabel(media.getDuration(), labelDuration);
+            audioSeekbarSlider.setMax(media.getDuration().toSeconds());
+            playPauseButton.setDisable(false);
+            fileLoader.setVisible(false);
+        });
+
+        mediaPlayer.currentTimeProperty().addListener(((observable, oldValue, newValue) -> updateValues()));
+
+        audioSeekbarSlider.setOnMouseClicked(e -> mediaPlayer.seek(Duration.seconds(audioSeekbarSlider.getValue())));
+
+        mediaPlayer.setOnError(() -> {
+            this.disablePlayer();
+            mainWindowView.getContentView().footer.show("Error! Could not load the file from a server.", Footer.NotificationType.ERROR, Footer.FADE_LONG);
+        });
+        mediaPlayer.setOnEndOfMedia(this::disablePlayer);
+    }
+
+    @Override
+    protected void clearFields() {
+        nameField.clear();
+        descriptionField.clear();
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         controller = new ResourcesController();
+        audioSeekbarSlider.setValue(0.0);
+        labelCurrentPlaybackTime.setText("");
+        labelDuration.setText("");
+    }
+
+    private void updateValues() {
+        if(audioSeekbarSlider != null){
+            Platform.runLater(() -> {
+                audioSeekbarSlider.setDisable(media.getDuration().isUnknown());
+                setDurationLabel(mediaPlayer.getCurrentTime(), labelCurrentPlaybackTime);
+            });
+        }
+    }
+
+    private void disablePlayer(){
+        fileLoader.setVisible(false);
+        mediaPlayer.stop();
+        isPlaying = false;
+        audioSeekbarSlider.setValue(0.0);
+        playPauseButton.setText(BTN_PLAY);
+    }
+
+    private void setDurationLabel(Duration duration, Label label){
+        if(!audioSeekbarSlider.isDisabled() &&
+                !audioSeekbarSlider.isValueChanging() &&
+                media.getDuration().greaterThan(Duration.ZERO)){
+            audioSeekbarSlider.setValue(duration.toSeconds());
+        }
+        int mins = (int)duration.toMinutes();
+        String secs = String.valueOf((int)duration.toSeconds() % 60);
+        if(((int)duration.toSeconds() % 60) < 10){
+            secs = "0" + secs;
+        }
+        label.setText(String.format("%d:%s", mins, secs));
     }
 
     @FXML
-    public void editButtonOnClick() {
+    public void editOnClick(ActionEvent actionEvent) {
         if(validateInput(nameField, descriptionField)){
             contextItem.setName(nameField.getText());
             contextItem.setDescription(descriptionField.getText());
@@ -65,7 +180,7 @@ public class ResourcesAudioContext extends ContextView<AudioResource> implements
     }
 
     @FXML
-    public void deleteButtonOnClick() {
+    public void deleteOnClick(ActionEvent actionEvent) {
         Alert a = new Alert(Alert.AlertType.CONFIRMATION);
         a.setHeaderText("Are you sure you want to delete " + contextItem.getName() + "?");
         a.setContentText("You cannot take that action back");
@@ -86,29 +201,6 @@ public class ResourcesAudioContext extends ContextView<AudioResource> implements
                 }
             }
         });
-    }
-
-    @FXML
-    public void changeFileButtonOnClick() {
-        //TODO: implement selecting local file and uploading it somewhere when saved
-    }
-
-    @FXML
-    public void playPauseButtonOnClick() {
-        //TODO: implement playing and pausing the audio
-    }
-
-    @Override
-    public void setFields() {
-        nameField.setText(contextItem.getName());
-        descriptionField.setText(contextItem.getDescription());
-    }
-
-    @Override
-    protected void clearFields() {
-        nameField.clear();
-        descriptionField.clear();
-        urlField.clear();
     }
 
     private void handleInconsistency(){
@@ -136,5 +228,16 @@ public class ResourcesAudioContext extends ContextView<AudioResource> implements
         });
     }
 
-    //TODO: there should be a listener (or some onAction method) on the slider for seeking through the audio file
+    @FXML
+    public void playPauseOnClick(ActionEvent event) {
+        if(isPlaying){
+            playPauseButton.setText(BTN_PLAY);
+            mediaPlayer.pause();
+            isPlaying = false;
+        } else {
+            playPauseButton.setText(BTN_PAUSE);
+            mediaPlayer.play();
+            isPlaying = true;
+        }
+    }
 }
