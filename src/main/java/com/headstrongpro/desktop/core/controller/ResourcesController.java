@@ -111,15 +111,29 @@ public class ResourcesController implements Refreshable {
 
     /***
      *
+     * Retrieves the ResourceType object from a file
+     *
+     * @param file Input file
+     * @return ResourceType object
+     */
+    public ResourceType getResourceType(File file){
+        String[] split = file.getName().split(".");
+        String ext = split[split.length];
+        if("jpg;jpeg;png;gif".contains(ext.toLowerCase())) return ResourceType.IMAGE;
+        else if("mp3;wav".contains(ext.toLowerCase())) return ResourceType.AUDIO;
+        else if("mp4;avi;webm".contains(ext.toLowerCase())) return ResourceType.VIDEO;
+        else return ResourceType.TEXT;
+    }
+
+    /***
+     *
      * Selects a file from a local storage
      *
      * @return File object
      */
     public File selectLocalFile(){
         FileChooser fileChooser = prepareFileChooser("Select local resource");
-        File file = fileChooser.showOpenDialog(new Stage());
-        if(file == null) throw new IllegalStateException("No file selected");
-        return file;
+        return fileChooser.showOpenDialog(new Stage());
     }
 
     /***
@@ -188,7 +202,7 @@ public class ResourcesController implements Refreshable {
             AudioResource audioResource = Resource.ofType(resource);
             assert audioResource != null;
             audioResource.setUrl(url);
-            audioResource.setDuration((Time)args.get(0));
+            audioResource.setDuration(new Time(1234));
             resource = audioResource;
         }
         return (Resource) resourceUploader.upload(resource, Destination.DATABASE);

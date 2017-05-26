@@ -1,21 +1,28 @@
 package com.headstrongpro.desktop.view.resources;
 
 
+import com.headstrongpro.desktop.core.controller.ResourcesController;
+import com.headstrongpro.desktop.core.exception.ConnectionException;
+import com.headstrongpro.desktop.core.exception.ModelSyncException;
+import com.headstrongpro.desktop.core.fxControls.Footer;
 import com.headstrongpro.desktop.model.resource.Resource;
+import com.headstrongpro.desktop.view.ContentSource;
 import com.headstrongpro.desktop.view.ContextNewView;
+import com.headstrongpro.desktop.view.ContextView;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
+import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
  * Created by jakub on 26/05/2017.
  */
-public class ResourcesNewFileContext extends ContextNewView<Resource> implements Initializable{
+public class ResourcesNewFileContext extends ContextView<Resource> implements Initializable{
     @FXML
     public TextField newImageNameTextfield;
     @FXML
@@ -25,22 +32,58 @@ public class ResourcesNewFileContext extends ContextNewView<Resource> implements
     @FXML
     public Label newImageFilenameLabel;
 
+    private ResourcesController controller;
+    private File selectedFile;
 
     @FXML
     public void saveButtonOnClick() {
-        //TODO: implement saving new resource and uploading the file somewhere
+        if(selectedFile != null){
+            if(validateInput(newImageNameTextfield, newImageDescriptionTextfield)){
+                try {
+                    controller.uploadLocalFile(selectedFile,
+                            newImageNameTextfield.getText(),
+                            newImageDescriptionTextfield.getText(),
+                            false, //TODO: would be nice to include into a file checkbox "Is for achievement"
+                            controller.getResourceType(selectedFile),
+                            null);
+                } catch (ModelSyncException | ConnectionException e) {
+                    e.printStackTrace();
+                    mainWindowView.getContentView().footer.show(e.getMessage(), Footer.NotificationType.ERROR, Footer.FADE_LONG);
+                }
+            } else {
+                mainWindowView.getContentView().footer.show("Invalid input", Footer.NotificationType.WARNING);
+            }
+        } else {
+            mainWindowView.getContentView().footer.show("No file selected!", Footer.NotificationType.WARNING);
+        }
     }
     @FXML
     public void cancelButtonOnClick() {
-        //TODO: implement canceling adding new resource (load previous context bar, maybe ask the user if he's sure
+        mainWindowView.changeContent(ContentSource.RESOURCES);
     }
     @FXML
     public void selectFileButtonOnClick() {
-        //TODO: implement selecting local file, which should then be uploaded somewhere
+        selectedFile = controller.selectLocalFile();
+        if(selectedFile != null){
+            newImageFilenameLabel.setText(selectedFile.getName());
+        } else {
+            newImageFilenameLabel.setText("");
+        }
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        controller = new ResourcesController();
+        newImageFilenameLabel.setText("");
+    }
 
+    @Override
+    public void setFields() {
+        //do nothing
+    }
+
+    @Override
+    protected void clearFields() {
+        //do nothing
     }
 }

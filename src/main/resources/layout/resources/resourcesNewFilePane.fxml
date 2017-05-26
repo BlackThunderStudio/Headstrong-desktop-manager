@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<GridPane minHeight="460" minWidth="300.0" prefHeight="700.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.headstrongpro.desktop.view.resources.ResourcesNewFileContext">
+<GridPane minHeight="460" minWidth="300.0" prefHeight="700.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.headstrongpro.desktop.view.resources.ResourcesNewFileContext">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="250.0" prefWidth="300.0" />
     </columnConstraints>
@@ -35,20 +35,20 @@
          </GridPane.margin></TextField>
         <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.halignment="RIGHT" GridPane.rowIndex="6">
             <children>
-                <Button fx:id="saveButton" onAction="#saveButtonOnClick" contentDisplay="CENTER" maxWidth="90.0" minWidth="90.0" mnemonicParsing="false" prefWidth="90.0" text="Save" />
-                <Button fx:id="cancelButton" onAction="#cancelButtonOnClick" mnemonicParsing="false" prefHeight="25.0" prefWidth="90.0" text="Cancel" />
+                <Button fx:id="saveButton" contentDisplay="CENTER" maxWidth="90.0" minWidth="90.0" mnemonicParsing="false" onAction="#saveButtonOnClick" prefWidth="90.0" text="Save" />
+                <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#cancelButtonOnClick" prefHeight="25.0" prefWidth="90.0" text="Cancel" />
             </children>
             <GridPane.margin>
                 <Insets />
             </GridPane.margin>
         </HBox>
         <Separator maxWidth="1.7976931348623157E308" GridPane.rowIndex="3" GridPane.valignment="TOP" />
-      <Label text="New Image">
+      <Label text="Upload New">
          <font>
             <Font size="30.0" />
          </font>
       </Label>
-      <Button fx:id="selectFileButton" onAction="#selectFileButtonOnClick" minWidth="110.0" mnemonicParsing="false" prefWidth="110.0" text="Select file" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+      <Button fx:id="selectFileButton" minWidth="110.0" mnemonicParsing="false" onAction="#selectFileButtonOnClick" prefWidth="110.0" text="Select file" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
       <Label text="Selected:" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="TOP">
          <GridPane.margin>
             <Insets left="20.0" top="20.0" />

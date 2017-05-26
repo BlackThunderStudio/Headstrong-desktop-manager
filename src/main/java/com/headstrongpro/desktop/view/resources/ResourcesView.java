@@ -43,7 +43,7 @@ public class ResourcesView extends ContentView implements Initializable {
     @FXML
     public TextField searchResourcesTextfield;
     @FXML
-    public ComboBox resourcesComboBox;
+    public ComboBox<String> resourcesComboBox;
     @FXML
     public TableView<Resource> resourcesTable;
     @FXML
@@ -62,9 +62,13 @@ public class ResourcesView extends ContentView implements Initializable {
     private ObservableList<Resource> resources;
     private Resource selected;
 
+    private static final String[] types = {"Audio", "Image", "Text", "All"};
+
     @SuppressWarnings("unchecked")
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        resourcesComboBox.getItems().addAll(types);
+        resourcesComboBox.getSelectionModel().select(3);
         this.resources = FXCollections.observableArrayList();
         Task<Void> init = new Task<Void>() {
             @Override
@@ -107,6 +111,24 @@ public class ResourcesView extends ContentView implements Initializable {
                 mainWindowView.getContextView()
                         .changeContextItem(
                                 Resource.ofType(selected));
+            }
+        }));
+
+        resourcesComboBox.getSelectionModel()
+                .selectedItemProperty()
+                .addListener(((observable, oldValue, newValue) -> {
+            if(newValue.equals("Audio")){
+                addNewButton.setText("New Audio");
+                initTable(FXCollections.observableArrayList(controller.filterByType(ResourceType.AUDIO)));
+            } else if(newValue.equals("Image")) {
+                addNewButton.setText("New Image");
+                initTable(FXCollections.observableArrayList(controller.filterByType(ResourceType.IMAGE)));
+            } else if(newValue.equals("Text")){
+                addNewButton.setText("New Text");
+                initTable(FXCollections.observableArrayList(controller.filterByType(ResourceType.TEXT)));
+            } else if(newValue.equals("All")){
+                addNewButton.setText("New");
+                initTable(this.resources);
             }
         }));
     }
@@ -187,7 +209,13 @@ public class ResourcesView extends ContentView implements Initializable {
 
     @FXML
     public void newResourceButton_onClick(ActionEvent actionEvent) {
-        //TODO: to be implemented
+        if(resourcesComboBox.getSelectionModel().getSelectedItem().equals("All")){
+            footer.show("Please specify resource type first!", Footer.NotificationType.WARNING);
+        } else if(resourcesComboBox.getSelectionModel().getSelectedItem().equals("Text")) {
+            mainWindowView.changeContext(ContentSource.RESOURCES_NEW_TEXT);
+        } else {
+            mainWindowView.changeContext(ContentSource.RESOURCES_NEW_FILE);
+        }
     }
 
     @FXML
