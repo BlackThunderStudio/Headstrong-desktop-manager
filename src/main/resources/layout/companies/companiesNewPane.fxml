@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane minHeight="460" minWidth="250.0" prefHeight="700.0" prefWidth="300.0" maxWidth="500" stylesheets="/style/navigationPane.css" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.headstrongpro.desktop.view.companies.CompaniesNewView">
+<GridPane maxWidth="500" minHeight="460" minWidth="250.0" prefHeight="700.0" prefWidth="300.0" stylesheets="/style/navigationPane.css" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.headstrongpro.desktop.view.companies.CompaniesNewView">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="500.0" minWidth="250.0" percentWidth="100.0" prefWidth="300.0" />
     </columnConstraints>
@@ -39,8 +39,8 @@
       </Separator>
       <HBox alignment="BOTTOM_CENTER" layoutX="30.0" layoutY="30.0" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER">
          <children>
-            <Button fx:id="companySaveButton" onMouseClicked="#saveBtnOnClick" contentDisplay="CENTER" maxWidth="90.0" minWidth="90.0" mnemonicParsing="false" prefWidth="90.0" text="Save" />
-            <Button fx:id="companyCancelButton" onMouseClicked="#cancelBtnOnClick" mnemonicParsing="false" prefHeight="25.0" prefWidth="90.0" text="Cancel" />
+            <Button fx:id="companySaveButton" contentDisplay="CENTER" maxWidth="90.0" minWidth="90.0" mnemonicParsing="false" onMouseClicked="#saveBtnOnClick" prefWidth="90.0" text="Save" />
+            <Button fx:id="companyCancelButton" mnemonicParsing="false" onMouseClicked="#cancelBtnOnClick" prefHeight="25.0" prefWidth="90.0" text="Cancel" />
          </children>
       </HBox>
     </children>

@@ -67,6 +67,11 @@ public class MainWindowView implements Initializable {
         contentView.setMainWindowView(this);
         contextView = contextBarLoader.getController();
         contextView.setMainWindowView(this);
+
+        layout.getItems().set(1, contentBar);
+        layout.getItems().set(2, contextBar);
+        layout.setDividerPosition(0, 0.20);
+        layout.setDividerPosition(1, 0.75);
     }
 
     public void changeContext(ContentSource contentSource){
@@ -80,6 +85,9 @@ public class MainWindowView implements Initializable {
 
         contextView = contextBarLoader.getController();
         contextView.setMainWindowView(this);
+
+        layout.getItems().set(2, contextBar);
+        layout.setDividerPosition(1, 0.75);
     }
 
     /**
