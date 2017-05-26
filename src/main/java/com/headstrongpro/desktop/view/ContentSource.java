@@ -11,7 +11,9 @@ public enum ContentSource {
 
     COMPANIES("Companies", "/layout/companies/companiesContentPane.fxml", "/layout/companies/companiesContextPane.fxml"),
     COMPANIES_NEW("New company", "/layout/companies/companiesContentPane.fxml", "/layout/companies/companiesNewPane.fxml"),
+    DEPARTMENTS("Departments", "/layout/departments/departmentsContentPane.fxml", "/layout/departments/departmentsContextPane.fxml"),
     CLIENTS("Clients", "/layout/clients/clientsContentPane.fxml", "/layout/clients/clientsContextPane.fxml");
+
 
     private String name, contentView, contextView;
 
