@@ -164,7 +164,7 @@ public class ResourcesAudioContext extends ContextView<AudioResource> implements
             contextItem.setDescription(descriptionField.getText());
             try {
                 mainWindowView.getContentView().footer.show("Updating " + contextItem.getName() + "...", Footer.NotificationType.LOADING);
-                controller.delete(contextItem);
+                controller.editResource(contextItem);
                 mainWindowView.getContentView().footer.show("Resource updated.", Footer.NotificationType.COMPLETED, Footer.FADE_QUICK);
                 mainWindowView.getContentView().refreshButton.fire();
             } catch (DatabaseOutOfSyncException e) {

@@ -89,4 +89,12 @@ public class ImageResource implements Resource {
     public void setURL(String url) {
         this.url = url;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }

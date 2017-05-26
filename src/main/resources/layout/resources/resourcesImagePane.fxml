@@ -30,11 +30,10 @@
     <children>
         <TextField fx:id="nameField" promptText="Name" GridPane.rowIndex="3" />
         <TextField fx:id="descriptionField" alignment="TOP_LEFT" maxHeight="120.0" minHeight="75.0" prefHeight="100.0" promptText="Description" GridPane.rowIndex="4" />
-        <TextField fx:id="urlField" editable="false" promptText="URL" GridPane.rowIndex="5" />
         <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
             <children>
-                <Button fx:id="editButton" onAction="#editButtonOnClick" contentDisplay="CENTER" maxWidth="90.0" minWidth="90.0" mnemonicParsing="false" prefWidth="90.0" text="Edit" />
-                <Button fx:id="deleteButton" onAction="#deleteButtonOnClick" mnemonicParsing="false" prefHeight="25.0" prefWidth="90.0" text="Delete" />
+                <Button fx:id="editButton" contentDisplay="CENTER" maxWidth="90.0" minWidth="90.0" mnemonicParsing="false" onAction="#editButtonOnClick" prefWidth="90.0" text="Edit" />
+                <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#deleteButtonOnClick" prefHeight="25.0" prefWidth="90.0" text="Delete" />
             </children>
             <GridPane.margin>
                 <Insets />
@@ -45,7 +44,6 @@
          <image>
             <Image url="@../../img/login.jpg" />
          </image></ImageView>
-      <Button fx:id="changeFileButton" onAction="#changeFileButtonOnClick" mnemonicParsing="false" text="Change file" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="TOP" />
     </children>
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
