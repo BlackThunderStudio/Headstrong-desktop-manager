@@ -29,8 +29,8 @@ public class Footer extends AnchorPane {
 
     public static final int FADE_MANUAL = 0;
     public static final int FADE_QUICK = 1500;
-    public static final int FADE_NORMAL = 3000;
-    public static final int FADE_LONG = 5000;
+    public static final int FADE_NORMAL = 2000;
+    public static final int FADE_LONG = 3500;
     public static final int FADE_SUPER_QUICK = 500;
 
     private static final int FADE_TIME = 250;
