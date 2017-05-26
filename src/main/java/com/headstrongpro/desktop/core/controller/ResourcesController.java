@@ -117,8 +117,8 @@ public class ResourcesController implements Refreshable {
      * @return ResourceType object
      */
     public ResourceType getResourceType(File file){
-        String[] split = file.getName().split(".");
-        String ext = split[split.length - 1];
+        String[] split = file.getAbsolutePath().split("."); //TODO: this doesn't work, pls halp
+        String ext = split[split.length];
         if("jpg;jpeg;png;gif".contains(ext.toLowerCase())) return ResourceType.IMAGE;
         else if("mp3;wav".contains(ext.toLowerCase())) return ResourceType.AUDIO;
         else if("mp4;avi;webm".contains(ext.toLowerCase())) return ResourceType.VIDEO;
