@@ -18,6 +18,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 
+import java.awt.event.ActionEvent;
 import java.net.URL;
 import java.sql.Date;
 import java.util.ResourceBundle;
@@ -50,16 +51,16 @@ public class ClientsContentView extends ContentView implements Initializable {
     private ClientsController clientsController;
     private ObservableList<Person> clients;
 
-    private void loadClients(){
-        try{
+    private void loadClients() {
+        try {
             clients = clientsController.getClients();
-        } catch (ModelSyncException e){
+        } catch (ModelSyncException e) {
             e.printStackTrace();
             //TODO: pls handle with care <3
         }
     }
 
-    private void loadTable(ObservableList<Person> clients){
+    private void loadTable(ObservableList<Person> clients) {
         clientsTable.getColumns().removeAll(clientIdCol, clientNameCol, clientEmailCol, clientPhoneCol, clientGenderCol);
         clientsTable.setItems(clients);
         clientIdCol.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -108,12 +109,44 @@ public class ClientsContentView extends ContentView implements Initializable {
         th.start();
     }
 
-    public void clientSearch(){
-        try{
+    @FXML
+    public void clientSearch() {
+        try {
             loadTable(FXCollections.observableArrayList(clientsController.search(searchClientsTextfield.getText())));
         } catch (ModelSyncException e) {
             e.printStackTrace();
             //TODO: handle dis with care too~
         }
     }
+
+    @FXML
+    public void clientsRefreshButtonOnClick() {
+        searchClientsTextfield.clear();
+        //TODO protected bullshit context clearing stufff
+
+        Task<Void> sync = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                footer.show("Synchronising data...", Footer.NotificationType.LOADING);
+                loadClients();
+                loadTable(clients);
+                return null;
+            }
+        };
+
+        sync.stateProperty().addListener((q, w, e) -> {
+            if (e.equals(SUCCEEDED)) {
+                footer.show("Clients reloaded successfully!", Footer.NotificationType.COMPLETED, Footer.FADE_NORMAL);
+            } else if (e.equals(FAILED) || e.equals(CANCELLED)) {
+                footer.show("Error while loading clients!", Footer.NotificationType.ERROR, Footer.FADE_LONG);
+            }
+        });
+
+        Thread th = new Thread(sync);
+        th.setDaemon(true);
+        th.start();
+    }
+
+
+
 }

@@ -1,7 +1,9 @@
 package com.headstrongpro.desktop.view.clients;
 
 import com.headstrongpro.desktop.core.controller.ClientsController;
+import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
+import com.headstrongpro.desktop.core.fxControls.Footer;
 import com.headstrongpro.desktop.model.entity.Client;
 import com.headstrongpro.desktop.view.ContextView;
 import javafx.fxml.FXML;
@@ -62,6 +64,36 @@ public class ClientsContextView extends ContextView<Client> implements Initializ
 
     @Override
     public void clearFields(){
+        clientsNameTextfield.clear();
+        clientsEmailTextfield.clear();
+        clientsPhoneTextfield.clear();
+        clientsGenderMaleRadio.disarm();
+        clientsGenderFemaleRadio.disarm();
+    }
+
+    @FXML
+    public void clientEditButtonOnClick(){
+        //TODO add data validation inb4
+        try {
+            mainWindowView.getContentView().footer.show("Updating client...", Footer.NotificationType.LOADING);
+            clientsController.updateClient(contextItem.getId(),
+                    clientsNameTextfield.getText(),
+                    clientsEmailTextfield.getText(),
+                    clientsPhoneTextfield.getText(),
+                    contextItem.getGender());
+            mainWindowView.getContentView().footer.show("Client updated.", Footer.NotificationType.COMPLETED);
+            mainWindowView.getContentView().refreshButton.fire();
+        } catch (ModelSyncException e) {
+            e.fillInStackTrace();
+            mainWindowView.getContentView().footer.show("Error! Could not update company!", Footer.NotificationType.ERROR, Footer.FADE_LONG);
+        } catch (DatabaseOutOfSyncException e) {
+            e.fillInStackTrace();
+            //TODO handle me senpai~
+        }
+    }
+
+    @FXML
+    public void clientDeleteButtonOnClick(){
 
     }
 }
