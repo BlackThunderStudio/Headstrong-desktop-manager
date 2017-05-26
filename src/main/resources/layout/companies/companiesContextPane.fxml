@@ -60,7 +60,7 @@
       <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.halignment="RIGHT">
          <children>
             <Button fx:id="companyEditButton" onMouseClicked="#companiesContextEditButtonPress" contentDisplay="CENTER" maxWidth="90.0" minWidth="90.0" mnemonicParsing="false" prefWidth="90.0" text="Edit" />
-            <Button fx:id="companyDeleteButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="90.0" text="Delete" />
+            <Button fx:id="companyDeleteButton" onMouseClicked="#deleteButtonOnClick" mnemonicParsing="false" prefHeight="25.0" prefWidth="90.0" text="Delete" />
          </children>
          <GridPane.margin>
             <Insets />

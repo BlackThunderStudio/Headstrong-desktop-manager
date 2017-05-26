@@ -18,4 +18,6 @@ public abstract class ContextView<T> {
     }
 
     public abstract void setFields();
+
+    protected abstract void clearFields();
 }

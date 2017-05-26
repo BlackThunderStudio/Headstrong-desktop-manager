@@ -28,12 +28,10 @@ public class CompaniesController implements Refreshable {
 
     /**
      * Default constructor
-     * @throws ModelSyncException
      */
-    public CompaniesController() throws ModelSyncException{
+    public CompaniesController() {
         companies = new ArrayList<>();
         companyDAO = new DBCompany();
-        refresh();
     }
 
     /**
@@ -47,7 +45,6 @@ public class CompaniesController implements Refreshable {
         companies = new ArrayList<>();
         companyDAO = new DBCompany();
         selectedCompany = companyDAO.getById(id);
-        refresh();
     }
 
     /**

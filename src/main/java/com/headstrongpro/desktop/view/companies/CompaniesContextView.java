@@ -12,6 +12,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
 import java.util.Optional;
@@ -46,7 +47,7 @@ public class CompaniesContextView extends ContextView<Company> implements Initia
     @FXML
     public Button companySubscriptionsButton;
 
-    CompaniesController companiesController;
+    private CompaniesController companiesController;
 
     @Override
     public void setFields() {
@@ -62,13 +63,10 @@ public class CompaniesContextView extends ContextView<Company> implements Initia
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         clearFields();
-        try {
-            companiesController = new CompaniesController();
-        } catch (ModelSyncException e) {
-            e.fillInStackTrace();
-        }
+        companiesController = new CompaniesController();
     }
 
+    @FXML
     public void companiesContextEditButtonPress() {
         if (companiesController.validCompany(companyNameTextfield.getText(),
                 companyCvrTextfield.getText(),
@@ -86,33 +84,19 @@ public class CompaniesContextView extends ContextView<Company> implements Initia
                         companyCityTextfield.getText(),
                         companyCountryTextfield.getText());
                 mainWindowView.getContentView().footer.show("Company updated.", Footer.NotificationType.COMPLETED);
+                mainWindowView.getContentView().refreshButton.fire();
             } catch (ModelSyncException e) {
                 e.fillInStackTrace();
                 mainWindowView.getContentView().footer.show("Error! Could not update company!", Footer.NotificationType.ERROR, Footer.FADE_LONG);
             } catch (DatabaseOutOfSyncException e) {
-                Alert a = new Alert(Alert.AlertType.CONFIRMATION);
-                mainWindowView.getContentView().footer.show("Warning! Data inconsistency!", Footer.NotificationType.WARNING);
-                a.setHeaderText("Warning! Database contains newer data.");
-                a.setContentText("Do you want to reload the data? Clicking 'Cancel' will clear all the input");
-                Optional<ButtonType> response = a.showAndWait();
-                response.ifPresent(btn -> {
-                    if (ButtonType.OK.equals(btn)) {
-                        try {
-                            changeContextItem(companiesController.getCompanyById(contextItem.getId()));
-                        } catch (ModelSyncException e1) {
-                            e1.printStackTrace();
-                            //TODO: handle error: couldn't reload the company
-                        }
-                    } else {
-                        clearFields();
-                    }
-                });
+                handleDataInconsistency();
             }
         } else
             mainWindowView.getContentView().footer.show("Values not valid!", Footer.NotificationType.ERROR, 2000);
     }
 
-    private void clearFields() {
+    @Override
+    protected void clearFields() {
         companyCityTextfield.clear();
         companyCountryTextfield.clear();
         companyCvrTextfield.clear();
@@ -121,5 +105,47 @@ public class CompaniesContextView extends ContextView<Company> implements Initia
         companyStreetTextfield.clear();
     }
 
+    private void handleDataInconsistency(){
+        Alert a = new Alert(Alert.AlertType.CONFIRMATION);
+        mainWindowView.getContentView().footer.show("Warning! Data inconsistency!", Footer.NotificationType.WARNING);
+        a.setHeaderText("Warning! Database contains newer data.");
+        a.setContentText("Do you want to reload the data? Clicking 'Cancel' will clear all the input");
+        Optional<ButtonType> response = a.showAndWait();
+        response.ifPresent(btn -> {
+            if (ButtonType.OK.equals(btn)) {
+                try {
+                    changeContextItem(companiesController.getCompanyById(contextItem.getId()));
+                } catch (ModelSyncException e1) {
+                    e1.printStackTrace();
+                    //TODO: handle error: couldn't reload the company
+                }
+            } else {
+                clearFields();
+            }
+        });
+    }
 
+
+    @FXML
+    public void deleteButtonOnClick(MouseEvent mouseEvent) {
+        Alert a = new Alert(Alert.AlertType.CONFIRMATION);
+        a.setHeaderText("Are you sure you want to delete " + contextItem.getName() + " from the list?");
+        a.setContentText("You cannot take that action back");
+        Optional<ButtonType> response = a.showAndWait();
+        response.ifPresent(btn -> {
+            if(ButtonType.OK.equals(btn)) {
+                try {
+                    mainWindowView.getContentView().footer.show("Deleting " + contextItem.getName() + "...", Footer.NotificationType.LOADING);
+                    companiesController.deleteCompany(contextItem.getId());
+                    mainWindowView.getContentView().footer.show("Company deleted.", Footer.NotificationType.COMPLETED);
+                } catch (ModelSyncException e) {
+                    e.printStackTrace();
+                    mainWindowView.getContentView().footer.show(e.getMessage(), Footer.NotificationType.ERROR, Footer.FADE_LONG);
+                } catch (DatabaseOutOfSyncException e) {
+                    e.printStackTrace();
+                    handleDataInconsistency();
+                }
+            }
+        });
+    }
 }
