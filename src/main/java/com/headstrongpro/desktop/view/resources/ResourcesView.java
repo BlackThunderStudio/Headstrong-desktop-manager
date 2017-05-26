@@ -6,6 +6,7 @@ import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.core.fxControls.LoadingBar;
 import com.headstrongpro.desktop.model.resource.Resource;
+import com.headstrongpro.desktop.view.ContentView;
 import com.jfoenix.controls.JFXProgressBar;
 import com.jfoenix.controls.JFXSpinner;
 import javafx.beans.value.ChangeListener;
@@ -33,7 +34,7 @@ import static javafx.concurrent.Worker.State.*;
 /**
  * Created by Ondřej Soukup on 23.05.2017.
  */
-public class ResourcesView implements Initializable {
+public class ResourcesView extends ContentView implements Initializable {
 
     @FXML
     public TextField searchResourcesTextfield;
@@ -41,10 +42,6 @@ public class ResourcesView implements Initializable {
     public ComboBox resourcesComboBox;
     @FXML
     public TableView resourcesTable;
-    @FXML
-    public Button newResourceButton;
-    @FXML
-    public Text resourcesHeader;
     @FXML
     public Button assignToCourseButton;
 
