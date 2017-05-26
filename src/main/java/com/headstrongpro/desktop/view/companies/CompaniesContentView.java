@@ -4,6 +4,7 @@ import com.headstrongpro.desktop.core.controller.CompaniesController;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.core.fxControls.Footer;
 import com.headstrongpro.desktop.model.entity.Company;
+import com.headstrongpro.desktop.view.ContentSource;
 import com.headstrongpro.desktop.view.ContentView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -151,6 +152,6 @@ public class CompaniesContentView extends ContentView implements Initializable {
 
     @FXML
     public void newCompanyButton_onClick() {
-        //TODO: load companiesNewPane.fxml and display it in the context bar
+        mainWindowView.changeContext(ContentSource.COMPANIES_NEW);
     }
 }

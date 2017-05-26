@@ -5,7 +5,8 @@ package com.headstrongpro.desktop.view;
  */
 public enum ContentSource {
 
-    COMPANIES("Companies", "/layout/companies/companiesContentPane.fxml", "/layout/companies/companiesContextPane.fxml");
+    COMPANIES("Companies", "/layout/companies/companiesContentPane.fxml", "/layout/companies/companiesContextPane.fxml"),
+    COMPANIES_NEW("New company", "/layout/companies/companiesContentPane.fxml", "/layout/companies/companiesNewPane.fxml");
 
     private String name, contentView, contextView;
 

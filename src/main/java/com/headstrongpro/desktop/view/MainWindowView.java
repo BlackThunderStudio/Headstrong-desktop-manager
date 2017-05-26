@@ -69,6 +69,19 @@ public class MainWindowView implements Initializable {
         contextView.setMainWindowView(this);
     }
 
+    public void changeContext(ContentSource contentSource){
+        FXMLLoader contextBarLoader = new FXMLLoader();
+        contextBarLoader.setLocation(getClass().getResource(contentSource.getContextView()));
+        try {
+            contextBar = contextBarLoader.load();
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+
+        contextView = contextBarLoader.getController();
+        contextView.setMainWindowView(this);
+    }
+
     /**
      * @return Returns the content view of currently loaded source
      */
