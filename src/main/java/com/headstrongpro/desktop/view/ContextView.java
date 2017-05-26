@@ -5,10 +5,19 @@ import javafx.scene.control.TextInputControl;
 
 import java.util.Arrays;
 
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+
 /**
  * ContextView
  */
 public abstract class ContextView<T> {
+    //Common controls
+
+    @FXML
+    public Button editButton;
+    @FXML
+    public Button deleteButton;
 
     protected T contextItem = null;
     protected MainWindowView mainWindowView;

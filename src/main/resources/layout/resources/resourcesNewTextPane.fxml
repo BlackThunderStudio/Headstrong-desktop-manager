@@ -12,7 +12,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.web.HTMLEditor?>
 
-<GridPane minHeight="460" minWidth="300.0" prefHeight="700.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.headstrongpro.desktop.view.resources.ResourcesContext">
+<GridPane minHeight="460" minWidth="300.0" prefHeight="700.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.headstrongpro.desktop.view.resources.ResourcesNewTextContext">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="250.0" prefWidth="300.0" />
     </columnConstraints>
@@ -30,8 +30,8 @@
         <TextField fx:id="resourcesNewTextNameTextfield" promptText="Name" GridPane.rowIndex="3" />
         <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
             <children>
-                <Button fx:id="resourcesNewTextSaveButton" contentDisplay="CENTER" maxWidth="90.0" minWidth="90.0" mnemonicParsing="false" prefWidth="90.0" text="Save" />
-                <Button fx:id="resourcesNewTextCancelButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="90.0" text="Cancel" />
+                <Button fx:id="saveButton" onAction="#saveButtonOnClick" contentDisplay="CENTER" maxWidth="90.0" minWidth="90.0" mnemonicParsing="false" prefWidth="90.0" text="Save" />
+                <Button fx:id="cancelButton" onAction="#cancelButtonOnClick" mnemonicParsing="false" prefHeight="25.0" prefWidth="90.0" text="Cancel" />
             </children>
             <GridPane.margin>
                 <Insets />

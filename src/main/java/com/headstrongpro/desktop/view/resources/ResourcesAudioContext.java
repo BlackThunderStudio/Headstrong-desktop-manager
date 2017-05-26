@@ -11,58 +11,31 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+
 /**
- * desktop-manager
- * <p>
- * <p>
- * Created by rajmu on 17.05.26.
+ * Created by jakub on 26/05/2017.
  */
-public class ResourceAudioContext extends ContextView<AudioResource> implements Initializable {
-
-
+public class ResourcesAudioContext extends ContextView<AudioResource> implements Initializable {
     @FXML
     public TextField nameField;
-
     @FXML
     public TextField descriptionField;
-
     @FXML
     public TextField urlField;
-
-    @FXML
-    public Button editButton;
-
-    @FXML
-    public Button deleteButton;
-
     @FXML
     public Button changeFileButton;
-
-    @FXML
-    public Slider audioSeekbarSlider;
-
     @FXML
     public Button playPauseButton;
 
     private ResourcesController controller;
-
-    @Override
-    public void setFields() {
-        nameField.setText(contextItem.getName());
-        descriptionField.setText(contextItem.getDescription());
-    }
-
-    @Override
-    protected void clearFields() {
-        nameField.clear();
-        descriptionField.clear();
-        urlField.clear();
-    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -70,7 +43,7 @@ public class ResourceAudioContext extends ContextView<AudioResource> implements 
     }
 
     @FXML
-    public void editOnClick(ActionEvent actionEvent) {
+    public void editButtonOnClick() {
         if(validateInput(nameField, descriptionField)){
             contextItem.setName(nameField.getText());
             contextItem.setDescription(descriptionField.getText());
@@ -92,7 +65,7 @@ public class ResourceAudioContext extends ContextView<AudioResource> implements 
     }
 
     @FXML
-    public void deleteOnClick(ActionEvent actionEvent) {
+    public void deleteButtonOnClick() {
         Alert a = new Alert(Alert.AlertType.CONFIRMATION);
         a.setHeaderText("Are you sure you want to delete " + contextItem.getName() + "?");
         a.setContentText("You cannot take that action back");
@@ -113,6 +86,29 @@ public class ResourceAudioContext extends ContextView<AudioResource> implements 
                 }
             }
         });
+    }
+
+    @FXML
+    public void changeFileButtonOnClick() {
+        //TODO: implement selecting local file and uploading it somewhere when saved
+    }
+
+    @FXML
+    public void playPauseButtonOnClick() {
+        //TODO: implement playing and pausing the audio
+    }
+
+    @Override
+    public void setFields() {
+        nameField.setText(contextItem.getName());
+        descriptionField.setText(contextItem.getDescription());
+    }
+
+    @Override
+    protected void clearFields() {
+        nameField.clear();
+        descriptionField.clear();
+        urlField.clear();
     }
 
     private void handleInconsistency(){
@@ -139,4 +135,6 @@ public class ResourceAudioContext extends ContextView<AudioResource> implements 
             }
         });
     }
+
+    //TODO: there should be a listener (or some onAction method) on the slider for seeking through the audio file
 }
