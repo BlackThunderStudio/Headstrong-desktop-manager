@@ -1,5 +1,8 @@
-package com.headstrongpro.desktop.view;
+package com.headstrongpro.desktop.view.resources;
 
+import com.headstrongpro.desktop.model.resource.Resource;
+import com.headstrongpro.desktop.view.ContentView;
+import com.headstrongpro.desktop.view.ContextView;
 import com.sun.org.apache.xml.internal.security.Init;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -15,7 +18,7 @@ import java.util.ResourceBundle;
 /**
  * Created by jakub on 25/05/2017.
  */
-public class ResourcesContext implements Initializable {
+public class ResourcesContext extends ContextView<Resource> implements Initializable {
     // Context bar - Images
     @FXML
     public TextField nameField;
@@ -72,4 +75,13 @@ public class ResourcesContext implements Initializable {
         });
     }
 
+    @Override
+    public void setFields() {
+
+    }
+
+    @Override
+    protected void clearFields() {
+
+    }
 }

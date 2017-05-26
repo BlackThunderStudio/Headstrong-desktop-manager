@@ -13,7 +13,7 @@
 <?import javafx.scene.web.HTMLEditor?>
 <?import javafx.scene.web.WebView?>
 
-<GridPane minHeight="460" minWidth="300.0" prefHeight="700.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.headstrongpro.desktop.view.ResourcesContext">
+<GridPane minHeight="460" minWidth="300.0" prefHeight="700.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.headstrongpro.desktop.view.resources.ResourcesContext">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="250.0" prefWidth="300.0" />
     </columnConstraints>

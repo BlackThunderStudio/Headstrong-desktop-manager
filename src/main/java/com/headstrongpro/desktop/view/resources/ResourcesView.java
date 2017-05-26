@@ -1,4 +1,4 @@
-package com.headstrongpro.desktop.view;
+package com.headstrongpro.desktop.view.resources;
 
 import com.headstrongpro.desktop.core.Utils;
 import com.headstrongpro.desktop.core.controller.ResourcesController;
@@ -55,8 +55,6 @@ public class ResourcesView implements Initializable {
     public TableColumn descCol;
     @FXML
     public TableColumn typeCol;
-    @FXML
-    public LoadingBar loadingBar;
 
 
     private ResourcesController controller;
@@ -68,7 +66,6 @@ public class ResourcesView implements Initializable {
         Task<Void> init = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
-                loadingBar.show("Lading resources...");
                 controller = new ResourcesController();
                 loadResources();
                 return null;
@@ -77,7 +74,6 @@ public class ResourcesView implements Initializable {
 
         init.stateProperty().addListener((observable, oldValue, newValue) -> {
             if(newValue.equals(SUCCEEDED)){
-                loadingBar.hide();
                 initTable(this.resources);
             } else if(newValue.equals(FAILED) || newValue.equals(CANCELLED)){
                 //TODO: handle error

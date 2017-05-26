@@ -64,6 +64,7 @@ public class NavigationView implements Initializable {
 
     @FXML
     public void resourcesOnClick(ActionEvent actionEvent) {
+        mainWindowView.changeContent(ContentSource.RESOURCES);
     }
 
     @FXML
