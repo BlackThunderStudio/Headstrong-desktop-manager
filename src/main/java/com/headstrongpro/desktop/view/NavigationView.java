@@ -34,10 +34,15 @@ public class NavigationView implements Initializable {
     @FXML
     public Button employeesButton;
 
+    private MainWindowView mainWindowView;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Scene scene = new Scene(new Group(), 300, 800);
+    }
 
+    public void setMainWindowView(MainWindowView mainWindowView) {
+        this.mainWindowView = mainWindowView;
     }
 
     @FXML
@@ -46,6 +51,7 @@ public class NavigationView implements Initializable {
 
     @FXML
     public void companiesOnClick(ActionEvent actionEvent) {
+        mainWindowView.changeContent(ContentSource.COMPANIES);
     }
 
     @FXML

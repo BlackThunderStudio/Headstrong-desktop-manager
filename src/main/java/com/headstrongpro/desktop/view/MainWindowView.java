@@ -26,12 +26,16 @@ public class MainWindowView implements Initializable {
 
     private ContentView contentView;
     private ContextView contextView;
+    private ContentSource currentContentSource;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
-            navigationBar = FXMLLoader.load(getClass().getResource("/layout/navigationPane.fxml"));
-            changeContent(ContentSource.COMPANIES);
+            FXMLLoader navigationBarLoader = new FXMLLoader();
+            navigationBarLoader.setLocation(getClass().getResource("/layout/navigationPane.fxml"));
+            navigationBar = navigationBarLoader.load();
+            NavigationView navigationView = navigationBarLoader.getController();
+            navigationView.setMainWindowView(this);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -48,38 +52,44 @@ public class MainWindowView implements Initializable {
      * @param contentSource Enum type of the content source
      */
     public void changeContent(ContentSource contentSource) {
-        // Prepare FXML Loaders and set locations of content and context views
-        FXMLLoader contentBarLoader = new FXMLLoader();
-        contentBarLoader.setLocation(getClass().getResource(contentSource.getContentView()));
-        FXMLLoader contextBarLoader = new FXMLLoader();
-        contextBarLoader.setLocation(getClass().getResource(contentSource.getContextView()));
+        // Check whether you are not loading already loaded content
+        if (currentContentSource != contentSource) {
+            // Update current source type
+            currentContentSource = contentSource;
 
-        // Try to load content and context views from FXML resources
-        try {
-            contentBar = contentBarLoader.load();
-            contextBar = contextBarLoader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
+            // Prepare FXML Loaders and set locations of content and context views
+            FXMLLoader contentBarLoader = new FXMLLoader();
+            contentBarLoader.setLocation(getClass().getResource(contentSource.getContentView()));
+            FXMLLoader contextBarLoader = new FXMLLoader();
+            contextBarLoader.setLocation(getClass().getResource(contentSource.getContextView()));
+
+            // Try to load content and context views from FXML resources
+            try {
+                contentBar = contentBarLoader.load();
+                contextBar = contextBarLoader.load();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            // Give both content and context view controllers access to the MainWindowView
+            contentView = contentBarLoader.getController();
+            contentView.setMainWindowView(this);
+            contextView = contextBarLoader.getController();
+            contextView.setMainWindowView(this);
+
+            layout.getItems().set(1, contentBar);
+            layout.getItems().set(2, contextBar);
+            layout.setDividerPosition(0, 0.20);
+            layout.setDividerPosition(1, 0.75);
         }
-
-        // Give both content and context view controllers access to the MainWindowView
-        contentView = contentBarLoader.getController();
-        contentView.setMainWindowView(this);
-        contextView = contextBarLoader.getController();
-        contextView.setMainWindowView(this);
-
-        layout.getItems().set(1, contentBar);
-        layout.getItems().set(2, contextBar);
-        layout.setDividerPosition(0, 0.20);
-        layout.setDividerPosition(1, 0.75);
     }
 
-    public void changeContext(ContentSource contentSource){
+    public void changeContext(ContentSource contentSource) {
         FXMLLoader contextBarLoader = new FXMLLoader();
         contextBarLoader.setLocation(getClass().getResource(contentSource.getContextView()));
         try {
             contextBar = contextBarLoader.load();
-        } catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
