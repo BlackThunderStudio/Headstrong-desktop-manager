@@ -7,6 +7,8 @@ import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.core.fxControls.Footer;
 import com.headstrongpro.desktop.core.fxControls.LoadingBar;
 import com.headstrongpro.desktop.model.resource.Resource;
+import com.headstrongpro.desktop.model.resource.ResourceType;
+import com.headstrongpro.desktop.view.ContentSource;
 import com.headstrongpro.desktop.view.ContentView;
 import com.jfoenix.controls.JFXProgressBar;
 import com.jfoenix.controls.JFXSpinner;
@@ -42,7 +44,7 @@ public class ResourcesView extends ContentView implements Initializable {
     @FXML
     public ComboBox resourcesComboBox;
     @FXML
-    public TableView resourcesTable;
+    public TableView<Resource> resourcesTable;
     @FXML
     public Button assignToCourseButton;
 
@@ -57,6 +59,7 @@ public class ResourcesView extends ContentView implements Initializable {
 
     private ResourcesController controller;
     private ObservableList<Resource> resources;
+    private Resource selected;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -83,6 +86,28 @@ public class ResourcesView extends ContentView implements Initializable {
         Thread initThread = new Thread(init);
         initThread.setDaemon(true);
         initThread.start();
+
+        resourcesTable.getSelectionModel()
+                .selectedItemProperty()
+                .addListener(((observable, oldValue, newValue) -> {
+            if(newValue != null){
+                selected = newValue;
+                footer.show(selected.getName() + " selected.", Footer.NotificationType.INFORMATION, Footer.FADE_SUPER_QUICK);
+                if(newValue.getType().equals(ResourceType.AUDIO)){
+                    mainWindowView.changeContext(ContentSource.RESOURCES_AUDIO);
+                    mainWindowView.getContextView().changeContextItem(selected);
+                } else if(newValue.getType().equals(ResourceType.IMAGE)){
+                    mainWindowView.changeContext(ContentSource.RESOURCES_IMAGE);
+                    mainWindowView.getContextView().changeContextItem(selected);
+                } else if(newValue.getType().equals(ResourceType.VIDEO)){
+                    mainWindowView.changeContext(ContentSource.RESOURCES_AUDIO); //TODO: video type to be added
+                    mainWindowView.getContextView().changeContextItem(selected);
+                } else if(newValue.getType().equals(ResourceType.TEXT)){
+                    mainWindowView.changeContext(ContentSource.RESOURCES_TEXT);
+                    mainWindowView.getContextView().changeContextItem(selected);
+                }
+            }
+        }));
     }
 
     private void loadResources(){
