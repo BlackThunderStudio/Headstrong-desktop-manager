@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import eu.hansolo.tilesfx.Tile?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.Pane?>
@@ -18,7 +19,8 @@
    <children>
       <Pane prefHeight="200.0" prefWidth="200.0" styleClass="contentPane" GridPane.rowIndex="1">
          <children>
-            <Text layoutX="449.0" layoutY="262.0" strokeType="OUTSIDE" strokeWidth="0.0" text="TODO: Figure out TilesFX" />
+            <Text layoutX="452.0" layoutY="402.0" strokeType="OUTSIDE" strokeWidth="0.0" text="TODO: Figure out TilesFX" />
+            <Tile fx:id="tileTest" animated="true" borderWidth="0.0" dateVisible="true" discreteHours="true" layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="200.0" />
          </children></Pane>
       <Pane prefHeight="200.0" prefWidth="200.0" styleClass="headerPane">
          <children>
