@@ -93,7 +93,7 @@
                   <Insets left="10.0" />
                </GridPane.margin>
             </TextField>
-            <Button mnemonicParsing="false" text="Refresh" fx:id="refreshButton"/>
+            <Button mnemonicParsing="false" text="Refresh" fx:id="refreshButton" onAction="#refreshOnClick"/>
          </children>
       </GridPane>
    </children>
