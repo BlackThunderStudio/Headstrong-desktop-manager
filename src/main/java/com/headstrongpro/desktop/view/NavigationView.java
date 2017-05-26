@@ -76,6 +76,7 @@ public class NavigationView implements Initializable {
 
     @FXML
     public void AboutOnClick(ActionEvent actionEvent) {
+        mainWindowView.changeContent(ContentSource.ABOUT);
     }
 
     @FXML

@@ -5,7 +5,9 @@ package com.headstrongpro.desktop.view;
  */
 public enum ContentSource {
 
-    RESOURCES("Resources", "layout/resources/resourcesContentPane.fxml", "layout/resources/resourcesContextDefault.fxml"),
+    RESOURCES("Resources", "/layout/resources/resourcesContentPane.fxml", "/layout/resources/resourcesContextDefault.fxml"),
+
+    ABOUT("About", "/layout/about.fxml", "'layout/contextDefault.fxml"),
 
     COMPANIES("Companies", "/layout/companies/companiesContentPane.fxml", "/layout/companies/companiesContextPane.fxml"),
     COMPANIES_NEW("New company", "/layout/companies/companiesContentPane.fxml", "/layout/companies/companiesNewPane.fxml");
