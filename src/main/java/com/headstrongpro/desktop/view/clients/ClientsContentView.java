@@ -60,7 +60,7 @@ public class ClientsContentView extends ContentView implements Initializable {
     }
 
     private void loadTable(ObservableList<Person> clients){
-        clientsTable.getColumns().removeAll(clientIdCol, clientNameCol, clientEmailCol, clientPhoneCol, clientGenderCol, clientDateCol, clientCompanyCol);
+        clientsTable.getColumns().removeAll(clientIdCol, clientNameCol, clientEmailCol, clientPhoneCol, clientGenderCol);
         clientsTable.setItems(clients);
         clientIdCol.setCellValueFactory(new PropertyValueFactory<>("id"));
         clientNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -69,9 +69,9 @@ public class ClientsContentView extends ContentView implements Initializable {
         clientGenderCol.setCellValueFactory(new PropertyValueFactory<>("gender"));
         //clientLoginCol.setCellValueFactory(new PropertyValueFactory<>("login"));
         //clientPassCol.setCellValueFactory(new PropertyValueFactory<>("pass"));
-        clientDateCol.setCellValueFactory(new PropertyValueFactory<>("registrationDate"));
-        clientCompanyCol.setCellValueFactory(new PropertyValueFactory<>("companyId"));
-        clientsTable.getColumns().addAll(clientIdCol, clientNameCol, clientEmailCol, clientPhoneCol, clientGenderCol, clientDateCol, clientCompanyCol);
+        //clientDateCol.setCellValueFactory(new PropertyValueFactory<>("registrationDate"));
+        //clientCompanyCol.setCellValueFactory(new PropertyValueFactory<>("companyId"));
+        clientsTable.getColumns().addAll(clientIdCol, clientNameCol, clientEmailCol, clientPhoneCol, clientGenderCol);
     }
 
     @Override
@@ -99,7 +99,6 @@ public class ClientsContentView extends ContentView implements Initializable {
         clientsTable.getSelectionModel().selectedItemProperty().addListener((o, e, c) -> {
             if (c != null) {
                 footer.show(c.getName() + " selected.", Footer.NotificationType.INFORMATION, Footer.FADE_SUPER_QUICK);
-                //TODO: context bar
                 mainWindowView.getContextView().changeContextItem(c);
             }
         });
@@ -111,9 +110,7 @@ public class ClientsContentView extends ContentView implements Initializable {
 
     public void clientSearch(){
         try{
-
-            System.out.println("before" + clients.size());
-            loadTable(clientsController.search(searchClientsTextfield.getText()));
+            loadTable(FXCollections.observableArrayList(clientsController.search(searchClientsTextfield.getText())));
         } catch (ModelSyncException e) {
             e.printStackTrace();
             //TODO: handle dis with care too~

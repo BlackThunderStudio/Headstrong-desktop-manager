@@ -18,18 +18,17 @@ public class ClientsController implements Refreshable{
     List<Person> clients;
     DBClient clientsDAO;
 
-    public ClientsController(){
+    public ClientsController() throws ModelSyncException {
         clients = new ArrayList<>();
         clientsDAO = new DBClient();
+        refresh();
     }
 
     public ObservableList<Person> getClients() throws ModelSyncException {
-        //System.out.println("cl" + clientsDAO.getAll().size());
         return FXCollections.observableArrayList(clientsDAO.getAll());
     }
 
-    //TODO fixxx
-    public ObservableList<Person> search(String keyword) throws ModelSyncException{
+    public List<Person> search(String keyword) throws ModelSyncException{
         if(keyword == null) throw new NullPointerException();
         return FXCollections.observableArrayList(clients.stream().filter(e -> String.valueOf(e.getId()).contains(keyword) ||
                 e.getName().toLowerCase().contains(keyword.toLowerCase()) ||

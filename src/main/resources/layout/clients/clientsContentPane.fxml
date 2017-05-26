@@ -34,7 +34,7 @@
             </Text>
          </children>
       </Pane>
-      <TextField fx:id="searchClientsTextfield" promptText="Search" GridPane.rowIndex="1">
+      <TextField fx:id="searchClientsTextfield" onKeyReleased="#clientSearch" promptText="Search" GridPane.rowIndex="1">
          <GridPane.margin>
             <Insets left="20.0" right="20.0" />
          </GridPane.margin>
@@ -47,9 +47,9 @@
             <TableColumn fx:id="clientPhoneCol" prefWidth="94.0" text="Phone No" />
             <TableColumn fx:id="clientGenderCol" prefWidth="51.0" text="Gender" />
             <!--<TableColumn fx:id="clientLoginCol" prefWidth="75.0" text="Login" />
-            <TableColumn fx:id="clientPassCol" prefWidth="75.0" text="Pass" />-->
+            <TableColumn fx:id="clientPassCol" prefWidth="75.0" text="Pass" />
             <TableColumn fx:id="clientDateCol" prefWidth="126.0" text="Registration date" />
-            <TableColumn fx:id="clientCompanyCol" prefWidth="72.0" text="Company Id" />
+            <TableColumn fx:id="clientCompanyCol" prefWidth="72.0" text="Company Id" />-->
         </columns>
          <GridPane.margin>
             <Insets left="20.0" right="20.0" />
