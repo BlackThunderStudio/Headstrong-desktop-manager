@@ -66,13 +66,27 @@ public class ResourcesContext extends ContextView<Resource> implements Initializ
     @FXML
     public TextField newImageDescriptionTextfield;
 
+    //new text
+    @FXML
+    public HTMLEditor resourcesNewTextEditor;
+    @FXML
+    public TextField resourcesNewTextNameTextfield;
+    @FXML
+    public Button resourcesNewTextSaveButton;
+    @FXML
+    public Button resourcesNewTextCancelButton;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO: Figure out why does this throw the loadStylesheetUnprivileged error
+        /**
         Platform.runLater(()->{
             textResourcesEditor.lookupAll("ToolBar")
                     .forEach(node->((ToolBar)node).setPrefWidth(259));
+            resourcesNewTextEditor.lookupAll("ToolBar")
+                    .forEach(node->((ToolBar)node).setPrefWidth(259));
         });
+         **/
     }
 
     @Override

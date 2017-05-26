@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.headstrongpro.desktop.core.fxControls.Footer?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
@@ -13,7 +14,6 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<?import com.headstrongpro.desktop.core.fxControls.Footer?>
 <GridPane maxHeight="700" maxWidth="800" minHeight="700" minWidth="800" prefHeight="700.0" prefWidth="800.0" stylesheets="/style/resourcesContentPane.css" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.headstrongpro.desktop.view.resources.ResourcesView">
     <columnConstraints>
         <ColumnConstraints hgrow="NEVER" maxWidth="300.0" minWidth="300.0" percentWidth="100.0" prefWidth="300.0" />
@@ -28,7 +28,7 @@
    <children>
       <Pane prefHeight="200.0" prefWidth="200.0" styleClass="headerPane">
          <children>
-            <Text fx:id="resourcesHeader" layoutX="14.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Resources">
+            <Text fx:id="headerText" layoutX="14.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Resources">
                <font>
                   <Font size="36.0" />
                </font>
@@ -40,11 +40,6 @@
             <Insets right="20.0" />
          </GridPane.margin>
       </ComboBox>
-      <TextField fx:id="searchResourcesTextfield" onKeyReleased="#searchResourcesTextfield_onKeyReleased" promptText="Search" GridPane.rowIndex="2">
-         <GridPane.margin>
-            <Insets left="20.0" right="20.0" />
-         </GridPane.margin>
-      </TextField>
       <TableView fx:id="resourcesTable" maxWidth="4000.0" minWidth="200.0" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="3">
         <columns>
           <TableColumn fx:id="nameCol" prefWidth="120" text="Name" />
@@ -66,10 +61,10 @@
          <children>
              <Footer fx:id="footer" focusTraversable="false" prefHeight="32.0" prefWidth="250.0" GridPane.halignment="LEFT">
                  <GridPane.margin>
-                     <Insets left="20.0"/>
+                     <Insets left="20.0" />
                  </GridPane.margin>
              </Footer>
-            <Button fx:id="newResourceButton" maxWidth="110.0" minWidth="110.0" mnemonicParsing="false" onAction="#newResourceButton_onClick" prefWidth="110.0" text="New" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
+            <Button fx:id="addNewButton" maxWidth="110.0" minWidth="110.0" mnemonicParsing="false" onAction="#newResourceButton_onClick" prefWidth="110.0" text="New" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
                <GridPane.margin>
                   <Insets right="20.0" />
                </GridPane.margin>
@@ -79,6 +74,26 @@
                   <Insets right="150.0" />
                </GridPane.margin>
             </Button>
+         </children>
+      </GridPane>
+      <GridPane GridPane.rowIndex="2">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="395.0" minWidth="10.0" prefWidth="94.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="725.0" minWidth="10.0" prefWidth="706.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <GridPane.margin>
+            <Insets left="20.0" right="20.0" />
+         </GridPane.margin>
+         <children>
+            <TextField fx:id="searchResourcesTextfield" onKeyReleased="#searchResourcesTextfield_onKeyReleased" promptText="Search" GridPane.columnIndex="1">
+               <GridPane.margin>
+                  <Insets left="10.0" />
+               </GridPane.margin>
+            </TextField>
+            <Button mnemonicParsing="false" text="Refresh" fx:id="refreshButton" onAction="#refreshOnClick"/>
          </children>
       </GridPane>
    </children>

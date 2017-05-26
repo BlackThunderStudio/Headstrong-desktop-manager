@@ -4,8 +4,10 @@ import com.headstrongpro.desktop.core.Utils;
 import com.headstrongpro.desktop.core.controller.ResourcesController;
 import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
+import com.headstrongpro.desktop.core.fxControls.Footer;
 import com.headstrongpro.desktop.core.fxControls.LoadingBar;
 import com.headstrongpro.desktop.model.resource.Resource;
+import com.headstrongpro.desktop.view.ContentView;
 import com.jfoenix.controls.JFXProgressBar;
 import com.jfoenix.controls.JFXSpinner;
 import javafx.beans.value.ChangeListener;
@@ -33,7 +35,7 @@ import static javafx.concurrent.Worker.State.*;
 /**
  * Created by Ondřej Soukup on 23.05.2017.
  */
-public class ResourcesView implements Initializable {
+public class ResourcesView extends ContentView implements Initializable {
 
     @FXML
     public TextField searchResourcesTextfield;
@@ -41,10 +43,6 @@ public class ResourcesView implements Initializable {
     public ComboBox resourcesComboBox;
     @FXML
     public TableView resourcesTable;
-    @FXML
-    public Button newResourceButton;
-    @FXML
-    public Text resourcesHeader;
     @FXML
     public Button assignToCourseButton;
 
@@ -66,6 +64,7 @@ public class ResourcesView implements Initializable {
         Task<Void> init = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
+                footer.show("Initializing window.", Footer.NotificationType.LOADING);
                 controller = new ResourcesController();
                 loadResources();
                 return null;
@@ -75,8 +74,9 @@ public class ResourcesView implements Initializable {
         init.stateProperty().addListener((observable, oldValue, newValue) -> {
             if(newValue.equals(SUCCEEDED)){
                 initTable(this.resources);
+                footer.show("Resources loaded.", Footer.NotificationType.COMPLETED);
             } else if(newValue.equals(FAILED) || newValue.equals(CANCELLED)){
-                //TODO: handle error
+                footer.show("Error! Could not load resources!", Footer.NotificationType.ERROR, Footer.FADE_LONG);
             }
         });
 
@@ -89,10 +89,38 @@ public class ResourcesView implements Initializable {
         resources = FXCollections.observableArrayList(controller.getAll());
     }
 
+    private void refresh(){
+        Task<Void> refresh = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                footer.show("Refreshing resources...", Footer.NotificationType.LOADING);
+                loadResources();
+                return null;
+            }
+        };
+
+        refresh.stateProperty().addListener(((observable, oldValue, newValue) -> {
+            if(newValue.equals(SUCCEEDED)){
+                footer.show("Resources loaded successfully.", Footer.NotificationType.COMPLETED);
+                initTable(resources);
+            } else if(newValue.equals(FAILED) || newValue.equals(CANCELLED)) {
+                footer.show("Error! Could not refresh the list!", Footer.NotificationType.ERROR, Footer.FADE_LONG);
+            }
+        }));
+
+        Thread th = new Thread(refresh);
+        th.setDaemon(true);
+        th.start();
+    }
+
     @SuppressWarnings("unchecked")
     private void initTable(ObservableList<Resource> resources){
         resourcesTable.getColumns().removeAll(nameCol, descCol, typeCol);
         resourcesTable.setItems(resources);
+
+        nameCol.setMinWidth(150);
+        descCol.setMinWidth(350);
+        typeCol.setMinWidth(80);
 
         nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         descCol.setCellValueFactory(new PropertyValueFactory<>("description"));
@@ -103,7 +131,10 @@ public class ResourcesView implements Initializable {
 
     @FXML
     public void searchResourcesTextfield_onKeyReleased(KeyEvent keyEvent) {
-        initTable(FXCollections.observableArrayList(controller.searchByPhrase(searchResourcesTextfield.getText())));
+        initTable(
+                FXCollections.observableArrayList(
+                        controller.searchByPhrase(
+                                searchResourcesTextfield.getText())));
     }
 
     @FXML
@@ -127,5 +158,10 @@ public class ResourcesView implements Initializable {
     @FXML
     public void newResourceButton_onClick(ActionEvent actionEvent) {
         //TODO: to be implemented
+    }
+
+    @FXML
+    public void refreshOnClick(ActionEvent actionEvent) {
+        refresh();
     }
 }
