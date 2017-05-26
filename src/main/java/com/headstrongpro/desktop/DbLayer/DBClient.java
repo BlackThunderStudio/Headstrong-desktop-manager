@@ -122,7 +122,7 @@ public class DBClient extends Synchronizable implements IDataAccessObject<Person
                 preparedStatement.setString(1, client.getName());
                 preparedStatement.setString(2, client.getEmail());
                 preparedStatement.setString(3, client.getPhone());
-                preparedStatement.setString(4, client.getGender());
+                preparedStatement.setBoolean(4, client.getGender().equals("Male")? true:false);
                 preparedStatement.setString(5, client.getLogin());
                 preparedStatement.setString(6, client.getPassword());
                 preparedStatement.setDate(7, client.getRegistrationDate());
