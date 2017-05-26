@@ -10,6 +10,7 @@ import com.headstrongpro.desktop.core.controller.CompaniesController;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.core.fxControls.Footer;
 import com.headstrongpro.desktop.model.entity.Company;
+import com.headstrongpro.desktop.view.ContentSource;
 import com.headstrongpro.desktop.view.ContextView;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -85,6 +86,7 @@ public class CompaniesNewView extends ContextView<Company> implements Initializa
                         newCompanyCountryTextfield.getText());
                 mainWindowView.getContentView().footer.show("Company created.", Footer.NotificationType.COMPLETED);
                 clearFields();
+                mainWindowView.getContentView().refreshButton.fire();
             } catch (ModelSyncException e) {
                 e.printStackTrace();
                 mainWindowView.getContentView().footer.show(e.getMessage(), Footer.NotificationType.ERROR);
@@ -98,5 +100,6 @@ public class CompaniesNewView extends ContextView<Company> implements Initializa
     public void cancelBtnOnClick(MouseEvent mouseEvent) {
         clearFields();
         //TODO: go back to main context menu
+        mainWindowView.changeContext(ContentSource.COMPANIES);
     }
 }
