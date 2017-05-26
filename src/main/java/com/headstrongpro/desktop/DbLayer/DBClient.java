@@ -44,7 +44,7 @@ public class DBClient extends Synchronizable implements IDataAccessObject<Person
                         rs.getString("name"),
                         rs.getString("email"),
                         String.valueOf(rs.getInt("phone_number")),
-                        String.valueOf(rs.getBoolean("gender")),
+                        (rs.getBoolean("gender")? "Male" : "Female"),
                         rs.getString("login"),
                         rs.getString("pass"),
                         rs.getDate("date_registered"),
