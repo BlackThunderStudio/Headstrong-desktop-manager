@@ -138,6 +138,7 @@ public class CompaniesContextView extends ContextView<Company> implements Initia
                     mainWindowView.getContentView().footer.show("Deleting " + contextItem.getName() + "...", Footer.NotificationType.LOADING);
                     companiesController.deleteCompany(contextItem.getId());
                     mainWindowView.getContentView().footer.show("Company deleted.", Footer.NotificationType.COMPLETED);
+                    mainWindowView.getContentView().refreshButton.fire();
                 } catch (ModelSyncException e) {
                     e.printStackTrace();
                     mainWindowView.getContentView().footer.show(e.getMessage(), Footer.NotificationType.ERROR, Footer.FADE_LONG);
