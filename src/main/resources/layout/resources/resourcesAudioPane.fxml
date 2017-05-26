@@ -30,11 +30,11 @@
     <children>
         <TextField fx:id="nameField" promptText="Name" GridPane.rowIndex="4" />
         <TextField fx:id="descriptionField" alignment="TOP_LEFT" maxHeight="120.0" minHeight="75.0" prefHeight="100.0" promptText="Description" GridPane.rowIndex="5" />
-        <TextField fx:id="urlField" editable="false" promptText="URL" GridPane.rowIndex="6" />
+        <TextField fx:id="urlField" disable="true" editable="false" promptText="Path" GridPane.rowIndex="6" />
         <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
             <children>
-                <Button fx:id="editButton" contentDisplay="CENTER" maxWidth="90.0" minWidth="90.0" mnemonicParsing="false" prefWidth="90.0" text="Edit" />
-                <Button fx:id="deleteButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="90.0" text="Delete" />
+                <Button fx:id="editButton" onAction="#editOnClick" contentDisplay="CENTER" maxWidth="90.0" minWidth="90.0" mnemonicParsing="false" prefWidth="90.0" text="Edit" />
+                <Button fx:id="deleteButton" onAction="#deleteOnClick" mnemonicParsing="false" prefHeight="25.0" prefWidth="90.0" text="Delete" />
             </children>
             <GridPane.margin>
                 <Insets />
@@ -43,7 +43,7 @@
         <Separator maxWidth="1.7976931348623157E308" GridPane.rowIndex="2" GridPane.valignment="TOP" />
         <Button fx:id="changeFileButton" mnemonicParsing="false" text="Change file" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="TOP" />
       <Slider fx:id="audioSeekbarSlider" GridPane.valignment="BOTTOM" />
-      <Button fx:id="plauPauseButton" mnemonicParsing="false" prefWidth="90.0" text="Play/Pause" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
+      <Button fx:id="playPauseButton" mnemonicParsing="false" prefWidth="90.0" text="Play/Pause" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
          <GridPane.margin>
             <Insets top="10.0" />
          </GridPane.margin>

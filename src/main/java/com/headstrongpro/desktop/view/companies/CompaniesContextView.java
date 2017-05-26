@@ -92,7 +92,7 @@ public class CompaniesContextView extends ContextView<Company> implements Initia
                 handleDataInconsistency();
             }
         } else
-            mainWindowView.getContentView().footer.show("Values not valid!", Footer.NotificationType.ERROR, 2000);
+            mainWindowView.getContentView().footer.show("Values not valid!", Footer.NotificationType.ERROR);
     }
 
     @Override
@@ -117,7 +117,8 @@ public class CompaniesContextView extends ContextView<Company> implements Initia
                     changeContextItem(companiesController.getCompanyById(contextItem.getId()));
                 } catch (ModelSyncException e1) {
                     e1.printStackTrace();
-                    //TODO: handle error: couldn't reload the company
+                    mainWindowView.getContentView().footer.show(e1.getMessage(), Footer.NotificationType.ERROR);
+                    clearFields();
                 }
             } else {
                 clearFields();

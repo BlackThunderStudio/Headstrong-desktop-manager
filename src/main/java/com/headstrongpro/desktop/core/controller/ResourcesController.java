@@ -7,6 +7,10 @@ import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.model.Session;
 import com.headstrongpro.desktop.model.resource.*;
 import com.headstrongpro.desktop.DbLayer.DBResources;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputControl;
 import javafx.scene.image.Image;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -33,11 +37,9 @@ public class ResourcesController implements Refreshable {
     private Media media;
     private MediaPlayer mediaPlayer;
 
-    public ResourcesController() throws ModelSyncException {
+    public ResourcesController() {
         resources = new ArrayList<>();
         resourcesDAO = new DBResources();
-
-        refresh();
     }
 
     /***
@@ -52,7 +54,8 @@ public class ResourcesController implements Refreshable {
         resources.addAll(resourcesDAO.getAll());
     }
     
-    public List<Resource> getAll(){
+    public List<Resource> getAll() throws ModelSyncException {
+        refresh();
         return resources;
     }
 
@@ -235,7 +238,6 @@ public class ResourcesController implements Refreshable {
     public void editResource(Resource selectedResource)
             throws DatabaseOutOfSyncException, ModelSyncException {
         resourcesDAO.update(selectedResource);
-        refresh();
     }
 
     /***
@@ -249,12 +251,34 @@ public class ResourcesController implements Refreshable {
         return new Image(imageResource.getURL());
     }
 
-    //TODO: stopped at media playback. WIP. To be continued
+    /***
+     *
+     * Deletes an object from the database
+     *
+     * @param resource resource object
+     * @throws DatabaseOutOfSyncException
+     * @throws ModelSyncException
+     */
+    public void delete(Resource resource)
+            throws DatabaseOutOfSyncException, ModelSyncException {
+        resourcesDAO.delete(resource);
+    }
 
-    public void playSelected(Resource selected) throws MalformedURLException, URISyntaxException {
-        AudioResource resource = Resource.ofType(selected);
-        media = new Media(new URL(resource.getUrl()).toURI().toString());
-        mediaPlayer = new MediaPlayer(media);
-        mediaPlayer.setOnReady(() -> mediaPlayer.play());
+    /***
+     *
+     * Retrieves a resource by a given ID
+     *
+     * @param id item ID
+     * @return
+     * @throws ModelSyncException
+     */
+    public Resource getResourceById(int id) throws ModelSyncException {
+        return resourcesDAO.getById(id);
+    }
+
+    public boolean validateInput(List<String> values){
+        return values.stream()
+                .filter(e -> e.isEmpty() || e.contains(";") || e.contains(":") || e.contains("^"))
+                .count() == 0;
     }
 }

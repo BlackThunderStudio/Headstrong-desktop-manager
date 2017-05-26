@@ -6,6 +6,7 @@ import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.core.fxControls.Footer;
 import com.headstrongpro.desktop.core.fxControls.LoadingBar;
+import com.headstrongpro.desktop.model.resource.AudioResource;
 import com.headstrongpro.desktop.model.resource.Resource;
 import com.headstrongpro.desktop.model.resource.ResourceType;
 import com.headstrongpro.desktop.view.ContentSource;
@@ -61,6 +62,7 @@ public class ResourcesView extends ContentView implements Initializable {
     private ObservableList<Resource> resources;
     private Resource selected;
 
+    @SuppressWarnings("unchecked")
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.resources = FXCollections.observableArrayList();
@@ -95,23 +97,26 @@ public class ResourcesView extends ContentView implements Initializable {
                 footer.show(selected.getName() + " selected.", Footer.NotificationType.INFORMATION, Footer.FADE_SUPER_QUICK);
                 if(newValue.getType().equals(ResourceType.AUDIO)){
                     mainWindowView.changeContext(ContentSource.RESOURCES_AUDIO);
-                    mainWindowView.getContextView().changeContextItem(selected);
                 } else if(newValue.getType().equals(ResourceType.IMAGE)){
                     mainWindowView.changeContext(ContentSource.RESOURCES_IMAGE);
-                    mainWindowView.getContextView().changeContextItem(selected);
                 } else if(newValue.getType().equals(ResourceType.VIDEO)){
                     mainWindowView.changeContext(ContentSource.RESOURCES_AUDIO); //TODO: video type to be added
-                    mainWindowView.getContextView().changeContextItem(selected);
                 } else if(newValue.getType().equals(ResourceType.TEXT)){
                     mainWindowView.changeContext(ContentSource.RESOURCES_TEXT);
-                    mainWindowView.getContextView().changeContextItem(selected);
                 }
+                mainWindowView.getContextView()
+                        .changeContextItem(
+                                Resource.ofType(selected));
             }
         }));
     }
 
     private void loadResources(){
-        resources = FXCollections.observableArrayList(controller.getAll());
+        try {
+            resources = FXCollections.observableArrayList(controller.getAll());
+        } catch (ModelSyncException e) {
+            mainWindowView.getContentView().footer.show(e.getMessage(), Footer.NotificationType.ERROR);
+        }
     }
 
     private void refresh(){
