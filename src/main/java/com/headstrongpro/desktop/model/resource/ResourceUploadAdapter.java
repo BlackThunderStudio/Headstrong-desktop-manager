@@ -25,7 +25,9 @@ public class ResourceUploadAdapter extends Configurable implements IResourceUplo
                     (String) ftpData.get(0),
                     (String) ftpData.get(1),
                     (String) ftpData.get(2),
-                    (String) ftpData.get(3)
+                    (String) ftpData.get(3),
+                    (String) ftpData.get(4),
+                    (String) ftpData.get(5)
             );
         }
     }
@@ -49,6 +51,7 @@ public class ResourceUploadAdapter extends Configurable implements IResourceUplo
         results.add(credentials.get("pass"));
         results.add(credentials.get("root"));
         results.add(credentials.get("path"));
+        results.add(credentials.get("sub"));
         return results;
     }
 

@@ -17,7 +17,7 @@ public class SFTPUtilsTest {
 
     @Before
     public void setUp() throws Exception {
-        sftp = new SFTPUtils("osoukup.com", "andrewskp", "sefujupico420.", "sudomains/cdn/media/");
+        sftp = new SFTPUtils("osoukup.com", "andrewskp", "sefujupico420.", "sudomains/cdn/media/", "/media/", "cdn");
     }
 
     @Test

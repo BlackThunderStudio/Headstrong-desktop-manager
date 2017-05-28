@@ -16,6 +16,7 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -117,8 +118,7 @@ public class ResourcesController implements Refreshable {
      * @return ResourceType object
      */
     public ResourceType getResourceType(File file){
-        String[] split = file.getAbsolutePath().split("."); //TODO: this doesn't work, pls halp
-        String ext = split[split.length];
+        String ext = FilenameUtils.getExtension(file.getAbsolutePath());
         if("jpg;jpeg;png;gif".contains(ext.toLowerCase())) return ResourceType.IMAGE;
         else if("mp3;wav".contains(ext.toLowerCase())) return ResourceType.AUDIO;
         else if("mp4;avi;webm".contains(ext.toLowerCase())) return ResourceType.VIDEO;
@@ -169,16 +169,16 @@ public class ResourcesController implements Refreshable {
             throws ModelSyncException, ConnectionException {
 
         //retard protection
-        if (file == null || remoteName == null || description == null || type == null || args == null)
+        if (file == null || remoteName == null || description == null || type == null)
             throw new NullPointerException();
         if (file.getAbsolutePath().isEmpty() || file.getName().isEmpty())
-            throw new IllegalStateException("File cannot be empty!");
+            throw new IllegalArgumentException("File cannot be empty!");
         if (remoteName.isEmpty()) throw new IllegalStateException("Name cannot be empty");
         if (description.isEmpty()) throw new IllegalStateException("Description cannot be empty");
 
         ResourceUploader resourceUploader = new ResourceUploader();
 
-        Resource resource = ResourceFactory.getResource(file.getName(), description, isForAchievement, type.get());
+        Resource resource = ResourceFactory.getResource(remoteName, description, isForAchievement, type.get());
         resource.setFile(file);
         resource.setRemoteFileName(remoteName);
 

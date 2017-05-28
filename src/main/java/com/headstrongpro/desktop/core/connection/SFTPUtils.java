@@ -6,44 +6,54 @@ import com.headstrongpro.desktop.model.resource.IResourceConnector;
 import com.headstrongpro.desktop.model.resource.Resource;
 import com.jcraft.jsch.*;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import org.apache.commons.io.FilenameUtils;
 
 import javax.swing.*;
 import java.io.*;
+import java.net.URLEncoder;
+import java.util.Optional;
 
 /**
  * Created by rajmu on 17.05.21.
  */
 public class SFTPUtils implements IResourceConnector {
 
-    private String host, user, pass, path;
+    private String host, user, pass, root, path, subDomain;
     private int port;
     private JSch jsch;
 
-    public SFTPUtils(String host, String user, String pass) {
+    public SFTPUtils(String host, String user, String pass, String path, String subDomain) {
         this.host = host;
         this.user = user;
         this.pass = pass;
         jsch = new JSch();
-        path = "";
+        root = "";
         port = 22;
+        this.path = path;
+        this.subDomain = subDomain;
     }
 
-    public SFTPUtils(String host, String user, String pass, String path) {
+    public SFTPUtils(String host, String user, String pass, String root, String path, String subDomain) {
         this.host = host;
         this.user = user;
         this.pass = pass;
-        this.path = path;
+        this.root = root;
         jsch = new JSch();
         port = 22;
+        this.path = path;
+        this.subDomain = subDomain;
     }
 
-    public SFTPUtils(String host, String user, String pass, String path, int port) {
+    public SFTPUtils(String host, String user, String pass, String root, int port, String path, String subDomain) {
         this.host = host;
         this.user = user;
         this.pass = pass;
-        this.path = path;
+        this.root = root;
         this.port = port;
         jsch = new JSch();
+        this.path = path;
+        this.subDomain = subDomain;
     }
 
     /***
@@ -58,7 +68,7 @@ public class SFTPUtils implements IResourceConnector {
             ChannelSftp sftp = connect();
             SftpProgressMonitor monitor = new MyProgressMonitor();
             OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(localFile));
-            sftp.cd(path);
+            sftp.cd(root);
             sftp.get(remoteFile, outputStream, monitor);
             sftp.disconnect();
         } catch (SftpException | FileNotFoundException e) {
@@ -70,7 +80,7 @@ public class SFTPUtils implements IResourceConnector {
     /***
      * Uploads a file to the server
      * @param localFile File object of a local existing file
-     * @param remoteFile name of a remote file in the root path
+     * @param remoteFile name of a remote file in the root root
      * @throws ConnectionException When the shit goes south
      */
     public void upload(File localFile, String remoteFile) throws ConnectionException {
@@ -78,7 +88,7 @@ public class SFTPUtils implements IResourceConnector {
             ChannelSftp c = connect();
             SftpProgressMonitor monitor = new MyProgressMonitor();
             InputStream inputStream = new FileInputStream(localFile);
-            c.cd(path);
+            c.cd(root);
             c.put(inputStream, remoteFile, monitor, ChannelSftp.OVERWRITE);
             c.disconnect();
         } catch (IOException | SftpException e) {
@@ -110,9 +120,14 @@ public class SFTPUtils implements IResourceConnector {
     //adapter implementation
     @Override
     public String uploadMediaServer(File file, String remote) throws ConnectionException {
-        String[] split = file.getName().split(".");
-        String extension = split[split.length];
-        String url = host + "/" + path + remote + "." + extension;
+        String extension = FilenameUtils.getExtension(file.getAbsolutePath());
+        String encodedUrl = "";
+        try {
+            encodedUrl = URLEncoder.encode(remote, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace(); //not so likely to happen with utf-8 as it's always compatible, hence handling this exception here
+        }
+        String url = "http://" + subDomain + "." + host + path + encodedUrl + "." + extension;
         upload(file, remote + "." + extension);
         return url;
     }
@@ -152,18 +167,18 @@ public class SFTPUtils implements IResourceConnector {
 
         @Override
         public boolean promptYesNo(String s) {
-            /*Alert a = new Alert(Alert.AlertType.CONFIRMATION);
+            Alert a = new Alert(Alert.AlertType.CONFIRMATION);
             a.setHeaderText(s);
             Optional<ButtonType> okResponse = a.showAndWait();
-            return okResponse.isPresent() && ButtonType.OK.equals(okResponse.get());*/
-            Object[] options = {"yes", "no"};
+            return okResponse.isPresent() && ButtonType.OK.equals(okResponse.get());
+            /*Object[] options = {"yes", "no"};
             int foo = JOptionPane.showOptionDialog(null,
                     s,
                     "Warning",
                     JOptionPane.DEFAULT_OPTION,
                     JOptionPane.WARNING_MESSAGE,
                     null, options, options[0]);
-            return foo == 0;
+            return foo == 0;*/
         }
 
         @Override

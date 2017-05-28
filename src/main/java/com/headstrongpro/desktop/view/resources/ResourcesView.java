@@ -183,6 +183,7 @@ public class ResourcesView extends ContentView implements Initializable {
 
     @FXML
     public void searchResourcesTextfield_onKeyReleased(KeyEvent keyEvent) {
+
         initTable(
                 FXCollections.observableArrayList(
                         controller.searchByPhrase(
