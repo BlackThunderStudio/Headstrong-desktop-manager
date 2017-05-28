@@ -40,12 +40,14 @@ public class ResourcesNewFileContext extends ContextView<Resource> implements In
         if(selectedFile != null){
             if(validateInput(newImageNameTextfield, newImageDescriptionTextfield)){
                 try {
+                    mainWindowView.getContentView().footer.show("Uploading resource...", Footer.NotificationType.LOADING);
                     controller.uploadLocalFile(selectedFile,
                             newImageNameTextfield.getText(),
                             newImageDescriptionTextfield.getText(),
                             false, //TODO: would be nice to include into a file checkbox "Is for achievement"
                             controller.getResourceType(selectedFile),
                             null);
+                    mainWindowView.getContentView().footer.show("File uploaded.", Footer.NotificationType.COMPLETED);
                 } catch (ModelSyncException | ConnectionException e) {
                     e.printStackTrace();
                     mainWindowView.getContentView().footer.show(e.getMessage(), Footer.NotificationType.ERROR, Footer.FADE_LONG);

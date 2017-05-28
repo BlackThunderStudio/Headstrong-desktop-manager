@@ -167,10 +167,10 @@ public class SFTPUtils implements IResourceConnector {
 
         @Override
         public boolean promptYesNo(String s) {
-            Alert a = new Alert(Alert.AlertType.CONFIRMATION);
+            /*Alert a = new Alert(Alert.AlertType.CONFIRMATION);
             a.setHeaderText(s);
             Optional<ButtonType> okResponse = a.showAndWait();
-            return okResponse.isPresent() && ButtonType.OK.equals(okResponse.get());
+            return okResponse.isPresent() && ButtonType.OK.equals(okResponse.get());*/
             /*Object[] options = {"yes", "no"};
             int foo = JOptionPane.showOptionDialog(null,
                     s,
@@ -179,6 +179,7 @@ public class SFTPUtils implements IResourceConnector {
                     JOptionPane.WARNING_MESSAGE,
                     null, options, options[0]);
             return foo == 0;*/
+            return true;
         }
 
         @Override
