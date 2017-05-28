@@ -208,6 +208,17 @@ public class ResourcesController implements Refreshable {
         return (Resource) resourceUploader.upload(resource, Destination.DATABASE);
     }
 
+    public Resource uploadTextResource(String name, boolean isForAchievement, String content) throws ModelSyncException {
+        if(name == null || content == null) throw new NullPointerException();
+        if(name.isEmpty() || content.isEmpty()) throw new IllegalArgumentException("Parameters cannot be empty!");
+
+        TextResource textResource = Resource.ofType(ResourceFactory.getResource(name, "", false, ResourceType.TEXT.get()));
+        assert textResource != null;
+        textResource.setContent(content);
+
+        return resourcesDAO.persist(textResource);
+    }
+
     /***
      *
      * Assigns resource to a session
