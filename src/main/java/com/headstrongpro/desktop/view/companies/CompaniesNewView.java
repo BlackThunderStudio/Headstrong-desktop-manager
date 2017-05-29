@@ -6,7 +6,7 @@ package com.headstrongpro.desktop.view.companies;
 
 // "New" context view controls
 
-import com.headstrongpro.desktop.core.controller.CompaniesController;
+import com.headstrongpro.desktop.controller.CompaniesController;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.core.fxControls.Footer;
 import com.headstrongpro.desktop.model.entity.Company;

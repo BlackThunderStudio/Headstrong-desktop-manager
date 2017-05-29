@@ -1,9 +1,8 @@
 package com.headstrongpro.desktop.view.clients;
 
-import com.headstrongpro.desktop.core.controller.ClientsController;
+import com.headstrongpro.desktop.controller.ClientsController;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.core.fxControls.Footer;
-import com.headstrongpro.desktop.model.entity.Client;
 import com.headstrongpro.desktop.model.entity.Person;
 import com.headstrongpro.desktop.view.ContentView;
 import javafx.collections.FXCollections;
@@ -18,9 +17,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 
-import java.awt.event.ActionEvent;
 import java.net.URL;
-import java.sql.Date;
 import java.util.ResourceBundle;
 
 import static javafx.concurrent.Worker.State.CANCELLED;

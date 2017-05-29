@@ -1,4 +1,4 @@
-package com.headstrongpro.desktop.core.controller;
+package com.headstrongpro.desktop.controller;
 
 
 import com.headstrongpro.desktop.core.exception.ConnectionException;
@@ -7,10 +7,6 @@ import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.model.Session;
 import com.headstrongpro.desktop.model.resource.*;
 import com.headstrongpro.desktop.DbLayer.DBResources;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextInputControl;
 import javafx.scene.image.Image;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -19,9 +15,6 @@ import javafx.stage.Stage;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.sql.Time;
 import java.util.*;
 import java.util.stream.Collectors;

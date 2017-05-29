@@ -1,6 +1,6 @@
 package com.headstrongpro.desktop.view.companies;
 
-import com.headstrongpro.desktop.core.controller.CompaniesController;
+import com.headstrongpro.desktop.controller.CompaniesController;
 import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.core.fxControls.Footer;

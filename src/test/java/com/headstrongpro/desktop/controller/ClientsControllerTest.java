@@ -1,4 +1,4 @@
-package com.headstrongpro.desktop.core.controller;
+package com.headstrongpro.desktop.controller;
 
 import com.headstrongpro.desktop.DbLayer.DBClient;
 import org.junit.Before;

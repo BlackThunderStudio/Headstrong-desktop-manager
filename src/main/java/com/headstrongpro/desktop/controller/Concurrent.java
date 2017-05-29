@@ -1,4 +1,4 @@
-package com.headstrongpro.desktop.core.controller;
+package com.headstrongpro.desktop.controller;
 
 import java.lang.annotation.*;
 

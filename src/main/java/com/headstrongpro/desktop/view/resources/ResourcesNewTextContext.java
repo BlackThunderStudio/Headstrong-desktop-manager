@@ -1,15 +1,13 @@
 package com.headstrongpro.desktop.view.resources;
 
-import com.headstrongpro.desktop.core.controller.ResourcesController;
+import com.headstrongpro.desktop.controller.ResourcesController;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.core.fxControls.Footer;
 import com.headstrongpro.desktop.model.resource.Resource;
 import com.headstrongpro.desktop.view.ContentSource;
-import com.headstrongpro.desktop.view.ContextNewView;
 import com.headstrongpro.desktop.view.ContextView;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.web.HTMLEditor;
 import javafx.event.ActionEvent;

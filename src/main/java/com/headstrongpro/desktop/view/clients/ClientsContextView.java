@@ -1,6 +1,6 @@
 package com.headstrongpro.desktop.view.clients;
 
-import com.headstrongpro.desktop.core.controller.ClientsController;
+import com.headstrongpro.desktop.controller.ClientsController;
 import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.core.fxControls.Footer;

@@ -1,6 +1,6 @@
 package com.headstrongpro.desktop.view.resources;
 
-import com.headstrongpro.desktop.core.controller.ResourcesController;
+import com.headstrongpro.desktop.controller.ResourcesController;
 import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.core.fxControls.Footer;
