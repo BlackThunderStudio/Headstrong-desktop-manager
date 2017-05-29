@@ -1,6 +1,7 @@
 package com.headstrongpro.desktop.DbLayer;
 
 import com.headstrongpro.desktop.core.connection.DBConnect;
+import com.headstrongpro.desktop.core.connection.DBContext;
 import com.headstrongpro.desktop.core.exception.ConnectionException;
 import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
@@ -27,7 +28,7 @@ import static com.headstrongpro.desktop.DbLayer.util.ActionType.*;
  */
 public class DBResources extends Synchronizable implements IDataAccessObject<Resource>, IResourceConnector {
 
-    private DBConnect dbConnect;
+    private DBContext dbConnect;
     private java.sql.Date timestamp;
 
     public DBResources() {
@@ -143,7 +144,7 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
     public List<Resource> getAll() throws ModelSyncException {
         List<Resource> resources = new ArrayList<>();
         try {
-            dbConnect = new DBConnect();
+            dbConnect = new DBContext();
             String query = "SELECT * FROM [resources]";
             ResultSet rs = dbConnect.getFromDataBase(query);
             while (rs.next()) {
@@ -166,7 +167,7 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
     public Resource getById(int id) throws ModelSyncException {
         Resource resource = null;
         try {
-            dbConnect = new DBConnect();
+            dbConnect = new DBContext();
             String query = "SELECT * FROM [resources] WHERE id=" + id + ";";
             ResultSet rs = dbConnect.getFromDataBase(query);
             rs.next();
@@ -188,7 +189,7 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
     @Override
     public Resource persist(Resource object) throws ModelSyncException {
         try {
-            dbConnect = new DBConnect();
+            dbConnect = new DBContext();
             //language=TSQL
             String query = "INSERT INTO resources(name, description, is_for_achievement, type) VALUES (?, ?, ?, ?);";
             PreparedStatement preparedStatement = dbConnect.getConnection().prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
@@ -267,7 +268,7 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
                 }
             }
             logChange(-1, "resources", object.getID(), CREATE);
-        } catch (ConnectionException | SQLException e) {
+        } catch (/*ConnectionException |*/ SQLException e) {
             throw new ModelSyncException("Could not persist new resource!", e);
         }
         return object;
@@ -277,7 +278,7 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
     public void update(Resource object) throws ModelSyncException, DatabaseOutOfSyncException {
         if (verifyIntegrity(object.getID())) {
             try {
-                dbConnect = new DBConnect();
+                dbConnect = new DBContext();
                 //language=TSQL
                 String query = "UPDATE resources SET name=?,description=?,is_for_achievement=?,type=? WHERE id=?;";
                 PreparedStatement preparedStatement = dbConnect.getConnection().prepareStatement(query);
@@ -338,7 +339,7 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
                         break;
                 } //end of switch
                 logChange(-1, "resources", object.getID(), UPDATE);
-            } catch (ConnectionException | SQLException e) {
+            } catch (/*ConnectionException |*/ SQLException e) {
                 throw new ModelSyncException("WARNING! Could not update resource of ID: " + object.getID() + " !", e);
             }
         } else {
@@ -350,7 +351,7 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
     public void delete(Resource object) throws ModelSyncException, DatabaseOutOfSyncException {
         if (verifyIntegrity(object.getID())) {
             try {
-                dbConnect = new DBConnect();
+                dbConnect = new DBContext();
                 //language=TSQL
                 String query = "DELETE FROM resources WHERE id=?;";
                 PreparedStatement preparedStatement = dbConnect.getConnection().prepareStatement(query);
@@ -381,7 +382,7 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
                         logChange(-1, "multimedia_resources", x3.getInt(1), DELETE);
                         break;
                 }
-            } catch (ConnectionException | SQLException e) {
+            } catch (/*ConnectionException |*/ SQLException e) {
                 throw new ModelSyncException("WARNING! Could not update resource of ID: " + object.getID() + " !", e);
             }
         } else {
@@ -392,7 +393,7 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
     public List<Resource> getbyType(int type) throws ModelSyncException {
         List<Resource> resources = new ArrayList<>();
         try {
-            dbConnect = new DBConnect();
+            dbConnect = new DBContext();
             //language=TSQL
             String query = "SELECT * FROM [resources] WHERE type=" + type;
             ResultSet rs = dbConnect.getFromDataBase(query);
@@ -415,7 +416,7 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
         ArrayList<Integer> resIDs = new ArrayList<>();
         List<Resource> resources = new ArrayList<>();
         try {
-            dbConnect = new DBConnect();
+            dbConnect = new DBContext();
             //language=TSQL
             String qry = "SELECT * FROM sessions_resources WHERE session_id=" + sessionID + ";";
             ResultSet rs = dbConnect.getFromDataBase(qry);
@@ -448,7 +449,7 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
     public int assignToSession(Resource resource, Session session) throws ModelSyncException, DatabaseOutOfSyncException {
         int id;
         try {
-            dbConnect = new DBConnect();
+            dbConnect = new DBContext();
             PreparedStatement preparedStatement = dbConnect.getConnection().prepareStatement("INSERT INTO sessions_resources(session_id, resource_id) VALUES (?,?);", PreparedStatement.RETURN_GENERATED_KEYS);
             preparedStatement.setInt(1, session.getId());
             preparedStatement.setInt(1, resource.getID());
@@ -458,7 +459,7 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
                     id = generatedKeys.getInt(1);
                 } else throw new DatabaseOutOfSyncException();
             }
-        } catch (ConnectionException | SQLException e) {
+        } catch (/*ConnectionException |*/ SQLException e) {
             throw new ModelSyncException(e);
         }
         return id;

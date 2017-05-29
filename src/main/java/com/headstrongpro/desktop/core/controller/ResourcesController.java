@@ -85,9 +85,15 @@ public class ResourcesController implements Refreshable {
      */
     public List<Resource> filterByType(ResourceType type){
         if (type == null) throw new IllegalStateException("Type cannot be null");
-        return resources.parallelStream()
+        /*return resources.parallelStream()
                 .filter(e -> e.getType().equals(type))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList());*/
+        try {
+            return resourcesDAO.getbyType(type.get());
+        } catch (ModelSyncException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /***
