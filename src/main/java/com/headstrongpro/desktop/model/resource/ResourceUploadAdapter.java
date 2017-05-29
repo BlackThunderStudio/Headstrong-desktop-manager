@@ -1,6 +1,7 @@
 package com.headstrongpro.desktop.model.resource;
 
 import com.headstrongpro.desktop.core.connection.Configurable;
+import com.headstrongpro.desktop.core.connection.SFTPKotlin;
 import com.headstrongpro.desktop.core.connection.SFTPUtils;
 import com.headstrongpro.desktop.core.exception.ConnectionException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
@@ -21,7 +22,7 @@ public class ResourceUploadAdapter extends Configurable implements IResourceUplo
             resourceConnector = new DBResources();
         } else if(destination.equals(Destination.MEDIA_SERVER)){
             List<Object> ftpData = getConfig();
-            resourceConnector = new SFTPUtils(
+            resourceConnector = new SFTPKotlin(
                     (String) ftpData.get(0),
                     (String) ftpData.get(1),
                     (String) ftpData.get(2),
