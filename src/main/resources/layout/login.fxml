@@ -6,34 +6,29 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Text?>
-<GridPane fx:controller="com.headstrongpro.desktop.view.MainWindowView" xmlns:fx="http://javafx.com/fxml"
-          fx:id="login" alignment="center" hgap="10" vgap="10" stylesheets="/style/login.css">
+<GridPane fx:controller="com.headstrongpro.desktop.view.LoginView" xmlns:fx="http://javafx.com/fxml"
+          alignment="center" hgap="10" vgap="10" stylesheets="/style/login.css">
     <padding>
         <Insets top="25" right="25" bottom="10" left="25"/>
     </padding>
 
-    <ImageView GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.halignment="CENTER"
-               preserveRatio="true">
+    <ImageView GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.halignment="CENTER" preserveRatio="true">
         <Image url="/img/logo.png"/>
     </ImageView>
 
-    <Text text="Log into Headstrong"
-          GridPane.columnIndex="0" GridPane.rowIndex="1"
-          GridPane.columnSpan="2" GridPane.halignment="CENTER" styleClass="welcome"/>
+    <Text text="Log into Headstrong" GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.columnSpan="2"
+          GridPane.halignment="CENTER" styleClass="welcome"/>
 
-    <Label text="User Name:"
-           GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+    <Label text="User Name:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
 
-    <TextField
-            GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+    <TextField fx:id="userNameField" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
 
-    <Label text="Password:"
-           GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+    <Label text="Password:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
 
-    <PasswordField fx:id="passwordField"
-                   GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+    <PasswordField fx:id="passwordField" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+
     <HBox spacing="10" alignment="bottom_right"
           GridPane.columnIndex="1" GridPane.rowIndex="6">
-        <Button text="Sign In"/>
+        <Button text="Sign In" onAction="#handleLogin"/>
     </HBox>
 </GridPane>

@@ -13,7 +13,7 @@ import java.util.ResourceBundle;
 /**
  * Main Window View
  */
-public class MainWindowView implements Initializable {
+public class MainWindowView extends RootLayoutView implements Initializable {
 
     @FXML
     public SplitPane layout;

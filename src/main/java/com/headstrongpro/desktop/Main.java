@@ -1,8 +1,9 @@
 package com.headstrongpro.desktop;
 
+import com.headstrongpro.desktop.controller.UserController;
+import com.headstrongpro.desktop.view.RootLayoutView;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -23,7 +24,7 @@ import java.util.Optional;
  * @version 1.0
  */
 public class Main extends Application {
-    private Stage window;
+    private Stage primaryStage;
 
     public static void main(String[] args) {
         launch(args);
@@ -32,19 +33,39 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
 //        SplashScreen.viewSplashScreen(3000, SplashScreen.Style.FADE, SplashScreen.Style.FADE);
-        window = primaryStage;
-        Parent root = FXMLLoader.load(getClass().getResource("/layout/mainWindow.fxml"));
-        primaryStage.setTitle("Headstrong Company Manager");
-        // set minimum window size
-        primaryStage.setMinHeight(700);
-        primaryStage.setMinWidth(800);
+        this.primaryStage = primaryStage;
+        this.primaryStage.setTitle("Headstrong Company Manager");
 
-        primaryStage.setOnCloseRequest(e -> {
+        // Set minimum window size
+        this.primaryStage.setMinHeight(700);
+        this.primaryStage.setMinWidth(800);
+
+        this.primaryStage.setOnCloseRequest(e -> {
             e.consume();
             closeProgram();
         });
-        primaryStage.setScene(new Scene(root));
-        primaryStage.show();
+
+        initLayout();
+    }
+
+    public void initLayout() {
+        try {
+            // Load root layout from fxml file based on whether user is logged in
+            FXMLLoader loader = new FXMLLoader();
+            String location = UserController.isLoggedIn() ? "/layout/mainWindow.fxml" : "/layout/login.fxml";
+            loader.setLocation(getClass().getResource(location));
+
+            // Show the scene containing the root layout.
+            Scene scene = new Scene(loader.load());
+            primaryStage.setScene(scene);
+
+            RootLayoutView rootLayoutView = loader.getController();
+            rootLayoutView.setMainApp(this);
+
+            primaryStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void closeProgram() {
@@ -56,7 +77,7 @@ public class Main extends Application {
         Optional<ButtonType> closeResponse = a.showAndWait();
         closeResponse.ifPresent(buttonType -> {
             if (ButtonType.OK.equals(buttonType)) {
-                window.close();
+                primaryStage.close();
             }
         });
     }

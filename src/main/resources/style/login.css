@@ -17,3 +17,13 @@
     -fx-fill: rgba(255, 255, 255, .5);
     -fx-font-size: 18px;
 }
+
+/*noinspection CssInvalidPseudoSelector*/
+.text-field:error {
+    -fx-text-box-border: #F64744;
+    -fx-focus-color: #F64744;
+}
+
+.error-text {
+    -fx-fill: #F64744;
+}

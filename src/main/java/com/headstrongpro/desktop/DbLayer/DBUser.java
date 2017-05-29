@@ -1,14 +1,14 @@
 package com.headstrongpro.desktop.DbLayer;
 
+import com.headstrongpro.desktop.DbLayer.util.ActionType;
+import com.headstrongpro.desktop.DbLayer.util.IDataAccessObject;
+import com.headstrongpro.desktop.DbLayer.util.Synchronizable;
 import com.headstrongpro.desktop.core.connection.DBConnect;
 import com.headstrongpro.desktop.core.exception.ConnectionException;
 import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.model.entity.Person;
 import com.headstrongpro.desktop.model.entity.User;
-import com.headstrongpro.desktop.DbLayer.util.ActionType;
-import com.headstrongpro.desktop.DbLayer.util.IDataAccessObject;
-import com.headstrongpro.desktop.DbLayer.util.Synchronizable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -67,17 +67,17 @@ public class DBUser extends Synchronizable implements IDataAccessObject<Person> 
     public Person getByCredentials(String username, String password) throws ModelSyncException {
         Person person;
         String selectQuery = "SELECT * FROM [employees_headstrong]" +
-                "WHERE login = " + username;
-        String selectQueryWithPassword = selectQuery + " AND pass = " + password + ";";
+                " WHERE login = '" + username + "'";
+        String selectQueryWithPassword = selectQuery + " AND pass = '" + password + "';";
         selectQuery += ";";
         try {
             dbConnect = new DBConnect();
-            ResultSet resultSet = dbConnect.getFromDataBase(selectQueryWithPassword);
-            if (resultSet.next()) {
-                person = create(resultSet);
+            ResultSet resultSetWithPassword = dbConnect.getFromDataBase(selectQueryWithPassword);
+            if (resultSetWithPassword.next()) {
+                person = create(resultSetWithPassword);
             } else {
-                dbConnect.getFromDataBase(selectQuery);
-                throw new ModelSyncException(
+                ResultSet resultSet = dbConnect.getFromDataBase(selectQuery);
+                throw new IllegalArgumentException(
                         resultSet.next() ? "The password entered is incorrect." : "The user does not exist."
                 );
             }
