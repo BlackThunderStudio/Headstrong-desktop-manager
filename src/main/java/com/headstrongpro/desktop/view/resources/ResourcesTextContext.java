@@ -108,6 +108,7 @@ public class ResourcesTextContext extends ContextView<TextResource> implements I
     @Override
     public void setFields() {
         textResourcesNameTextfield.setText(contextItem.getName());
+        textResourcesEditor.setHtmlText(contextItem.getContent());
     }
 
     @Override
@@ -122,7 +123,8 @@ public class ResourcesTextContext extends ContextView<TextResource> implements I
     }
 
     private void sendToPreview() {
-        textResourcesPreviewWeb.getEngine().load(textResourcesEditor.getHtmlText()); //TODO: for some reason doesn't work
+        String html = textResourcesEditor.getHtmlText();
+        textResourcesPreviewWeb.getEngine().load(html); //TODO: for some reason doesn't work
     }
 
     @FXML
