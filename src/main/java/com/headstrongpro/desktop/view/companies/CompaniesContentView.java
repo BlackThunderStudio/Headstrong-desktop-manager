@@ -10,7 +10,6 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
@@ -30,9 +29,11 @@ public class CompaniesContentView extends ContentView implements Initializable {
 
     // Content view controls
     @FXML
-    public TextField searchCompaniesTextfield;
+    public TextField searchField;
+
     @FXML
-    public TableView<Company> companiesTable;
+    public TableView<Company> mainTable;
+
     @FXML
     public TableColumn<Company, String> companyNameCol;
     @FXML
@@ -48,30 +49,13 @@ public class CompaniesContentView extends ContentView implements Initializable {
 
     private CompaniesController companiesController;
     private ObservableList<Company> companies;
-    private Company selected;
-
-    @SuppressWarnings("unchecked")
-    private void loadTable(ObservableList<Company> companies) {
-        companiesTable.getColumns().removeAll(companyNameCol, companyCvrCol, companyStreetCol, companyPostalCol, companyCityCol, companyCountryCol);
-        companiesTable.setItems(companies);
-        companyNameCol.setMinWidth(150);
-        companyCvrCol.setMinWidth(65);
-        companyStreetCol.setMinWidth(120);
-        companyPostalCol.setMinWidth(50);
-        companyCityCol.setMinWidth(20);
-        companyCountryCol.setMinWidth(65);
-        companyNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
-        companyCvrCol.setCellValueFactory(new PropertyValueFactory<>("cvr"));
-        companyStreetCol.setCellValueFactory(new PropertyValueFactory<>("street"));
-        companyPostalCol.setCellValueFactory(new PropertyValueFactory<>("postal"));
-        companyCityCol.setCellValueFactory(new PropertyValueFactory<>("city"));
-        companyCountryCol.setCellValueFactory(new PropertyValueFactory<>("country"));
-        companiesTable.getColumns().addAll(companyNameCol, companyCvrCol, companyStreetCol, companyPostalCol, companyCityCol, companyCountryCol);
-    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         companies = FXCollections.observableArrayList();
+
+        setColumns();
+
         Task<Void> init = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
@@ -91,7 +75,7 @@ public class CompaniesContentView extends ContentView implements Initializable {
             }
         }));
 
-        companiesTable.getSelectionModel().selectedItemProperty().addListener((o, e, c) -> {
+        mainTable.getSelectionModel().selectedItemProperty().addListener((o, e, c) -> {
             if (c != null) {
                 footer.show(c.getName() + " selected.", Footer.NotificationType.INFORMATION, Footer.FADE_SUPER_QUICK);
                 mainWindowView.getContextView().changeContextItem(c);
@@ -101,6 +85,19 @@ public class CompaniesContentView extends ContentView implements Initializable {
         Thread th = new Thread(init);
         th.setDaemon(true);
         th.start();
+    }
+
+    private void loadTable(ObservableList<Company> companies) {
+        mainTable.setItems(companies);
+    }
+
+    private void setColumns() {
+        companyNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+        companyCvrCol.setCellValueFactory(new PropertyValueFactory<>("cvr"));
+        companyStreetCol.setCellValueFactory(new PropertyValueFactory<>("street"));
+        companyPostalCol.setCellValueFactory(new PropertyValueFactory<>("postal"));
+        companyCityCol.setCellValueFactory(new PropertyValueFactory<>("city"));
+        companyCountryCol.setCellValueFactory(new PropertyValueFactory<>("country"));
     }
 
     private void loadCompanies() {
@@ -113,9 +110,9 @@ public class CompaniesContentView extends ContentView implements Initializable {
         }
     }
 
-    public void companySearch() {
+    public void handleSearch() {
         try {
-            loadTable(companiesController.search(searchCompaniesTextfield.getText()));
+            loadTable(companiesController.search(searchField.getText()));
         } catch (ModelSyncException e2) {
             e2.printStackTrace();
             //TODO: handle the error
@@ -123,8 +120,8 @@ public class CompaniesContentView extends ContentView implements Initializable {
     }
 
     @FXML
-    public void btnRefresh_onClick(ActionEvent actionEvent) {
-        searchCompaniesTextfield.clear();
+    public void refreshButtonOnClick() {
+        searchField.clear();
         Task<Void> sync = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
@@ -149,7 +146,7 @@ public class CompaniesContentView extends ContentView implements Initializable {
     }
 
     @FXML
-    public void newCompanyButton_onClick() {
+    public void addNewButtonOnClick() {
         mainWindowView.changeContext(ContentSource.COMPANIES_NEW);
     }
 }

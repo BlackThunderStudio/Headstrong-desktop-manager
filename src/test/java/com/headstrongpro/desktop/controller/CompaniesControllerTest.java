@@ -72,7 +72,7 @@ public class CompaniesControllerTest {
 
     @Test
     public void getSubcriptionByCompanyId() throws Exception {
-        assertEquals(1, companiesController.getSubcriptionByCompanyId(1).size());
+        assertEquals(1, companiesController.getSubscriptionByCompanyId(1).size());
     }
 
     @Test
