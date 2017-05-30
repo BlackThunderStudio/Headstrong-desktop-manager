@@ -16,11 +16,11 @@
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <DashboardTile fx:id="t3" layoutX="170.0" layoutY="15.0" GridPane.columnIndex="2" />
-      <DashboardTile fx:id="t2" layoutX="15.0" layoutY="15.0" GridPane.columnIndex="1" />
+      <DashboardTile fx:id="t3" GridPane.halignment="CENTER" GridPane.valignment="CENTER" layoutX="170.0" layoutY="15.0" GridPane.columnIndex="2" />
+      <DashboardTile fx:id="t2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" layoutX="15.0" layoutY="15.0" GridPane.columnIndex="1" />
       <DashboardTile fx:id="t1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-      <DashboardTile fx:id="t4" layoutX="330.0" layoutY="15.0" GridPane.rowIndex="1" />
-      <DashboardTile fx:id="t5" layoutX="10.0" layoutY="175.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-      <DashboardTile fx:id="t6" layoutX="170.0" layoutY="175.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+      <DashboardTile fx:id="t4" GridPane.halignment="CENTER" GridPane.valignment="CENTER" layoutX="330.0" layoutY="15.0" GridPane.rowIndex="1" />
+      <DashboardTile fx:id="t5" GridPane.halignment="CENTER" GridPane.valignment="CENTER" layoutX="10.0" layoutY="175.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <DashboardTile fx:id="t6" GridPane.halignment="CENTER" GridPane.valignment="CENTER" layoutX="170.0" layoutY="175.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
    </children>
 </GridPane>
