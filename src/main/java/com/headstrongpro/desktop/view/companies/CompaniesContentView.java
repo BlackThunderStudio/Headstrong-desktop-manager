@@ -33,8 +33,6 @@ public class CompaniesContentView extends ContentView implements Initializable {
     @FXML
     public TableView<Company> companiesTable;
     @FXML
-    public TableColumn<Company, Integer> companyIdCol;
-    @FXML
     public TableColumn<Company, String> companyNameCol;
     @FXML
     public TableColumn<Company, String> companyCvrCol;
@@ -49,26 +47,25 @@ public class CompaniesContentView extends ContentView implements Initializable {
 
     private CompaniesController companiesController;
     private ObservableList<Company> companies;
+    private Company selected;
 
     @SuppressWarnings("unchecked")
     private void loadTable(ObservableList<Company> companies) {
-        companiesTable.getColumns().removeAll(companyIdCol, companyNameCol, companyCvrCol, companyStreetCol, companyPostalCol, companyCityCol, companyCountryCol);
+        companiesTable.getColumns().removeAll(companyNameCol, companyCvrCol, companyStreetCol, companyPostalCol, companyCityCol, companyCountryCol);
         companiesTable.setItems(companies);
-        companyIdCol.setMinWidth(20);
         companyNameCol.setMinWidth(150);
         companyCvrCol.setMinWidth(65);
         companyStreetCol.setMinWidth(120);
         companyPostalCol.setMinWidth(50);
         companyCityCol.setMinWidth(20);
         companyCountryCol.setMinWidth(65);
-        companyIdCol.setCellValueFactory(new PropertyValueFactory<>("id"));
         companyNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         companyCvrCol.setCellValueFactory(new PropertyValueFactory<>("cvr"));
         companyStreetCol.setCellValueFactory(new PropertyValueFactory<>("street"));
         companyPostalCol.setCellValueFactory(new PropertyValueFactory<>("postal"));
         companyCityCol.setCellValueFactory(new PropertyValueFactory<>("city"));
         companyCountryCol.setCellValueFactory(new PropertyValueFactory<>("country"));
-        companiesTable.getColumns().addAll(companyIdCol, companyNameCol, companyCvrCol, companyStreetCol, companyPostalCol, companyCityCol, companyCountryCol);
+        companiesTable.getColumns().addAll(companyNameCol, companyCvrCol, companyStreetCol, companyPostalCol, companyCityCol, companyCountryCol);
     }
 
     @Override
@@ -107,7 +104,7 @@ public class CompaniesContentView extends ContentView implements Initializable {
 
     private void loadCompanies() {
         try {
-            companies = companiesController.getCompanies();
+            companies = FXCollections.observableArrayList(companiesController.getCompanies());
         } catch (ModelSyncException e) {
             e.printStackTrace();
             //TODO: handle error

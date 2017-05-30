@@ -35,7 +35,6 @@
       </Pane>
       <TableView fx:id="companiesTable" maxHeight="4000.0" maxWidth="4000.0" minHeight="200.0" minWidth="460.0" prefHeight="520.0" prefWidth="760.0" GridPane.rowIndex="2">
         <columns>
-          <TableColumn fx:id="companyIdCol" prefWidth="75.0" text="Id" />
             <TableColumn fx:id="companyNameCol" prefWidth="75.0" text="Name" />
             <TableColumn fx:id="companyCvrCol" prefWidth="75.0" text="CVR" />
             <TableColumn fx:id="companyStreetCol" prefWidth="75.0" text="Street" />
