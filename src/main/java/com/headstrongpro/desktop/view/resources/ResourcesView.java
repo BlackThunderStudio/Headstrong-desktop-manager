@@ -8,6 +8,7 @@ import com.headstrongpro.desktop.model.resource.Resource;
 import com.headstrongpro.desktop.model.resource.ResourceType;
 import com.headstrongpro.desktop.view.ContentSource;
 import com.headstrongpro.desktop.view.ContentView;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -62,7 +63,7 @@ public class ResourcesView extends ContentView implements Initializable {
         Task<Void> init = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
-                footer.show("Initializing window.", Footer.NotificationType.LOADING);
+                Platform.runLater(() -> footer.show("Initializing window.", Footer.NotificationType.LOADING));
                 controller = new ResourcesController();
                 loadResources();
                 return null;
@@ -136,7 +137,7 @@ public class ResourcesView extends ContentView implements Initializable {
         Task<Void> refresh = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
-                footer.show("Refreshing resources...", Footer.NotificationType.LOADING);
+                Platform.runLater(() -> footer.show("Refreshing resources...", Footer.NotificationType.LOADING));
                 loadResources();
                 return null;
             }
@@ -211,6 +212,7 @@ public class ResourcesView extends ContentView implements Initializable {
 
     @FXML
     public void refreshOnClick(ActionEvent actionEvent) {
+        searchResourcesTextfield.clear();
         refresh();
     }
 }

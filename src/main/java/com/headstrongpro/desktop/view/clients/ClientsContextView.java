@@ -5,6 +5,7 @@ import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.core.fxControls.Footer;
 import com.headstrongpro.desktop.model.entity.Client;
+import com.headstrongpro.desktop.view.ContentSource;
 import com.headstrongpro.desktop.view.ContextView;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -94,6 +95,6 @@ public class ClientsContextView extends ContextView<Client> implements Initializ
 
     @FXML
     public void clientDeleteButtonOnClick(){
-
+        mainWindowView.changeContent(ContentSource.CLIENTS);
     }
 }

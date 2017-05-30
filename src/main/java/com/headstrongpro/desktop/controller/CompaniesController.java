@@ -220,6 +220,7 @@ public class CompaniesController implements Refreshable {
     }
     @Override
     public void refresh() throws ModelSyncException{
+        companies.clear();
         companies.addAll(companyDAO.getAll());
     }
 }

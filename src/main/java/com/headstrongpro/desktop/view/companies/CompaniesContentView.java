@@ -6,6 +6,7 @@ import com.headstrongpro.desktop.core.fxControls.Footer;
 import com.headstrongpro.desktop.model.entity.Company;
 import com.headstrongpro.desktop.view.ContentSource;
 import com.headstrongpro.desktop.view.ContentView;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -74,7 +75,7 @@ public class CompaniesContentView extends ContentView implements Initializable {
         Task<Void> init = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
-                footer.show("Loading companies...", Footer.NotificationType.LOADING);
+                Platform.runLater(() -> footer.show("Loading companies...", Footer.NotificationType.LOADING));
                 companiesController = new CompaniesController();
                 loadCompanies();
                 return null;
@@ -104,6 +105,7 @@ public class CompaniesContentView extends ContentView implements Initializable {
 
     private void loadCompanies() {
         try {
+            companies = FXCollections.emptyObservableList();
             companies = FXCollections.observableArrayList(companiesController.getCompanies());
         } catch (ModelSyncException e) {
             e.printStackTrace();
@@ -122,18 +124,19 @@ public class CompaniesContentView extends ContentView implements Initializable {
 
     @FXML
     public void btnRefresh_onClick(ActionEvent actionEvent) {
+        searchCompaniesTextfield.clear();
         Task<Void> sync = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
-                footer.show("Synchronising data...", Footer.NotificationType.LOADING);
+                Platform.runLater(() -> footer.show("Synchronising data...", Footer.NotificationType.LOADING));
                 loadCompanies();
-                loadTable(companies);
                 return null;
             }
         };
 
         sync.stateProperty().addListener((q, w, e) -> {
             if (e.equals(SUCCEEDED)) {
+                loadTable(companies);
                 footer.show("Companies reloaded successfully!", Footer.NotificationType.COMPLETED, Footer.FADE_NORMAL);
             } else if (e.equals(FAILED) || e.equals(CANCELLED)) {
                 footer.show("Error while loading companies!", Footer.NotificationType.ERROR, Footer.FADE_LONG);

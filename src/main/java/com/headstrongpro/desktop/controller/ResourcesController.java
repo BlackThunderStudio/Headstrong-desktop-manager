@@ -45,6 +45,7 @@ public class ResourcesController implements Refreshable {
     @Concurrent
     @Override
     public void refresh() throws ModelSyncException {
+        resources.clear();
         resources.addAll(resourcesDAO.getAll());
     }
     

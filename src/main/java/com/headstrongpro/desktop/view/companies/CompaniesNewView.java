@@ -99,7 +99,6 @@ public class CompaniesNewView extends ContextView<Company> implements Initializa
     @FXML
     public void cancelBtnOnClick(MouseEvent mouseEvent) {
         clearFields();
-        //TODO: go back to main context menu
         mainWindowView.changeContext(ContentSource.COMPANIES);
     }
 }

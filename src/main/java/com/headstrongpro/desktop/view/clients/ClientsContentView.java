@@ -5,6 +5,7 @@ import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.core.fxControls.Footer;
 import com.headstrongpro.desktop.model.entity.Person;
 import com.headstrongpro.desktop.view.ContentView;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -78,7 +79,7 @@ public class ClientsContentView extends ContentView implements Initializable {
         Task<Void> init = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
-                footer.show("Loading clients...", Footer.NotificationType.LOADING);
+                Platform.runLater(() -> footer.show("Loading clients...", Footer.NotificationType.LOADING));
                 clientsController = new ClientsController();
                 loadClients();
                 return null;
@@ -124,15 +125,15 @@ public class ClientsContentView extends ContentView implements Initializable {
         Task<Void> sync = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
-                footer.show("Synchronising data...", Footer.NotificationType.LOADING);
+                Platform.runLater(() -> footer.show("Synchronising data...", Footer.NotificationType.LOADING));
                 loadClients();
-                loadTable(clients);
                 return null;
             }
         };
 
         sync.stateProperty().addListener((q, w, e) -> {
             if (e.equals(SUCCEEDED)) {
+                loadTable(clients);
                 footer.show("Clients reloaded successfully!", Footer.NotificationType.COMPLETED, Footer.FADE_NORMAL);
             } else if (e.equals(FAILED) || e.equals(CANCELLED)) {
                 footer.show("Error while loading clients!", Footer.NotificationType.ERROR, Footer.FADE_LONG);
