@@ -3,8 +3,8 @@ package com.headstrongpro.desktop.core.fxControls;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
 public class DashboardTile extends AnchorPane {
 
     @FXML
-    public ImageView background;
+    public GridPane background;
 
     @FXML
     public Label title;
