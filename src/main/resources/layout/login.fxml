@@ -29,6 +29,6 @@
 
     <HBox spacing="10" alignment="bottom_right"
           GridPane.columnIndex="1" GridPane.rowIndex="6">
-        <Button text="Sign In" onAction="#handleLogin"/>
+        <Button text="Sign In" onAction="#handleLogin" defaultButton="true"/>
     </HBox>
 </GridPane>
