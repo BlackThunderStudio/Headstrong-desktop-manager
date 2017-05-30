@@ -62,11 +62,30 @@ public class ResourcesController implements Refreshable {
      */
     public List<Resource> searchByPhrase(String input){
         if (input == null) throw new IllegalStateException("input query cannot be of null");
-        return resources.stream()
-                .filter(e -> String.valueOf(e.getID()).contains(input) ||
-                e.getName().toLowerCase().contains(input.toLowerCase()) ||
-                e.getDescription().toLowerCase().contains(input.toLowerCase()))
-                .collect(Collectors.toList());
+                return resources.stream()
+                        .filter(e -> String.valueOf(e.getID()).contains(input) ||
+                                e.getName().toLowerCase().contains(input.toLowerCase()) ||
+                                e.getDescription().toLowerCase().contains(input.toLowerCase()))
+                        .collect(Collectors.toList());
+    }
+
+    /**
+     * Filters the search results by resource type
+     * @param input searched expression
+     * @param type resource type
+     * @return A list of objects of specified type containing the input
+     */
+    public List<Resource> filterSearch(String input, String type){
+        switch(type){
+            case "Image":
+                return searchByPhrase(input).stream().filter(e -> e.getType().equals(ResourceType.IMAGE)).collect(Collectors.toList());
+            case "Audio":
+                return searchByPhrase(input).stream().filter(e -> e.getType().equals(ResourceType.AUDIO)).collect(Collectors.toList());
+            case "Text":
+                return searchByPhrase(input).stream().filter(e -> e.getType().equals(ResourceType.TEXT)).collect(Collectors.toList());
+            default:
+                return searchByPhrase(input);
+        }
     }
 
     /***

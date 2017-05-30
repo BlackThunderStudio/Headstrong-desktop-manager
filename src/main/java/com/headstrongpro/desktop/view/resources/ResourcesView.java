@@ -130,6 +130,8 @@ public class ResourcesView extends ContentView implements Initializable {
         }
     }
 
+
+
     private void refresh(){
         Task<Void> refresh = new Task<Void>() {
             @Override
@@ -172,11 +174,10 @@ public class ResourcesView extends ContentView implements Initializable {
 
     @FXML
     public void searchResourcesTextfield_onKeyReleased(KeyEvent keyEvent) {
-
         initTable(
                 FXCollections.observableArrayList(
-                        controller.searchByPhrase(
-                                searchResourcesTextfield.getText())));
+                        controller.filterSearch(
+                                searchResourcesTextfield.getText(), resourcesComboBox.getValue())));
     }
 
     @FXML
