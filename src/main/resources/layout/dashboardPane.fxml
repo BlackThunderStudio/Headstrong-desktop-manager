@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import eu.hansolo.tilesfx.Tile?>
+<?import com.headstrongpro.desktop.core.fxControls.DashboardTile?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.Pane?>
@@ -19,8 +20,65 @@
    <children>
       <Pane prefHeight="200.0" prefWidth="200.0" styleClass="contentPane" GridPane.rowIndex="1">
          <children>
-            <Text layoutX="452.0" layoutY="402.0" strokeType="OUTSIDE" strokeWidth="0.0" text="TODO: Figure out TilesFX" />
-            <Tile fx:id="tileTest" animated="true" borderWidth="0.0" dateVisible="true" discreteHours="true" layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="200.0" />
+            <GridPane alignment="CENTER" maxHeight="700.0" maxWidth="1100" prefWidth="1100">
+              <columnConstraints>
+                  <ColumnConstraints hgrow="ALWAYS" maxWidth="6000.0" minWidth="20.0" prefWidth="20.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="170.0" minWidth="170.0" prefWidth="170.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="170.0" minWidth="170.0" prefWidth="170.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="170.0" minWidth="170.0" prefWidth="170.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="170.0" minWidth="170.0" prefWidth="170.0" />
+                  <ColumnConstraints hgrow="ALWAYS" maxWidth="60000.0" minWidth="20.0" prefWidth="20.0" />
+              </columnConstraints>
+              <rowConstraints>
+                  <RowConstraints maxHeight="60000.0" minHeight="20.0" prefHeight="20.0" vgrow="ALWAYS" />
+                <RowConstraints maxHeight="170.0" minHeight="170.0" prefHeight="170.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="170.0" minHeight="170.0" prefHeight="170.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="6000.0" minHeight="20.0" prefHeight="20.0" vgrow="ALWAYS" />
+
+              </rowConstraints>
+               <children>
+                   <DashboardTile style="-fx-background-color: gray;" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                     <GridPane.margin>
+                        <Insets left="10.0" top="10.0" />
+                     </GridPane.margin>
+                  </DashboardTile>
+                  <DashboardTile layoutX="10.0" layoutY="30.0" style="-fx-background-color: gray;" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                     <GridPane.margin>
+                        <Insets left="10.0" top="10.0" />
+                     </GridPane.margin>
+                  </DashboardTile>
+                  <DashboardTile layoutX="200.0" layoutY="30.0" style="-fx-background-color: gray;" GridPane.columnIndex="3" GridPane.rowIndex="2">
+                     <GridPane.margin>
+                        <Insets left="10.0" top="10.0" />
+                     </GridPane.margin>
+                  </DashboardTile>
+                  <DashboardTile layoutX="390.0" layoutY="30.0" style="-fx-background-color: gray;" GridPane.columnIndex="4" GridPane.rowIndex="2">
+                     <GridPane.margin>
+                        <Insets left="10.0" top="10.0" />
+                     </GridPane.margin>
+                  </DashboardTile>
+                  <DashboardTile layoutX="200.0" layoutY="30.0" style="-fx-background-color: gray;" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets left="10.0" top="10.0" />
+                     </GridPane.margin>
+                  </DashboardTile>
+                  <DashboardTile layoutX="10.0" layoutY="220.0" style="-fx-background-color: gray;" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets left="10.0" top="10.0" />
+                     </GridPane.margin>
+                  </DashboardTile>
+                  <DashboardTile layoutX="200.0" layoutY="220.0" style="-fx-background-color: gray;" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets left="10.0" top="10.0" />
+                     </GridPane.margin>
+                  </DashboardTile>
+                  <DashboardTile layoutX="390.0" layoutY="220.0" style="-fx-background-color: gray;" GridPane.columnIndex="4" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets left="10.0" top="10.0" />
+                     </GridPane.margin>
+                  </DashboardTile>
+               </children>
+            </GridPane>
          </children></Pane>
       <Pane prefHeight="200.0" prefWidth="200.0" styleClass="headerPane">
          <children>
