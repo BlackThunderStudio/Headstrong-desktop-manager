@@ -14,7 +14,7 @@ import java.util.ResourceBundle;
  * <p>
  * Created by rajmu on 17.05.26.
  */
-public class AboutView implements Initializable {
+public class AboutView extends ContentView implements Initializable {
 
     @FXML
     public WebView webView;
