@@ -80,9 +80,9 @@
                </children>
             </GridPane>
          </children></Pane>
-      <Pane prefHeight="200.0" prefWidth="200.0" styleClass="headerPane">
+      <Pane prefHeight="200.0" prefWidth="200.0">
          <children>
-            <Text layoutX="14.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Dashboard">
+            <Text layoutX="14.0" fx:id="headerText" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Dashboard">
                <font>
                   <Font size="36.0" />
                </font>
