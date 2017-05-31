@@ -19,7 +19,7 @@ public enum ContentSource {
     COMPANIES_NEW("New company", "/layout/companies/companiesContentPane.fxml", "/layout/companies/companiesNewPane.fxml"),
 
     CLIENTS("Clients", "/layout/clients/clientsContentPane.fxml", "/layout/clients/clientsContextPane.fxml"),
-    SUBSCRIPTIONS("Subscriptions", "/layout/subscriptions/subscriptionsContentPane.fxml", "layout/subscriptions/subscriptionsContentPane.fxml");
+    SUBSCRIPTIONS("Subscriptions", "/layout/subscriptions/subscriptionsContentPane.fxml", "/layout/subscriptions/subscriptionsContextPane.fxml");
     private String name, contentView, contextView;
 
     ContentSource(String name, String contentView, String contextView) {

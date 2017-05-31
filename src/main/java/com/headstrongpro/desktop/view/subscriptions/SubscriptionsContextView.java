@@ -1,5 +1,7 @@
 package com.headstrongpro.desktop.view.subscriptions;
 
+import com.headstrongpro.desktop.model.Subscription;
+import com.headstrongpro.desktop.view.ContextView;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -10,7 +12,7 @@ import java.util.ResourceBundle;
 /**
  * Created by Ondřej Soukup on 28.05.2017.
  */
-public class SubscriptionsContextView implements Initializable {
+public class SubscriptionsContextView extends ContextView<Subscription> implements Initializable {
 
     // subscriptionsContextPane.fxml
     @FXML
@@ -62,6 +64,16 @@ public class SubscriptionsContextView implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+    }
+
+    @Override
+    public void clearFields(){
+
+    }
+
+    @Override
+    public void setFields(){
 
     }
 }

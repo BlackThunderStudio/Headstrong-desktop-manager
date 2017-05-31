@@ -1,5 +1,6 @@
 package com.headstrongpro.desktop.view.subscriptions;
 
+import com.headstrongpro.desktop.view.ContentView;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -13,7 +14,7 @@ import java.util.ResourceBundle;
 /**
  * Created by Ondřej Soukup on 23.05.2017.
  */
-public class SubscriptionsContentView implements Initializable {
+public class SubscriptionsContentView extends ContentView implements Initializable {
 
     @FXML
     public Text subscriptionsHeader;

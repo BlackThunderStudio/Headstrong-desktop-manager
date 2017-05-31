@@ -58,8 +58,7 @@ public class NavigationView implements Initializable {
     public void clientsOnClick(ActionEvent actionEvent) { mainWindowView.changeContent(ContentSource.CLIENTS);}
 
     @FXML
-    public void subsOnClick(ActionEvent actionEvent) {
-    }
+    public void subsOnClick(ActionEvent actionEvent) { mainWindowView.changeContent(ContentSource.SUBSCRIPTIONS); }
 
     @FXML
     public void resourcesOnClick(ActionEvent actionEvent) {
