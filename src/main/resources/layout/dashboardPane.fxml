@@ -9,7 +9,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<GridPane maxHeight="700" maxWidth="1100" minHeight="700" minWidth="1100" prefHeight="700.0" prefWidth="1100.0" stylesheets="/style/dashboardPane.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.headstrongpro.desktop.view.DashboardView">
+<GridPane maxHeight="700" maxWidth="1100" minHeight="700" minWidth="1100" prefHeight="700.0" prefWidth="1100.0" stylesheets="/style/dashboardPane.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.headstrongpro.desktop.view.dashboard.DashboardView">
     <columnConstraints>
         <ColumnConstraints hgrow="NEVER" maxWidth="300.0" minWidth="300.0" percentWidth="100.0" prefWidth="300.0" />
     </columnConstraints>
@@ -37,42 +37,42 @@
 
               </rowConstraints>
                <children>
-                   <DashboardTile style="-fx-background-color: gray;" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                   <DashboardTile fx:id="dashCoursesTile" style="-fx-background-color: gray;" GridPane.columnIndex="1" GridPane.rowIndex="2">
                      <GridPane.margin>
                         <Insets left="10.0" top="10.0" />
                      </GridPane.margin>
                   </DashboardTile>
-                  <DashboardTile layoutX="10.0" layoutY="30.0" style="-fx-background-color: gray;" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                  <DashboardTile fx:id="dashResourcesTile" layoutX="10.0" layoutY="30.0" style="-fx-background-color: gray;" GridPane.columnIndex="2" GridPane.rowIndex="2">
                      <GridPane.margin>
                         <Insets left="10.0" top="10.0" />
                      </GridPane.margin>
                   </DashboardTile>
-                  <DashboardTile layoutX="200.0" layoutY="30.0" style="-fx-background-color: gray;" GridPane.columnIndex="3" GridPane.rowIndex="2">
+                  <DashboardTile fx:id="dashEmployeesTile" layoutX="200.0" layoutY="30.0" style="-fx-background-color: gray;" GridPane.columnIndex="3" GridPane.rowIndex="2">
                      <GridPane.margin>
                         <Insets left="10.0" top="10.0" />
                      </GridPane.margin>
                   </DashboardTile>
-                  <DashboardTile layoutX="390.0" layoutY="30.0" style="-fx-background-color: gray;" GridPane.columnIndex="4" GridPane.rowIndex="2">
+                  <DashboardTile fx:id="dashSettingsTile" layoutX="390.0" layoutY="30.0" style="-fx-background-color: gray;" GridPane.columnIndex="4" GridPane.rowIndex="2">
                      <GridPane.margin>
                         <Insets left="10.0" top="10.0" />
                      </GridPane.margin>
                   </DashboardTile>
-                  <DashboardTile layoutX="200.0" layoutY="30.0" style="-fx-background-color: gray;" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <DashboardTile fx:id="dashCompaniesTile" layoutX="200.0" layoutY="30.0" style="-fx-background-color: gray;" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <GridPane.margin>
                         <Insets left="10.0" top="10.0" />
                      </GridPane.margin>
                   </DashboardTile>
-                  <DashboardTile layoutX="10.0" layoutY="220.0" style="-fx-background-color: gray;" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                  <DashboardTile fx:id="dashClientsTile" layoutX="10.0" layoutY="220.0" style="-fx-background-color: gray;" GridPane.columnIndex="2" GridPane.rowIndex="1">
                      <GridPane.margin>
                         <Insets left="10.0" top="10.0" />
                      </GridPane.margin>
                   </DashboardTile>
-                  <DashboardTile layoutX="200.0" layoutY="220.0" style="-fx-background-color: gray;" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                  <DashboardTile fx:id="dashSubscriptionsTile" layoutX="200.0" layoutY="220.0" style="-fx-background-color: gray;" GridPane.columnIndex="3" GridPane.rowIndex="1">
                      <GridPane.margin>
                         <Insets left="10.0" top="10.0" />
                      </GridPane.margin>
                   </DashboardTile>
-                  <DashboardTile layoutX="390.0" layoutY="220.0" style="-fx-background-color: gray;" GridPane.columnIndex="4" GridPane.rowIndex="1">
+                  <DashboardTile fx:id="dashPaymentsTile" layoutX="390.0" layoutY="220.0" style="-fx-background-color: gray;" GridPane.columnIndex="4" GridPane.rowIndex="1">
                      <GridPane.margin>
                         <Insets left="10.0" top="10.0" />
                      </GridPane.margin>
