@@ -27,6 +27,8 @@ public class DashboardView implements Initializable {
     public DashboardTile dashResourcesTile;
     @FXML
     public DashboardTile dashSettingsTile;
+    @FXML
+    public DashboardTile dashEmployeesTile;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
