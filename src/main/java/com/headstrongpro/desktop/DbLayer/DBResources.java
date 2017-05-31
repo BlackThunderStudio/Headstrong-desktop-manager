@@ -213,7 +213,7 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
                             preparedStatement1.executeUpdate();
                             try (ResultSet generatedKeys1 = preparedStatement1.getGeneratedKeys()) {
                                 if (generatedKeys1.next()) {
-                                    logChange(-1, "text_resources", generatedKeys1.getInt(1), CREATE);
+                                    logChange( "text_resources", generatedKeys1.getInt(1), CREATE);
                                 } else
                                     throw new ModelSyncException("Creating record in child table failed! No child ID received!");
                             }
@@ -227,7 +227,7 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
                             preparedStatement2.executeUpdate();
                             try (ResultSet generatedKeys2 = preparedStatement2.getGeneratedKeys()) {
                                 if (generatedKeys2.next()) {
-                                    logChange(-1, "image_resources", generatedKeys2.getInt(1), CREATE);
+                                    logChange( "image_resources", generatedKeys2.getInt(1), CREATE);
                                 } else
                                     throw new ModelSyncException("Creating record in child table failed! No child ID received!");
                             }
@@ -242,7 +242,7 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
                             preparedStatement3.executeUpdate();
                             try (ResultSet generatedKeys3 = preparedStatement3.getGeneratedKeys()) {
                                 if (generatedKeys3.next()) {
-                                    logChange(-1, "multimedia_resources", generatedKeys3.getInt(1), CREATE);
+                                    logChange( "multimedia_resources", generatedKeys3.getInt(1), CREATE);
                                 } else
                                     throw new ModelSyncException("Creating record in child table failed! No child ID received!");
                             }
@@ -257,7 +257,7 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
                             preparedStatement4.executeUpdate();
                             try (ResultSet generatedKeys4 = preparedStatement4.getGeneratedKeys()) {
                                 if (generatedKeys4.next()) {
-                                    logChange(-1, "multimedia_resources", generatedKeys4.getInt(1), CREATE);
+                                    logChange( "multimedia_resources", generatedKeys4.getInt(1), CREATE);
                                 } else
                                     throw new ModelSyncException("Creating record in child table failed! No child ID received!");
                             }
@@ -267,7 +267,7 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
                     throw new ModelSyncException("Creating resource failed. No ID retrieved!");
                 }
             }
-            logChange(-1, "resources", object.getID(), CREATE);
+            logChange( "resources", object.getID(), CREATE);
         } catch (/*ConnectionException |*/ SQLException e) {
             throw new ModelSyncException("Could not persist new resource!", e);
         }
@@ -300,7 +300,7 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
                         ResultSet x = dbConnect.getFromDataBase("SELECT id FROM text_resources WHERE parent_id=" + textResource.getID());
                         x.next();
                         dbConnect.uploadSafe(preparedStatement1);
-                        logChange(-1, "text_resources", x.getInt(1), UPDATE);
+                        logChange( "text_resources", x.getInt(1), UPDATE);
                         break;
                     case 2:
                         ImageResource imageResource = Resource.ofType(object);
@@ -311,7 +311,7 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
                         dbConnect.uploadSafe(preparedStatement2);
                         ResultSet x2 = dbConnect.getFromDataBase("SELECT id FROM image_resources WHERE parent_id=" + imageResource.getID());
                         x2.next();
-                        logChange(-1, "image_resources", x2.getInt(1), UPDATE);
+                        logChange( "image_resources", x2.getInt(1), UPDATE);
                         break;
                     case 3:
                         AudioResource audioResource = Resource.ofType(object);
@@ -323,7 +323,7 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
                         dbConnect.uploadSafe(preparedStatement3);
                         ResultSet x3 = dbConnect.getFromDataBase("SELECT id FROM multimedia_resources WHERE parent_id=" + audioResource.getID());
                         x3.next();
-                        logChange(-1, "multimedia_resources", x3.getInt(1), UPDATE);
+                        logChange( "multimedia_resources", x3.getInt(1), UPDATE);
                         break;
                     case 4:
                         VideoResource videoResource = Resource.ofType(object);
@@ -335,10 +335,10 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
                         dbConnect.uploadSafe(preparedStatement4);
                         ResultSet x4 = dbConnect.getFromDataBase("SELECT id FROM multimedia_resources WHERE parent_id=" + videoResource.getID());
                         x4.next();
-                        logChange(-1, "multimedia_resources", x4.getInt(1), UPDATE);
+                        logChange( "multimedia_resources", x4.getInt(1), UPDATE);
                         break;
                 } //end of switch
-                logChange(-1, "resources", object.getID(), UPDATE);
+                logChange( "resources", object.getID(), UPDATE);
             } catch (/*ConnectionException |*/ SQLException e) {
                 throw new ModelSyncException("WARNING! Could not update resource of ID: " + object.getID() + " !", e);
             }
@@ -357,7 +357,7 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
                 PreparedStatement preparedStatement = dbConnect.getConnection().prepareStatement(query);
                 preparedStatement.setInt(1, object.getID());
                 dbConnect.uploadSafe(preparedStatement);
-                logChange(-1, "resources", object.getID(), DELETE);
+                logChange( "resources", object.getID(), DELETE);
 
                 switch (object.getType().get()) {
                     case 1:
@@ -365,21 +365,21 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
                         query = "DELETE FROM text_resources WHERE parent_id=" + object.getID();
                         dbConnect.upload(query);
                         x.next();
-                        logChange(-1, "text_resources", x.getInt(1), DELETE);
+                        logChange( "text_resources", x.getInt(1), DELETE);
                         break;
                     case 2:
                         ResultSet x2 = dbConnect.getFromDataBase("SELECT id FROM image_resources WHERE parent_id=" + object.getID());
                         query = "DELETE FROM image_resources WHERE parent_id=" + object.getID();
                         dbConnect.upload(query);
                         x2.next();
-                        logChange(-1, "image_resources", x2.getInt(1), DELETE);
+                        logChange( "image_resources", x2.getInt(1), DELETE);
                         break;
                     case 3 | 4:
                         ResultSet x3 = dbConnect.getFromDataBase("SELECT id FROM multimedia_resources WHERE parent_id=" + object.getID());
                         query = "DELETE FROM multimedia_resources WHERE parent_id=" + object.getID();
                         dbConnect.upload(query);
                         x3.next();
-                        logChange(-1, "multimedia_resources", x3.getInt(1), DELETE);
+                        logChange( "multimedia_resources", x3.getInt(1), DELETE);
                         break;
                 }
             } catch (/*ConnectionException |*/ SQLException e) {

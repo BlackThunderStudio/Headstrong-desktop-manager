@@ -1,6 +1,7 @@
 package com.headstrongpro.desktop.DbLayer.util;
 
 import com.headstrongpro.desktop.DbLayer.DBLogActions;
+import com.headstrongpro.desktop.controller.UserController;
 import com.headstrongpro.desktop.core.connection.DBConnect;
 import com.headstrongpro.desktop.core.exception.ConnectionException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
@@ -24,12 +25,14 @@ public abstract class Synchronizable {
     }
 
     protected static Log logChange(String tableName, int itemID, ActionType type) throws ModelSyncException {
-        return new DBLogActions().persist(new Log(tableName, itemID, type.getType()));
+        return new DBLogActions().persist(
+                new Log(UserController.isLoggedIn() ? UserController.getUser().getId() : -1, tableName, itemID, type.getType()));
     }
 
     protected static void logChange(String tableName, ActionType type, int... itemIDs) throws ModelSyncException {
+        int empID = UserController.isLoggedIn() ? UserController.getUser().getId() : -1;
         for (int i : itemIDs) {
-            new DBLogActions().persist(new Log(tableName, i, type.getType()));
+            new DBLogActions().persist(new Log(empID, tableName, i, type.getType()));
         }
     }
 

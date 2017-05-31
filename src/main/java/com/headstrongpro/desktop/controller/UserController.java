@@ -25,7 +25,7 @@ public class UserController {
         return (loggedUser != null);
     }
 
-    static Person getUser() {
+    public static Person getUser() {
         return loggedUser;
     }
 
