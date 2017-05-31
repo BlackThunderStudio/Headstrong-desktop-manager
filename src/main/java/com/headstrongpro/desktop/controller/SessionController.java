@@ -15,6 +15,11 @@ public class SessionController {
     private DBSession dbSession;
     private DBResources dbResources;
 
+    public SessionController(){
+        dbSession = new DBSession();
+        dbResources = new DBResources();
+    }
+
     public List<Session> getAllSessions() throws ModelSyncException {
         List<Session> sessions = dbSession.getAll();
         sessions.forEach(e -> {
