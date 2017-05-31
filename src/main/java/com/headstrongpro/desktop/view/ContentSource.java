@@ -6,7 +6,7 @@ package com.headstrongpro.desktop.view;
 public enum ContentSource {
 
 
-    ABOUT("About", "/layout/about.fxml", "'layout/contextDefault.fxml"),
+    ABOUT("About", "/layout/about.fxml", "'/layout/contextDefault.fxml"),
 
     RESOURCES("Resources", "/layout/resources/resourcesContentPane.fxml", "/layout/resources/resourcesContextDefault.fxml"),
     RESOURCES_IMAGE("Image resources", "/layout/resources/resourcesContentPane.fxml", "/layout/resources/resourcesImagePane.fxml"),
@@ -19,7 +19,8 @@ public enum ContentSource {
     COMPANIES_NEW("New company", "/layout/companies/companiesContentPane.fxml", "/layout/companies/companiesNewPane.fxml"),
 
     CLIENTS("Clients", "/layout/clients/clientsContentPane.fxml", "/layout/clients/clientsContextPane.fxml"),
-    SUBSCRIPTIONS("Subscriptions", "/layout/subscriptions/subscriptionsContentPane.fxml", "/layout/subscriptions/subscriptionsContextPane.fxml");
+    SUBSCRIPTIONS("Subscriptions", "/layout/subscriptions/subscriptionsContentPane.fxml", "/layout/subscriptions/subscriptionsContextPane.fxml"),
+    DASHBOARD("Dashboard", "/layout/dashboardPane.fxml", "");
     private String name, contentView, contextView;
 
     ContentSource(String name, String contentView, String contextView) {

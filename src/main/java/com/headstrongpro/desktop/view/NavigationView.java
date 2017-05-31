@@ -47,6 +47,7 @@ public class NavigationView implements Initializable {
 
     @FXML
     public void dashboardOnClick(ActionEvent actionEvent) {
+        mainWindowView.changeContent(ContentSource.DASHBOARD);
     }
 
     @FXML
