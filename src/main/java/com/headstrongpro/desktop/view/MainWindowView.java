@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.Pane;
+import jfxtras.resources.JFXtrasFontRoboto;
 
 import java.io.IOException;
 import java.net.URL;
@@ -32,10 +33,13 @@ public class MainWindowView extends RootLayoutView implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         try {
             FXMLLoader navigationBarLoader = new FXMLLoader();
+            JFXtrasFontRoboto.loadAll();
             navigationBarLoader.setLocation(getClass().getResource("/layout/navigationPane.fxml"));
             navigationBar = navigationBarLoader.load();
+            navigationBar.setStyle("-fx-font-family: '" + JFXtrasFontRoboto.AvailableFonts.RobotoLight.getFamilyName() + "';");
             NavigationView navigationView = navigationBarLoader.getController();
             navigationView.setMainWindowView(this);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -77,6 +81,8 @@ public class MainWindowView extends RootLayoutView implements Initializable {
             contextView = contextBarLoader.getController();
             contextView.setMainWindowView(this);
 
+            contentBar.setStyle("-fx-font-family: '" + JFXtrasFontRoboto.AvailableFonts.RobotoLight.getFamilyName() + "';");
+            contextBar.setStyle("-fx-font-family: '" + JFXtrasFontRoboto.AvailableFonts.RobotoLight.getFamilyName() + "';");
             layout.getItems().set(1, contentBar);
             layout.getItems().set(2, contextBar);
             layout.setDividerPosition(0, 0.20);
@@ -95,6 +101,8 @@ public class MainWindowView extends RootLayoutView implements Initializable {
 
         contextView = contextBarLoader.getController();
         contextView.setMainWindowView(this);
+
+        contextBar.setStyle("-fx-font-family: '" + JFXtrasFontRoboto.AvailableFonts.RobotoLight.getFamilyName() + "';");
 
         layout.getItems().set(2, contextBar);
         layout.setDividerPosition(1, 0.75);

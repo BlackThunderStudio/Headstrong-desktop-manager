@@ -93,7 +93,5 @@ class SFTPKotlin(host: String, user: String, pass: String, path: String, subDoma
         }
 
         override fun promptPassword(p0: String?): Boolean = true
-
     }
-
 }
