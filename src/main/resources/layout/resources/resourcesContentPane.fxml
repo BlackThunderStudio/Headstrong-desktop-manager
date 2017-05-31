@@ -14,7 +14,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<GridPane maxHeight="700" maxWidth="800" minHeight="700" minWidth="800" prefHeight="700.0" prefWidth="800.0" stylesheets="/style/resourcesContentPane.css" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.headstrongpro.desktop.view.resources.ResourcesView">
+<GridPane maxHeight="700" maxWidth="800" minHeight="700" minWidth="800" prefHeight="700.0" prefWidth="800.0" stylesheets="/style/resourcesContentPane.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.headstrongpro.desktop.view.resources.ResourcesView">
     <columnConstraints>
         <ColumnConstraints hgrow="NEVER" maxWidth="300.0" minWidth="300.0" percentWidth="100.0" prefWidth="300.0" />
     </columnConstraints>
@@ -78,22 +78,25 @@
       </GridPane>
       <GridPane GridPane.rowIndex="2">
         <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="395.0" minWidth="10.0" prefWidth="94.0" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="725.0" minWidth="10.0" prefWidth="706.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="110.0" minWidth="110.0" prefWidth="110.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="725.0" minWidth="200.0" prefWidth="706.0" />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <GridPane.margin>
-            <Insets left="20.0" right="20.0" />
+            <Insets />
          </GridPane.margin>
          <children>
             <TextField fx:id="searchResourcesTextfield" onKeyReleased="#searchResourcesTextfield_onKeyReleased" promptText="Search" GridPane.columnIndex="1">
                <GridPane.margin>
-                  <Insets left="10.0" />
+                  <Insets left="20.0" right="20.0" />
                </GridPane.margin>
             </TextField>
-            <Button mnemonicParsing="false" text="Refresh" fx:id="refreshButton" onAction="#refreshOnClick"/>
+            <Button fx:id="refreshButton" maxWidth="90.0" minWidth="90.0" mnemonicParsing="false" onAction="#refreshOnClick" prefWidth="90.0" text="Refresh">
+               <GridPane.margin>
+                  <Insets left="20.0" />
+               </GridPane.margin></Button>
          </children>
       </GridPane>
    </children>
