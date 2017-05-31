@@ -11,6 +11,8 @@ import javafx.fxml.Initializable;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by Ondřej Soukup on 19.05.2017.
@@ -48,6 +50,17 @@ public class DashboardView extends ContentView implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         loadData();
+        TimerTask reload = new TimerTask() {
+            @Override
+            public void run() {
+                System.out.println("Reloading dashboard data...");
+                loadData();
+            }
+        };
+        Timer timer = new Timer();
+        long delay = 60 * 1000;
+        long interval = 2 * 60 * 1000;
+        timer.scheduleAtFixedRate(reload, delay, interval);
     }
 
     private void loadData(){
