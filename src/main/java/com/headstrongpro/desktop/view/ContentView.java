@@ -10,7 +10,7 @@ import javafx.scene.text.Text;
  */
 public abstract class ContentView {
 
-    // Common controls
+    // Common topControls
     @FXML
     public Text headerText;
     @FXML

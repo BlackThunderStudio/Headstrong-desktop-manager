@@ -2,19 +2,9 @@
 
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.layout.Pane?>
-
-<SplitPane fx:id="layout" minHeight="700" minWidth="500" prefHeight="700.0" prefWidth="1400.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.headstrongpro.desktop.view.MainWindowView">
-    <!--<columnConstraints>-->
-        <!--<ColumnConstraints minWidth="300.0" prefWidth="300.0" maxWidth="300"/>-->
-        <!--<ColumnConstraints minWidth="700.0" prefWidth="800.0" maxWidth="1500" hgrow="SOMETIMES"/>-->
-        <!--<ColumnConstraints minWidth="250.0" prefWidth="300.0" maxWidth="400" hgrow="SOMETIMES"/>-->
-    <!--</columnConstraints>-->
-    <!--<rowConstraints>-->
-        <!--<RowConstraints minHeight="650" maxHeight="4000.0" vgrow="ALWAYS" />-->
-    <!--</rowConstraints>-->
-   <items>
-      <Pane fx:id="navigationBar" minWidth="300" prefWidth="300.0" maxWidth="300.0" prefHeight="800.0" />
-      <Pane fx:id="contentBar" minWidth="500"  prefWidth="800.0" prefHeight="800.0"/>
-      <Pane fx:id="contextBar"  minWidth="250" prefWidth="300.0" maxWidth="400" prefHeight="800" />
-   </items>
+<SplitPane fx:controller="com.headstrongpro.desktop.view.MainWindowView" xmlns:fx="http://javafx.com/fxml"
+           fx:id="layout" minWidth="1024.0" minHeight="600.0" prefHeight="900.0" prefWidth="1440.0" stylesheets="/style/main.css">
+    <Pane fx:id="navigationBar" minWidth="256.0" prefWidth="256.0" maxWidth="300.0" prefHeight="800.0"/>
+    <Pane fx:id="contentBar" minWidth="512.0" prefWidth="512.0" prefHeight="800.0"/>
+    <Pane fx:id="contextBar"  prefWidth="256.0" maxWidth="400" prefHeight="800"/>
 </SplitPane>

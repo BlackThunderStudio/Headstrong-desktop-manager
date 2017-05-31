@@ -12,7 +12,7 @@ import javafx.scene.control.Button;
  * ContextView
  */
 public abstract class ContextView<T> {
-    //Common controls
+    //Common topControls
 
     @FXML
     public Button editButton;

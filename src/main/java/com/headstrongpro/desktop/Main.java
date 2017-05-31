@@ -36,8 +36,8 @@ public class Main extends Application {
         this.primaryStage.setTitle("Headstrong Company Manager");
 
         // Set minimum window size
-        this.primaryStage.setMinHeight(700);
-        this.primaryStage.setMinWidth(800);
+        this.primaryStage.setMinWidth(1024.0);
+        this.primaryStage.setMinHeight(600.0);
 
         this.primaryStage.setOnCloseRequest(e -> {
             e.consume();
@@ -51,7 +51,8 @@ public class Main extends Application {
         try {
             // Load root layout from fxml file based on whether user is logged in
             FXMLLoader loader = new FXMLLoader();
-            String location = UserController.isLoggedIn() ? "/layout/mainWindow.fxml" : "/layout/login.fxml";
+//            String location = UserController.isLoggedIn() ? "/layout/mainWindow.fxml" : "/layout/loginWindow.fxml";
+            String location = "/layout/mainWindow.fxml";
             loader.setLocation(getClass().getResource(location));
 
             // Show the scene containing the root layout.
