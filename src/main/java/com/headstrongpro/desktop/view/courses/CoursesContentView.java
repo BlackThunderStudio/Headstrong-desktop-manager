@@ -1,5 +1,6 @@
 package com.headstrongpro.desktop.view.courses;
 
+import com.headstrongpro.desktop.view.ContentView;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -14,7 +15,7 @@ import java.util.ResourceBundle;
 /**
  * Created by Ondřej Soukup on 23.05.2017.
  */
-public class CoursesContentView implements Initializable {
+public class CoursesContentView extends ContentView implements Initializable {
 
     @FXML
     public Text coursesHeader;

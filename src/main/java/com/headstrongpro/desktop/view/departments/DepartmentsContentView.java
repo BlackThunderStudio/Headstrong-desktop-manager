@@ -1,5 +1,6 @@
 package com.headstrongpro.desktop.view.departments;
 
+import com.headstrongpro.desktop.view.ContentView;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -13,7 +14,7 @@ import java.util.ResourceBundle;
 /**
  * Created by Ondřej Soukup on 23.05.2017.
  */
-public class DepartmentsContentView implements Initializable {
+public class DepartmentsContentView extends ContentView implements Initializable {
 
     @FXML
     public TextField searchDepartmentsTextfield;

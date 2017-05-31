@@ -1,5 +1,7 @@
 package com.headstrongpro.desktop.view.departments;
 
+import com.headstrongpro.desktop.model.Department;
+import com.headstrongpro.desktop.view.ContextView;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -11,7 +13,7 @@ import java.util.ResourceBundle;
 /**
  * Created by Ondřej Soukup on 26.05.2017.
  */
-public class DepartmentsContextView implements Initializable {
+public class DepartmentsContextView extends ContextView<Department> implements Initializable {
 
     @FXML
     public Button departmentsDeleteButton;
@@ -28,5 +30,15 @@ public class DepartmentsContextView implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+    }
+
+    @Override
+    public void setFields() {
+
+    }
+
+    @Override
+    protected void clearFields() {
+
     }
 }
