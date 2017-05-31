@@ -1,5 +1,6 @@
 package com.headstrongpro.desktop.view.subscriptions;
 
+import com.headstrongpro.desktop.controller.SubscriptionsController;
 import com.headstrongpro.desktop.model.Subscription;
 import com.headstrongpro.desktop.view.ContextView;
 import javafx.fxml.FXML;
@@ -62,9 +63,12 @@ public class SubscriptionsContextView extends ContextView<Subscription> implemen
     @FXML
     public Button subscriptionsNewCancelButton;
 
+    SubscriptionsController subscriptionsController;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        clearFields();
+        subscriptionsController = new SubscriptionsController();
     }
 
     @Override
@@ -74,6 +78,7 @@ public class SubscriptionsContextView extends ContextView<Subscription> implemen
 
     @Override
     public void setFields(){
-
+        //subscriptionsNewStartDatePicker.setValue(contextItem.getStartDate().toLocalDate());
+        //subscriptionsNewEndDatePicker.setValue(contextItem.getEndDate().toLocalDate());
     }
 }
