@@ -1,4 +1,5 @@
 
-.contentPane{
-    -fx-background-color: #f1f1f1;
+.dashboard-tile {
+    -fx-background-color: white;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 3, 0, 1, 1);
 }
