@@ -209,7 +209,7 @@ public class DashboardView extends ContentView implements Initializable {
 
     @FXML
     public void settingTileOnClick(MouseEvent event) {
-        //TODO: link settings here once the window is done
+        mainWindowView.changeContent(ContentSource.SETTINGS);
     }
 
     @FXML

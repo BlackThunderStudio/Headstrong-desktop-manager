@@ -81,5 +81,6 @@ public class NavigationView implements Initializable {
 
     @FXML
     public void settingsOnClick(ActionEvent actionEvent) {
+        mainWindowView.changeContent(ContentSource.SETTINGS);
     }
 }
