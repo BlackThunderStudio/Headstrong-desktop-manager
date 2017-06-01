@@ -44,6 +44,11 @@ public class PaymentsController implements Refreshable, IContentController<Payme
     }
 
     @Override
+    public Payment getByID(int id) throws ModelSyncException {
+        return dbPayment.getById(id);
+    }
+
+    @Override
     public ObservableList<Payment> searchByPhrase(String input) {
         return FXCollections.observableArrayList(paymentList
                 .stream()

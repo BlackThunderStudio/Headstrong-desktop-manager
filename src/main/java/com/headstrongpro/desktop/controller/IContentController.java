@@ -16,4 +16,5 @@ public interface IContentController<T extends Object> {
     void delete(T t) throws DatabaseOutOfSyncException, ModelSyncException;
     T createNew(T t) throws ModelSyncException;
     void edit(T t) throws DatabaseOutOfSyncException, ModelSyncException;
+    T getByID(int id) throws ModelSyncException;
 }
