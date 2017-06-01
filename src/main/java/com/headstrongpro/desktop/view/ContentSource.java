@@ -18,6 +18,8 @@ public enum ContentSource {
     COMPANIES("Companies", "/layout/companies/companiesContentPane.fxml", "/layout/companies/companiesContextPane.fxml"),
     COMPANIES_NEW("New company", "/layout/companies/companiesContentPane.fxml", "/layout/companies/companiesNewPane.fxml"),
 
+    PAYMENTS("Payments", "/layout/payments/paymentsContentPane.fxml", "/layout/payments/paymentsContextPane.fxml"),
+
     CLIENTS("Clients", "/layout/clients/clientsContentPane.fxml", "/layout/clients/clientsContextPane.fxml"),
     SUBSCRIPTIONS("Subscriptions", "/layout/subscriptions/subscriptionsContentPane.fxml", "/layout/subscriptions/subscriptionsContextPane.fxml"),
     DASHBOARD("Dashboard", "/layout/dashboardPane.fxml", null),

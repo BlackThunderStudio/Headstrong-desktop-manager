@@ -204,7 +204,7 @@ public class DashboardView extends ContentView implements Initializable {
 
     @FXML
     public void paymentsTileOnClick(MouseEvent event) {
-        //TODO: link payments here once the window is done
+        mainWindowView.changeContent(ContentSource.PAYMENTS);
     }
 
     @FXML
