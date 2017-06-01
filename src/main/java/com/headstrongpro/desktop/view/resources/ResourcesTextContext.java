@@ -7,6 +7,8 @@ import com.headstrongpro.desktop.core.fxControls.Footer;
 import com.headstrongpro.desktop.model.resource.Resource;
 import com.headstrongpro.desktop.model.resource.TextResource;
 import com.headstrongpro.desktop.view.ContextView;
+import javafx.concurrent.Task;
+import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -109,6 +111,21 @@ public class ResourcesTextContext extends ContextView<TextResource> implements I
     public void populateForm() {
         textResourcesNameTextfield.setText(contextItem.getName());
         textResourcesEditor.setHtmlText(contextItem.getContent());
+
+        Task<String> loadTextContent = new Task<String>() {
+            @Override
+            protected String call() throws Exception {
+                return contextItem.getContent();
+            }
+        };
+
+        loadTextContent.valueProperty().addListener((q,w,e) -> {
+            if(e != null){
+                textResourcesEditor.setHtmlText(e);
+            }
+        });
+
+        new Thread(loadTextContent).start();
     }
 
     @Override

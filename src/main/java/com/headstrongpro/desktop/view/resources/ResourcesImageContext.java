@@ -1,5 +1,6 @@
 package com.headstrongpro.desktop.view.resources;
 
+import com.headstrongpro.desktop.controller.Concurrent;
 import com.headstrongpro.desktop.controller.ResourcesController;
 import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
@@ -7,6 +8,8 @@ import com.headstrongpro.desktop.core.fxControls.Footer;
 import com.headstrongpro.desktop.model.resource.ImageResource;
 import com.headstrongpro.desktop.model.resource.Resource;
 import com.headstrongpro.desktop.view.ContextView;
+import javafx.concurrent.Task;
+import javafx.concurrent.Worker;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -101,11 +104,31 @@ public class ResourcesImageContext extends ContextView<ImageResource> implements
         });
     }
 
+    @Concurrent
     @Override
     public void populateForm() {
         nameField.setText(contextItem.getName());
         descriptionField.setText(contextItem.getDescription());
-        imageView.setImage(new Image(contextItem.getURL()));
+        Task<Image> loadImage = new Task<Image>() {
+            @Override
+            protected Image call() throws Exception {
+                return new Image(contextItem.getURL());
+            }
+        };
+
+        loadImage.stateProperty().addListener(((observable, oldValue, newValue) -> {
+            if (newValue.equals(Worker.State.SUCCEEDED)) {
+                mainWindowView.getContentView().footer.show("Image loaded.", Footer.NotificationType.COMPLETED, Footer.FADE_QUICK);
+            }
+        }));
+
+        loadImage.valueProperty().addListener(((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                imageView.setImage(newValue);
+            }
+        }));
+
+        new Thread(loadImage).start();
     }
 
     @Override
