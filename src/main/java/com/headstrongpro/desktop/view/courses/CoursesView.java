@@ -1,10 +1,12 @@
-package com.headstrongpro.desktop.view;
+package com.headstrongpro.desktop.view.courses;
 
+import com.headstrongpro.desktop.view.ContentView;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TreeTableView;
 import javafx.scene.text.Text;
 
 import java.net.URL;
@@ -13,14 +15,14 @@ import java.util.ResourceBundle;
 /**
  * Created by Ondřej Soukup on 23.05.2017.
  */
-public class CoursesView implements Initializable {
+public class CoursesView extends ContentView implements Initializable {
 
     @FXML
     public Text coursesHeader;
     @FXML
     public TextField searchCoursesTextfield;
     @FXML
-    public TableView coursesTable;
+    public TreeTableView coursesTreeTable;
     @FXML
     public Button newCourseButton;
 
