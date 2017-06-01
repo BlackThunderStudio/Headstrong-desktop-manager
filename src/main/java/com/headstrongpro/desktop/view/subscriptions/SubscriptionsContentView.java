@@ -102,7 +102,7 @@ public class SubscriptionsContentView extends ContentView implements Initializab
     }
 
     public void setColumns(){
-        subscriptionsCompanyCol.setCellValueFactory(new PropertyValueFactory<>("company"));
+        subscriptionsCompanyCol.setCellValueFactory(new PropertyValueFactory<>("company")); //TODO: throws exception on loading
         subscriptionsStartCol.setCellValueFactory(new PropertyValueFactory<>("startDate"));
         subscriptionsEndCol.setCellValueFactory(new PropertyValueFactory<>("endDate"));
         subscriptionsUsersCol.setCellValueFactory(new PropertyValueFactory<>("noOfUsers"));
