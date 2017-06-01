@@ -14,10 +14,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 
 import java.net.URL;
 import java.util.Optional;
@@ -27,13 +30,20 @@ import java.util.ResourceBundle;
  * Created by jakub on 26/05/2017.
  */
 public class ResourcesImageContext extends ContextView<ImageResource> implements Initializable{
-
+    @FXML
+    public GridPane resourceImageGrid;
+    @FXML
+    public HBox imageViewContainer;
     @FXML
     public TextField nameField;
     @FXML
     public TextField descriptionField;
     @FXML
     public ImageView imageView;
+    @FXML
+    public Button editButton;
+    @FXML
+    public Button deleteButton;
 
     private ResourcesController controller;
 
@@ -140,5 +150,7 @@ public class ResourcesImageContext extends ContextView<ImageResource> implements
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         controller = new ResourcesController();
+        imageView.fitWidthProperty().bind(resourceImageGrid.widthProperty());
+        imageView.fitHeightProperty().bind(imageViewContainer.heightProperty());
     }
 }

@@ -162,10 +162,6 @@ public class ResourcesView extends ContentView implements Initializable {
         resourcesTable.getColumns().removeAll(nameCol, descCol, typeCol);
         resourcesTable.setItems(resources);
 
-        nameCol.setMinWidth(150);
-        descCol.setMinWidth(350);
-        typeCol.setMinWidth(80);
-
         nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         descCol.setCellValueFactory(new PropertyValueFactory<>("description"));
         typeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
