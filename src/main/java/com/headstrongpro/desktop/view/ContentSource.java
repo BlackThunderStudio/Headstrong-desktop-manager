@@ -21,9 +21,15 @@ public enum ContentSource {
     PAYMENTS("Payments", "/layout/payments/paymentsContentPane.fxml", "/layout/payments/paymentsContextPane.fxml"),
 
     CLIENTS("Clients", "/layout/clients/clientsContentPane.fxml", "/layout/clients/clientsContextPane.fxml"),
+
     SUBSCRIPTIONS("Subscriptions", "/layout/subscriptions/subscriptionsContentPane.fxml", "/layout/subscriptions/subscriptionsContextPane.fxml"),
+
+    COURSES("Courses", "/layout/courses/coursesContentPane.fxml", "/layout/courses/coursesContextPane.fxml"),
+
     DASHBOARD("Dashboard", "/layout/dashboardPane.fxml", null),
+
     DEPARTMENTS("Departments", "/layout/departments/departmentsContentPane.fxml", "/layout/departments/departmentsContextPane.fxml"),
+
     SETTINGS("Settings", "/layout/settings/settingsContent.fxml", null);
     private String name, contentView, contextView;
 

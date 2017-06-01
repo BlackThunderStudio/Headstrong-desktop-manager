@@ -1,5 +1,7 @@
 package com.headstrongpro.desktop.view.courses;
 
+import com.headstrongpro.desktop.model.Course;
+import com.headstrongpro.desktop.view.ContextView;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -11,7 +13,7 @@ import java.util.ResourceBundle;
 /**
  * Created by Ondřej Soukup on 26.05.2017.
  */
-public class CoursesContextView implements Initializable {
+public class CoursesContextView extends ContextView<Course> implements Initializable {
 
     /**
      * Be careful to handle actions on correct elements, since there are 4 layouts
@@ -61,6 +63,16 @@ public class CoursesContextView implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+    }
+
+    @Override
+    public void clearFields(){
+
+    }
+
+    @Override
+    public void populateForm(){
 
     }
 }

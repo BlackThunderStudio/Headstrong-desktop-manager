@@ -66,10 +66,7 @@ public class NavigationView implements Initializable {
     }
 
     @FXML
-    public void coursesOnClick(ActionEvent actionEvent) {
-        //mainWindowView.changeContent(ContentSource.COURSES);
-        //TODO: uncomment when done
-    }
+    public void coursesOnClick(ActionEvent actionEvent) { mainWindowView.changeContent(ContentSource.COURSES); }
 
     @FXML
     public void paymentsOnClick(ActionEvent actionEvent) {
