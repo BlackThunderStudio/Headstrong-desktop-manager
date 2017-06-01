@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.headstrongpro.desktop.core.fxControls.DashboardTile?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -13,7 +14,7 @@
 
 <GridPane maxHeight="700" maxWidth="1100" minHeight="700" minWidth="1100" prefHeight="700.0" prefWidth="1100.0" stylesheets="/style/dashboardPane.css" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.headstrongpro.desktop.view.dashboard.DashboardView">
     <columnConstraints>
-        <ColumnConstraints hgrow="NEVER" maxWidth="300.0" minWidth="300.0" percentWidth="100.0" prefWidth="300.0" />
+        <ColumnConstraints hgrow="NEVER" minWidth="1100.0" percentWidth="100.0" prefWidth="1100.0" />
     </columnConstraints>
     <rowConstraints>
         <RowConstraints maxHeight="60.0" minHeight="60.0" prefHeight="60.0" vgrow="NEVER" />
@@ -78,14 +79,13 @@
                </children>
             </GridPane>
          </children></Pane>
-      <Pane prefHeight="200.0" prefWidth="200.0">
-         <children>
-            <Text fx:id="headerText" layoutX="14.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Dashboard">
-               <font>
-                  <Font size="36.0" />
-               </font>
-            </Text>
-         </children>
-      </Pane>
+      <Text fx:id="headerText" strokeType="OUTSIDE" strokeWidth="0.0" text="Dashboard">
+         <font>
+            <Font size="50.0" />
+         </font>
+         <GridPane.margin>
+            <Insets left="31.0" />
+         </GridPane.margin>
+      </Text>
    </children>
 </GridPane>

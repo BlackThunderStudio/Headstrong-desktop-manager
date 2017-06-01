@@ -18,7 +18,7 @@
         <RowConstraints maxHeight="1000.0" minHeight="320.0" prefHeight="520.0" vgrow="ALWAYS"/>
         <RowConstraints maxHeight="60.0" minHeight="60.0" prefHeight="60.0" vgrow="NEVER"/>
     </rowConstraints>
-    <Pane prefHeight="200.0" prefWidth="200.0" styleClass="headerPane">
+    <Pane prefHeight="200.0" prefWidth="200.0">
         <Text fx:id="headerText" layoutX="14.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0"
               text="Companies">
             <font>

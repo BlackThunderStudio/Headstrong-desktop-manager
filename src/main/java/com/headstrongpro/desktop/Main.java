@@ -37,7 +37,7 @@ public class Main extends Application {
 
         // Set minimum window size
         this.primaryStage.setMinWidth(1024.0);
-        this.primaryStage.setMinHeight(600.0);
+        this.primaryStage.setMinHeight(760.0);
 
         this.primaryStage.setOnCloseRequest(e -> {
             e.consume();
