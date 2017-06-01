@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.headstrongpro.desktop.core.fxControls.DashboardTile?>
-<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<GridPane maxHeight="700" maxWidth="1100" minHeight="700" minWidth="1100" prefHeight="700.0" prefWidth="1100.0" stylesheets="/style/dashboardPane.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.headstrongpro.desktop.view.dashboard.DashboardView">
+<GridPane maxHeight="700" maxWidth="1100" minHeight="700" minWidth="1100" prefHeight="700.0" prefWidth="1100.0" stylesheets="/style/dashboardPane.css" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.headstrongpro.desktop.view.dashboard.DashboardView">
     <columnConstraints>
         <ColumnConstraints hgrow="NEVER" maxWidth="300.0" minWidth="300.0" percentWidth="100.0" prefWidth="300.0" />
     </columnConstraints>
@@ -20,69 +22,65 @@
    <children>
       <Pane prefHeight="200.0" prefWidth="200.0" styleClass="contentPane" GridPane.rowIndex="1">
          <children>
-            <GridPane alignment="CENTER" maxHeight="700.0" maxWidth="1100" prefWidth="1100">
+            <GridPane alignment="CENTER" hgap="15.0" maxHeight="700.0" maxWidth="1100" prefWidth="1100" vgap="15.0">
               <columnConstraints>
                   <ColumnConstraints hgrow="ALWAYS" maxWidth="6000.0" minWidth="20.0" prefWidth="20.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="170.0" minWidth="170.0" prefWidth="170.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="170.0" minWidth="170.0" prefWidth="170.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="170.0" minWidth="170.0" prefWidth="170.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="170.0" minWidth="170.0" prefWidth="170.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="250.0" minWidth="250.0" prefWidth="250.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="250.0" minWidth="250.0" prefWidth="250.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="250.0" minWidth="250.0" prefWidth="250.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="250.0" minWidth="250.0" prefWidth="250.0" />
                   <ColumnConstraints hgrow="ALWAYS" maxWidth="60000.0" minWidth="20.0" prefWidth="20.0" />
               </columnConstraints>
               <rowConstraints>
                   <RowConstraints maxHeight="60000.0" minHeight="20.0" prefHeight="20.0" vgrow="ALWAYS" />
-                <RowConstraints maxHeight="170.0" minHeight="170.0" prefHeight="170.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="170.0" minHeight="170.0" prefHeight="170.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="250.0" minHeight="250.0" prefHeight="250.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="250.0" minHeight="250.0" prefHeight="250.0" vgrow="SOMETIMES" />
                   <RowConstraints maxHeight="6000.0" minHeight="20.0" prefHeight="20.0" vgrow="ALWAYS" />
 
               </rowConstraints>
                <children>
-                   <DashboardTile fx:id="dashCoursesTile" styleClass="dashboard-tile" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                     <GridPane.margin>
-                        <Insets left="10.0" top="10.0" />
-                     </GridPane.margin>
-                  </DashboardTile>
-                  <DashboardTile fx:id="dashResourcesTile" layoutX="10.0" layoutY="30.0" styleClass="dashboard-tile" GridPane.columnIndex="2" GridPane.rowIndex="2">
-                     <GridPane.margin>
-                        <Insets left="10.0" top="10.0" />
-                     </GridPane.margin>
-                  </DashboardTile>
-                  <DashboardTile fx:id="dashEmployeesTile" layoutX="200.0" layoutY="30.0" styleClass="dashboard-tile" GridPane.columnIndex="3" GridPane.rowIndex="2">
-                     <GridPane.margin>
-                        <Insets left="10.0" top="10.0" />
-                     </GridPane.margin>
-                  </DashboardTile>
-                  <DashboardTile fx:id="dashSettingsTile" layoutX="390.0" layoutY="30.0" styleClass="dashboard-tile" GridPane.columnIndex="4" GridPane.rowIndex="2">
-                     <GridPane.margin>
-                        <Insets left="10.0" top="10.0" />
-                     </GridPane.margin>
-                  </DashboardTile>
-                  <DashboardTile fx:id="dashCompaniesTile" layoutX="200.0" layoutY="30.0" styleClass="dashboard-tile" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                     <GridPane.margin>
-                        <Insets left="10.0" top="10.0" />
-                     </GridPane.margin>
-                  </DashboardTile>
-                  <DashboardTile fx:id="dashClientsTile" layoutX="10.0" layoutY="220.0" styleClass="dashboard-tile" GridPane.columnIndex="2" GridPane.rowIndex="1">
-                     <GridPane.margin>
-                        <Insets left="10.0" top="10.0" />
-                     </GridPane.margin>
-                  </DashboardTile>
-                  <DashboardTile fx:id="dashSubscriptionsTile" layoutX="200.0" layoutY="220.0" styleClass="dashboard-tile" GridPane.columnIndex="3" GridPane.rowIndex="1">
-                     <GridPane.margin>
-                        <Insets left="10.0" top="10.0" />
-                     </GridPane.margin>
-                  </DashboardTile>
-                  <DashboardTile fx:id="dashPaymentsTile" layoutX="390.0" layoutY="220.0" styleClass="dashboard-tile" GridPane.columnIndex="4" GridPane.rowIndex="1">
-                     <GridPane.margin>
-                        <Insets left="10.0" top="10.0" />
-                     </GridPane.margin>
-                  </DashboardTile>
+                   <DashboardTile fx:id="dashCoursesTile" onMouseClicked="#coursesTileOnClick" prefHeight="250.0" prefWidth="250.0" styleClass="dashboard-tile" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                   <DashboardTile fx:id="dashResourcesTile" layoutX="10.0" layoutY="30.0" onMouseClicked="#resourcesTileOnClick" prefHeight="250.0" prefWidth="250.0" styleClass="dashboard-tile" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                  <DashboardTile fx:id="dashEmployeesTile" layoutX="200.0" layoutY="30.0" onMouseClicked="#employeesTileOnClick" prefHeight="250.0" prefWidth="250.0" styleClass="dashboard-tile" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                  <DashboardTile fx:id="dashCompaniesTile" layoutX="200.0" layoutY="30.0" onMouseClicked="#companiesTileOnClick" prefHeight="250.0" prefWidth="250.0" styleClass="dashboard-tile" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <DashboardTile fx:id="dashClientsTile" layoutX="10.0" layoutY="220.0" onMouseClicked="#clientsTileOnClick" prefHeight="250.0" prefWidth="250.0" styleClass="dashboard-tile" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                  <DashboardTile fx:id="dashSubscriptionsTile" layoutX="200.0" layoutY="220.0" onMouseClicked="#subscriptionsTileOnClick" prefHeight="250.0" prefWidth="250.0" styleClass="dashboard-tile" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                  <DashboardTile fx:id="dashPaymentsTile" layoutX="390.0" layoutY="220.0" onMouseClicked="#paymentsTileOnClick" prefHeight="250.0" prefWidth="250.0" styleClass="dashboard-tile" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+                  <GridPane hgap="10.0" vgap="10.0" GridPane.columnIndex="4" GridPane.rowIndex="2">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="120.0" minWidth="120.0" prefWidth="120.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="120.0" minWidth="120.0" prefWidth="120.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints maxHeight="120.0" minHeight="120.0" prefHeight="120.0" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="120.0" minHeight="120.0" prefHeight="120.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <StackPane fx:id="dashSettingsTile" onMouseClicked="#settingTileOnClick" prefHeight="100.0" prefWidth="100.0" styleClass="dashboard-tile">
+                           <children>
+                              <ImageView fitHeight="75.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../img/icons/settings_icon.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </StackPane>
+                        <StackPane fx:id="dashAboutTile" onMouseClicked="#aboutTileOnClick" prefHeight="100.0" prefWidth="100.0" styleClass="dashboard-tile" GridPane.columnIndex="1">
+                           <children>
+                              <ImageView fitHeight="75.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../img/icons/about_icon.png" />
+                                 </image>
+                              </ImageView>
+                           </children></StackPane>
+                     </children>
+                  </GridPane>
                </children>
             </GridPane>
          </children></Pane>
       <Pane prefHeight="200.0" prefWidth="200.0">
          <children>
-            <Text layoutX="14.0" fx:id="headerText" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Dashboard">
+            <Text fx:id="headerText" layoutX="14.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Dashboard">
                <font>
                   <Font size="36.0" />
                </font>

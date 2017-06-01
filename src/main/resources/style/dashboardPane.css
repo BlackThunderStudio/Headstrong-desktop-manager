@@ -1,5 +1,12 @@
-
 .dashboard-tile {
     -fx-background-color: white;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 3, 0, 1, 1);
+    -fx-cursor: hand;
 }
+.dashboard-tile:hover {
+    -fx-background-color: #FAFAFA
+}
+.dashboard-tile:pressed {
+    -fx-background-color: #EEEEEE;
+}
+
