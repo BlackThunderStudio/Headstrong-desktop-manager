@@ -23,8 +23,13 @@ public enum ContentSource {
     CLIENTS("Clients", "/layout/clients/clientsContentPane.fxml", "/layout/clients/clientsContextPane.fxml"),
 
     SUBSCRIPTIONS("Subscriptions", "/layout/subscriptions/subscriptionsContentPane.fxml", "/layout/subscriptions/subscriptionsContextPane.fxml"),
+    SUBSCRIPTIONS_NEW("New subscription", "/layout/subscriptions/subscriptionsContentPane.fxml", "/layout/subscriptions/subscriptionsNewContextPane.fxml"),
 
     COURSES("Courses", "/layout/courses/coursesContentPane.fxml", "/layout/courses/coursesContextPane.fxml"),
+    COURSES_CATEGORY("Courses", "/layout/courses/coursesContentPane.fxml", "/layout/courses/coursesCategoryContextPane.fxml"),
+    COURSES_NEW("Courses", "/layout/courses/coursesContentPane.fxml", "/layout/courses/coursesNewCourseContextPane.fxml"),
+    COURSES_NEW_CATEGORY("Courses", "/layout/courses/coursesContentPane.fxml", "/layout/courses/coursesNewCategoryContextPane.fxml"),
+
 
     DASHBOARD("Dashboard", "/layout/dashboardPane.fxml", null),
 
