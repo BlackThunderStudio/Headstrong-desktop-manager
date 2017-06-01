@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<GridPane prefHeight="700.0" prefWidth="800.0" stylesheets="/style/subscriptionsContentPane.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.headstrongpro.desktop.view.subscriptions.SubscriptionsContentView">
+<GridPane minWidth="600" prefHeight="700.0" prefWidth="800.0" stylesheets="/style/subscriptionsContentPane.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.headstrongpro.desktop.view.subscriptions.SubscriptionsContentView">
     <columnConstraints>
         <ColumnConstraints hgrow="ALWAYS" maxWidth="6000.0" minWidth="100.0" prefWidth="800.0" />
     </columnConstraints>
@@ -25,7 +25,7 @@
       <RowConstraints />
 </rowConstraints>
    <children>
-      <Pane prefHeight="200.0" prefWidth="200.0" styleClass="headerPane">
+      <Pane prefHeight="200.0" prefWidth="200.0">
          <children>
             <Text fx:id="subscriptionsHeader" layoutX="14.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Subscriptions">
                <font>
@@ -39,13 +39,14 @@
             <Insets left="20.0" right="20.0" />
          </GridPane.margin>
       </TextField>
-      <TableView fx:id="subscriptionsTable" maxWidth="4000.0" minWidth="200.0" prefHeight="200.0" prefWidth="200.0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.vgrow="ALWAYS">
+      <TableView fx:id="subscriptionsTable" maxWidth="4000.0" minWidth="460.0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.vgrow="ALWAYS">
+          <columnResizePolicy><TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/></columnResizePolicy>
           <columns>
-              <TableColumn fx:id="subscriptionsCompanyCol" prefWidth="120" text="Name" />
-              <TableColumn fx:id="subscriptionsStartCol" prefWidth="200" text="Start" />
-              <TableColumn fx:id="subscriptionsEndCol" prefWidth="150" text="End" />
-              <TableColumn fx:id="subscriptionsUsersCol" prefWidth="150" text="Users" />
-              <TableColumn fx:id="subscriptionsRateCol" prefWidth="150" text="Rate" />
+              <TableColumn fx:id="subscriptionsCompanyCol" minWidth="120" prefWidth="150" text="Name" />
+              <TableColumn fx:id="subscriptionsStartCol" minWidth="100" prefWidth="120" text="Start" />
+              <TableColumn fx:id="subscriptionsEndCol" minWidth="100" prefWidth="120" text="End" />
+              <TableColumn fx:id="subscriptionsUsersCol" minWidth="50" prefWidth="80" text="Users" />
+              <TableColumn fx:id="subscriptionsRateCol" minWidth="70" prefWidth="100" text="Rate" />
 
           </columns>
          <GridPane.margin>
@@ -57,7 +58,7 @@
             <Insets right="20.0" />
          </GridPane.margin>
       </Button>
-       <Footer fx:id="footer" focusTraversable="false" prefHeight="32.0" prefWidth="250.0" GridPane.rowIndex="3">
+       <Footer fx:id="footer" prefHeight="32.0" prefWidth="250.0" GridPane.rowIndex="3">
          <GridPane.margin>
             <Insets left="20.0" />
          </GridPane.margin>
