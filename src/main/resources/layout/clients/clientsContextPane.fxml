@@ -91,14 +91,14 @@
       <Label text="Gender:" GridPane.rowIndex="4" />
       <RadioButton fx:id="clientsGenderMaleRadio" mnemonicParsing="false" text="Male" GridPane.columnIndex="1" GridPane.rowIndex="4">
          <GridPane.margin>
-            <Insets left="20.0" />
+            <Insets left="10.0" />
          </GridPane.margin>
          <padding>
             <Insets bottom="5.0" />
          </padding></RadioButton>
       <RadioButton fx:id="clientsGenderFemaleRadio" mnemonicParsing="false" text="Female" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
          <GridPane.margin>
-            <Insets right="20.0" />
+            <Insets right="15.0" />
          </GridPane.margin>
          <padding>
             <Insets bottom="5.0" />
