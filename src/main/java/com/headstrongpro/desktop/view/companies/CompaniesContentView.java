@@ -27,7 +27,7 @@ import static javafx.concurrent.Worker.State.*;
  */
 public class CompaniesContentView extends ContentView implements Initializable {
 
-    // Content view controls
+    // Content view topControls
     @FXML
     public TextField searchField;
 

@@ -93,7 +93,6 @@ public class MainWindowView extends RootLayoutView implements Initializable {
             }
 
             layout.setDividerPosition(0, 0.20);
-//            layout.setDividerPosition(1, 0.75);
         }
     }
 
@@ -123,6 +122,11 @@ public class MainWindowView extends RootLayoutView implements Initializable {
         // Add the bar to the root layout
         layout.getItems().set(2, contextBar);
         layout.setDividerPosition(1, 0.75);
+    }
+
+    public void changeContext(ContentSource contentSource, Object contextItem) {
+        changeContext(contentSource);
+        getContextView().changeContextItem(contextItem);
     }
 
     /**

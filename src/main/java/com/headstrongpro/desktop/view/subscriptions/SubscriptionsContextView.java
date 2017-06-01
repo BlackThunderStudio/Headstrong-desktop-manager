@@ -77,7 +77,7 @@ public class SubscriptionsContextView extends ContextView<Subscription> implemen
     }
 
     @Override
-    public void setFields(){
+    public void populateForm(){
         //subscriptionsNewStartDatePicker.setValue(contextItem.getStartDate().toLocalDate());
         //subscriptionsNewEndDatePicker.setValue(contextItem.getEndDate().toLocalDate());
     }

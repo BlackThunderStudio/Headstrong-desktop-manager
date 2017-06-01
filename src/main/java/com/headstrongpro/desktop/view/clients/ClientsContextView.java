@@ -53,7 +53,7 @@ public class ClientsContextView extends ContextView<Client> implements Initializ
     }
 
     @Override
-    public void setFields(){
+    public void populateForm(){
         clientsNameTextfield.setText(contextItem.getName());
         clientsEmailTextfield.setText(contextItem.getEmail());
         clientsPhoneTextfield.setText(contextItem.getPhone());

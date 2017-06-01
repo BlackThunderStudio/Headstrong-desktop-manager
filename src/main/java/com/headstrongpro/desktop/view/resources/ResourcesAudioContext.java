@@ -69,7 +69,7 @@ public class ResourcesAudioContext extends ContextView<AudioResource> implements
     private boolean isPlaying;
 
     @Override
-    public void setFields() {
+    public void populateForm() {
         nameField.setText(contextItem.getName());
         descriptionField.setText(contextItem.getDescription());
         initPlayer();

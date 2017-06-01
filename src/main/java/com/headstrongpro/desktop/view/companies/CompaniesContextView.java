@@ -8,13 +8,12 @@ import com.headstrongpro.desktop.model.entity.Company;
 import com.headstrongpro.desktop.view.ContextView;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -22,10 +21,21 @@ import java.util.ResourceBundle;
  * Companies ContextView
  */
 public class CompaniesContextView extends ContextView<Company> implements Initializable {
+    // Top controls
     @FXML
-    public Button companyEditButton;
+    public Button toggleEditButton;
     @FXML
-    public Button companyDeleteButton;
+    public Button editButton;
+    @FXML
+    public Button cancelButton;
+    @FXML
+    public Button deleteButton;
+
+    // Horizontal row with top controls
+    @FXML
+    public HBox topControls;
+
+    // Form text fields
     @FXML
     public TextField companyNameTextfield;
     @FXML
@@ -38,6 +48,8 @@ public class CompaniesContextView extends ContextView<Company> implements Initia
     public TextField companyCityTextfield;
     @FXML
     public TextField companyCountryTextfield;
+
+    // Links to related items
     @FXML
     public Button companyDepartmentsButton;
     @FXML
@@ -47,10 +59,31 @@ public class CompaniesContextView extends ContextView<Company> implements Initia
     @FXML
     public Button companySubscriptionsButton;
 
+    // Data controller
     private CompaniesController companiesController;
 
+    // Whether making changes is allowed
+    private boolean editMode = false;
+
     @Override
-    public void setFields() {
+    public void initialize(URL location, ResourceBundle resources) {
+        textFields = new ArrayList<>(Arrays.asList(
+                companyNameTextfield,
+                companyCvrTextfield,
+                companyStreetTextfield,
+                companyPostalTextfield,
+                companyCityTextfield,
+                companyCountryTextfield
+        ));
+
+        companiesController = new CompaniesController();
+
+        // By default, hide buttons of editing mode
+        topControls.getChildren().removeAll(editButton, cancelButton);
+    }
+
+    @Override
+    public void populateForm() {
         companyNameTextfield.setText(contextItem.getName());
         companyCvrTextfield.setText(contextItem.getCvr());
         companyStreetTextfield.setText(contextItem.getStreet());
@@ -60,14 +93,22 @@ public class CompaniesContextView extends ContextView<Company> implements Initia
         System.out.println(contextItem.getName());
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        clearFields();
-        companiesController = new CompaniesController();
+    @FXML
+    public void toggleEditMode() {
+        if (editMode) {
+            topControls.getChildren().removeAll(editButton, cancelButton);
+            topControls.getChildren().addAll(toggleEditButton, deleteButton);
+            textFields.forEach(tf -> tf.setEditable(false));
+        } else {
+            topControls.getChildren().removeAll(toggleEditButton, deleteButton);
+            topControls.getChildren().addAll(editButton, cancelButton);
+            textFields.forEach(tf -> tf.setEditable(true));
+        }
+        editMode = !editMode;
     }
 
     @FXML
-    public void companiesContextEditButtonPress() {
+    public void handleEdit() {
         if (companiesController.validCompany(companyNameTextfield.getText(),
                 companyCvrTextfield.getText(),
                 companyStreetTextfield.getText(),
@@ -97,15 +138,40 @@ public class CompaniesContextView extends ContextView<Company> implements Initia
 
     @Override
     protected void clearFields() {
-        companyCityTextfield.clear();
-        companyCountryTextfield.clear();
-        companyCvrTextfield.clear();
-        companyNameTextfield.clear();
-        companyPostalTextfield.clear();
-        companyStreetTextfield.clear();
+        textFields.forEach(TextInputControl::clear);
     }
 
-    private void handleDataInconsistency(){
+    @FXML
+    public void handleDelete() {
+        Alert a = new Alert(Alert.AlertType.CONFIRMATION);
+        a.setHeaderText(String.format("Are you sure you want to delete %s from the list?", contextItem.getName()));
+        a.setContentText("You cannot take that action back");
+        Optional<ButtonType> response = a.showAndWait();
+        response.ifPresent(btn -> {
+            if (ButtonType.OK.equals(btn)) {
+                try {
+                    mainWindowView.getContentView().footer.show("Deleting " + contextItem.getName() + "...", Footer.NotificationType.LOADING);
+                    companiesController.deleteCompany(contextItem.getId());
+                    mainWindowView.getContentView().footer.show("Company deleted.", Footer.NotificationType.COMPLETED);
+                    mainWindowView.getContentView().refreshButton.fire();
+                } catch (ModelSyncException e) {
+                    e.printStackTrace();
+                    mainWindowView.getContentView().footer.show(e.getMessage(), Footer.NotificationType.ERROR, Footer.FADE_LONG);
+                } catch (DatabaseOutOfSyncException e) {
+                    e.printStackTrace();
+                    handleDataInconsistency();
+                }
+            }
+        });
+    }
+
+    @FXML
+    public void handleCancel() {
+        toggleEditMode();
+        populateForm();
+    }
+
+    private void handleDataInconsistency() {
         Alert a = new Alert(Alert.AlertType.CONFIRMATION);
         mainWindowView.getContentView().footer.show("Warning! Data inconsistency!", Footer.NotificationType.WARNING);
         a.setHeaderText("Warning! Database contains newer data.");
@@ -122,31 +188,6 @@ public class CompaniesContextView extends ContextView<Company> implements Initia
                 }
             } else {
                 clearFields();
-            }
-        });
-    }
-
-
-    @FXML
-    public void deleteButtonOnClick(MouseEvent mouseEvent) {
-        Alert a = new Alert(Alert.AlertType.CONFIRMATION);
-        a.setHeaderText("Are you sure you want to delete " + contextItem.getName() + " from the list?");
-        a.setContentText("You cannot take that action back");
-        Optional<ButtonType> response = a.showAndWait();
-        response.ifPresent(btn -> {
-            if(ButtonType.OK.equals(btn)) {
-                try {
-                    mainWindowView.getContentView().footer.show("Deleting " + contextItem.getName() + "...", Footer.NotificationType.LOADING);
-                    companiesController.deleteCompany(contextItem.getId());
-                    mainWindowView.getContentView().footer.show("Company deleted.", Footer.NotificationType.COMPLETED);
-                    mainWindowView.getContentView().refreshButton.fire();
-                } catch (ModelSyncException e) {
-                    e.printStackTrace();
-                    mainWindowView.getContentView().footer.show(e.getMessage(), Footer.NotificationType.ERROR, Footer.FADE_LONG);
-                } catch (DatabaseOutOfSyncException e) {
-                    e.printStackTrace();
-                    handleDataInconsistency();
-                }
             }
         });
     }

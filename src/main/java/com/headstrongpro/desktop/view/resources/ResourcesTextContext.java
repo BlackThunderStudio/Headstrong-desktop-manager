@@ -106,7 +106,7 @@ public class ResourcesTextContext extends ContextView<TextResource> implements I
     }
 
     @Override
-    public void setFields() {
+    public void populateForm() {
         textResourcesNameTextfield.setText(contextItem.getName());
         textResourcesEditor.setHtmlText(contextItem.getContent());
     }
