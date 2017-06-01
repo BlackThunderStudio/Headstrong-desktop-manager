@@ -77,7 +77,7 @@ public class PaymentsContextView extends ContextView<Payment> implements Initial
     @Override
     public void populateForm() {
         paymentsValueTextfield.setText(String.valueOf(contextItem.getValue()));
-        paymentsPaidDatePicker.getEditor()
+        paymentsDueDatePicker.getEditor()
                 .setText(contextItem
                         .getDueDate()
                         .toString()
