@@ -3,50 +3,51 @@ package com.headstrongpro.desktop.view;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputControl;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-
-import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 
 /**
  * ContextView
  */
 public abstract class ContextView<T> {
-    //Common topControls
-
-    @FXML
-    public Button editButton;
-    @FXML
-    public Button deleteButton;
-
+    // Currently set context item
     protected T contextItem = null;
+
+    // Main view controller
     protected MainWindowView mainWindowView;
 
-    public void changeContextItem(T t) {
-        this.contextItem = t;
-        setFields();
-    }
+    // List of form text fields
+    protected ArrayList<TextField> textFields;
 
     public void setMainWindowView(MainWindowView mainWindowView) {
         this.mainWindowView = mainWindowView;
     }
 
-    /***
-     * sets the values on context initialization
+    /**
+     * Changes the context items and invokes population of the form
      */
-    public abstract void setFields();
+    public void changeContextItem(T t) {
+        this.contextItem = t;
+        populateForm();
+    }
 
-    /***
+    /**
+     * Sets the values on context initialization
+     */
+    public abstract void populateForm();
+
+    /**
      * Clears all the text input
      */
     protected abstract void clearFields();
 
-    /***
+    /**
      * Validates the contexts window input fields
+     *
      * @param textFields a collection of TextField objects
-     * @return True if ALL the objects are valid, otherwise False
+     * @return True if ALL the objects are valid, otherwise false
      */
-    protected boolean validateInput(TextField... textFields){
+    protected boolean validateInput(TextField... textFields) {
         return Arrays.stream(textFields)
                 .map(TextInputControl::getText)
                 .filter(e -> e.isEmpty() || e.contains(";") || e.contains(":") || e.contains("^"))

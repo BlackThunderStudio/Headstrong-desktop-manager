@@ -102,7 +102,7 @@ public class ResourcesImageContext extends ContextView<ImageResource> implements
     }
 
     @Override
-    public void setFields() {
+    public void populateForm() {
         nameField.setText(contextItem.getName());
         descriptionField.setText(contextItem.getDescription());
         imageView.setImage(new Image(contextItem.getURL()));

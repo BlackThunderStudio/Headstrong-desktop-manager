@@ -33,7 +33,7 @@ public class DepartmentsContextView extends ContextView<Department> implements I
     }
 
     @Override
-    public void setFields() {
+    public void populateForm() {
 
     }
 

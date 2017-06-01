@@ -14,7 +14,7 @@ import java.util.ResourceBundle;
  */
 public class ResourcesDefaultContext extends ContextView implements Initializable {
     @Override
-    public void setFields() {
+    public void populateForm() {
 
     }
 

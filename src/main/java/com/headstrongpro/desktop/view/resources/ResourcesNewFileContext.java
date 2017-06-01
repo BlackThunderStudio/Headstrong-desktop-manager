@@ -79,7 +79,7 @@ public class ResourcesNewFileContext extends ContextView<Resource> implements In
     }
 
     @Override
-    public void setFields() {
+    public void populateForm() {
         //do nothing
     }
 

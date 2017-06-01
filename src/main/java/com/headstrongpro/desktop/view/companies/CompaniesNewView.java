@@ -1,11 +1,5 @@
 package com.headstrongpro.desktop.view.companies;
 
-/**
- * Created by 1062085 on 25-May-17.
- */
-
-// "New" context view controls
-
 import com.headstrongpro.desktop.controller.CompaniesController;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.core.fxControls.Footer;
@@ -16,51 +10,36 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
-
+/**
+ * Add new company ContextView
+ */
 public class CompaniesNewView extends ContextView<Company> implements Initializable {
+    // Form text fields
     @FXML
-    public TextField newCompanyNameTextfield;
+    public TextField companyNameTextfield;
     @FXML
-    public TextField newCompanyCvrTextfield;
+    public TextField companyCvrTextfield;
     @FXML
-    public TextField newCompanyStreetTextfield;
+    public TextField companyStreetTextfield;
     @FXML
-    public TextField newCompanyPostalTextfield;
+    public TextField companyPostalTextfield;
     @FXML
-    public TextField newCompanyCityTextfield;
+    public TextField companyCityTextfield;
     @FXML
-    public TextField newCompanyCountryTextfield;
-    @FXML
-    public Button companySaveButton;
-    @FXML
-    public Button companyCancelButton;
+    public TextField companyCountryTextfield;
 
+    // Bottom controls
+    @FXML
+    public Button saveButton;
+    @FXML
+    public Button cancelButton;
+
+    // Data controller
     private CompaniesController controller;
-
-    @Override
-    public void setFields() {
-        newCompanyNameTextfield.setText(contextItem.getName());
-        newCompanyCvrTextfield.setText(contextItem.getCvr());
-        newCompanyStreetTextfield.setText(contextItem.getStreet());
-        newCompanyPostalTextfield.setText(contextItem.getPostal());
-        newCompanyCityTextfield.setText(contextItem.getCity());
-        newCompanyCountryTextfield.setText(contextItem.getCountry());
-    }
-
-    @Override
-    protected void clearFields() {
-        newCompanyNameTextfield.clear();
-        newCompanyCvrTextfield.clear();
-        newCompanyStreetTextfield.clear();
-        newCompanyPostalTextfield.clear();
-        newCompanyCityTextfield.clear();
-        newCompanyCountryTextfield.clear();
-    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -68,22 +47,37 @@ public class CompaniesNewView extends ContextView<Company> implements Initializa
         controller = new CompaniesController();
     }
 
+    @Override
+    public void populateForm() {
+        mainWindowView.changeContext(ContentSource.COMPANIES, contextItem);
+    }
+
+    @Override
+    protected void clearFields() {
+        companyNameTextfield.clear();
+        companyCvrTextfield.clear();
+        companyStreetTextfield.clear();
+        companyPostalTextfield.clear();
+        companyCityTextfield.clear();
+        companyCountryTextfield.clear();
+    }
+
     @FXML
-    public void saveBtnOnClick(MouseEvent mouseEvent) {
-        if(controller.validCompany(newCompanyNameTextfield.getText(),
-        newCompanyCvrTextfield.getText(),
-        newCompanyStreetTextfield.getText(),
-        newCompanyPostalTextfield.getText(),
-        newCompanyCityTextfield.getText(),
-        newCompanyCountryTextfield.getText())){
+    public void handleSave() {
+        if (controller.validCompany(companyNameTextfield.getText(),
+                companyCvrTextfield.getText(),
+                companyStreetTextfield.getText(),
+                companyPostalTextfield.getText(),
+                companyCityTextfield.getText(),
+                companyCountryTextfield.getText())) {
             try {
                 mainWindowView.getContentView().footer.show("Creating new conmpany...", Footer.NotificationType.LOADING);
-                controller.createCompany(newCompanyNameTextfield.getText(),
-                        newCompanyCvrTextfield.getText(),
-                        newCompanyStreetTextfield.getText(),
-                        newCompanyPostalTextfield.getText(),
-                        newCompanyCityTextfield.getText(),
-                        newCompanyCountryTextfield.getText());
+                controller.createCompany(companyNameTextfield.getText(),
+                        companyCvrTextfield.getText(),
+                        companyStreetTextfield.getText(),
+                        companyPostalTextfield.getText(),
+                        companyCityTextfield.getText(),
+                        companyCountryTextfield.getText());
                 mainWindowView.getContentView().footer.show("Company created.", Footer.NotificationType.COMPLETED);
                 clearFields();
                 mainWindowView.getContentView().refreshButton.fire();
@@ -97,7 +91,7 @@ public class CompaniesNewView extends ContextView<Company> implements Initializa
     }
 
     @FXML
-    public void cancelBtnOnClick(MouseEvent mouseEvent) {
+    public void handleCancel() {
         clearFields();
         mainWindowView.changeContext(ContentSource.COMPANIES);
     }

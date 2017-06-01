@@ -54,7 +54,7 @@ public class ResourcesNewTextContext extends ContextView<Resource> implements In
     }
 
     @Override
-    public void setFields() {
+    public void populateForm() {
         //do nothing
     }
 
