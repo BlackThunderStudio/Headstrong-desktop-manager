@@ -14,7 +14,7 @@
 
 <GridPane prefHeight="700.0" prefWidth="800.0" stylesheets="/style/subscriptionsContentPane.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.headstrongpro.desktop.view.subscriptions.SubscriptionsContentView">
     <columnConstraints>
-        <ColumnConstraints hgrow="NEVER" maxWidth="300.0" minWidth="300.0" percentWidth="100.0" prefWidth="300.0" />
+        <ColumnConstraints maxWidth="6000.0" minWidth="100.0" prefWidth="800.0" />
     </columnConstraints>
     <rowConstraints>
         <RowConstraints maxHeight="60.0" minHeight="60.0" prefHeight="60.0" vgrow="NEVER" />
@@ -39,10 +39,14 @@
          </GridPane.margin>
       </TextField>
       <TableView fx:id="subscriptionsTable" maxWidth="4000.0" minWidth="200.0" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2">
-        <columns>
-          <TableColumn prefWidth="75.0" text="C1" />
-          <TableColumn prefWidth="75.0" text="C2" />
-        </columns>
+          <columns>
+              <TableColumn fx:id="subscriptionsCompanyCol" prefWidth="120" text="Name" />
+              <TableColumn fx:id="subscriptionsStartCol" prefWidth="200" text="Start" />
+              <TableColumn fx:id="subscriptionsEndCol" prefWidth="150" text="End" />
+              <TableColumn fx:id="subscriptionsUsersCol" prefWidth="150" text="Users" />
+              <TableColumn fx:id="subscriptionsRateCol" prefWidth="150" text="Rate" />
+
+          </columns>
          <GridPane.margin>
             <Insets left="20.0" right="20.0" />
          </GridPane.margin>
