@@ -6,6 +6,7 @@ import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.scene.control.Label;
 
+import java.time.format.DateTimeFormatter;
 import java.util.function.Predicate;
 
 /**
@@ -96,5 +97,24 @@ public class Utils {
         public void close(){
             isAlive = false;
         }
+    }
+
+    public enum FormatterType {
+        DATE, DATETIME, TIME
+    }
+
+    public static DateTimeFormatter dateFormatter(FormatterType type) {
+        String pattern = "dd-MM-yyyy";
+        switch (type) {
+            case DATE:
+                pattern = "dd-MM-yyyy";
+                break;
+            case DATETIME:
+                pattern = "dd-MM-yyyy hh:mm";
+                break;
+            case TIME:
+                pattern = "hh:mm";
+        }
+        return DateTimeFormatter.ofPattern(pattern);
     }
 }

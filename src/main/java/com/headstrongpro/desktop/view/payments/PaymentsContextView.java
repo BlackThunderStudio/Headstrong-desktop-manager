@@ -8,9 +8,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
+import javafx.util.StringConverter;
 
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
+
+import static com.headstrongpro.desktop.core.Utils.*;
 
 /**
  * Created by Ondřej Soukup on 28.05.2017.
@@ -37,7 +41,37 @@ public class PaymentsContextView extends ContextView<Payment> implements Initial
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        paymentsPaidDatePicker.setConverter(new StringConverter<LocalDate>() {
+            @Override
+            public String toString(LocalDate object) {
+                if(object != null){
+                    return dateFormatter(FormatterType.DATE).format(object);
+                } else return "";
+            }
 
+            @Override
+            public LocalDate fromString(String string) {
+                if(string != null && !string.isEmpty()){
+                    return LocalDate.parse(string, dateFormatter(FormatterType.DATE));
+                } else return null;
+            }
+        });
+
+        paymentsDueDatePicker.setConverter(new StringConverter<LocalDate>() {
+            @Override
+            public String toString(LocalDate object) {
+                if(object != null){
+                    return dateFormatter(FormatterType.DATE).format(object);
+                } else return "";
+            }
+
+            @Override
+            public LocalDate fromString(String string) {
+                if(string != null && !string.isEmpty()){
+                    return LocalDate.parse(string, dateFormatter(FormatterType.DATE));
+                } else return null;
+            }
+        });
     }
 
     @Override
