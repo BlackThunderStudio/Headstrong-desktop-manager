@@ -1,10 +1,5 @@
 package com.headstrongpro.desktop.model.entity;
 
-import com.headstrongpro.desktop.model.Department;
-import com.headstrongpro.desktop.model.Subscription;
-
-import java.util.ArrayList;
-
 /**
  * Company Entity
  */

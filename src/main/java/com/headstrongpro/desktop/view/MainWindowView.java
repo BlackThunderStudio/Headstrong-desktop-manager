@@ -124,6 +124,7 @@ public class MainWindowView extends RootLayoutView implements Initializable {
         layout.setDividerPosition(1, 0.75);
     }
 
+    @SuppressWarnings("unchecked")
     public void changeContext(ContentSource contentSource, Object contextItem) {
         changeContext(contentSource);
         getContextView().changeContextItem(contextItem);
