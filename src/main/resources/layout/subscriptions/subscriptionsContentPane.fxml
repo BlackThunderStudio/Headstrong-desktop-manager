@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.headstrongpro.desktop.core.fxControls.Footer?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TableColumn?>
@@ -14,7 +15,7 @@
 
 <GridPane prefHeight="700.0" prefWidth="800.0" stylesheets="/style/subscriptionsContentPane.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.headstrongpro.desktop.view.subscriptions.SubscriptionsContentView">
     <columnConstraints>
-        <ColumnConstraints maxWidth="6000.0" minWidth="100.0" prefWidth="800.0" />
+        <ColumnConstraints hgrow="ALWAYS" maxWidth="6000.0" minWidth="100.0" prefWidth="800.0" />
     </columnConstraints>
     <rowConstraints>
         <RowConstraints maxHeight="60.0" minHeight="60.0" prefHeight="60.0" vgrow="NEVER" />
@@ -33,12 +34,12 @@
             </Text>
          </children>
       </Pane>
-      <TextField fx:id="searchSubscriptionsTextfield" promptText="Search" GridPane.rowIndex="1">
+      <TextField fx:id="searchSubscriptionsTextfield" promptText="Search" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
          <GridPane.margin>
             <Insets left="20.0" right="20.0" />
          </GridPane.margin>
       </TextField>
-      <TableView fx:id="subscriptionsTable" maxWidth="4000.0" minWidth="200.0" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2">
+      <TableView fx:id="subscriptionsTable" maxWidth="4000.0" minWidth="200.0" prefHeight="200.0" prefWidth="200.0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.vgrow="ALWAYS">
           <columns>
               <TableColumn fx:id="subscriptionsCompanyCol" prefWidth="120" text="Name" />
               <TableColumn fx:id="subscriptionsStartCol" prefWidth="200" text="Start" />
@@ -56,5 +57,10 @@
             <Insets right="20.0" />
          </GridPane.margin>
       </Button>
+       <Footer fx:id="footer" focusTraversable="false" prefHeight="32.0" prefWidth="250.0" GridPane.rowIndex="3">
+         <GridPane.margin>
+            <Insets left="20.0" />
+         </GridPane.margin>
+       </Footer>
    </children>
 </GridPane>
