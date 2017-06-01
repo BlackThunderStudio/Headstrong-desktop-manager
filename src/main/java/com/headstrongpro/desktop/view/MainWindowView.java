@@ -38,7 +38,7 @@ public class MainWindowView extends RootLayoutView implements Initializable {
             JFXtrasFontRoboto.loadAll();
             navigationBarLoader.setLocation(getClass().getResource("/layout/navigationPane.fxml"));
             navigationBar = navigationBarLoader.load();
-            navigationBar.setStyle("-fx-font-family: '" + JFXtrasFontRoboto.AvailableFonts.RobotoLight.getFamilyName() + "';");
+            navigationBar.setStyle("-fx-font-family: '" + JFXtrasFontRoboto.AvailableFonts.RobotoRegular.getFamilyName() + "';");
             NavigationView navigationView = navigationBarLoader.getController();
             navigationView.setMainWindowView(this);
         } catch (Exception e) {
@@ -82,7 +82,7 @@ public class MainWindowView extends RootLayoutView implements Initializable {
             layout.getItems().set(1, contentBar);
 
             // Set default font of content view
-            contentBar.setStyle("-fx-font-family: '" + JFXtrasFontRoboto.AvailableFonts.RobotoLight.getFamilyName() + "';");
+            contentBar.setStyle("-fx-font-family: '" + JFXtrasFontRoboto.AvailableFonts.RobotoRegular.getFamilyName() + "';");
 
             // Prepare FXML Loader and set location of context view, if required
             if (contentSource.getContextView() != null) {
@@ -117,7 +117,7 @@ public class MainWindowView extends RootLayoutView implements Initializable {
         contextView.setMainWindowView(this);
 
         // Set default font of context view
-        contextBar.setStyle("-fx-font-family: '" + JFXtrasFontRoboto.AvailableFonts.RobotoLight.getFamilyName() + "';");
+        contextBar.setStyle("-fx-font-family: '" + JFXtrasFontRoboto.AvailableFonts.RobotoRegular.getFamilyName() + "';");
 
         // Add the bar to the root layout
         layout.getItems().set(2, contextBar);
