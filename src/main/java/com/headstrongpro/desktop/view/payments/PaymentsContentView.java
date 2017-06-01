@@ -9,14 +9,14 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
-import javafx.concurrent.Worker;
-import javafx.concurrent.Worker.State;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
 
 import java.net.URL;
@@ -104,6 +104,16 @@ public class PaymentsContentView extends ContentView implements Initializable {
         companyNameCol.setCellValueFactory(new PropertyValueFactory<>("companyName"));
         cvrCol.setCellValueFactory(new PropertyValueFactory<>("companyCvr"));
         paymentsTable.getColumns().addAll(valCol, dueCol, payCol, companyNameCol, cvrCol);
+    }
+
+    @FXML
+    public void searchPaymentsOnKeyReleased(KeyEvent event) {
+        //TODO: implement searching
+    }
+
+    @FXML
+    public void refreshButtonOnClick(ActionEvent event) {
+        //TODO: implement refreshing
     }
 
 
