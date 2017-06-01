@@ -161,7 +161,7 @@ public class DashboardView extends ContentView implements Initializable {
         threads[5] = new Thread(loadRes);
 
         for (Thread th : threads) {
-            th.setDaemon(true);
+            th.setDaemon(false);
             th.start();
         }
     }

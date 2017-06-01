@@ -32,8 +32,7 @@ public class NavigationView implements Initializable {
     @FXML
     public Button settingsButton;
     @FXML
-    public Button employeesButton;
-
+    public Button coursesButton;
     private MainWindowView mainWindowView;
 
     @Override
@@ -67,11 +66,15 @@ public class NavigationView implements Initializable {
     }
 
     @FXML
-    public void employeesOnClick(ActionEvent actionEvent) {
+    public void coursesOnClick(ActionEvent actionEvent) {
+        //mainWindowView.changeContent(ContentSource.COURSES);
+        //TODO: uncomment when done
     }
 
     @FXML
     public void paymentsOnClick(ActionEvent actionEvent) {
+        //mainWindowView.changeContent(ContentSource.PAYMENTS);
+        //TODO: uncomment when done
     }
 
     @FXML

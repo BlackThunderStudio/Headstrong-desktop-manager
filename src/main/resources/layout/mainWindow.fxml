@@ -3,8 +3,8 @@
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.layout.Pane?>
 <SplitPane fx:controller="com.headstrongpro.desktop.view.MainWindowView" xmlns:fx="http://javafx.com/fxml"
-           fx:id="layout" minWidth="1024.0" minHeight="600.0" prefHeight="900.0" prefWidth="1440.0" stylesheets="/style/main.css">
-    <Pane fx:id="navigationBar" minWidth="256.0" prefWidth="256.0" maxWidth="300.0" prefHeight="800.0"/>
-    <Pane fx:id="contentBar" minWidth="512.0" prefWidth="512.0" prefHeight="800.0"/>
-    <Pane fx:id="contextBar"  prefWidth="256.0" maxWidth="400" prefHeight="800"/>
+           fx:id="layout" minWidth="1100.0" minHeight="760.0" prefHeight="800.0" prefWidth="1440.0" stylesheets="/style/main.css">
+    <Pane fx:id="navigationBar" minWidth="300.0" prefWidth="300.0" maxWidth="300.0" minHeight="760" prefHeight="800.0"/>
+    <Pane fx:id="contentBar" minWidth="500.0" prefWidth="800.0" minHeight="760" prefHeight="800.0"/>
+    <Pane fx:id="contextBar"  minWidth="300" prefWidth="340.0" maxWidth="400" minHeight="760" prefHeight="800"/>
 </SplitPane>

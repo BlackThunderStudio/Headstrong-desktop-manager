@@ -10,22 +10,22 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<GridPane maxWidth="300" minHeight="720" minWidth="300" prefHeight="720.0" prefWidth="300.0" stylesheets="/style/navigationPane.css, " xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.headstrongpro.desktop.view.NavigationView">
+<GridPane maxWidth="300" minWidth="300" prefWidth="300.0" stylesheets="/style/navigationPane.css, " xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.headstrongpro.desktop.view.NavigationView">
     <columnConstraints>
-        <ColumnConstraints maxWidth="300.0" minWidth="300.0" prefWidth="300.0" hgrow="NEVER" />
+        <ColumnConstraints maxWidth="300.0" minWidth="300.0" prefWidth="300.0" />
     </columnConstraints>
     <rowConstraints>
-        <RowConstraints maxHeight="300.0" minHeight="300.0" prefHeight="300.0" vgrow="NEVER" />
-        <RowConstraints maxHeight="4000.0" minHeight="400.0" prefHeight="400.0" vgrow="ALWAYS" />
+        <RowConstraints prefHeight="300.0" vgrow="NEVER" />
+        <RowConstraints prefHeight="400.0" vgrow="ALWAYS" />
 </rowConstraints>
    <children>
-      <Pane maxHeight="300.0" maxWidth="300.0" minHeight="300.0" minWidth="300.0" prefHeight="300.0" prefWidth="300.0" styleClass="logoBackground" GridPane.valignment="TOP">
+      <Pane styleClass="logoBackground" GridPane.valignment="TOP">
          <children>
             <ImageView fitHeight="225.0" fitWidth="210.0" layoutX="46.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                 <Image url="/img/navpane_logo.png" />
             </ImageView>
          </children></Pane>
-      <Pane maxHeight="4000.0" maxWidth="300.0" minHeight="400.0" minWidth="300.0" prefHeight="400.0" prefWidth="300.0" styleClass="navSection" GridPane.rowIndex="1">
+      <Pane styleClass="navSection" GridPane.rowIndex="1">
          <children>
             <Button fx:id="dashboardButton" alignment="TOP_LEFT" layoutY="22.0" mnemonicParsing="false" onAction="#dashboardOnClick" prefWidth="300.0" styleClass="navButton" text="Dashboard" textFill="WHITE">
                <font>
@@ -62,7 +62,7 @@
                <padding>
                   <Insets bottom="5.0" left="50.0" top="5.0" />
                </padding></Button>
-            <Button fx:id="employeesButton" alignment="TOP_LEFT" layoutY="222.0" mnemonicParsing="false" onAction="#employeesOnClick" prefWidth="300.0" styleClass="navButton" text="Employees" textFill="WHITE">
+            <Button fx:id="employeesButton" alignment="TOP_LEFT" layoutY="222.0" mnemonicParsing="false" onAction="#coursesOnClick" prefWidth="300.0" styleClass="navButton" text="Courses" textFill="WHITE">
                <font>
                   <Font size="15.0" />
                </font>
