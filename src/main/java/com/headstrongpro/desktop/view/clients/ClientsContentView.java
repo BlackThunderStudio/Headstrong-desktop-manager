@@ -36,7 +36,7 @@ public class ClientsContentView extends ContentView implements Initializable {
     public TableView<Person> clientsTable;
 
     @FXML
-    public TableColumn<Person, Integer> clientIdCol, clientCompanyCol;
+    public TableColumn<Person, Integer> clientCompanyCol;
     @FXML
     public TableColumn<Person, String> clientNameCol, clientEmailCol, clientPhoneCol, clientGenderCol, clientLoginCol, clientPassCol, clientDateCol;
     @FXML
@@ -59,9 +59,8 @@ public class ClientsContentView extends ContentView implements Initializable {
     }
 
     private void loadTable(ObservableList<Person> clients) {
-        clientsTable.getColumns().removeAll(clientIdCol, clientNameCol, clientEmailCol, clientPhoneCol, clientGenderCol);
+        clientsTable.getColumns().removeAll(clientNameCol, clientEmailCol, clientPhoneCol, clientGenderCol);
         clientsTable.setItems(clients);
-        clientIdCol.setCellValueFactory(new PropertyValueFactory<>("id"));
         clientNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         clientEmailCol.setCellValueFactory(new PropertyValueFactory<>("email"));
         clientPhoneCol.setCellValueFactory(new PropertyValueFactory<>("phone"));
@@ -70,7 +69,7 @@ public class ClientsContentView extends ContentView implements Initializable {
         //clientPassCol.setCellValueFactory(new PropertyValueFactory<>("pass"));
         //clientDateCol.setCellValueFactory(new PropertyValueFactory<>("registrationDate"));
         //clientCompanyCol.setCellValueFactory(new PropertyValueFactory<>("companyId"));
-        clientsTable.getColumns().addAll(clientIdCol, clientNameCol, clientEmailCol, clientPhoneCol, clientGenderCol);
+        clientsTable.getColumns().addAll(clientNameCol, clientEmailCol, clientPhoneCol, clientGenderCol);
     }
 
     @Override
