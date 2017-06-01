@@ -1,6 +1,7 @@
 package com.headstrongpro.desktop.view.resources;
 
 import com.headstrongpro.desktop.controller.ResourcesController;
+import com.headstrongpro.desktop.core.SyncHandler;
 import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.core.fxControls.Footer;
@@ -57,31 +58,11 @@ public class ResourcesTextContext extends ContextView<TextResource> implements I
                 mainWindowView.getContentView().footer.show(e.getMessage(), Footer.NotificationType.ERROR, Footer.FADE_LONG);
             } catch (DatabaseOutOfSyncException e) {
                 e.printStackTrace();
-                handleInconsistency();
+                handleOutOfSync(syncHandler);
             }
         } else {
             mainWindowView.getContentView().footer.show("Values are invalid!", Footer.NotificationType.WARNING);
         }
-    }
-
-    private void handleInconsistency() {
-        Alert a = new Alert(Alert.AlertType.CONFIRMATION);
-        mainWindowView.getContentView().footer.show("Warning! Data inconsistency!", Footer.NotificationType.WARNING);
-        a.setHeaderText("Warning! Database contains newer data.");
-        a.setContentText("Do you want to reload the data? Clicking 'Cancel' will clear all the input");
-        Optional<ButtonType> response = a.showAndWait();
-        response.ifPresent(e -> {
-            if(ButtonType.OK.equals(e)){
-                try {
-                    changeContextItem(Resource.ofType(controller.getResourceById(contextItem.getID())));
-                } catch (ModelSyncException e1) {
-                    mainWindowView.getContentView().footer.show(e1.getMessage(), Footer.NotificationType.ERROR);
-                    clearFields();
-                }
-            } else {
-                clearFields();
-            }
-        });
     }
 
     @FXML
@@ -99,13 +80,23 @@ public class ResourcesTextContext extends ContextView<TextResource> implements I
                     mainWindowView.getContentView().refreshButton.fire();
                 } catch (DatabaseOutOfSyncException e) {
                     e.printStackTrace();
-                    handleInconsistency();
+                    handleOutOfSync(syncHandler);
                 } catch (ModelSyncException e) {
                     mainWindowView.getContentView().footer.show(e.getMessage(), Footer.NotificationType.ERROR, Footer.FADE_LONG);
                 }
             }
         });
     }
+
+    private SyncHandler<TextResource> syncHandler = () -> {
+        try {
+            return Resource.ofType(controller.getResourceById(contextItem.getID()));
+        } catch (ModelSyncException e1) {
+            e1.printStackTrace();
+            mainWindowView.getContentView().footer.show(e1.getMessage(), Footer.NotificationType.ERROR);
+        }
+        return null;
+    };
 
     @Override
     public void populateForm() {

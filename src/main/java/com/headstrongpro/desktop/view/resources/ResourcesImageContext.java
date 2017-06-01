@@ -2,6 +2,7 @@ package com.headstrongpro.desktop.view.resources;
 
 import com.headstrongpro.desktop.controller.Concurrent;
 import com.headstrongpro.desktop.controller.ResourcesController;
+import com.headstrongpro.desktop.core.SyncHandler;
 import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.core.fxControls.Footer;
@@ -59,7 +60,7 @@ public class ResourcesImageContext extends ContextView<ImageResource> implements
                 mainWindowView.getContentView().refreshButton.fire();
             } catch (DatabaseOutOfSyncException e) {
                 e.printStackTrace();
-                handleDataInconsistency();
+                handleOutOfSync(syncHandler);
             } catch (ModelSyncException e) {
                 e.printStackTrace();
                 mainWindowView.getContentView().footer.show(e.getMessage(), Footer.NotificationType.ERROR, Footer.FADE_LONG);
@@ -84,7 +85,7 @@ public class ResourcesImageContext extends ContextView<ImageResource> implements
                     mainWindowView.getContentView().refreshButton.fire();
                 } catch (DatabaseOutOfSyncException e) {
                     e.printStackTrace();
-                    handleDataInconsistency();
+                    handleOutOfSync(syncHandler);
                 } catch (ModelSyncException e) {
                     e.printStackTrace();
                     mainWindowView.getContentView().footer.show(e.getMessage(), Footer.NotificationType.ERROR, Footer.FADE_LONG);
@@ -93,26 +94,15 @@ public class ResourcesImageContext extends ContextView<ImageResource> implements
         });
     }
 
-    private void handleDataInconsistency() {
-        Alert a = new Alert(Alert.AlertType.CONFIRMATION);
-        mainWindowView.getContentView().footer.show("Warning! Data inconsistency!", Footer.NotificationType.WARNING);
-        a.setHeaderText("Warning! Database contains newer data.");
-        a.setContentText("Do you want to reload the data? Clicking 'Cancel' will clear all the input");
-        Optional<ButtonType> response = a.showAndWait();
-        response.ifPresent((ButtonType e) -> {
-            if(ButtonType.OK == e){
-                try {
-                    changeContextItem(Resource.ofType(controller.getResourceById(contextItem.getID())));
-                } catch (ModelSyncException e1) {
-                    e1.printStackTrace();
-                    mainWindowView.getContentView().footer.show("Error!" + e1.getMessage(), Footer.NotificationType.ERROR);
-                    clearFields();
-                }
-            } else {
-                clearFields();
-            }
-        });
-    }
+    private SyncHandler<ImageResource> syncHandler = () -> {
+        try {
+            return Resource.ofType(controller.getResourceById(contextItem.getID()));
+        } catch (ModelSyncException e1) {
+            e1.printStackTrace();
+            mainWindowView.getContentView().footer.show(e1.getMessage(), Footer.NotificationType.ERROR, Footer.FADE_LONG);
+        }
+        return null;
+    };
 
     @Concurrent
     @Override

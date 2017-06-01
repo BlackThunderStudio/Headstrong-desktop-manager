@@ -1,6 +1,7 @@
 package com.headstrongpro.desktop.view.payments;
 
 import com.headstrongpro.desktop.controller.PaymentsController;
+import com.headstrongpro.desktop.core.SyncHandler;
 import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.core.fxControls.Footer;
@@ -110,6 +111,16 @@ public class PaymentsContextView extends ContextView<Payment> implements Initial
         contextItem.setPaid();
     }
 
+    private SyncHandler<Payment> syncHandler = () -> {
+        try {
+            return controller.getByID(contextItem.getId());
+        } catch (ModelSyncException e1) {
+            e1.printStackTrace();
+            mainWindowView.getContentView().footer.show(e1.getMessage(), Footer.NotificationType.ERROR);
+        }
+        return null;
+    };
+
     @FXML
     public void paymentsEditButtonOnClick(ActionEvent event) {
         if(validateInput(paymentsValueTextfield)){
@@ -122,15 +133,7 @@ public class PaymentsContextView extends ContextView<Payment> implements Initial
                 mainWindowView.getContentView().footer.show("Payment updated", Footer.NotificationType.COMPLETED, Footer.FADE_QUICK);
             } catch (DatabaseOutOfSyncException e) {
                 e.printStackTrace();
-                handleOutOfSync(() -> { //new implementation of handling out of sync data using functional interface and lambdas
-                    try {
-                        return controller.getByID(contextItem.getId());
-                    } catch (ModelSyncException e1) {
-                        e1.printStackTrace();
-                        mainWindowView.getContentView().footer.show(e.getMessage(), Footer.NotificationType.ERROR);
-                    }
-                    return null;
-                });
+                handleOutOfSync(syncHandler);
             } catch (ModelSyncException e) {
                 e.printStackTrace();
                 mainWindowView.getContentView().footer.show(e.getMessage(), Footer.NotificationType.ERROR, Footer.FADE_LONG);
@@ -154,14 +157,7 @@ public class PaymentsContextView extends ContextView<Payment> implements Initial
                     mainWindowView.getContentView().footer.show("Resource deleted.", Footer.NotificationType.COMPLETED);
                 } catch (DatabaseOutOfSyncException e) {
                     e.printStackTrace();
-                    handleOutOfSync(() -> {
-                        try {
-                            return controller.getByID(contextItem.getId());
-                        } catch (ModelSyncException e1) {
-                            e1.printStackTrace();
-                        }
-                        return null;
-                    });
+                    handleOutOfSync(syncHandler);
                 } catch (ModelSyncException e) {
                     mainWindowView.getContentView().footer.show(e.getMessage(), Footer.NotificationType.ERROR, Footer.FADE_LONG);
                 }
