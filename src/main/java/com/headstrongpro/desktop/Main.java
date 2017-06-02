@@ -2,6 +2,7 @@ package com.headstrongpro.desktop;
 
 import com.headstrongpro.desktop.controller.UserController;
 import com.headstrongpro.desktop.view.RootLayoutView;
+import com.headstrongpro.desktop.view.dashboard.DashboardView;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -79,6 +80,7 @@ public class Main extends Application {
         Optional<ButtonType> closeResponse = a.showAndWait();
         closeResponse.ifPresent(buttonType -> {
             if (ButtonType.OK.equals(buttonType)) {
+                DashboardView.endReloadingDashboard();
                 primaryStage.close();
             }
         });

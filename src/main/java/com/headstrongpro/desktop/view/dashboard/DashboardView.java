@@ -41,6 +41,8 @@ public class DashboardView extends ContentView implements Initializable {
     @FXML
     public StackPane dashAboutTile;
 
+    private static Timer timer;
+
     private MainWindowView mainWindowView;
 
     private static final String TOTAL = "in\ntotal";
@@ -64,7 +66,7 @@ public class DashboardView extends ContentView implements Initializable {
                 loadData();
             }
         };
-        Timer timer = new Timer();
+        timer = new Timer();
         long delay = 60 * 1000;
         long interval = 2 * 60 * 1000;
         timer.scheduleAtFixedRate(reload, delay, interval);
@@ -161,7 +163,7 @@ public class DashboardView extends ContentView implements Initializable {
         threads[5] = new Thread(loadRes);
 
         for (Thread th : threads) {
-            th.setDaemon(false);
+            th.setDaemon(true);
             th.start();
         }
     }
@@ -216,4 +218,9 @@ public class DashboardView extends ContentView implements Initializable {
     public void aboutTileOnClick(MouseEvent event) {
         mainWindowView.changeContent(ContentSource.ABOUT);
     }
+
+    public static void endReloadingDashboard() {
+        timer.cancel();
+    }
+
 }
