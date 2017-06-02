@@ -1,7 +1,9 @@
 package com.headstrongpro.desktop.controller;
 
 import com.headstrongpro.desktop.DbLayer.DBSubscriptions;
+import com.headstrongpro.desktop.core.exception.ConnectionException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
+import com.headstrongpro.desktop.model.PaymentRate;
 import com.headstrongpro.desktop.model.Subscription;
 import org.bouncycastle.math.raw.Mod;
 
@@ -26,9 +28,13 @@ public class SubscriptionsController implements Refreshable {
         return subscriptions;
     }
 
-
+    @Override
     public void refresh() throws ModelSyncException{
         subscriptions.clear();
         subscriptions.addAll(subscriptionDAO.getAll());
+    }
+
+    public List<PaymentRate> getRates() throws ConnectionException {
+        return subscriptionDAO.getRates();
     }
 }

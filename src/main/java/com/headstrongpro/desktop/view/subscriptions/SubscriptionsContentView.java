@@ -40,7 +40,7 @@ public class SubscriptionsContentView extends ContentView implements Initializab
     @FXML
     public TableView<Subscription> subscriptionsTable;
     @FXML
-    public TableColumn<Company, String> subscriptionsCompanyCol;
+    public TableColumn<Subscription, String> subscriptionsCompanyCol;
     @FXML
     public TableColumn<Subscription, String> subscriptionsStartCol;
     @FXML
@@ -54,16 +54,16 @@ public class SubscriptionsContentView extends ContentView implements Initializab
 
     private SubscriptionsController subscriptionsController;
     private ObservableList<Subscription> subscriptions;
+    private Subscription selected;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        subscriptions =  FXCollections.observableArrayList();
-        setColumns();
+        subscriptionsController = new SubscriptionsController();
+        subscriptions = FXCollections.emptyObservableList();
         Task<Void> init = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
                 Platform.runLater(() -> footer.show("Loading subscriptions...", Footer.NotificationType.LOADING));
-                subscriptionsController = new SubscriptionsController();
                 loadSubscriptions();
                 return null;
             }
@@ -78,38 +78,36 @@ public class SubscriptionsContentView extends ContentView implements Initializab
             }
         }));
 
+        new Thread(init).start();
+
         subscriptionsTable.getSelectionModel().selectedItemProperty().addListener((o, e, c) -> {
             if (c != null) {
                 System.out.println(c.getStartDate());
+                selected = c;
                 footer.show(c.getCompany().getName() + " selected.", Footer.NotificationType.INFORMATION, Footer.FADE_SUPER_QUICK);
-                mainWindowView.getContextView().changeContextItem(c);
+                mainWindowView.getContextView().changeContextItem(selected);
             }
         });
-
-        Thread th = new Thread(init);
-        th.setDaemon(true);
-        th.start();
     }
 
     public void loadSubscriptions(){
         try{
-            subscriptions = FXCollections.emptyObservableList();
-            subscriptions = FXCollections.observableArrayList(subscriptionsController.getSubscriptions());
             System.out.println(subscriptions.size());
+            subscriptions = FXCollections.observableArrayList(subscriptionsController.getSubscriptions());
         } catch (ModelSyncException e) {
             e.printStackTrace();
+            footer.show(e.getMessage(), Footer.NotificationType.ERROR, Footer.FADE_QUICK);
         }
     }
 
-    public void setColumns(){
-        subscriptionsCompanyCol.setCellValueFactory(new PropertyValueFactory<>("company")); //TODO: throws exception on loading
+    public void loadTable(ObservableList<Subscription> subscriptions){
+        subscriptionsTable.getColumns().removeAll(subscriptionsCompanyCol, subscriptionsStartCol, subscriptionsEndCol, subscriptionsUsersCol, subscriptionsRateCol);
+        subscriptionsTable.setItems(subscriptions);
+        subscriptionsCompanyCol.setCellValueFactory(new PropertyValueFactory<>("company"));
         subscriptionsStartCol.setCellValueFactory(new PropertyValueFactory<>("startDate"));
         subscriptionsEndCol.setCellValueFactory(new PropertyValueFactory<>("endDate"));
         subscriptionsUsersCol.setCellValueFactory(new PropertyValueFactory<>("noOfUsers"));
         subscriptionsRateCol.setCellValueFactory(new PropertyValueFactory<>("rate"));
-    }
-
-    public void loadTable(ObservableList<Subscription> subscriptions){
-        subscriptionsTable.setItems(subscriptions);
+        subscriptionsTable.getColumns().addAll(subscriptionsCompanyCol, subscriptionsStartCol, subscriptionsEndCol, subscriptionsUsersCol, subscriptionsRateCol);
     }
 }

@@ -18,7 +18,7 @@ public class CourseControllerTest {
 
     @Test
     public void getAllCoursesTest() throws Exception{
-        assertNotNull(courseController.getAllCourses());
+        assertNotNull(courseController.getAll());
     }
 
 }

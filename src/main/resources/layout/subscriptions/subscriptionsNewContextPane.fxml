@@ -15,7 +15,7 @@
 
 <GridPane maxWidth="500"
           xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1"
-          fx:controller="com.headstrongpro.desktop.view.subscriptions.SubscriptionsContextView">
+          fx:controller="com.headstrongpro.desktop.view.subscriptions.SubscriptionsNewContextView">
     <columnConstraints>
         <ColumnConstraints minWidth="250.0" prefWidth="300" hgrow="ALWAYS"/>
     </columnConstraints>

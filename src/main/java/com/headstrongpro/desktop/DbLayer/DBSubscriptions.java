@@ -201,4 +201,20 @@ public class DBSubscriptions extends Synchronizable implements IDataAccessObject
     protected boolean verifyIntegrity(int itemID) throws ModelSyncException {
         return verifyIntegrity(itemID, timestamp, "subscriptions");
     }
+
+    public List<PaymentRate> getRates() throws ConnectionException {
+        List<PaymentRate> res = new ArrayList<>();
+        try{
+            dbConnect = new DBConnect();
+            String query = "SELECT * FROM payment_rates";
+            ResultSet rs = dbConnect.getFromDataBase(query);
+            while(rs.next()){
+                res.add(new PaymentRate(rs.getInt("n_of_months"),
+                                        rs.getString("name")));
+            }
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return res;
+    }
 }

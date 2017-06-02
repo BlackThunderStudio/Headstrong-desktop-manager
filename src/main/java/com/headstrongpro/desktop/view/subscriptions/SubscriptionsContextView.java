@@ -1,14 +1,22 @@
 package com.headstrongpro.desktop.view.subscriptions;
 
 import com.headstrongpro.desktop.controller.SubscriptionsController;
+import com.headstrongpro.desktop.core.Utils;
+import com.headstrongpro.desktop.core.exception.ConnectionException;
+import com.headstrongpro.desktop.model.PaymentRate;
 import com.headstrongpro.desktop.model.Subscription;
 import com.headstrongpro.desktop.view.ContextView;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.util.StringConverter;
 
+import java.net.ConnectException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
+
+import static com.headstrongpro.desktop.core.Utils.dateFormatter;
 
 /**
  * Created by Ondřej Soukup on 28.05.2017.
@@ -25,7 +33,7 @@ public class SubscriptionsContextView extends ContextView<Subscription> implemen
     @FXML
     public DatePicker subscriptionsEndDatePicker;
     @FXML
-    public ComboBox subscriptionsRateCombo;
+    public ComboBox<String> subscriptionsRateCombo;
     @FXML
     public Label subscriptionsNoOfUsersLabel;
     @FXML
@@ -43,32 +51,52 @@ public class SubscriptionsContextView extends ContextView<Subscription> implemen
     @FXML
     public Button subscriptionsPaymentsButton;
 
-    //subscriptionsNewContextPane.fxml - when adding a new subscription
-    @FXML
-    public TextField subscriptionsNewCompanyTextfield;
-    @FXML
-    public DatePicker subscriptionsNewStartDatePicker;
-    @FXML
-    public DatePicker subscriptionsNewEndDatePicker;
-    @FXML
-    public ComboBox subscriptionsNewRateCombo;
-    @FXML
-    public TextField subscriptionsNewNoOfUsersTextfield;
-    @FXML
-    public Label subscriptionsNewPricePrUserLabel;
-    @FXML
-    public Label subscriptionsNewTotalPriceLabel;
-    @FXML
-    public Button subscriptionsNewSaveButton;
-    @FXML
-    public Button subscriptionsNewCancelButton;
 
-    SubscriptionsController subscriptionsController;
+
+    private SubscriptionsController subscriptionsController;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        clearFields();
         subscriptionsController = new SubscriptionsController();
+        subscriptionsStartDatePicker.setConverter(new StringConverter<LocalDate>() {
+            @Override
+            public String toString(LocalDate object) {
+                if(object != null){
+                    return dateFormatter(Utils.FormatterType.DATE).format(object);
+                } else return "";
+            }
+
+            @Override
+            public LocalDate fromString(String string) {
+                if(string != null && !string.isEmpty()){
+                    return LocalDate.parse(string, dateFormatter(Utils.FormatterType.DATE));
+                } else return null;
+            }
+        });
+
+        subscriptionsEndDatePicker.setConverter(new StringConverter<LocalDate>() {
+            @Override
+            public String toString(LocalDate object) {
+                if(object != null){
+                    return dateFormatter(Utils.FormatterType.DATE).format(object);
+                } else return "";
+            }
+
+            @Override
+            public LocalDate fromString(String string) {
+                if(string != null && !string.isEmpty()){
+                    return LocalDate.parse(string, dateFormatter(Utils.FormatterType.DATE));
+                } else return null;
+            }
+        });
+
+
+        try {
+            for (PaymentRate pr : subscriptionsController.getRates())
+                subscriptionsRateCombo.getItems().add(pr.getName());
+        } catch (ConnectionException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -78,7 +106,10 @@ public class SubscriptionsContextView extends ContextView<Subscription> implemen
 
     @Override
     public void populateForm(){
-        //subscriptionsNewStartDatePicker.setValue(contextItem.getStartDate().toLocalDate());
-        //subscriptionsNewEndDatePicker.setValue(contextItem.getEndDate().toLocalDate());
+        subscriptionsStartDatePicker.getEditor()
+                .setText(contextItem.getStartDate().toString());
+        subscriptionsEndDatePicker.getEditor()
+                .setText(contextItem.getEndDate().toString());
+        //TODO fix thiss subscriptionsRateCombo.getButtonCell().setItem(contextItem.getRate().getName());
     }
 }
