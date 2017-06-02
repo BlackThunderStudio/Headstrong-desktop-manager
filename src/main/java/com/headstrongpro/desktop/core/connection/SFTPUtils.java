@@ -4,6 +4,7 @@ import com.headstrongpro.desktop.core.exception.ConnectionException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.model.resource.IResourceConnector;
 import com.headstrongpro.desktop.model.resource.Resource;
+import com.headstrongpro.desktop.model.resource.ResourceType;
 import com.jcraft.jsch.*;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -138,7 +139,7 @@ public class SFTPUtils implements IResourceConnector {
     }
 
     @Override
-    public String uploadCdnServer(File file, boolean useHttps) {
+    public String uploadCdnServer(File file, boolean useHttps, ResourceType type) {
         //do nothing
         return null;
     }

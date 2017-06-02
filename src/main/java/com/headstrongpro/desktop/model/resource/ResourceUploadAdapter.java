@@ -43,7 +43,7 @@ public class ResourceUploadAdapter extends Configurable implements IResourceUplo
         } else if(destination.equals(Destination.MEDIA_SERVER)){
             return resourceConnector.uploadMediaServer(resource.getFile(), resource.getRemoteFileName());
         } else if(destination.equals(Destination.CDN_SERVER)){
-            return resourceConnector.uploadCdnServer(resource.getFile(), true);
+            return resourceConnector.uploadCdnServer(resource.getFile(), true, resource.getType());
         }
         return null;
     }

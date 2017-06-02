@@ -355,8 +355,6 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
                 String query = "DELETE FROM resources WHERE id=?;";
                 PreparedStatement preparedStatement = dbConnect.getConnection().prepareStatement(query);
                 preparedStatement.setInt(1, object.getID());
-                dbConnect.uploadSafe(preparedStatement);
-                logChange( "resources", object.getID(), DELETE);
 
                 switch (object.getType().get()) {
                     case 1:
@@ -381,6 +379,9 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
                         logChange( "multimedia_resources", x3.getInt(1), DELETE);
                         break;
                 }
+
+                dbConnect.uploadSafe(preparedStatement);
+                logChange( "resources", object.getID(), DELETE);
             } catch (/*ConnectionException |*/ SQLException e) {
                 throw new ModelSyncException("WARNING! Could not update resource of ID: " + object.getID() + " !", e);
             }
@@ -481,7 +482,7 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
     }
 
     @Override
-    public String uploadCdnServer(File file, boolean useHttps) {
+    public String uploadCdnServer(File file, boolean useHttps, ResourceType type) {
         //do nothing
         return null;
     }

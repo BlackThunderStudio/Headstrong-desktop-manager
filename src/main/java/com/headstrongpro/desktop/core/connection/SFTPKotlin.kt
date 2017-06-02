@@ -2,6 +2,7 @@ package com.headstrongpro.desktop.core.connection
 
 import com.headstrongpro.desktop.model.resource.IResourceConnector
 import com.headstrongpro.desktop.model.resource.Resource
+import com.headstrongpro.desktop.model.resource.ResourceType
 import com.jcraft.jsch.*
 import javafx.scene.control.Alert
 import org.apache.commons.io.FilenameUtils
@@ -56,7 +57,7 @@ class SFTPKotlin(val host: String, val user: String, val  pass: String, val  pat
         return null
     }
 
-    override fun uploadCdnServer(file: File?, useHttps: Boolean): String? {
+    override fun uploadCdnServer(file: File?, useHttps: Boolean, type: ResourceType): String? {
         //do nothing
         return null
     }

@@ -11,5 +11,5 @@ import java.io.File;
 public interface IResourceConnector {
     String uploadMediaServer(File file, String remote) throws ConnectionException;
     Resource uploadDataBase(Resource resource) throws ModelSyncException;
-    String uploadCdnServer(File file, boolean useHttps);
+    String uploadCdnServer(File file, boolean useHttps, ResourceType type);
 }
