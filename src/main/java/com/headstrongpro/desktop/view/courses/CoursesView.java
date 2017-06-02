@@ -18,6 +18,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 
+import java.awt.event.ActionEvent;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -42,6 +43,8 @@ public class CoursesView extends ContentView implements Initializable {
     public TableColumn<Course, String> courseDesc;
     @FXML
     public Button newCourseButton;
+    @FXML
+    public Button courseRefreshButton;
 
     private CourseController courseController;
     private ObservableList<Course> courses;
@@ -87,6 +90,7 @@ public class CoursesView extends ContentView implements Initializable {
             courses = courseController.getAll();
         } catch (ModelSyncException e){
             e.printStackTrace();
+            footer.show(e.getMessage(), Footer.NotificationType.ERROR, Footer.FADE_QUICK);
         }
     }
 
@@ -98,4 +102,33 @@ public class CoursesView extends ContentView implements Initializable {
         coursesTable.getColumns().addAll(courseName, courseDesc);
     }
 
+    @FXML
+    public void handleSearch(){
+        loadTable(courseController.searchByPhrase(searchCoursesTextfield.getText()));
+    }
+
+    @FXML
+    public void courseRefresh(){
+        searchCoursesTextfield.clear();
+        Task<Void> sync = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                Platform.runLater(() -> footer.show("Synchronising data...", Footer.NotificationType.LOADING));
+                loadCourses();
+                return null;
+            }
+        };
+
+
+        sync.stateProperty().addListener(((observable, oldValue, newValue) -> {
+            if(newValue.equals(SUCCEEDED)){
+                loadTable(courses);
+                footer.show("Courses reloaded successfully", Footer.NotificationType.COMPLETED);
+            } else if(newValue.equals(CANCELLED) || newValue.equals(FAILED)){
+                footer.show("Could not reload courses!", Footer.NotificationType.ERROR, Footer.FADE_LONG);
+            }
+        }));
+
+        new Thread(sync).start();
+    }
 }

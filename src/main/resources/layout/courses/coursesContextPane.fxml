@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<GridPane minHeight="460" minWidth="250.0" prefHeight="700.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.headstrongpro.desktop.view.courses.CoursesContextView">
+<GridPane minHeight="460" minWidth="250.0" prefHeight="700.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.headstrongpro.desktop.view.courses.CoursesContextView">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="200.0" prefWidth="300.0" />
     </columnConstraints>
@@ -50,8 +50,8 @@
         <TextField fx:id="coursesNameTextfield" promptText="Name" GridPane.rowIndex="1" />
         <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.halignment="RIGHT">
             <children>
-                <Button fx:id="coursesEditButton" contentDisplay="CENTER" maxWidth="90.0" minWidth="90.0" mnemonicParsing="false" prefWidth="90.0" text="Edit" />
-                <Button fx:id="coursesDeleteButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="90.0" text="Delete" />
+                <Button fx:id="coursesEditButton" contentDisplay="CENTER" maxWidth="90.0" minWidth="90.0" mnemonicParsing="false" onAction="#courseEditOnClick" prefWidth="90.0" text="Edit" />
+                <Button fx:id="coursesDeleteButton" mnemonicParsing="false" onAction="#courseDeleteOnClick" prefHeight="25.0" prefWidth="90.0" text="Delete" />
             </children>
             <GridPane.margin>
                 <Insets />
