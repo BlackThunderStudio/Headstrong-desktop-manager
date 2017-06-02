@@ -137,6 +137,12 @@ public class SFTPUtils implements IResourceConnector {
         return null; //do nothing
     }
 
+    @Override
+    public String uploadCdnServer(File file, boolean useHttps) {
+        //do nothing
+        return null;
+    }
+
     public class MyUserInfo implements UserInfo {
 
         private String password;

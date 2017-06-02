@@ -203,7 +203,8 @@ public class ResourcesController implements Refreshable {
 
         String url= "";
         if(!type.equals(ResourceType.TEXT)){
-            url = (String) resourceUploader.upload(resource, Destination.MEDIA_SERVER);
+            url = (String) resourceUploader.upload(resource, Destination.CDN_SERVER);
+            System.out.println("New resource available at: " + url);
         }
 
         //load record into the database

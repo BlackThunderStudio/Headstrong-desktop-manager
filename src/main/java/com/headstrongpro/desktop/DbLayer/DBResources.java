@@ -479,4 +479,10 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
     public Resource uploadDataBase(Resource resource) throws ModelSyncException {
         return persist(resource);
     }
+
+    @Override
+    public String uploadCdnServer(File file, boolean useHttps) {
+        //do nothing
+        return null;
+    }
 }

@@ -1,5 +1,6 @@
 package com.headstrongpro.desktop.model.resource;
 
+import com.headstrongpro.desktop.core.connection.CdnContext;
 import com.headstrongpro.desktop.core.connection.Configurable;
 import com.headstrongpro.desktop.core.connection.SFTPKotlin;
 import com.headstrongpro.desktop.core.connection.SFTPUtils;
@@ -30,6 +31,8 @@ public class ResourceUploadAdapter extends Configurable implements IResourceUplo
                     (String) ftpData.get(4),
                     (String) ftpData.get(5)
             );
+        } else if(destination.equals(Destination.CDN_SERVER)){
+            resourceConnector = new CdnContext();
         }
     }
 
@@ -39,6 +42,8 @@ public class ResourceUploadAdapter extends Configurable implements IResourceUplo
             return resourceConnector.uploadDataBase(resource);
         } else if(destination.equals(Destination.MEDIA_SERVER)){
             return resourceConnector.uploadMediaServer(resource.getFile(), resource.getRemoteFileName());
+        } else if(destination.equals(Destination.CDN_SERVER)){
+            return resourceConnector.uploadCdnServer(resource.getFile(), true);
         }
         return null;
     }
@@ -58,6 +63,7 @@ public class ResourceUploadAdapter extends Configurable implements IResourceUplo
 
     public enum Destination{
         DATABASE,
-        MEDIA_SERVER
+        MEDIA_SERVER,
+        CDN_SERVER
     }
 }

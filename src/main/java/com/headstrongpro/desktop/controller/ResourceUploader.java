@@ -14,7 +14,7 @@ import static com.headstrongpro.desktop.model.resource.ResourceUploadAdapter.*;
 public class ResourceUploader implements IResourceUploader{
     @Override
     public Object upload(Resource resource, Destination destination) throws ModelSyncException, ConnectionException {
-        if(destination.equals(Destination.DATABASE) || destination.equals(Destination.MEDIA_SERVER)){
+        if(destination.equals(Destination.DATABASE) || destination.equals(Destination.MEDIA_SERVER) || destination.equals(Destination.CDN_SERVER)){
             ResourceUploadAdapter adapter = new ResourceUploadAdapter(destination);
             return adapter.upload(resource, destination);
         } else {

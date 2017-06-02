@@ -56,6 +56,11 @@ class SFTPKotlin(val host: String, val user: String, val  pass: String, val  pat
         return null
     }
 
+    override fun uploadCdnServer(file: File?, useHttps: Boolean): String? {
+        //do nothing
+        return null
+    }
+
     protected fun connect(): ChannelSftp {
         val sftp: ChannelSftp
         val session = jsch.getSession(user, host, port)
