@@ -30,19 +30,19 @@ public class CourseController implements Refreshable, IContentController<Course>
     @Concurrent
     @Override
     public void refresh() throws ModelSyncException {
-        courses.addAll(dbCourse.getAll());
+        courses = dbCourse.getAll();
     }
 
     @Override
     public ObservableList<Course> getAll() throws ModelSyncException {
         refresh();
-        courses.forEach(e -> {
+        /*courses.forEach(e -> {
             try {
                 e.setResources(dbResources.getByCourseID(e.getId()));
             } catch (ModelSyncException e1) {
                 e1.printStackTrace();
             }
-        });
+        });*/
         return FXCollections.observableArrayList(courses);
     }
 
