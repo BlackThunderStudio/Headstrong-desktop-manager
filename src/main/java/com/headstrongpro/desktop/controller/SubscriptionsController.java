@@ -62,16 +62,17 @@ public class SubscriptionsController implements Refreshable, IContentController<
 
     @Override
     public Subscription createNew(Subscription subscription) throws ModelSyncException {
-        return null;
+        return subscriptionDAO.persist(subscription);
     }
 
     @Override
     public void edit(Subscription subscription) throws DatabaseOutOfSyncException, ModelSyncException {
-
+        subscriptionDAO.update(subscription);
+        refresh();
     }
 
     @Override
     public Subscription getByID(int id) throws ModelSyncException {
-        return null;
+        return subscriptionDAO.getById(id);
     }
 }

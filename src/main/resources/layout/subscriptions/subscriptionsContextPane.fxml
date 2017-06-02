@@ -48,8 +48,8 @@
         </HBox>
         <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.halignment="RIGHT">
             <children>
-                <Button fx:id="subscriptionsEditButton" contentDisplay="CENTER" maxWidth="90.0" minWidth="90.0" mnemonicParsing="false" prefWidth="90.0" text="Edit" />
-                <Button fx:id="subscriptionsDeleteButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="90.0" text="Delete" />
+                <Button fx:id="subscriptionsEditButton" onAction="#subscriptionsEditButtonOnClick" contentDisplay="CENTER" maxWidth="90.0" minWidth="90.0" mnemonicParsing="false" prefWidth="90.0" text="Edit" />
+                <Button fx:id="subscriptionsDeleteButton" onAction="#subscriptionsDeleteButtonOnClick" mnemonicParsing="false" prefHeight="25.0" prefWidth="90.0" text="Delete" />
             </children>
             <GridPane.margin>
                 <Insets />

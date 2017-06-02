@@ -1,14 +1,18 @@
 package com.headstrongpro.desktop.view.subscriptions;
 
 import com.headstrongpro.desktop.controller.SubscriptionsController;
+import com.headstrongpro.desktop.core.SyncHandler;
 import com.headstrongpro.desktop.core.Utils;
 import com.headstrongpro.desktop.core.exception.ConnectionException;
+import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
+import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.core.fxControls.Footer;
 import com.headstrongpro.desktop.model.PaymentRate;
 import com.headstrongpro.desktop.model.Subscription;
 import com.headstrongpro.desktop.view.ContextView;
 import javafx.concurrent.Task;
 import javafx.concurrent.Worker;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -16,8 +20,10 @@ import javafx.util.StringConverter;
 
 import java.net.ConnectException;
 import java.net.URL;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import static com.headstrongpro.desktop.core.Utils.dateFormatter;
@@ -177,4 +183,63 @@ public class SubscriptionsContextView extends ContextView<Subscription> implemen
 
         new Thread(rates).start();
     }
+
+    @FXML
+    public void subscriptionsEditButtonOnClick(ActionEvent event) {
+        if(validateInput(subscriptionsEndDatePicker.getEditor(), subscriptionsStartDatePicker.getEditor())){
+            contextItem.setStartDate(Date.valueOf(subscriptionsStartDatePicker.getEditor().getText()));
+            contextItem.setEndDate(Date.valueOf(subscriptionsEndDatePicker.getEditor().getText()));
+            contextItem.setActive(true);
+            contextItem.setRate(rates
+                    .stream()
+                    .filter(e -> e.getName().equals(subscriptionsRateCombo.getValue()))
+                    .findFirst()
+                    .get());
+            try {
+                mainWindowView.getContentView().footer.show("Updating subscription...", Footer.NotificationType.LOADING);
+                subscriptionsController.edit(contextItem);
+                mainWindowView.getContentView().footer.show("Subscription updated.", Footer.NotificationType.COMPLETED);
+                mainWindowView.getContentView().refreshButton.fire();
+            } catch (DatabaseOutOfSyncException e) {
+                e.printStackTrace();
+                handleOutOfSync(handler);
+            } catch (ModelSyncException e) {
+                e.printStackTrace();
+                mainWindowView.getContentView().footer.show(e.getMessage(), Footer.NotificationType.ERROR, Footer.FADE_LONG);
+            }
+        } else {
+            mainWindowView.getContentView().footer.show("Invalid input!", Footer.NotificationType.WARNING);
+        }
+    }
+
+    @FXML
+    public void subscriptionsDeleteButtonOnClick(ActionEvent event) {
+        Alert a = new Alert(Alert.AlertType.CONFIRMATION);
+        a.setHeaderText("Are you sure you want to delete a selected item?");
+        a.setContentText("You cannot take that action back");
+        Optional<ButtonType> response = a.showAndWait();
+        response.ifPresent(btn -> {
+            if(ButtonType.OK.equals(btn)){
+                try {
+                    subscriptionsController.delete(contextItem);
+                } catch (DatabaseOutOfSyncException e) {
+                    e.printStackTrace();
+                    handleOutOfSync(handler);
+                } catch (ModelSyncException e) {
+                    e.printStackTrace();
+                    mainWindowView.getContentView().footer.show(e.getMessage(), Footer.NotificationType.ERROR, Footer.FADE_LONG);
+                }
+            }
+        });
+    }
+
+    private SyncHandler<Subscription> handler = () -> {
+        try {
+            return subscriptionsController.getByID(contextItem.getId());
+        } catch (ModelSyncException e) {
+            e.printStackTrace();
+            mainWindowView.getContentView().footer.show(e.getMessage(), Footer.NotificationType.ERROR);
+        }
+        return null;
+    };
 }
