@@ -95,4 +95,8 @@ public class Subscription {
     public String getCompanyName() {
         return companyName;
     }
+
+    public void setRate(PaymentRate rate) {
+        this.rate = rate;
+    }
 }
