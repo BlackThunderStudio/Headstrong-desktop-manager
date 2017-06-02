@@ -12,8 +12,10 @@ import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 
 import java.net.URL;
@@ -35,6 +37,10 @@ public class CoursesView extends ContentView implements Initializable {
     @FXML
     public TableView<Course> coursesTable;
     @FXML
+    public TableColumn<Course, String> courseName;
+    @FXML
+    public TableColumn<Course, String> courseDesc;
+    @FXML
     public Button newCourseButton;
 
     private CourseController courseController;
@@ -45,15 +51,15 @@ public class CoursesView extends ContentView implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         courseController = new CourseController();
         courses = FXCollections.emptyObservableList();
+
         Task<Void> init = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
-                Platform.runLater(() -> footer.show("Initializing payments", Footer.NotificationType.LOADING));
+                Platform.runLater(() -> footer.show("Initializing courses", Footer.NotificationType.LOADING));
                 loadCourses();
                 return null;
             }
         };
-
 
         init.stateProperty().addListener(((observable, oldValue, newValue) -> {
             if(newValue.equals(SUCCEEDED)){
@@ -63,6 +69,17 @@ public class CoursesView extends ContentView implements Initializable {
                 footer.show("Error! Courses could not be loaded!", Footer.NotificationType.ERROR, Footer.FADE_LONG);
             }
         }));
+
+        new Thread(init).start();
+
+        coursesTable.getSelectionModel()
+                .selectedItemProperty()
+                .addListener(((observable, oldValue, newValue) -> {
+                    if(newValue != null) {
+                        selected = newValue;
+                        mainWindowView.getContextView().changeContextItem(selected);
+                    }
+                }));
     }
 
     public void loadCourses(){
@@ -74,7 +91,11 @@ public class CoursesView extends ContentView implements Initializable {
     }
 
     public void loadTable(ObservableList<Course> courses){
-
+        coursesTable.getColumns().removeAll(courseName, courseDesc);
+        coursesTable.setItems(courses);
+        courseName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        courseDesc.setCellValueFactory(new PropertyValueFactory<>("description"));
+        coursesTable.getColumns().addAll(courseName, courseDesc);
     }
 
 }

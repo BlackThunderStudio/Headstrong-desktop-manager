@@ -1,5 +1,6 @@
 package com.headstrongpro.desktop.controller;
 
+import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.model.Course;
 import com.headstrongpro.desktop.DbLayer.DBResources;
@@ -7,24 +8,34 @@ import com.headstrongpro.desktop.DbLayer.DBCourse;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
- * Created by rajmu on 17.05.14.
+ * c.c.catch.
  */
 public class CourseController implements Refreshable, IContentController<Course> {
 
     private DBCourse dbCourse;
     private DBResources dbResources;
+    private List<Course> courses;
 
     public CourseController(){
         dbCourse = new DBCourse();
         dbResources = new DBResources();
+        courses = new ArrayList<>();
+    }
+
+    @Concurrent
+    @Override
+    public void refresh() throws ModelSyncException {
+        courses.addAll(dbCourse.getAll());
     }
 
     @Override
     public ObservableList<Course> getAll() throws ModelSyncException {
-        List<Course> courses = dbCourse.getAll();
+        refresh();
         courses.forEach(e -> {
             try {
                 e.setResources(dbResources.getByCourseID(e.getId()));
@@ -37,32 +48,30 @@ public class CourseController implements Refreshable, IContentController<Course>
 
     @Override
     public Course createNew(Course course) throws ModelSyncException{
-        if(course != null) throw new IllegalArgumentException("Cannot be null");
+        if(course == null) throw new IllegalArgumentException("Cannot be null");
         return dbCourse.persist(course);
     }
 
     @Override
-    public void edit(Course course){
-
+    public void edit(Course course) throws DatabaseOutOfSyncException, ModelSyncException {
+        dbCourse.update(course);
     }
 
     @Override
-    public void delete(Course course){
-
+    public void delete(Course course) throws DatabaseOutOfSyncException, ModelSyncException {
+        if(course == null) throw new IllegalArgumentException("Cannot be nullu");
+        dbCourse.delete(course);
     }
 
     @Override
-    public Course getByID(int id){
-        return null;
+    public Course getByID(int id) throws ModelSyncException {
+        return dbCourse.getById(id);
     }
 
     @Override
     public ObservableList<Course> searchByPhrase(String phrase){
-        return null;
-    }
-
-    @Override
-    public void refresh(){
-
+        return FXCollections.observableArrayList(courses.stream().filter(
+                e-> e.getName().toLowerCase().contains(phrase.toLowerCase())
+        ).collect(Collectors.toList()));
     }
 }
