@@ -1,11 +1,13 @@
 package com.headstrongpro.desktop.view.courses;
 
 import com.headstrongpro.desktop.controller.CourseController;
+import com.headstrongpro.desktop.controller.ResourcesController;
 import com.headstrongpro.desktop.core.SyncHandler;
 import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.core.fxControls.Footer;
 import com.headstrongpro.desktop.model.Course;
+import com.headstrongpro.desktop.view.ContentSource;
 import com.headstrongpro.desktop.view.ContextView;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -137,5 +139,10 @@ public class CoursesContextView extends ContextView<Course> implements Initializ
         });
         clearFields();
         mainWindowView.getContentView().refreshButton.fire();
+    }
+
+    @FXML
+    public void coursesTextOnClick(){
+        mainWindowView.changeContent(ContentSource.RESOURCES_TEXT);
     }
 }

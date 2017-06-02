@@ -36,6 +36,10 @@ public abstract class ContextView<T> {
         populateForm();
     }
 
+    public T getContextItem(){
+        return contextItem;
+    }
+
     /**
      * Sets the values on context initialization
      */

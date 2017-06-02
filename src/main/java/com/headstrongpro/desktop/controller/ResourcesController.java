@@ -326,4 +326,14 @@ public class ResourcesController implements Refreshable {
                 .filter(e -> e.isEmpty() || e.contains(";") || e.contains(":") || e.contains("^"))
                 .count() == 0;
     }
+
+    public List<Resource> getAudioResById(int id) throws ModelSyncException{
+        return resourcesDAO.getByCourseID(id).stream().filter(e-> e.getType() == ResourceType.AUDIO).collect(Collectors.toList());
+    }
+    public List<Resource> getImageResById(int id) throws ModelSyncException{
+        return resourcesDAO.getByCourseID(id).stream().filter(e-> e.getType() == ResourceType.IMAGE).collect(Collectors.toList());
+    }
+    public List<Resource> getTextResById(int id) throws ModelSyncException{
+        return resourcesDAO.getByCourseID(id).stream().filter(e-> e.getType() == ResourceType.TEXT).collect(Collectors.toList());
+    }
 }

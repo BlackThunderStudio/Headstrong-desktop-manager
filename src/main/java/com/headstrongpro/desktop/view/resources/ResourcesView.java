@@ -4,6 +4,7 @@ import com.headstrongpro.desktop.controller.ResourcesController;
 import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.core.fxControls.Footer;
+import com.headstrongpro.desktop.model.Course;
 import com.headstrongpro.desktop.model.resource.Resource;
 import com.headstrongpro.desktop.model.resource.ResourceType;
 import com.headstrongpro.desktop.view.ContentSource;
@@ -72,7 +73,19 @@ public class ResourcesView extends ContentView implements Initializable {
 
         init.stateProperty().addListener((observable, oldValue, newValue) -> {
             if(newValue.equals(SUCCEEDED)){
-                initTable(this.resources);
+
+                try {
+                    if (mainWindowView.getContextView().getContextItem() instanceof Resource){
+                        Course c = (Course) mainWindowView.getContextView().getContextItem();
+                        initTable(FXCollections.observableList(controller.getTextResById(c.getId())));
+                        mainWindowView.getContextView().changeContextItem(null);
+                        //TODO: needs a bit of tweaking to display from courses
+                    }
+                    else
+                        initTable(this.resources);
+                } catch (ModelSyncException e){
+                    e.printStackTrace();
+                }
                 footer.show("Resources loaded.", Footer.NotificationType.COMPLETED);
             } else if(newValue.equals(FAILED) || newValue.equals(CANCELLED)){
                 footer.show("Error! Could not load resources!", Footer.NotificationType.ERROR, Footer.FADE_LONG);
