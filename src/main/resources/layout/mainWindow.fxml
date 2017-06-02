@@ -1,24 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.web.WebView?>
-
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
-          prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1"
-          fx:controller="com.headstrongpro.desktop.view.MainWindowView">
-    <columnConstraints>
-        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
-        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
-        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
-    </columnConstraints>
-    <rowConstraints>
-        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-    </rowConstraints>
-    <children>
-        <WebView fx:id="webViw" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="3" GridPane.rowSpan="3"/>
-    </children>
-</GridPane>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.layout.Pane?>
+<SplitPane fx:controller="com.headstrongpro.desktop.view.MainWindowView" xmlns:fx="http://javafx.com/fxml"
+           fx:id="layout" minWidth="1100.0" minHeight="760.0" prefHeight="800.0" prefWidth="1440.0" stylesheets="/style/main.css">
+    <Pane fx:id="navigationBar" minWidth="300.0" prefWidth="300.0" maxWidth="300.0" minHeight="760" prefHeight="800.0"/>
+    <Pane fx:id="contentBar" minWidth="500.0" prefWidth="800.0" minHeight="760" prefHeight="800.0"/>
+    <Pane fx:id="contextBar"  minWidth="300" prefWidth="340.0" maxWidth="400" minHeight="760" prefHeight="800"/>
+</SplitPane>

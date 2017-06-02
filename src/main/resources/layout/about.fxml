@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.web.WebView?>
+
+<GridPane prefHeight="700.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.headstrongpro.desktop.view.AboutView">
+    <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="60000.0" minWidth="0.0" prefWidth="800.0" />
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints maxHeight="6000.0" minHeight="0.0" prefHeight="700.0" vgrow="SOMETIMES" />
+    </rowConstraints>
+   <children>
+      <WebView fx:id="webView" prefHeight="200.0" prefWidth="200.0" />
+   </children>
+</GridPane>

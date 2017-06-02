@@ -1,5 +1,6 @@
 package com.headstrongpro.desktop.model.resource;
 
+import java.io.File;
 import java.sql.Time;
 
 /**
@@ -15,6 +16,28 @@ public class AudioResource implements Resource {
     private String name, description, url;
     private boolean isForAchievement;
     private Time duration;
+    private File file;
+    private String path;
+
+    @Override
+    public File getFile() {
+        return file;
+    }
+
+    @Override
+    public void setFile(File file) {
+        this.file = file;
+    }
+
+    @Override
+    public String getRemoteFileName() {
+        return path;
+    }
+
+    @Override
+    public void setRemoteFileName(String path) {
+        this.path = path;
+    }
 
     AudioResource(String name, String description, boolean isForAchievement) {
         this.name = name;
@@ -75,6 +98,14 @@ public class AudioResource implements Resource {
 
     public void setDuration(Time duration) {
         this.duration = duration;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Override

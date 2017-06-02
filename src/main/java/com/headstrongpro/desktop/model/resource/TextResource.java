@@ -1,5 +1,7 @@
 package com.headstrongpro.desktop.model.resource;
 
+import java.io.File;
+
 /**
  * Created by rajmu on 17.05.08.
  */
@@ -11,6 +13,28 @@ public class TextResource implements Resource {
     private int id;
     private String name, description, content;
     private boolean isForAchievement;
+    private File file;
+    private String path;
+
+    @Override
+    public File getFile() {
+        return file;
+    }
+
+    @Override
+    public void setFile(File file) {
+        this.file = file;
+    }
+
+    @Override
+    public String getRemoteFileName() {
+        return path;
+    }
+
+    @Override
+    public void setRemoteFileName(String path) {
+        this.path = path;
+    }
 
     TextResource(String name, String description, boolean isForAchievement) {
         this.name = name;
@@ -63,5 +87,9 @@ public class TextResource implements Resource {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

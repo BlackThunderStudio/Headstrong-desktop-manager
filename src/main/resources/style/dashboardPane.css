@@ -1,8 +1,12 @@
-.headerPane{
-    -fx-background-color: #ffffff;
-    -fx-effect: dropshadow(three-pass-box, #2b2b2b, 8, 0, 0, 0);
+.dashboard-tile {
+    -fx-background-color: white;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 3, 0, 1, 1);
+    -fx-cursor: hand;
+}
+.dashboard-tile:hover {
+    -fx-background-color: #FAFAFA
+}
+.dashboard-tile:pressed {
+    -fx-background-color: #EEEEEE;
 }
 
-.contentPane{
-    -fx-background-color: #f1f1f1;
-}

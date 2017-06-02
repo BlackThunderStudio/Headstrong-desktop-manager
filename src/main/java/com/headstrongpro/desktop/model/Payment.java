@@ -10,7 +10,8 @@ public class Payment {
     private double value;
     private Date timestamp, dueDate;
     boolean paid;
-    Subscription subscription;
+    private Subscription subscription;
+    private String companyName, companyCvr;
 
     public Payment(int id, double value, Date timestamp, Date dueDate, boolean paid, Subscription subscription) {
         this.id = id;
@@ -19,6 +20,8 @@ public class Payment {
         this.dueDate = dueDate;
         this.paid = paid;
         this.subscription = subscription;
+        companyName = subscription.getCompany().getName();
+        companyCvr = subscription.getCompany().getCvr();
     }
 
     public Payment(double value, Date timestamp, Date dueDate) {
@@ -66,4 +69,12 @@ public class Payment {
     public Subscription getSubscription() { return subscription; }
 
     public void setSubscription(Subscription subscription) { this.subscription = subscription; }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public String getCompanyCvr() {
+        return companyCvr;
+    }
 }

@@ -1,0 +1,10 @@
+.content-view {
+}
+
+.context-view .text-field:readonly {
+    -fx-opacity: 1.0;
+    -fx-background-color: rgba(255, 255, 255, .7);
+}
+.button, .radio-button {
+    -fx-cursor: hand;
+}

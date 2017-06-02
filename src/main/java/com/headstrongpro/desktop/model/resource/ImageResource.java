@@ -1,5 +1,7 @@
 package com.headstrongpro.desktop.model.resource;
 
+import java.io.File;
+
 /**
  * Created by rajmu on 17.05.08.
  */
@@ -11,6 +13,29 @@ public class ImageResource implements Resource {
     private int id;
     private String name, description, url;
     private boolean isForAchievement;
+
+    @Override
+    public File getFile() {
+        return file;
+    }
+
+    @Override
+    public void setFile(File file) {
+        this.file = file;
+    }
+
+    @Override
+    public String getRemoteFileName() {
+        return path;
+    }
+
+    @Override
+    public void setRemoteFileName(String path) {
+        this.path = path;
+    }
+
+    private File file;
+    private String path;
 
     ImageResource(String name, String description, boolean isForAchievement) {
         this.name = name;
@@ -63,5 +88,13 @@ public class ImageResource implements Resource {
 
     public void setURL(String url) {
         this.url = url;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
