@@ -71,7 +71,7 @@
                   <Insets />
                </opaqueInsets>
             </TextField>
-            <Button fx:id="courseRefreshButton" mnemonicParsing="false" onAction="#courseRefresh" prefHeight="25.0" prefWidth="133.0" text="Refresh" GridPane.columnIndex="1" />
+            <Button fx:id="refreshButton" mnemonicParsing="false" onAction="#courseRefresh" prefHeight="25.0" prefWidth="133.0" text="Refresh" GridPane.columnIndex="1" />
          </children>
       </GridPane>
    </children>

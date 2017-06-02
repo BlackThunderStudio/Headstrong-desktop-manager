@@ -45,7 +45,7 @@ public class CoursesView extends ContentView implements Initializable {
     @FXML
     public Button newCourseButton;
     @FXML
-    public Button courseRefreshButton;
+    public Button refreshButton;
 
     private CourseController courseController;
     private ObservableList<Course> courses;

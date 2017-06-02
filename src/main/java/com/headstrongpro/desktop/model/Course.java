@@ -27,6 +27,11 @@ public class Course {
         this.courseCategory = courseCategory;
     }
 
+    public Course(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+
     public Course(){};
 
     public int getId() {

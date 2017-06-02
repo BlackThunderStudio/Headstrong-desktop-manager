@@ -9,14 +9,12 @@ import com.headstrongpro.desktop.model.Course;
 import com.headstrongpro.desktop.view.ContextView;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextInputControl;
+import javafx.scene.control.*;
 
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 /**
@@ -118,6 +116,26 @@ public class CoursesContextView extends ContextView<Course> implements Initializ
 
     @FXML
     public void courseDeleteOnClick(){
-
+        Alert a = new Alert(Alert.AlertType.CONFIRMATION);
+        a.setHeaderText("Are you sure you want to delete " + contextItem.getName() + "?");
+        a.setContentText("You cannot take that action back");
+        Optional<ButtonType> response = a.showAndWait();
+        response.ifPresent(btn -> {
+            if(ButtonType.OK.equals(btn)){
+                mainWindowView.getContentView().footer.show("Deleting " + contextItem.getName() + "...", Footer.NotificationType.LOADING);
+                try {
+                    courseController.delete(contextItem);
+                    mainWindowView.getContentView().footer.show("Course deleted.", Footer.NotificationType.COMPLETED);
+                    mainWindowView.getContentView().refreshButton.fire();
+                } catch (DatabaseOutOfSyncException e) {
+                    e.printStackTrace();
+                    handleOutOfSync(syncHandler);
+                } catch (ModelSyncException e) {
+                    mainWindowView.getContentView().footer.show(e.getMessage(), Footer.NotificationType.ERROR, Footer.FADE_LONG);
+                }
+            }
+        });
+        clearFields();
+        mainWindowView.getContentView().refreshButton.fire();
     }
 }
