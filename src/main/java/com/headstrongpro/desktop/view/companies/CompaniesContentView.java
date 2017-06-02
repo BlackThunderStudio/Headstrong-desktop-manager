@@ -106,7 +106,7 @@ public class CompaniesContentView extends ContentView implements Initializable {
             companies = FXCollections.observableArrayList(companiesController.getCompanies());
         } catch (ModelSyncException e) {
             e.printStackTrace();
-            //TODO: handle error
+            footer.show(e.getMessage(), Footer.NotificationType.ERROR);
         }
     }
 
@@ -115,7 +115,7 @@ public class CompaniesContentView extends ContentView implements Initializable {
             loadTable(companiesController.search(searchField.getText()));
         } catch (ModelSyncException e2) {
             e2.printStackTrace();
-            //TODO: handle the error
+            footer.show(e2.getMessage(), Footer.NotificationType.ERROR);
         }
     }
 
