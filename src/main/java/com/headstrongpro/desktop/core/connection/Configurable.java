@@ -8,6 +8,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -24,12 +25,9 @@ public abstract class Configurable {
             JSONObject fullJSON = (JSONObject) file;
             JSONObject json = (JSONObject) fullJSON.get(root);
             return json;
-        } catch (ParseException e) {
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (ParseException | IOException e) {
+            System.err.println(e.getMessage());
+            System.out.println(Arrays.toString(e.getStackTrace()));
         }
         return null;
     }
