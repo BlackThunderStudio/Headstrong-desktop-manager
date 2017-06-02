@@ -29,10 +29,9 @@ import static com.headstrongpro.desktop.DbLayer.util.ActionType.*;
 public class DBResources extends Synchronizable implements IDataAccessObject<Resource>, IResourceConnector {
 
     private DBContext dbConnect;
-    private java.sql.Date timestamp;
 
     public DBResources() {
-        timestamp = new Date(Calendar.getInstance().getTimeInMillis());
+        updateTimestampLocal();
     }
 
     private List<Resource> prepareResources(List<Resource> resources) throws ConnectionException, SQLException {

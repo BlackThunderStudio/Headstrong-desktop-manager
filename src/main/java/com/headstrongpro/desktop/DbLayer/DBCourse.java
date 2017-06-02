@@ -4,7 +4,7 @@ import com.headstrongpro.desktop.core.connection.DBConnect;
 import com.headstrongpro.desktop.core.exception.ConnectionException;
 import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
-import com.headstrongpro.desktop.model.Course;
+import com.headstrongpro.desktop.model.Session;
 import com.headstrongpro.desktop.DbLayer.util.ActionType;
 import com.headstrongpro.desktop.DbLayer.util.IDataAccessObject;
 import com.headstrongpro.desktop.DbLayer.util.Synchronizable;
@@ -18,90 +18,89 @@ import java.sql.SQLException;
 import java.util.Calendar;
 
 /**
- * DB Courses
+ * DB Sessions
  */
-public class DBCourse extends Synchronizable implements IDataAccessObject<Course> {
+public class DBSession extends Synchronizable implements IDataAccessObject<Session> {
 
     private DBConnect dbConnect;
-    private Date timestamp;
 
-    public DBCourse() {
-        timestamp = new Date(Calendar.getInstance().getTimeInMillis());
+    public DBSession() {
+        updateTimestampLocal();
     }
 
     @Override
-    public ObservableList<Course> getAll() throws ModelSyncException {
-        ObservableList<Course> courses = FXCollections.observableArrayList();
-        String selectQuery = "SELECT * FROM [courses];";
+    public ObservableList<Session> getAll() throws ModelSyncException {
+        ObservableList<Session> sessions = FXCollections.observableArrayList();
+        String selectQuery = "SELECT * FROM [sessions];";
         try {
             dbConnect = new DBConnect();
             ResultSet resultSet = dbConnect.getFromDataBase(selectQuery);
             while (resultSet.next()) {
-                courses.add(create(resultSet));
+                sessions.add(create(resultSet));
             }
             timestamp = setTimestamp();
         } catch (ConnectionException | SQLException e) {
-            throw new ModelSyncException("Could not load courses.", e);
+            throw new ModelSyncException("Could not load sessions.", e);
         }
-        return courses;
+        return sessions;
     }
 
     @Override
-    public Course getById(int id) throws ModelSyncException {
-        Course course = null;
-        String selectQuery = "SELECT * FROM [courses] WHERE id = " + id + ";";
+    public Session getById(int id) throws ModelSyncException {
+        Session session = null;
+        String selectQuery = "SELECT * FROM [sessions] WHERE id = " + id + ";";
         try {
             dbConnect = new DBConnect();
             ResultSet resultSet = dbConnect.getFromDataBase(selectQuery);
             if (resultSet.next()) {
-                course = create(resultSet);
+                session = create(resultSet);
             }
             timestamp = setTimestamp();
         } catch (ConnectionException | SQLException e) {
-            throw new ModelSyncException("Could not retrieve the course!", e);
+            throw new ModelSyncException("Could not retrieve the session!", e);
         }
-        return course;
+        return session;
     }
 
     @Override
-    public Course persist(Course object) throws ModelSyncException {
+    public Session persist(Session object) throws ModelSyncException {
         try {
             dbConnect = new DBConnect();
             //language=TSQL
-            String createCourseQuery = "INSERT INTO courses (name, description) VALUES (?, ?)";
-            PreparedStatement preparedStatement = dbConnect.getConnection().prepareStatement(createCourseQuery, PreparedStatement.RETURN_GENERATED_KEYS);
+            String createSessionQuery = "INSERT INTO sessions (name, description) VALUES (?, ?)";
+            PreparedStatement preparedStatement = dbConnect.getConnection().prepareStatement(createSessionQuery, PreparedStatement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, object.getName());
             preparedStatement.setString(2, object.getDescription());
             preparedStatement.executeUpdate();
             try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     object.setId(generatedKeys.getInt(1));
-                    logChange("courses", object.getId(), ActionType.CREATE);
+                    logChange("sessions", object.getId(), ActionType.CREATE);
                 } else {
-                    throw new ModelSyncException("Creating course failed. No ID retrieved!");
+                    throw new ModelSyncException("Creating session failed. No ID retrieved!");
                 }
             }
         } catch (ConnectionException | SQLException e) {
-            throw new ModelSyncException("Could not create new course!", e);
+            throw new ModelSyncException("Could not create new session!", e);
         }
         return object;
     }
 
     @Override
-    public void update(Course object) throws ModelSyncException, DatabaseOutOfSyncException {
+    public void update(Session object) throws ModelSyncException, DatabaseOutOfSyncException {
         if (verifyIntegrity(object.getId())) {
             try {
                 dbConnect = new DBConnect();
                 //language=TSQL
-                String updateCourseQuery = "UPDATE courses SET name = ?, description = ? WHERE id = ?;";
-                PreparedStatement preparedStatement = dbConnect.getConnection().prepareStatement(updateCourseQuery);
+                String updateSessionQuery = "UPDATE sessions SET name = ?, description = ? WHERE id = ?;";
+                PreparedStatement preparedStatement = dbConnect.getConnection().prepareStatement(updateSessionQuery);
                 preparedStatement.setString(1, object.getName());
                 preparedStatement.setString(2, object.getDescription());
                 preparedStatement.setInt(3, object.getId());
                 dbConnect.uploadSafe(preparedStatement);
-                logChange("courses", object.getId(), ActionType.UPDATE);
+                logChange("sessions", object.getId(), ActionType.UPDATE);
             } catch (ConnectionException | SQLException e) {
-                throw new ModelSyncException("WARNING! Could not update course of ID: " + object.getId() + " !", e);
+                throw new ModelSyncException("WARNING! Could not update session of ID: " + object.getId() + " !", e);
             }
         } else {
             throw new DatabaseOutOfSyncException();
@@ -109,18 +108,18 @@ public class DBCourse extends Synchronizable implements IDataAccessObject<Course
     }
 
     @Override
-    public void delete(Course object) throws ModelSyncException, DatabaseOutOfSyncException {
+    public void delete(Session object) throws ModelSyncException, DatabaseOutOfSyncException {
         if (verifyIntegrity(object.getId())) {
             try {
                 dbConnect = new DBConnect();
                 //language=TSQL
-                String deleteCourseQuery = "DELETE FROM courses WHERE id = ?;";
-                PreparedStatement preparedStatement = dbConnect.getConnection().prepareStatement(deleteCourseQuery);
+                String deleteSessionQuery = "DELETE FROM sessions WHERE id = ?;";
+                PreparedStatement preparedStatement = dbConnect.getConnection().prepareStatement(deleteSessionQuery);
                 preparedStatement.setInt(1, object.getId());
                 preparedStatement.execute();
-                logChange("courses", object.getId(), ActionType.DELETE);
+                logChange("sessions", object.getId(), ActionType.DELETE);
             } catch (ConnectionException | SQLException e) {
-                throw new ModelSyncException("WARNING! Could not delete course of ID: " + object.getId() + " !", e);
+                throw new ModelSyncException("WARNING! Could not delete session of ID: " + object.getId() + " !", e);
             }
         } else {
             throw new DatabaseOutOfSyncException();
@@ -129,14 +128,14 @@ public class DBCourse extends Synchronizable implements IDataAccessObject<Course
 
     @Override
     protected boolean verifyIntegrity(int itemID) throws ModelSyncException {
-        return verifyIntegrity(itemID, timestamp, "courses");
+        return verifyIntegrity(itemID, timestamp, "sessions");
     }
 
-    private Course create(ResultSet resultSet) throws SQLException {
-        Course course = new Course();
-        course.setId(resultSet.getInt("id"));
-        course.setName(resultSet.getString("name"));
-        course.setDescription(resultSet.getString("description"));
-        return course;
+    private Session create(ResultSet resultSet) throws SQLException {
+        Session session = new Session();
+        session.setId(resultSet.getInt("id"));
+        session.setName(resultSet.getString("name"));
+        session.setDescription(resultSet.getString("description"));
+        return session;
     }
 }

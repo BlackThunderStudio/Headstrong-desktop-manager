@@ -22,10 +22,9 @@ import java.util.List;
  */
 public class DBGroups extends Synchronizable implements IDataAccessObject<Group> {
     private DBConnect connect;
-    private Date timestamp;
     
     public DBGroups() {
-        timestamp = new java.sql.Date(Calendar.getInstance().getTimeInMillis());
+        updateTimestampLocal();
     }
 
     @Override

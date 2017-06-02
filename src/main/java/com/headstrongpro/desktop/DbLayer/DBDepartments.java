@@ -23,10 +23,9 @@ import java.util.List;
 public class DBDepartments extends Synchronizable implements IDataAccessObject<Department> {
 
     private DBConnect connect;
-    private Date timestamp;
 
     public DBDepartments() {
-        timestamp = new Date(Calendar.getInstance().getTimeInMillis());
+        updateTimestampLocal();
     }
 
     @Override

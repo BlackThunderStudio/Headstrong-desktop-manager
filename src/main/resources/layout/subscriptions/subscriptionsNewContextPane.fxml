@@ -13,20 +13,22 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<GridPane minHeight="460" minWidth="250.0" prefHeight="700.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.headstrongpro.desktop.view.subscriptions.SubscriptionsContextView">
+<GridPane maxWidth="500"
+          xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1"
+          fx:controller="com.headstrongpro.desktop.view.subscriptions.SubscriptionsContextView">
     <columnConstraints>
-        <ColumnConstraints hgrow="SOMETIMES" minWidth="250.0" prefWidth="300.0" />
+        <ColumnConstraints minWidth="250.0" prefWidth="300" hgrow="ALWAYS"/>
     </columnConstraints>
     <rowConstraints>
-      <RowConstraints maxHeight="50.0" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES" />
-        <RowConstraints maxHeight="75.0" minHeight="80.0" prefHeight="75.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="80.0" minHeight="80.0" prefHeight="80.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="50.0" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="50.0" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES" />
-        <RowConstraints maxHeight="50.0" minHeight="25.0" prefHeight="50.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="6000.0" minHeight="200.0" prefHeight="200.0" vgrow="SOMETIMES" />
-        <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
-        <RowConstraints maxHeight="50.0" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="50.0" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES"/>
+        <RowConstraints maxHeight="75.0" minHeight="80.0" prefHeight="75.0" vgrow="SOMETIMES"/>
+        <RowConstraints maxHeight="80.0" minHeight="80.0" prefHeight="80.0" vgrow="SOMETIMES"/>
+        <RowConstraints maxHeight="50.0" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES"/>
+        <RowConstraints maxHeight="50.0" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES"/>
+        <RowConstraints maxHeight="50.0" minHeight="25.0" prefHeight="50.0" vgrow="SOMETIMES"/>
+        <RowConstraints maxHeight="6000.0" minHeight="200.0" prefHeight="200.0" vgrow="SOMETIMES"/>
+        <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES"/>
+        <RowConstraints maxHeight="50.0" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES"/>
 
 
     </rowConstraints>
@@ -35,112 +37,126 @@
             <children>
                 <Label prefHeight="21.0" text="Action">
                     <font>
-                        <Font size="15.0" />
+                        <Font size="15.0"/>
                     </font>
                 </Label>
                 <Separator maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
                     <HBox.margin>
-                        <Insets bottom="7.0" left="10.0" />
+                        <Insets bottom="7.0" left="10.0"/>
                     </HBox.margin>
                 </Separator>
             </children>
             <GridPane.margin>
-                <Insets bottom="20.0" />
+                <Insets bottom="20.0"/>
             </GridPane.margin>
         </HBox>
         <GridPane hgap="10.0" vgap="10.0" GridPane.rowIndex="8">
             <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
             </columnConstraints>
             <rowConstraints>
-                <RowConstraints maxHeight="50.0" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="50.0" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES"/>
             </rowConstraints>
             <children>
-                <Button fx:id="subscriptionsNewSaveButton" minHeight="25.0" minWidth="90.0" mnemonicParsing="false" prefHeight="1000.0" prefWidth="1000.0" text="Save" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+                <Button fx:id="subscriptionsNewSaveButton" minHeight="25.0" minWidth="90.0" mnemonicParsing="false"
+                        prefHeight="1000.0" prefWidth="1000.0" text="Save" GridPane.halignment="CENTER"
+                        GridPane.valignment="BOTTOM">
                     <GridPane.margin>
-                        <Insets />
-                    </GridPane.margin></Button>
-                <Button fx:id="subscriptionsNewCancelButton" minHeight="25.0" minWidth="90.0" mnemonicParsing="false" prefHeight="1000.0" prefWidth="1000.0" text="Cancel" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+                        <Insets/>
+                    </GridPane.margin>
+                </Button>
+                <Button fx:id="subscriptionsNewCancelButton" minHeight="25.0" minWidth="90.0" mnemonicParsing="false"
+                        prefHeight="1000.0" prefWidth="1000.0" text="Cancel" GridPane.columnIndex="1"
+                        GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
                     <GridPane.margin>
-                        <Insets />
-                    </GridPane.margin></Button>
+                        <Insets/>
+                    </GridPane.margin>
+                </Button>
             </children>
         </GridPane>
-      <DatePicker fx:id="subscriptionsNewStartDatePicker" prefHeight="31.0" prefWidth="400.0" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
-         <GridPane.margin>
-            <Insets bottom="10.0" />
-         </GridPane.margin>
-      </DatePicker>
-      <Label text="Start date" GridPane.rowIndex="1" GridPane.valignment="TOP">
-         <GridPane.margin>
-            <Insets top="10.0" />
-         </GridPane.margin>
-      </Label>
-      <DatePicker fx:id="subscriptionsNewEndDatePicker" layoutX="30.0" layoutY="114.0" prefHeight="31.0" prefWidth="400.0" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
-         <GridPane.margin>
-            <Insets bottom="10.0" />
-         </GridPane.margin>
-      </DatePicker>
-      <Label text="End date" GridPane.rowIndex="2" GridPane.valignment="TOP">
-         <GridPane.margin>
-            <Insets top="10.0" />
-         </GridPane.margin>
-      </Label>
-      <ComboBox fx:id="subscriptionsNewRateCombo" prefHeight="31.0" prefWidth="346.0" GridPane.rowIndex="4" GridPane.valignment="BOTTOM">
-         <opaqueInsets>
-            <Insets />
-         </opaqueInsets>
-         <GridPane.margin>
-            <Insets bottom="10.0" />
-         </GridPane.margin></ComboBox>
-      <Label layoutX="30.0" layoutY="335.0" text="Price per user" GridPane.rowIndex="6" GridPane.valignment="TOP">
-         <GridPane.margin>
-            <Insets />
-         </GridPane.margin>
-      </Label>
-      <Label layoutX="30.0" layoutY="415.0" text="Total" GridPane.rowIndex="6" GridPane.valignment="TOP">
-         <GridPane.margin>
-            <Insets top="40.0" />
-         </GridPane.margin>
-         <font>
-            <Font name="System Bold" size="15.0" />
-         </font>
-      </Label>
-      <HBox alignment="BOTTOM_LEFT" GridPane.rowIndex="5" GridPane.valignment="CENTER">
-         <children>
-            <Label prefHeight="21.0" text="Details">
-               <font>
-                  <Font size="15.0" />
-               </font>
-               <HBox.margin>
-                  <Insets bottom="12.0" />
-               </HBox.margin>
-            </Label>
-            <Separator maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
-               <HBox.margin>
-                  <Insets bottom="20.0" left="10.0" />
-               </HBox.margin>
-            </Separator>
-         </children>
-      </HBox>
-      <Label fx:id="subscriptionsNewPricePrUserLabel" text="pricePrUser" GridPane.halignment="RIGHT" GridPane.rowIndex="6" GridPane.valignment="TOP">
-         <GridPane.margin>
-            <Insets />
-         </GridPane.margin>
-      </Label>
-      <Label fx:id="subscriptionsNewTotalPriceLabel" text="total" GridPane.halignment="RIGHT" GridPane.rowIndex="6" GridPane.valignment="TOP">
-         <GridPane.margin>
-            <Insets top="40.0" />
-         </GridPane.margin>
-         <font>
-            <Font name="System Bold" size="15.0" />
-         </font>
-      </Label>
-      <TextField fx:id="subscriptionsNewCompanyTextfield" promptText="Company name" />
-      <TextField fx:id="subscriptionsNewNoOfUsersTextfield" promptText="Number of users" GridPane.rowIndex="3" />
+        <DatePicker fx:id="subscriptionsNewStartDatePicker" prefHeight="31.0" GridPane.rowIndex="1"
+                    prefWidth="5000"
+                    GridPane.valignment="BOTTOM">
+            <GridPane.margin>
+                <Insets bottom="10.0"/>
+            </GridPane.margin>
+        </DatePicker>
+        <Label text="Start date" GridPane.rowIndex="1" GridPane.valignment="TOP">
+            <GridPane.margin>
+                <Insets top="10.0"/>
+            </GridPane.margin>
+        </Label>
+        <DatePicker fx:id="subscriptionsNewEndDatePicker" layoutX="30.0" layoutY="114.0" prefHeight="31.0"
+                    prefWidth="5000"
+                    GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
+            <GridPane.margin>
+                <Insets bottom="10.0"/>
+            </GridPane.margin>
+        </DatePicker>
+        <Label text="End date" GridPane.rowIndex="2" GridPane.valignment="TOP">
+            <GridPane.margin>
+                <Insets top="10.0"/>
+            </GridPane.margin>
+        </Label>
+        <ComboBox fx:id="subscriptionsNewRateCombo" prefHeight="31.0" prefWidth="5000.0" GridPane.rowIndex="4"
+                  GridPane.valignment="BOTTOM">
+            <opaqueInsets>
+                <Insets/>
+            </opaqueInsets>
+            <GridPane.margin>
+                <Insets bottom="10.0"/>
+            </GridPane.margin>
+        </ComboBox>
+        <Label layoutX="30.0" layoutY="335.0" text="Price per user" GridPane.rowIndex="6" GridPane.valignment="TOP">
+            <GridPane.margin>
+                <Insets/>
+            </GridPane.margin>
+        </Label>
+        <Label layoutX="30.0" layoutY="415.0" text="Total" GridPane.rowIndex="6" GridPane.valignment="TOP">
+            <GridPane.margin>
+                <Insets top="40.0"/>
+            </GridPane.margin>
+            <font>
+                <Font name="System Bold" size="15.0"/>
+            </font>
+        </Label>
+        <HBox alignment="BOTTOM_LEFT" GridPane.rowIndex="5" GridPane.valignment="CENTER">
+            <children>
+                <Label prefHeight="21.0" text="Details">
+                    <font>
+                        <Font size="15.0"/>
+                    </font>
+                    <HBox.margin>
+                        <Insets bottom="12.0"/>
+                    </HBox.margin>
+                </Label>
+                <Separator maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+                    <HBox.margin>
+                        <Insets bottom="20.0" left="10.0"/>
+                    </HBox.margin>
+                </Separator>
+            </children>
+        </HBox>
+        <Label fx:id="subscriptionsNewPricePrUserLabel" text="pricePrUser" GridPane.halignment="RIGHT"
+               GridPane.rowIndex="6" GridPane.valignment="TOP">
+            <GridPane.margin>
+                <Insets/>
+            </GridPane.margin>
+        </Label>
+        <Label fx:id="subscriptionsNewTotalPriceLabel" text="total" GridPane.halignment="RIGHT" GridPane.rowIndex="6"
+               GridPane.valignment="TOP">
+            <GridPane.margin>
+                <Insets top="40.0"/>
+            </GridPane.margin>
+            <font>
+                <Font name="System Bold" size="15.0"/>
+            </font>
+        </Label>
+        <TextField fx:id="subscriptionsNewCompanyTextfield" promptText="Company name"/>
+        <TextField fx:id="subscriptionsNewNoOfUsersTextfield" promptText="Number of users" GridPane.rowIndex="3"/>
     </children>
     <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
     </padding>
 </GridPane>

@@ -17,24 +17,14 @@ import java.net.URLEncoder
  *
  * Created by rajmu on 17.05.29.
  */
-class SFTPKotlin(host: String, user: String, pass: String, path: String, subDomain: String) : IResourceConnector{
+class SFTPKotlin(val host: String, val user: String, val  pass: String, val  path: String, val  subDomain: String) : IResourceConnector{
 
-    var host = ""
-    var user = ""
-    var pass = ""
     var root = ""
-    var path = ""
-    var subDomain = ""
     val port = 22
     var jsch: JSch
 
     //primary constructor
     init {
-        this.host = host
-        this.user = user
-        this.pass = pass
-        this.path = path
-        this.subDomain = subDomain
         jsch = JSch()
     }
 
@@ -56,6 +46,7 @@ class SFTPKotlin(host: String, user: String, pass: String, path: String, subDoma
     override fun uploadMediaServer(file: File?, remote: String?): String {
         val ext = FilenameUtils.getExtension(file?.absolutePath)
         val encodedURL = URLEncoder.encode(remote, "UTF-8")
+        System.out.println("Creating server url: http://$subDomain.$host$path$encodedURL.$ext")
         upload(file!!, "$remote.$ext")
         return "http://$subDomain.$host$path$encodedURL.$ext"
     }
