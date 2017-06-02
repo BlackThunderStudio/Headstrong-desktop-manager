@@ -12,11 +12,9 @@ import com.headstrongpro.desktop.model.entity.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Calendar;
 
 /**
  * DB User
@@ -24,10 +22,9 @@ import java.util.Calendar;
 public class DBUser extends Synchronizable implements IDataAccessObject<Person> {
 
     private DBConnect dbConnect;
-    private Date timestamp;
 
     public DBUser() {
-        timestamp = new Date(Calendar.getInstance().getTimeInMillis());
+        updateTimestampLocal();
     }
 
     @Override

@@ -24,10 +24,9 @@ import java.util.List;
 public class DBCourseCategory extends Synchronizable implements IDataAccessObject<CourseCategory> {
 
     private DBConnect dbConnect;
-    private Date timestamp;
 
     public DBCourseCategory() {
-        timestamp = new Date(Calendar.getInstance().getTimeInMillis());
+        updateTimestampLocal();
     }
 
     @Override

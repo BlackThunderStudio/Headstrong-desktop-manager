@@ -24,10 +24,9 @@ import java.util.List;
  */
 public class DBClient extends Synchronizable implements IDataAccessObject<Person> {
     private DBConnect connect;
-    private Date timestamp;
 
     public DBClient() {
-        timestamp = new Date(Calendar.getInstance().getTimeInMillis());
+        updateTimestampLocal();
     }
 
     @Override

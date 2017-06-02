@@ -23,10 +23,9 @@ import java.util.Calendar;
 public class DBSession extends Synchronizable implements IDataAccessObject<Session> {
 
     private DBConnect dbConnect;
-    private Date timestamp;
 
     public DBSession() {
-        timestamp = new Date(Calendar.getInstance().getTimeInMillis());
+        updateTimestampLocal();
     }
 
     @Override

@@ -19,6 +19,12 @@ import java.util.List;
  */
 public abstract class Synchronizable {
 
+    protected Date timestamp;
+
+    protected void updateTimestampLocal(){
+        timestamp = new Date(Calendar.getInstance().getTimeInMillis());
+    }
+
     //TODO: we need to resolve the issue of tracking which employee triggered this method. Possibly storing user session data ofType a singleton?
     protected static Log logChange(int empID, String tableName, int itemID, ActionType type) throws ModelSyncException {
         return new DBLogActions().persist(new Log(empID, tableName, itemID, type.getType()));
@@ -36,7 +42,7 @@ public abstract class Synchronizable {
         }
     }
 
-    protected static Date setTimestamp() {
+    protected Date setTimestamp() {
         ResultSet resultSet = null;
         Date timestamp = new Date(Calendar.getInstance().getTimeInMillis());
         try {
@@ -47,6 +53,7 @@ public abstract class Synchronizable {
         } catch (ConnectionException | SQLException e) {
             e.printStackTrace();
         }
+        this.timestamp = timestamp;
         return timestamp;
     }
 

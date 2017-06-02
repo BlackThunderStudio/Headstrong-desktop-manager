@@ -21,10 +21,9 @@ import java.util.List;
 public class DBPayment extends Synchronizable implements IDataAccessObject<Payment> {
 
     private DBConnect dbConnect;
-    private Date timestamp;
 
     public DBPayment() {
-        timestamp = new Date(Calendar.getInstance().getTimeInMillis());
+        updateTimestampLocal();
     }
 
     @Override

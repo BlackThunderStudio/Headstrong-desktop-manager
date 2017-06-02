@@ -11,21 +11,18 @@ import com.headstrongpro.desktop.DbLayer.util.ActionType;
 import com.headstrongpro.desktop.DbLayer.util.IDataAccessObject;
 import com.headstrongpro.desktop.DbLayer.util.Synchronizable;
 
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 public class DBSubscriptions extends Synchronizable implements IDataAccessObject<Subscription> {
 
     private DBConnect dbConnect;
-    private Date timestamp;
 
     public DBSubscriptions() {
-        timestamp = new Date(Calendar.getInstance().getTimeInMillis());
+        updateTimestampLocal();
     }
 
     @Override

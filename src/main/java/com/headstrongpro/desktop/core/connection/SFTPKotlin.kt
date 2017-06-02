@@ -17,24 +17,14 @@ import java.net.URLEncoder
  *
  * Created by rajmu on 17.05.29.
  */
-class SFTPKotlin(host: String, user: String, pass: String, path: String, subDomain: String) : IResourceConnector{
+class SFTPKotlin(val host: String, val user: String, val  pass: String, val  path: String, val  subDomain: String) : IResourceConnector{
 
-    var host = ""
-    var user = ""
-    var pass = ""
     var root = ""
-    var path = ""
-    var subDomain = ""
     val port = 22
     var jsch: JSch
 
     //primary constructor
     init {
-        this.host = host
-        this.user = user
-        this.pass = pass
-        this.path = path
-        this.subDomain = subDomain
         jsch = JSch()
     }
 
