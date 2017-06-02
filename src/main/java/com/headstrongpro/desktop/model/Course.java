@@ -1,6 +1,9 @@
 package com.headstrongpro.desktop.model;
 
+import com.headstrongpro.desktop.model.resource.Resource;
+
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Course model class
@@ -9,22 +12,22 @@ public class Course {
     private int id;
     private String name, description;
     private CourseCategory courseCategory;
-    private ArrayList<Session> sessions;
+    private List<Resource> resources;
 
-    public Course(int id, String name, String description, CourseCategory courseCategory, ArrayList<Session> sessions) {
+    public Course(int id, String name, String description, CourseCategory courseCategory) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.courseCategory = courseCategory;
-        this.sessions = sessions;
     }
 
-    public Course(String name, String description, CourseCategory courseCategory, ArrayList<Session> sessions) {
+    public Course(String name, String description, CourseCategory courseCategory) {
         this.name = name;
         this.description = description;
         this.courseCategory = courseCategory;
-        this.sessions = sessions;
     }
+
+    public Course(){};
 
     public int getId() {
         return id;
@@ -54,15 +57,9 @@ public class Course {
         return courseCategory;
     }
 
-    public void setCourseCategory(CourseCategory courseCategory) {
-        this.courseCategory = courseCategory;
-    }
+    public void setCourseCategory(CourseCategory courseCategory) { this.courseCategory = courseCategory; }
 
-    public ArrayList<Session> getSessions() {
-        return sessions;
-    }
+    public List<Resource> getResources() { return resources; }
 
-    public void setSessions(ArrayList<Session> sessions) {
-        this.sessions = sessions;
-    }
+    public void setResources(List<Resource> resources) { this.resources = resources; }
 }

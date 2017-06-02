@@ -80,7 +80,7 @@ public class DBResourcesTest {
 
     @Test
     public void getBySessionId() throws Exception {
-        List<Resource> resources = resourcesDAO.getBySessionID(4);
+        List<Resource> resources = resourcesDAO.getByCourseID(4);
 
         assertNotNull(resources);
         assertEquals(8, resources.size());
@@ -88,7 +88,7 @@ public class DBResourcesTest {
 
     @Test
     public void getBySessionID2() throws Exception {
-        List<Resource> resources = resourcesDAO.getBySessionID(5);
+        List<Resource> resources = resourcesDAO.getByCourseID(5);
 
         assertNotNull(resources);
         assertEquals(4, resources.size());
