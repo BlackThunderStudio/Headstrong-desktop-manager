@@ -44,16 +44,6 @@ public class CoursesContextView extends ContextView<Course> implements Initializ
     @FXML
     public Button coursesAssignTextButton;
 
-    // coursesNewCourseContextPane.fxml
-    @FXML
-    public TextField coursesNewNameTextfield;
-    @FXML
-    public TextArea coursesNewDescriptionTextfield;
-    @FXML
-    public Button coursesNewSaveButton;
-    @FXML
-    public Button coursesNewCancelButton;
-
     // coursesCategoryContextPane.fxml
     @FXML
     public TextField coursesCatNameTextfield;

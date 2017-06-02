@@ -4,6 +4,7 @@ import com.headstrongpro.desktop.controller.CourseController;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.core.fxControls.Footer;
 import com.headstrongpro.desktop.model.Course;
+import com.headstrongpro.desktop.view.ContentSource;
 import com.headstrongpro.desktop.view.ContentView;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -130,5 +131,10 @@ public class CoursesView extends ContentView implements Initializable {
         }));
 
         new Thread(sync).start();
+    }
+
+    @FXML
+    public void courseNewOnClick(){
+        mainWindowView.changeContext(ContentSource.COURSES_NEW);
     }
 }
