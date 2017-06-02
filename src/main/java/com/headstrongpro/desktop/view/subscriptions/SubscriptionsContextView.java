@@ -110,6 +110,6 @@ public class SubscriptionsContextView extends ContextView<Subscription> implemen
                 .setText(contextItem.getStartDate().toString());
         subscriptionsEndDatePicker.getEditor()
                 .setText(contextItem.getEndDate().toString());
-        //TODO combobox change item
+        subscriptionsRateCombo.getSelectionModel().select(contextItem.getRate().getName());
     }
 }
