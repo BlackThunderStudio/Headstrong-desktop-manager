@@ -5,7 +5,7 @@ import com.headstrongpro.desktop.core.connection.DBContext;
 import com.headstrongpro.desktop.core.exception.ConnectionException;
 import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
-import com.headstrongpro.desktop.model.Session;
+import com.headstrongpro.desktop.model.Course;
 import com.headstrongpro.desktop.model.resource.*;
 import com.headstrongpro.desktop.DbLayer.util.IDataAccessObject;
 import com.headstrongpro.desktop.DbLayer.util.Synchronizable;
@@ -412,13 +412,13 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
         return resources;
     }
 
-    public List<Resource> getBySessionID(int sessionID) throws ModelSyncException {
+    public List<Resource> getByCourseID(int courseID) throws ModelSyncException {
         ArrayList<Integer> resIDs = new ArrayList<>();
         List<Resource> resources = new ArrayList<>();
         try {
             dbConnect = new DBContext();
             //language=TSQL
-            String qry = "SELECT * FROM sessions_resources WHERE session_id=" + sessionID + ";";
+            String qry = "SELECT * FROM courses_resources WHERE course_id=" + courseID + ";";
             ResultSet rs = dbConnect.getFromDataBase(qry);
             while (rs.next()) {
                 resIDs.add(rs.getInt("resource_id"));
@@ -441,17 +441,17 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
             }
             resources = prepareResources(resources);
         } catch (ConnectionException | SQLException e) {
-            throw new ModelSyncException("WARNING! Could not fetch resources of sessionID: " + sessionID + " !", e);
+            throw new ModelSyncException("WARNING! Could not fetch resources of courseID: " + courseID + " !", e);
         }
         return resources;
     }
 
-    public int assignToSession(Resource resource, Session session) throws ModelSyncException, DatabaseOutOfSyncException {
+    public int assignToCourse(Resource resource, Course course) throws ModelSyncException, DatabaseOutOfSyncException {
         int id;
         try {
             dbConnect = new DBContext();
-            PreparedStatement preparedStatement = dbConnect.getConnection().prepareStatement("INSERT INTO sessions_resources(session_id, resource_id) VALUES (?,?);", PreparedStatement.RETURN_GENERATED_KEYS);
-            preparedStatement.setInt(1, session.getId());
+            PreparedStatement preparedStatement = dbConnect.getConnection().prepareStatement("INSERT INTO courses_resources(course_id, resource_id) VALUES (?,?);", PreparedStatement.RETURN_GENERATED_KEYS);
+            preparedStatement.setInt(1, course.getId());
             preparedStatement.setInt(1, resource.getID());
             preparedStatement.executeUpdate();
             try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {

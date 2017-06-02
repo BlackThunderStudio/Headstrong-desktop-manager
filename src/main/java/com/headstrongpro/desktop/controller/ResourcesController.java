@@ -4,7 +4,7 @@ package com.headstrongpro.desktop.controller;
 import com.headstrongpro.desktop.core.exception.ConnectionException;
 import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
-import com.headstrongpro.desktop.model.Session;
+import com.headstrongpro.desktop.model.Course;
 import com.headstrongpro.desktop.model.resource.*;
 import com.headstrongpro.desktop.DbLayer.DBResources;
 import javafx.scene.image.Image;
@@ -240,33 +240,33 @@ public class ResourcesController implements Refreshable {
 
     /***
      *
-     * Assigns resource to a session
+     * Assigns resource to a course
      *
-     * @param session Session object
+     * @param course Course object
      * @param resource Resource object
      * @throws DatabaseOutOfSyncException
      * @throws ModelSyncException
      */
-    public void assignToCourse(Session session, Resource resource)
+    public void assignToCourse(Course course, Resource resource)
             throws DatabaseOutOfSyncException, ModelSyncException {
-        if (session == null) throw new IllegalStateException("Session cannot be null");
+        if (course == null) throw new IllegalStateException("Course cannot be null");
         if (resource == null) throw new IllegalStateException("Resource cannot be null");
-        resourcesDAO.assignToSession(resource, session);
+        resourcesDAO.assignToCourse(resource, course);
     }
 
     /***
      *
-     * Assigns a set of resources to a session
+     * Assigns a set of resources to a course
      *
-     * @param session Session object
+     * @param course Course object
      * @param resources List of Resources
      * @throws DatabaseOutOfSyncException
      * @throws ModelSyncException
      */
-    public void assignToCourse(Session session, List<Resource> resources)
+    public void assignToCourse(Course course, List<Resource> resources)
             throws DatabaseOutOfSyncException, ModelSyncException {
         for (Resource r : resources){
-            resourcesDAO.assignToSession(r, session);
+            resourcesDAO.assignToCourse(r, course);
         }
     }
 
