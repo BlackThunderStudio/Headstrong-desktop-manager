@@ -2,8 +2,12 @@
 
 <?import com.headstrongpro.desktop.core.fxControls.Footer?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -12,17 +16,13 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TableColumn?>
-<GridPane maxHeight="700" maxWidth="800" minHeight="700" minWidth="800" prefHeight="700.0" prefWidth="800.0" stylesheets="/style/resourcesContentPane.css" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.headstrongpro.desktop.view.settings.SettingsContentView">
+<GridPane prefHeight="700.0" prefWidth="800.0" stylesheets="/style/resourcesContentPane.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.headstrongpro.desktop.view.settings.SettingsContentView">
     <columnConstraints>
-        <ColumnConstraints hgrow="NEVER" maxWidth="300.0" minWidth="300.0" percentWidth="100.0" prefWidth="300.0" />
+        <ColumnConstraints hgrow="NEVER" maxWidth="6000.0" minWidth="0.0" prefWidth="6000.0" />
     </columnConstraints>
     <rowConstraints>
         <RowConstraints maxHeight="60.0" minHeight="60.0" prefHeight="60.0" vgrow="NEVER" />
-        <RowConstraints maxHeight="4000.0" minHeight="300.0" prefHeight="640.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="4000.0" minHeight="200.0" prefHeight="640.0" vgrow="SOMETIMES" />
         <RowConstraints maxHeight="60.0" minHeight="60.0" prefHeight="60.0" vgrow="NEVER" />
     </rowConstraints>
     <children>
@@ -52,7 +52,7 @@
                 </Footer>
             </children>
         </GridPane>
-      <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" GridPane.rowIndex="1">
+      <TabPane prefHeight="200.0" prefWidth="200.0" side="LEFT" tabClosingPolicy="UNAVAILABLE" GridPane.rowIndex="1">
         <tabs>
           <Tab text="General">
             <content>
@@ -65,7 +65,7 @@
                      <children>
                         <GridPane layoutX="231.0" layoutY="152.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                           <columnConstraints>
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="60000.0" minWidth="10.0" prefWidth="100.0" />
                           </columnConstraints>
                           <rowConstraints>
                             <RowConstraints minHeight="10.0" prefHeight="60.0" vgrow="NEVER" />
@@ -75,7 +75,7 @@
                                 <GridPane>
                                     <columnConstraints>
                                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="110.0" minWidth="110.0" prefWidth="110.0" />
-                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="725.0" minWidth="200.0" prefWidth="706.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="6000.0" minWidth="200.0" prefWidth="706.0" />
                                     </columnConstraints>
                                     <rowConstraints>
                                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -84,7 +84,7 @@
                                         <Insets />
                                     </GridPane.margin>
                                     <children>
-                                        <TextField fx:id="searchResourcesTextfield" onKeyReleased="#searchResourcesTextfield_onKeyReleased" promptText="Search" GridPane.columnIndex="1">
+                                        <TextField fx:id="searchResourcesTextfield" onKeyReleased="#searchResourcesTextfield_onKeyReleased" promptText="Search" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="SOMETIMES">
                                             <GridPane.margin>
                                                 <Insets left="20.0" right="20.0" />
                                             </GridPane.margin>
@@ -95,7 +95,7 @@
                                             </GridPane.margin></Button>
                                     </children>
                                 </GridPane>
-                                <TableView fx:id="logsTable" maxWidth="4000.0" minWidth="200.0" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
+                                <TableView fx:id="logsTable" maxWidth="4000.0" minWidth="200.0" prefHeight="200.0" prefWidth="200.0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
                                     <columns>
                                         <TableColumn fx:id="empIdCol" prefWidth="80" text="Emp ID" />
                                         <TableColumn fx:id="tableCol" prefWidth="120" text="Table" />
