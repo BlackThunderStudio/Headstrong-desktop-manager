@@ -3,9 +3,12 @@ package com.headstrongpro.desktop.view.subscriptions;
 import com.headstrongpro.desktop.controller.SubscriptionsController;
 import com.headstrongpro.desktop.core.Utils;
 import com.headstrongpro.desktop.core.exception.ConnectionException;
+import com.headstrongpro.desktop.core.fxControls.Footer;
 import com.headstrongpro.desktop.model.PaymentRate;
 import com.headstrongpro.desktop.model.Subscription;
 import com.headstrongpro.desktop.view.ContextView;
+import javafx.concurrent.Task;
+import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -14,6 +17,7 @@ import javafx.util.StringConverter;
 import java.net.ConnectException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import static com.headstrongpro.desktop.core.Utils.dateFormatter;
@@ -22,6 +26,9 @@ import static com.headstrongpro.desktop.core.Utils.dateFormatter;
  * Created by Ondřej Soukup on 28.05.2017.
  */
 public class SubscriptionsContextView extends ContextView<Subscription> implements Initializable {
+
+    private static final double PRICE_PER_USER = 200.0;
+    private List<PaymentRate> rates;
 
     // subscriptionsContextPane.fxml
     @FXML
@@ -90,6 +97,15 @@ public class SubscriptionsContextView extends ContextView<Subscription> implemen
             }
         });
 
+        subscriptionsRateCombo.getSelectionModel()
+                .selectedItemProperty()
+                .addListener(((observable, oldValue, newValue) -> {
+            if(newValue != null){
+                subscriptionsPaymentRateLabel.setText(subscriptionsRateCombo.getValue());
+                initTotalAmount();
+            }
+        }));
+
 
         try {
             for (PaymentRate pr : subscriptionsController.getRates())
@@ -101,7 +117,33 @@ public class SubscriptionsContextView extends ContextView<Subscription> implemen
 
     @Override
     public void clearFields(){
+        subscriptionsEndDatePicker.getEditor().clear();
+        subscriptionsStartDatePicker.getEditor().clear();
+        subscriptionsTotalPriceLabel.setText("");
+        subscriptionsPaymentRateLabel.setText("");
+        subscriptionsPricePrUserLabel.setText("");
+        subscriptionsNoOfUsersLabel.setText("");
+        subscriptionsDueLabel.setText("");
+        subscriptionsNextPaymentLabel.setText("");
+    }
 
+    private void getRates(){
+        try {
+            rates = subscriptionsController.getRates();
+        } catch (ConnectionException e) {
+            e.printStackTrace();
+            mainWindowView.getContentView().footer.show(e.getMessage(), Footer.NotificationType.ERROR);
+        }
+    }
+
+    private void initTotalAmount(){
+        subscriptionsTotalPriceLabel.setText(String.valueOf(
+                PRICE_PER_USER * contextItem.getNoOfUsers() * rates.stream()
+                        .filter(e -> e.getName().equals(subscriptionsRateCombo.getValue()))
+                        .map(PaymentRate::getNumberOfMonths)
+                        .findFirst()
+                        .get()
+        ));
     }
 
     @Override
@@ -110,6 +152,29 @@ public class SubscriptionsContextView extends ContextView<Subscription> implemen
                 .setText(contextItem.getStartDate().toString());
         subscriptionsEndDatePicker.getEditor()
                 .setText(contextItem.getEndDate().toString());
-        //TODO combobox change item
+        subscriptionsRateCombo.getSelectionModel().select(contextItem.getRate().getName());
+
+        //labels
+        subscriptionsNoOfUsersLabel.setText(String.valueOf(contextItem.getNoOfUsers()));
+        subscriptionsPricePrUserLabel.setText(String.valueOf(
+                contextItem.getRate().getNumberOfMonths() * PRICE_PER_USER
+        ));
+        subscriptionsPaymentRateLabel.setText(subscriptionsRateCombo.getValue());
+
+        Task<Void> rates = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                getRates();
+                return null;
+            }
+        };
+
+        rates.stateProperty().addListener(((observable, oldValue, newValue) -> {
+            if(newValue.equals(Worker.State.SUCCEEDED)){
+                initTotalAmount();
+            }
+        }));
+
+        new Thread(rates).start();
     }
 }

@@ -4,10 +4,8 @@ import com.headstrongpro.desktop.controller.SubscriptionsController;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.core.fxControls.Footer;
 import com.headstrongpro.desktop.model.Subscription;
-import com.headstrongpro.desktop.model.entity.Company;
 import com.headstrongpro.desktop.view.ContentView;
 import javafx.application.Platform;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -20,7 +18,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 
-import javafx.util.Callback;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -93,7 +90,7 @@ public class SubscriptionsContentView extends ContentView implements Initializab
     public void loadSubscriptions(){
         try{
             System.out.println(subscriptions.size());
-            subscriptions = FXCollections.observableArrayList(subscriptionsController.getSubscriptions());
+            subscriptions = FXCollections.observableArrayList(subscriptionsController.getAll());
         } catch (ModelSyncException e) {
             e.printStackTrace();
             footer.show(e.getMessage(), Footer.NotificationType.ERROR, Footer.FADE_QUICK);
