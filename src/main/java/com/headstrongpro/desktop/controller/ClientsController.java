@@ -38,6 +38,12 @@ public class ClientsController implements Refreshable{
                 e.getGender().toLowerCase().contains(keyword.toLowerCase())).collect(Collectors.toList()));
     }
 
+    public Person getById(int id) throws ModelSyncException {
+        if(id > 0){
+            return clientsDAO.getById(id);
+        } else throw new IllegalStateException("Id must be greater than 0!");
+    }
+
     public void updateClient(int id, String name, String email, String phone, String gender) throws ModelSyncException, DatabaseOutOfSyncException{
         Client client = (Client) clientsDAO.getById(id);
         client.setName(name);

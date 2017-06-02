@@ -1,6 +1,7 @@
 package com.headstrongpro.desktop.view.clients;
 
 import com.headstrongpro.desktop.controller.ClientsController;
+import com.headstrongpro.desktop.core.SyncHandler;
 import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.core.fxControls.Footer;
@@ -72,29 +73,42 @@ public class ClientsContextView extends ContextView<Client> implements Initializ
         clientsGenderFemaleRadio.disarm();
     }
 
+    private SyncHandler handler = () -> {
+        try {
+            return clientsController.getById(contextItem.getId());
+        } catch (ModelSyncException e) {
+            e.printStackTrace();
+            mainWindowView.getContentView().footer.show(e.getMessage(), Footer.NotificationType.ERROR);
+        }
+        return null;
+    };
+
     @FXML
     public void clientEditButtonOnClick(){
-        //TODO add data validation inb4
-        try {
-            mainWindowView.getContentView().footer.show("Updating client...", Footer.NotificationType.LOADING);
-            clientsController.updateClient(contextItem.getId(),
-                    clientsNameTextfield.getText(),
-                    clientsEmailTextfield.getText(),
-                    clientsPhoneTextfield.getText(),
-                    contextItem.getGender());
-            mainWindowView.getContentView().footer.show("Client updated.", Footer.NotificationType.COMPLETED);
-            mainWindowView.getContentView().refreshButton.fire();
-        } catch (ModelSyncException e) {
-            e.fillInStackTrace();
-            mainWindowView.getContentView().footer.show("Error! Could not update company!", Footer.NotificationType.ERROR, Footer.FADE_LONG);
-        } catch (DatabaseOutOfSyncException e) {
-            e.fillInStackTrace();
-            //TODO handle me senpai~
+        if(validateInput(clientsNameTextfield, clientsEmailTextfield, clientsPhoneTextfield)){
+            try {
+                mainWindowView.getContentView().footer.show("Updating client...", Footer.NotificationType.LOADING);
+                clientsController.updateClient(contextItem.getId(),
+                        clientsNameTextfield.getText(),
+                        clientsEmailTextfield.getText(),
+                        clientsPhoneTextfield.getText(),
+                        contextItem.getGender());
+                mainWindowView.getContentView().footer.show("Client updated.", Footer.NotificationType.COMPLETED);
+                mainWindowView.getContentView().refreshButton.fire();
+            } catch (ModelSyncException e) {
+                e.fillInStackTrace();
+                mainWindowView.getContentView().footer.show("Error! Could not update company!", Footer.NotificationType.ERROR, Footer.FADE_LONG);
+            } catch (DatabaseOutOfSyncException e) {
+                e.fillInStackTrace();
+                handleOutOfSync(handler);
+            }
+        } else {
+            mainWindowView.getContentView().footer.show("Invalid input", Footer.NotificationType.WARNING, Footer.FADE_QUICK);
         }
     }
 
     @FXML
     public void clientDeleteButtonOnClick(){
-        mainWindowView.changeContent(ContentSource.CLIENTS);
+        mainWindowView.changeContent(ContentSource.CLIENTS); //TODO: implement properly
     }
 }
