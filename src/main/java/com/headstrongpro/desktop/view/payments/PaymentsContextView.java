@@ -109,6 +109,15 @@ public class PaymentsContextView extends ContextView<Payment> implements Initial
             paymentsPaidDatePicker.setValue(LocalDate.now());
         }
         contextItem.setPaid();
+        Alert a = new Alert(Alert.AlertType.CONFIRMATION);
+        a.setHeaderText("Invoice marked as paid.");
+        a.setContentText("Do you want to update it's status?");
+        Optional<ButtonType> response = a.showAndWait();
+        response.ifPresent(e -> {
+            if(ButtonType.OK.equals(e)){
+                paymentsEditButton.fire();
+            }
+        });
     }
 
     private SyncHandler<Payment> syncHandler = () -> {
@@ -131,6 +140,7 @@ public class PaymentsContextView extends ContextView<Payment> implements Initial
                 mainWindowView.getContentView().footer.show("Updating...", Footer.NotificationType.LOADING);
                 controller.edit(contextItem);
                 mainWindowView.getContentView().footer.show("Payment updated", Footer.NotificationType.COMPLETED, Footer.FADE_QUICK);
+                mainWindowView.getContentView().refreshButton.fire();
             } catch (DatabaseOutOfSyncException e) {
                 e.printStackTrace();
                 handleOutOfSync(syncHandler);
@@ -155,6 +165,7 @@ public class PaymentsContextView extends ContextView<Payment> implements Initial
                 try {
                     controller.delete(contextItem);
                     mainWindowView.getContentView().footer.show("Resource deleted.", Footer.NotificationType.COMPLETED);
+                    mainWindowView.getContentView().refreshButton.fire();
                 } catch (DatabaseOutOfSyncException e) {
                     e.printStackTrace();
                     handleOutOfSync(syncHandler);

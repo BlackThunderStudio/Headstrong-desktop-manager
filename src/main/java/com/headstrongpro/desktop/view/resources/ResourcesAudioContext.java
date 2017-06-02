@@ -226,4 +226,11 @@ public class ResourcesAudioContext extends ContextView<AudioResource> implements
             isPlaying = true;
         }
     }
+
+    public void stopAudio() {
+        if (isPlaying) {
+            mediaPlayer.pause();
+            isPlaying = false;
+        }
+    }
 }

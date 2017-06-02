@@ -87,6 +87,10 @@ public class ResourcesView extends ContentView implements Initializable {
                 .selectedItemProperty()
                 .addListener(((observable, oldValue, newValue) -> {
             if(newValue != null){
+                if (selected != null && selected.getType() == ResourceType.AUDIO){
+                    ResourcesAudioContext audioController = (ResourcesAudioContext) mainWindowView.getContextView();
+                    audioController.stopAudio();
+                }
                 selected = newValue;
                 footer.show(selected.getName() + " selected.", Footer.NotificationType.INFORMATION, Footer.FADE_SUPER_QUICK);
                 if(newValue.getType().equals(ResourceType.AUDIO)){

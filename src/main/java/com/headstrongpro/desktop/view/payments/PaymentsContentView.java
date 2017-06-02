@@ -108,13 +108,31 @@ public class PaymentsContentView extends ContentView implements Initializable {
 
     @FXML
     public void searchPaymentsOnKeyReleased(KeyEvent event) {
-        //TODO: implement searching
+        loadTable(controller.searchByPhrase(searchPaymentsTextfield.getText()));
     }
 
     @FXML
     public void refreshButtonOnClick(ActionEvent event) {
-        //TODO: implement refreshing
-    }
+        searchPaymentsTextfield.clear();
+        Task<Void> sync = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                Platform.runLater(() -> footer.show("Synchronising data...", Footer.NotificationType.LOADING));
+                loadPayments();
+                return null;
+            }
+        };
 
+        sync.stateProperty().addListener(((observable, oldValue, newValue) -> {
+            if(newValue.equals(SUCCEEDED)){
+                loadTable(payments);
+                footer.show("Payments reloaded successfully", Footer.NotificationType.COMPLETED);
+            } else if(newValue.equals(CANCELLED) || newValue.equals(FAILED)){
+                footer.show("Coult not reload payments!", Footer.NotificationType.ERROR, Footer.FADE_LONG);
+            }
+        }));
+
+        new Thread(sync).start();
+    }
 
 }
