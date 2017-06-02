@@ -31,7 +31,7 @@ public class Analytics {
     public enum Table {
         COMPANIES("companies"),
         CLIENTS("clients"),
-        COURSES("sessions"),
+        COURSES("courses"),
         RESOURCES("resources"),
         EMPLOYEES("employees_headstrong");
 
