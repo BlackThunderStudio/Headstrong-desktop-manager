@@ -103,11 +103,11 @@ public class SubscriptionsContentView extends ContentView implements Initializab
     public void loadTable(ObservableList<Subscription> subscriptions){
         subscriptionsTable.getColumns().removeAll(subscriptionsCompanyCol, subscriptionsStartCol, subscriptionsEndCol, subscriptionsUsersCol, subscriptionsRateCol);
         subscriptionsTable.setItems(subscriptions);
-        subscriptionsCompanyCol.setCellValueFactory(new PropertyValueFactory<>("company"));
+        subscriptionsCompanyCol.setCellValueFactory(new PropertyValueFactory<>("companyName"));
         subscriptionsStartCol.setCellValueFactory(new PropertyValueFactory<>("startDate"));
         subscriptionsEndCol.setCellValueFactory(new PropertyValueFactory<>("endDate"));
         subscriptionsUsersCol.setCellValueFactory(new PropertyValueFactory<>("noOfUsers"));
-        subscriptionsRateCol.setCellValueFactory(new PropertyValueFactory<>("rate"));
+        subscriptionsRateCol.setCellValueFactory(new PropertyValueFactory<>("rateName"));
         subscriptionsTable.getColumns().addAll(subscriptionsCompanyCol, subscriptionsStartCol, subscriptionsEndCol, subscriptionsUsersCol, subscriptionsRateCol);
     }
 }

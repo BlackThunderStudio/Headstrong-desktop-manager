@@ -13,6 +13,7 @@ public class Subscription {
     private Date startDate, endDate;
     private PaymentRate rate;
     private Company company;
+    private String rateName, companyName;
 
     public Subscription(int id, int noOfUsers, boolean isActive, Date startDate, Date endDate, PaymentRate rate, Company company) {
         this.id = id;
@@ -22,6 +23,8 @@ public class Subscription {
         this.endDate = endDate;
         this.rate = rate;
         this.company = company;
+        rateName = rate.getName();
+        companyName = company.getName();
     }
 
     public Subscription(int noOfUsers, boolean isActive, Date startDate, Date endDate, PaymentRate rate, Company company) {
@@ -31,6 +34,8 @@ public class Subscription {
         this.endDate = endDate;
         this.rate = rate;
         this.company = company;
+        rateName = rate.getName();
+        companyName = company.getName();
     }
 
 
@@ -81,5 +86,13 @@ public class Subscription {
 
     public Company getCompany() {
         return company;
+    }
+
+    public String getRateName() {
+        return rateName;
+    }
+
+    public String getCompanyName() {
+        return companyName;
     }
 }
