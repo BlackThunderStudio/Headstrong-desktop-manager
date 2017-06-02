@@ -107,7 +107,7 @@ public class Utils {
         String pattern = "dd-MM-yyyy";
         switch (type) {
             case DATE:
-                pattern = "dd-MM-yyyy";
+                pattern = "yyyy-MM-dd";
                 break;
             case DATETIME:
                 pattern = "dd-MM-yyyy hh:mm";
