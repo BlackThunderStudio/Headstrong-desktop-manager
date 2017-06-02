@@ -46,6 +46,7 @@ class SFTPKotlin(val host: String, val user: String, val  pass: String, val  pat
     override fun uploadMediaServer(file: File?, remote: String?): String {
         val ext = FilenameUtils.getExtension(file?.absolutePath)
         val encodedURL = URLEncoder.encode(remote, "UTF-8")
+        System.out.println("Creating server url: http://$subDomain.$host$path$encodedURL.$ext")
         upload(file!!, "$remote.$ext")
         return "http://$subDomain.$host$path$encodedURL.$ext"
     }
