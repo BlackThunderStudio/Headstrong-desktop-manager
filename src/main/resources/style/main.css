@@ -10,6 +10,13 @@
     -fx-opacity: 1.0;
 }
 
+.context-view #topControls {
+    -fx-alignment: center-right;
+    -fx-pref-height: 100.0;
+    -fx-pref-width: 200.0;
+    -fx-spacing: 10.0;
+}
+
 .context-view #topControls > .button {
     -fx-max-width: 90.0;
     -fx-min-width: 90.0;

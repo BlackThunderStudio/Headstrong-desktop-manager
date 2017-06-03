@@ -17,13 +17,7 @@ public abstract class ContextView<T> {
 
     // Top controls
     @FXML
-    public Button toggleEditButton;
-    @FXML
-    public Button editButton;
-    @FXML
-    public Button cancelButton;
-    @FXML
-    public Button deleteButton;
+    public Button toggleEditButton, editButton, cancelButton, deleteButton;
 
     @FXML
     public HBox topControls; // Horizontal row with top controls

@@ -4,7 +4,8 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-<GridPane maxWidth="500" minWidth="250.0" styleClass="context-view" prefWidth="300.0" xmlns="http://javafx.com/javafx/8.0.112"
+<GridPane maxWidth="500" minWidth="250.0" styleClass="context-view" prefWidth="300.0"
+          xmlns="http://javafx.com/javafx/8.0.112"
           xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.headstrongpro.desktop.view.clients.ClientsContextView">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="55.0" prefWidth="80.0"/>
@@ -48,9 +49,7 @@
     <TextField fx:id="emailField" promptText="E-mail" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
     <TextField fx:id="phoneField" promptText="Phone number" GridPane.columnIndex="1"
                GridPane.rowIndex="3"/>
-    <HBox fx:id="topControls" alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="10.0"
-          GridPane.columnIndex="0"
-          GridPane.columnSpan="2" GridPane.halignment="RIGHT">
+    <HBox fx:id="topControls" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.halignment="RIGHT">
         <GridPane.margin>
             <Insets/>
         </GridPane.margin>
