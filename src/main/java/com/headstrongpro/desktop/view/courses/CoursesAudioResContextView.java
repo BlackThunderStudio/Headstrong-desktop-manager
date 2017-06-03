@@ -11,6 +11,7 @@ import com.headstrongpro.desktop.model.resource.Resource;
 import com.headstrongpro.desktop.model.resource.ResourceType;
 import com.headstrongpro.desktop.view.ContentSource;
 import com.headstrongpro.desktop.view.ContextView;
+import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.concurrent.Worker;
 import javafx.event.ActionEvent;
@@ -54,7 +55,7 @@ public class CoursesAudioResContextView extends ContextView<Course> implements I
         Task<Void> assign = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
-                mainWindowView.getContentView().footer.show("Assigning resources to course", Footer.NotificationType.LOADING);
+                Platform.runLater(() -> mainWindowView.getContentView().footer.show("Assigning resources to course", Footer.NotificationType.LOADING));
                 handleAssign();
                 return null;
             }

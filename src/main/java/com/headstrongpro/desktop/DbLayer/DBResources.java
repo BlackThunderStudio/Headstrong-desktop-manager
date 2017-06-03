@@ -428,7 +428,7 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
             for (int i = 0; i < resIDs.size() - 1; i++) {
                 simplifiedResIDs += resIDs.get(i) + ",";
             }
-            simplifiedResIDs += resIDs.get(resIDs.size() - 1);
+            simplifiedResIDs += resIDs.get(resIDs.size());
             qry = "SELECT * FROM resources WHERE id IN(" + simplifiedResIDs + ");";
             rs = dbConnect.getFromDataBase(qry);
             while (rs.next()) {
