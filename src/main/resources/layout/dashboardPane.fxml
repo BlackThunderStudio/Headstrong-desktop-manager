@@ -8,8 +8,8 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
-<AnchorPane stylesheets="/style/dashboardPane.css" xmlns="http://javafx.com/javafx/8.0.112"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.headstrongpro.desktop.view.dashboard.DashboardView">
+<AnchorPane stylesheets="/style/dashboardPane.css" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.headstrongpro.desktop.view.dashboard.DashboardView">
     <ScrollPane vbarPolicy="NEVER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
                 AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <GridPane>

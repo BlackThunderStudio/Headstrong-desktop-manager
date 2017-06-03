@@ -28,21 +28,19 @@ public class SubscriptionsContentView extends ContentView<Subscription> implemen
     @FXML
     public TableColumn<Subscription, String> companyCol, startCol, endCol, usersCol, rateCol;
 
-    private SubscriptionsController controller;
-    private ObservableList<Subscription> subscriptions;
+    private SubscriptionsController controller; // Data controller
+    private ObservableList<Subscription> subscriptions = FXCollections.observableArrayList();
     private Subscription selected;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        controller = new SubscriptionsController();
-        subscriptions = FXCollections.emptyObservableList();
-
         setColumns();
 
         Task<Void> init = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
                 Platform.runLater(() -> footer.show("Loading subscriptions...", Footer.NotificationType.LOADING));
+                controller = new SubscriptionsController();
                 loadSubscriptions();
                 return null;
             }
@@ -69,6 +67,14 @@ public class SubscriptionsContentView extends ContentView<Subscription> implemen
         });
     }
 
+    private void setColumns() {
+        companyCol.setCellValueFactory(new PropertyValueFactory<>("companyName"));
+        startCol.setCellValueFactory(new PropertyValueFactory<>("startDate"));
+        endCol.setCellValueFactory(new PropertyValueFactory<>("endDate"));
+        usersCol.setCellValueFactory(new PropertyValueFactory<>("noOfUsers"));
+        rateCol.setCellValueFactory(new PropertyValueFactory<>("rateName"));
+    }
+
     private void loadSubscriptions() {
         try {
             System.out.println(subscriptions.size());
@@ -77,14 +83,6 @@ public class SubscriptionsContentView extends ContentView<Subscription> implemen
             e.printStackTrace();
             footer.show(e.getMessage(), Footer.NotificationType.ERROR, Footer.FADE_QUICK);
         }
-    }
-
-    private void setColumns() {
-        companyCol.setCellValueFactory(new PropertyValueFactory<>("companyName"));
-        startCol.setCellValueFactory(new PropertyValueFactory<>("startDate"));
-        endCol.setCellValueFactory(new PropertyValueFactory<>("endDate"));
-        usersCol.setCellValueFactory(new PropertyValueFactory<>("noOfUsers"));
-        rateCol.setCellValueFactory(new PropertyValueFactory<>("rateName"));
     }
 
 }

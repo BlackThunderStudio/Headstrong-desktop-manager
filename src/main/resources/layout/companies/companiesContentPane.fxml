@@ -6,8 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
-<GridPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="700" prefWidth="800" styleClass="content-view"
-          xmlns="http://javafx.com/javafx/8.0.121"
+<GridPane styleClass="content-view" xmlns:fx="http://javafx.com/fxml/1"
           fx:controller="com.headstrongpro.desktop.view.companies.CompaniesContentView">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="1500.0" minWidth="500.0" prefWidth="800.0"/>

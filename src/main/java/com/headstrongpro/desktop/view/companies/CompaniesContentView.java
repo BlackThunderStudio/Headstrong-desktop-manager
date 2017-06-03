@@ -29,13 +29,11 @@ public class CompaniesContentView extends ContentView<Company> implements Initia
     @FXML
     public TableColumn<Company, String> nameCol, cvrCol, streetCol, postalCol, cityCol, countryCol;
 
-    private CompaniesController controller;
-    private ObservableList<Company> companies;
+    private CompaniesController controller; // Data controller
+    private ObservableList<Company> companies = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        companies = FXCollections.observableArrayList();
-
         setColumns();
 
         Task<Void> init = new Task<Void>() {
