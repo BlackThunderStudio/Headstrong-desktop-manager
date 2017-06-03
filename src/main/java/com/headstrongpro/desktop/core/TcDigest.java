@@ -28,7 +28,7 @@ public class TcDigest {
      * @return digested string of text
      */
     public String encode(String input){
-        return processParallel(input, seed, ActionType.ENCODE, DigestSystem.UTF8, BufferSize.SMALL);
+        return processParallel(input, seed, ActionType.ENCODE, DigestSystem.HEX, BufferSize.SMALL);
     }
 
     /***
@@ -37,7 +37,7 @@ public class TcDigest {
      * @return decrypted value
      */
     private String decode(String input){
-        return processParallel(input, seed, ActionType.DECODE, DigestSystem.UTF8, BufferSize.SMALL);
+        return processParallel(input, seed, ActionType.DECODE, DigestSystem.HEX, BufferSize.SMALL);
     }
 
     /***

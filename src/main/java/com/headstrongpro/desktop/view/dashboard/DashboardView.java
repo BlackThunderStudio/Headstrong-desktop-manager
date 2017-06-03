@@ -95,7 +95,7 @@ public class DashboardView extends ContentView implements Initializable {
         loadSubs = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
-                valSubs = Analytics.getActiveSubstriptions();
+                valSubs = Analytics.getActiveSubscriptions();
                 return null;
             }
         };
