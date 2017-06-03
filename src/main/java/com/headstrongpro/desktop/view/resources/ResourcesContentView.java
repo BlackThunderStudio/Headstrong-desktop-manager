@@ -13,13 +13,10 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.KeyEvent;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -27,40 +24,45 @@ import java.util.ResourceBundle;
 import static javafx.concurrent.Worker.State.*;
 
 /**
- * Created by Ondřej Soukup on 23.05.2017.
+ * Resources ContentView
  */
-public class ResourcesView extends ContentView implements Initializable {
+public class ResourcesContentView extends ContentView implements Initializable {
 
+    private static final String[] TYPES = {"Audio", "Image", "Text", "All"};
+
+    // Top controls
     @FXML
-    public TextField searchResourcesTextfield;
+    public TextField searchField;
     @FXML
     public ComboBox<String> resourcesComboBox;
+
+    //Table
     @FXML
-    public TableView<Resource> resourcesTable;
+    public TableView<Resource> mainTable;
+
+    @FXML
+    public TableColumn<Resource, String> nameCol;
+    @FXML
+    public TableColumn<Resource, String> descCol;
+    @FXML
+    public TableColumn<Resource, ResourceType> typeCol;
+
+    // Bottom controls
     @FXML
     public Button assignToCourseButton;
-
-    //Table columns
-    @FXML
-    public TableColumn nameCol;
-    @FXML
-    public TableColumn descCol;
-    @FXML
-    public TableColumn typeCol;
-
 
     private ResourcesController controller;
     private ObservableList<Resource> resources;
     private Resource selected;
 
-    private static final String[] types = {"Audio", "Image", "Text", "All"};
-
-    @SuppressWarnings("unchecked")
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        resourcesComboBox.getItems().addAll(types);
+        resourcesComboBox.getItems().addAll(TYPES);
         resourcesComboBox.getSelectionModel().select(3);
         this.resources = FXCollections.observableArrayList();
+
+        setColumns();
+
         Task<Void> init = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
@@ -72,22 +74,21 @@ public class ResourcesView extends ContentView implements Initializable {
         };
 
         init.stateProperty().addListener((observable, oldValue, newValue) -> {
-            if(newValue.equals(SUCCEEDED)){
+            if (newValue.equals(SUCCEEDED)) {
 
                 try {
-                    if (mainWindowView.getContextView().getContextItem() instanceof Resource){
+                    if (mainWindowView.getContextView().getContextItem() instanceof Resource) {
                         Course c = (Course) mainWindowView.getContextView().getContextItem();
-                        initTable(FXCollections.observableList(controller.getTextResById(c.getId())));
+                        mainTable.setItems(FXCollections.observableList(controller.getTextResById(c.getId())));
                         mainWindowView.getContextView().changeContextItem(null);
                         //TODO: needs a bit of tweaking to display from courses
-                    }
-                    else
-                        initTable(this.resources);
-                } catch (ModelSyncException e){
+                    } else
+                        mainTable.setItems(this.resources);
+                } catch (ModelSyncException e) {
                     e.printStackTrace();
                 }
                 footer.show("Resources loaded.", Footer.NotificationType.COMPLETED);
-            } else if(newValue.equals(FAILED) || newValue.equals(CANCELLED)){
+            } else if (newValue.equals(FAILED) || newValue.equals(CANCELLED)) {
                 footer.show("Error! Could not load resources!", Footer.NotificationType.ERROR, Footer.FADE_LONG);
             }
         });
@@ -96,51 +97,60 @@ public class ResourcesView extends ContentView implements Initializable {
         initThread.setDaemon(true);
         initThread.start();
 
-        resourcesTable.getSelectionModel()
+        mainTable.getSelectionModel()
                 .selectedItemProperty()
                 .addListener(((observable, oldValue, newValue) -> {
-            if(newValue != null){
-                if (selected != null && selected.getType() == ResourceType.AUDIO){
-                    ResourcesAudioContext audioController = (ResourcesAudioContext) mainWindowView.getContextView();
-                    audioController.stopAudio();
-                }
-                selected = newValue;
-                footer.show(selected.getName() + " selected.", Footer.NotificationType.INFORMATION, Footer.FADE_SUPER_QUICK);
-                if(newValue.getType().equals(ResourceType.AUDIO)){
-                    mainWindowView.changeContext(ContentSource.RESOURCES_AUDIO);
-                } else if(newValue.getType().equals(ResourceType.IMAGE)){
-                    mainWindowView.changeContext(ContentSource.RESOURCES_IMAGE);
-                } else if(newValue.getType().equals(ResourceType.VIDEO)){
-                    mainWindowView.changeContext(ContentSource.RESOURCES_AUDIO); //TODO: video type to be added
-                } else if(newValue.getType().equals(ResourceType.TEXT)){
-                    mainWindowView.changeContext(ContentSource.RESOURCES_TEXT);
-                }
-                mainWindowView.getContextView()
-                        .changeContextItem(
-                                Resource.ofType(selected));
-            }
-        }));
+                    if (newValue != null) {
+                        if (selected != null && selected.getType() == ResourceType.AUDIO) {
+                            ResourcesAudioContext audioController = (ResourcesAudioContext) mainWindowView.getContextView();
+                            audioController.stopAudio();
+                        }
+                        selected = newValue;
+                        footer.show(selected.getName() + " selected.", Footer.NotificationType.INFORMATION, Footer.FADE_SUPER_QUICK);
+                        if (newValue.getType().equals(ResourceType.AUDIO)) {
+                            mainWindowView.changeContext(ContentSource.RESOURCES_AUDIO);
+                        } else if (newValue.getType().equals(ResourceType.IMAGE)) {
+                            mainWindowView.changeContext(ContentSource.RESOURCES_IMAGE);
+                        } else if (newValue.getType().equals(ResourceType.VIDEO)) {
+                            mainWindowView.changeContext(ContentSource.RESOURCES_AUDIO); //TODO: video type to be added
+                        } else if (newValue.getType().equals(ResourceType.TEXT)) {
+                            mainWindowView.changeContext(ContentSource.RESOURCES_TEXT);
+                        }
+                        mainWindowView.getContextView().changeContextItem(Resource.ofType(selected));
+                    }
+                }));
 
         resourcesComboBox.getSelectionModel()
                 .selectedItemProperty()
                 .addListener(((observable, oldValue, newValue) -> {
-            if(newValue.equals("Audio")){
-                addNewButton.setText("New Audio");
-                initTable(FXCollections.observableArrayList(controller.filterByType(ResourceType.AUDIO)));
-            } else if(newValue.equals("Image")) {
-                addNewButton.setText("New Image");
-                initTable(FXCollections.observableArrayList(controller.filterByType(ResourceType.IMAGE)));
-            } else if(newValue.equals("Text")){
-                addNewButton.setText("New Text");
-                initTable(FXCollections.observableArrayList(controller.filterByType(ResourceType.TEXT)));
-            } else if(newValue.equals("All")){
-                addNewButton.setText("New");
-                initTable(this.resources);
-            }
-        }));
+                    switch (newValue) {
+                        case "Audio":
+                            addNewButton.setText("New Audio");
+                            mainTable.setItems(FXCollections.observableArrayList(
+                                    controller.filterByType(ResourceType.AUDIO)
+                            ));
+                            break;
+                        case "Image":
+                            addNewButton.setText("New Image");
+                            mainTable.setItems(FXCollections.observableArrayList(
+                                    controller.filterByType(ResourceType.IMAGE)
+                            ));
+                            break;
+                        case "Text":
+                            addNewButton.setText("New Text");
+                            mainTable.setItems(FXCollections.observableArrayList(
+                                    controller.filterByType(ResourceType.TEXT)
+                            ));
+                            break;
+                        case "All":
+                            addNewButton.setText("New");
+                            mainTable.setItems(this.resources);
+                            break;
+                    }
+                }));
     }
 
-    private void loadResources(){
+    private void loadResources() {
         try {
             resources = FXCollections.observableArrayList(controller.getAll());
         } catch (ModelSyncException e) {
@@ -148,9 +158,7 @@ public class ResourcesView extends ContentView implements Initializable {
         }
     }
 
-
-
-    private void refresh(){
+    private void refresh() {
         Task<Void> refresh = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
@@ -161,10 +169,10 @@ public class ResourcesView extends ContentView implements Initializable {
         };
 
         refresh.stateProperty().addListener(((observable, oldValue, newValue) -> {
-            if(newValue.equals(SUCCEEDED)){
+            if (newValue.equals(SUCCEEDED)) {
                 footer.show("Resources loaded successfully.", Footer.NotificationType.COMPLETED);
-                initTable(resources);
-            } else if(newValue.equals(FAILED) || newValue.equals(CANCELLED)) {
+                mainTable.setItems(this.resources);
+            } else if (newValue.equals(FAILED) || newValue.equals(CANCELLED)) {
                 footer.show("Error! Could not refresh the list!", Footer.NotificationType.ERROR, Footer.FADE_LONG);
             }
         }));
@@ -174,30 +182,23 @@ public class ResourcesView extends ContentView implements Initializable {
         th.start();
     }
 
-    @SuppressWarnings("unchecked")
-    private void initTable(ObservableList<Resource> resources){
-        resourcesTable.getColumns().removeAll(nameCol, descCol, typeCol);
-        resourcesTable.setItems(resources);
-
+    private void setColumns() {
         nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         descCol.setCellValueFactory(new PropertyValueFactory<>("description"));
         typeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
-
-        resourcesTable.getColumns().addAll(nameCol, descCol, typeCol);
     }
 
     @FXML
-    public void searchResourcesTextfield_onKeyReleased(KeyEvent keyEvent) {
-        initTable(
-                FXCollections.observableArrayList(
-                        controller.filterSearch(
-                                searchResourcesTextfield.getText(), resourcesComboBox.getValue())));
+    public void handleSearch() {
+        mainTable.setItems(FXCollections.observableArrayList(
+                controller.filterSearch(searchField.getText(), resourcesComboBox.getValue())
+        ));
     }
 
     @FXML
-    public void assignToCourseButton_onClick(ActionEvent actionEvent) {
-        Resource selected = (Resource) resourcesTable.getSelectionModel().getSelectedItem();
-        if(selected != null){
+    public void assignToCourseButton_onClick() {
+        Resource selected = mainTable.getSelectionModel().getSelectedItem();
+        if (selected != null) {
             //TODO: assign to course
 
             try {
@@ -213,10 +214,10 @@ public class ResourcesView extends ContentView implements Initializable {
     }
 
     @FXML
-    public void newResourceButton_onClick(ActionEvent actionEvent) {
-        if(resourcesComboBox.getSelectionModel().getSelectedItem().equals("All")){
+    public void newResourceButton_onClick() {
+        if (resourcesComboBox.getSelectionModel().getSelectedItem().equals("All")) {
             footer.show("Please specify resource type first!", Footer.NotificationType.WARNING);
-        } else if(resourcesComboBox.getSelectionModel().getSelectedItem().equals("Text")) {
+        } else if (resourcesComboBox.getSelectionModel().getSelectedItem().equals("Text")) {
             mainWindowView.changeContext(ContentSource.RESOURCES_NEW_TEXT);
         } else {
             mainWindowView.changeContext(ContentSource.RESOURCES_NEW_FILE);
@@ -224,8 +225,8 @@ public class ResourcesView extends ContentView implements Initializable {
     }
 
     @FXML
-    public void refreshOnClick(ActionEvent actionEvent) {
-        searchResourcesTextfield.clear();
+    public void refreshOnClick() {
+        searchField.clear();
         refresh();
     }
 }
