@@ -98,6 +98,9 @@ public class ClientsContentView extends ContentView implements Initializable {
 
         clientsTable.getSelectionModel().selectedItemProperty().addListener((o, e, c) -> {
             if (c != null) {
+                if(mainWindowView.getCurrentContentSource().equals(ContentSource.CLIENTS_NEW)){
+                    mainWindowView.changeContent(ContentSource.CLIENTS);
+                }
                 footer.show(c.getName() + " selected.", Footer.NotificationType.INFORMATION, Footer.FADE_SUPER_QUICK);
                 mainWindowView.getContextView().changeContextItem(c);
             }
