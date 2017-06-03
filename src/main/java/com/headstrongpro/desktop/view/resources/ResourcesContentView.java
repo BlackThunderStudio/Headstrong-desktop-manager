@@ -26,20 +26,15 @@ import static javafx.concurrent.Worker.State.*;
 /**
  * Resources ContentView
  */
-public class ResourcesContentView extends ContentView implements Initializable {
+public class ResourcesContentView extends ContentView<Resource> implements Initializable {
 
     private static final String[] TYPES = {"Audio", "Image", "Text", "All"};
 
     // Top controls
     @FXML
-    public TextField searchField;
-    @FXML
     public ComboBox<String> resourcesComboBox;
 
-    //Table
-    @FXML
-    public TableView<Resource> mainTable;
-
+    //Table columns
     @FXML
     public TableColumn<Resource, String> nameCol;
     @FXML
