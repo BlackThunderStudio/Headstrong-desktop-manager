@@ -8,7 +8,6 @@ import com.headstrongpro.desktop.model.PaymentRate;
 import com.headstrongpro.desktop.model.Subscription;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import org.bouncycastle.math.raw.Mod;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,18 +21,18 @@ public class SubscriptionsController implements Refreshable, IContentController<
     private List<Subscription> subscriptions;
     private DBSubscriptions subscriptionDAO;
 
-    public SubscriptionsController(){
+    public SubscriptionsController() {
         subscriptions = new ArrayList<>();
         subscriptionDAO = new DBSubscriptions();
     }
 
-    public ObservableList<Subscription> getAll() throws ModelSyncException{
+    public ObservableList<Subscription> getAll() throws ModelSyncException {
         refresh();
         return FXCollections.observableArrayList(subscriptions);
     }
 
     @Override
-    public void refresh() throws ModelSyncException{
+    public void refresh() throws ModelSyncException {
         subscriptions.clear();
         subscriptions.addAll(subscriptionDAO.getAll());
     }
@@ -45,7 +44,7 @@ public class SubscriptionsController implements Refreshable, IContentController<
 
     @Override
     public ObservableList<Subscription> searchByPhrase(String input) {
-        if(input == null) throw new IllegalArgumentException("Input cannot be null!");
+        if (input == null) throw new IllegalArgumentException("Input cannot be null!");
         return FXCollections.observableArrayList(subscriptions
                 .stream()
                 .filter(e -> e.getCompany().getName().toLowerCase().contains(input) ||

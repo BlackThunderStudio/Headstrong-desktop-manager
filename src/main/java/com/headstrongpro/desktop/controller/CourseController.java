@@ -1,10 +1,10 @@
 package com.headstrongpro.desktop.controller;
 
+import com.headstrongpro.desktop.DbLayer.DBCourse;
+import com.headstrongpro.desktop.DbLayer.DBResources;
 import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.model.Course;
-import com.headstrongpro.desktop.DbLayer.DBResources;
-import com.headstrongpro.desktop.DbLayer.DBCourse;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -21,7 +21,7 @@ public class CourseController implements Refreshable, IContentController<Course>
     private DBResources dbResources;
     private List<Course> courses;
 
-    public CourseController(){
+    public CourseController() {
         dbCourse = new DBCourse();
         dbResources = new DBResources();
         courses = new ArrayList<>();
@@ -47,8 +47,8 @@ public class CourseController implements Refreshable, IContentController<Course>
     }
 
     @Override
-    public Course createNew(Course course) throws ModelSyncException{
-        if(course == null) throw new IllegalArgumentException("Cannot be null");
+    public Course createNew(Course course) throws ModelSyncException {
+        if (course == null) throw new IllegalArgumentException("Cannot be null");
         return dbCourse.persist(course);
     }
 
@@ -59,7 +59,7 @@ public class CourseController implements Refreshable, IContentController<Course>
 
     @Override
     public void delete(Course course) throws DatabaseOutOfSyncException, ModelSyncException {
-        if(course == null) throw new IllegalArgumentException("Cannot be nullu");
+        if (course == null) throw new IllegalArgumentException("Cannot be nullu");
         dbCourse.delete(course);
     }
 
@@ -69,9 +69,9 @@ public class CourseController implements Refreshable, IContentController<Course>
     }
 
     @Override
-    public ObservableList<Course> searchByPhrase(String phrase){
+    public ObservableList<Course> searchByPhrase(String phrase) {
         return FXCollections.observableArrayList(courses.stream().filter(
-                e-> e.getName().toLowerCase().contains(phrase.toLowerCase())
+                e -> e.getName().toLowerCase().contains(phrase.toLowerCase())
         ).collect(Collectors.toList()));
     }
 }

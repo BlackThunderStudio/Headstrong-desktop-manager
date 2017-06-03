@@ -1,12 +1,12 @@
 package com.headstrongpro.desktop.controller;
 
 
+import com.headstrongpro.desktop.DbLayer.DBResources;
 import com.headstrongpro.desktop.core.exception.ConnectionException;
 import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.model.Course;
 import com.headstrongpro.desktop.model.resource.*;
-import com.headstrongpro.desktop.DbLayer.DBResources;
 import javafx.scene.image.Image;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -16,10 +16,11 @@ import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
 import java.sql.Time;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.headstrongpro.desktop.model.resource.ResourceUploadAdapter.*;
+import static com.headstrongpro.desktop.model.resource.ResourceUploadAdapter.Destination;
 
 /**
  * Created by rajmu on 17.05.19.
@@ -48,7 +49,7 @@ public class ResourcesController implements Refreshable {
         resources.clear();
         resources.addAll(resourcesDAO.getAll());
     }
-    
+
     public List<Resource> getAll() throws ModelSyncException {
         refresh();
         return resources;
@@ -61,23 +62,24 @@ public class ResourcesController implements Refreshable {
      * @param input searched expression
      * @return A list of objects containing searched phrase
      */
-    public List<Resource> searchByPhrase(String input){
+    public List<Resource> searchByPhrase(String input) {
         if (input == null) throw new IllegalStateException("input query cannot be of null");
-                return resources.stream()
-                        .filter(e -> String.valueOf(e.getID()).contains(input) ||
-                                e.getName().toLowerCase().contains(input.toLowerCase()) ||
-                                e.getDescription().toLowerCase().contains(input.toLowerCase()))
-                        .collect(Collectors.toList());
+        return resources.stream()
+                .filter(e -> String.valueOf(e.getID()).contains(input) ||
+                        e.getName().toLowerCase().contains(input.toLowerCase()) ||
+                        e.getDescription().toLowerCase().contains(input.toLowerCase()))
+                .collect(Collectors.toList());
     }
 
     /**
      * Filters the search results by resource type
+     *
      * @param input searched expression
-     * @param type resource type
+     * @param type  resource type
      * @return A list of objects of specified type containing the input
      */
-    public List<Resource> filterSearch(String input, String type){
-        switch(type){
+    public List<Resource> filterSearch(String input, String type) {
+        switch (type) {
             case "Image":
                 return searchByPhrase(input).stream().filter(e -> e.getType().equals(ResourceType.IMAGE)).collect(Collectors.toList());
             case "Audio":
@@ -96,7 +98,7 @@ public class ResourcesController implements Refreshable {
      * @param type ResourceType object
      * @return List of resources
      */
-    public List<Resource> filterByType(ResourceType type){
+    public List<Resource> filterByType(ResourceType type) {
         if (type == null) throw new IllegalStateException("Type cannot be null");
         /*return resources.parallelStream()
                 .filter(e -> e.getType().equals(type))
@@ -116,7 +118,7 @@ public class ResourcesController implements Refreshable {
      * @param title FileChooser window title
      * @return FileChooser object
      */
-    private FileChooser prepareFileChooser(String title){
+    private FileChooser prepareFileChooser(String title) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle(title);
         fileChooser.getExtensionFilters().addAll(
@@ -136,11 +138,11 @@ public class ResourcesController implements Refreshable {
      * @param file Input file
      * @return ResourceType object
      */
-    public ResourceType getResourceType(File file){
+    public ResourceType getResourceType(File file) {
         String ext = FilenameUtils.getExtension(file.getAbsolutePath());
-        if("jpg;jpeg;png;gif".contains(ext.toLowerCase())) return ResourceType.IMAGE;
-        else if("mp3;wav".contains(ext.toLowerCase())) return ResourceType.AUDIO;
-        else if("mp4;avi;webm".contains(ext.toLowerCase())) return ResourceType.VIDEO;
+        if ("jpg;jpeg;png;gif".contains(ext.toLowerCase())) return ResourceType.IMAGE;
+        else if ("mp3;wav".contains(ext.toLowerCase())) return ResourceType.AUDIO;
+        else if ("mp4;avi;webm".contains(ext.toLowerCase())) return ResourceType.VIDEO;
         else return ResourceType.TEXT;
     }
 
@@ -150,7 +152,7 @@ public class ResourcesController implements Refreshable {
      *
      * @return File object
      */
-    public File selectLocalFile(){
+    public File selectLocalFile() {
         FileChooser fileChooser = prepareFileChooser("Select local resource");
         return fileChooser.showOpenDialog(new Stage());
     }
@@ -161,10 +163,10 @@ public class ResourcesController implements Refreshable {
      *
      * @return List of files
      */
-    public List<File> selectMultipleFiles(){
+    public List<File> selectMultipleFiles() {
         FileChooser fileChooser = prepareFileChooser("Select resources");
         List<File> files = fileChooser.showOpenMultipleDialog(new Stage());
-        if(files.size() == 0) throw new IllegalStateException("No files selected");
+        if (files.size() == 0) throw new IllegalStateException("No files selected");
         return files;
     }
 
@@ -201,19 +203,19 @@ public class ResourcesController implements Refreshable {
         resource.setFile(file);
         resource.setRemoteFileName(remoteName);
 
-        String url= "";
-        if(!type.equals(ResourceType.TEXT)){
+        String url = "";
+        if (!type.equals(ResourceType.TEXT)) {
             url = (String) resourceUploader.upload(resource, Destination.CDN_SERVER);
             System.out.println("New resource available at: " + url);
         }
 
         //load record into the database
-        if(type.equals(ResourceType.TEXT)){
+        if (type.equals(ResourceType.TEXT)) {
             TextResource textResource = Resource.ofType(resource);
             assert textResource != null;
-            textResource.setContent((String)args.get(0));
+            textResource.setContent((String) args.get(0));
             resource = textResource;
-        } else if(type.equals(ResourceType.IMAGE)){
+        } else if (type.equals(ResourceType.IMAGE)) {
             ImageResource imageResource = Resource.ofType(resource);
             assert imageResource != null;
             imageResource.setURL(url);
@@ -229,8 +231,8 @@ public class ResourcesController implements Refreshable {
     }
 
     public Resource uploadTextResource(String name, boolean isForAchievement, String content) throws ModelSyncException {
-        if(name == null || content == null) throw new NullPointerException();
-        if(name.isEmpty() || content.isEmpty()) throw new IllegalArgumentException("Parameters cannot be empty!");
+        if (name == null || content == null) throw new NullPointerException();
+        if (name.isEmpty() || content.isEmpty()) throw new IllegalArgumentException("Parameters cannot be empty!");
 
         TextResource textResource = Resource.ofType(ResourceFactory.getResource(name, "", false, ResourceType.TEXT.get()));
         assert textResource != null;
@@ -266,7 +268,7 @@ public class ResourcesController implements Refreshable {
      */
     public void assignToCourse(Course course, List<Resource> resources)
             throws DatabaseOutOfSyncException, ModelSyncException {
-        for (Resource r : resources){
+        for (Resource r : resources) {
             resourcesDAO.assignToCourse(r, course);
         }
     }
@@ -292,7 +294,7 @@ public class ResourcesController implements Refreshable {
      * @param imageResource ImageResource object. Child of a Resource interface
      * @return returns javafx.scene.image.Image Object
      */
-    public Image getImageFromResource(ImageResource imageResource){
+    public Image getImageFromResource(ImageResource imageResource) {
         return new Image(imageResource.getURL());
     }
 
@@ -321,19 +323,21 @@ public class ResourcesController implements Refreshable {
         return resourcesDAO.getById(id);
     }
 
-    public boolean validateInput(List<String> values){
+    public boolean validateInput(List<String> values) {
         return values.stream()
                 .filter(e -> e.isEmpty() || e.contains(";") || e.contains(":") || e.contains("^"))
                 .count() == 0;
     }
 
-    public List<Resource> getAudioResById(int id) throws ModelSyncException{
-        return resourcesDAO.getByCourseID(id).stream().filter(e-> e.getType() == ResourceType.AUDIO).collect(Collectors.toList());
+    public List<Resource> getAudioResById(int id) throws ModelSyncException {
+        return resourcesDAO.getByCourseID(id).stream().filter(e -> e.getType() == ResourceType.AUDIO).collect(Collectors.toList());
     }
-    public List<Resource> getImageResById(int id) throws ModelSyncException{
-        return resourcesDAO.getByCourseID(id).stream().filter(e-> e.getType() == ResourceType.IMAGE).collect(Collectors.toList());
+
+    public List<Resource> getImageResById(int id) throws ModelSyncException {
+        return resourcesDAO.getByCourseID(id).stream().filter(e -> e.getType() == ResourceType.IMAGE).collect(Collectors.toList());
     }
-    public List<Resource> getTextResById(int id) throws ModelSyncException{
-        return resourcesDAO.getByCourseID(id).stream().filter(e-> e.getType() == ResourceType.TEXT).collect(Collectors.toList());
+
+    public List<Resource> getTextResById(int id) throws ModelSyncException {
+        return resourcesDAO.getByCourseID(id).stream().filter(e -> e.getType() == ResourceType.TEXT).collect(Collectors.toList());
     }
 }

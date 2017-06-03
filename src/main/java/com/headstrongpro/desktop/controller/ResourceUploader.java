@@ -6,15 +6,15 @@ import com.headstrongpro.desktop.model.resource.IResourceUploader;
 import com.headstrongpro.desktop.model.resource.Resource;
 import com.headstrongpro.desktop.model.resource.ResourceUploadAdapter;
 
-import static com.headstrongpro.desktop.model.resource.ResourceUploadAdapter.*;
+import static com.headstrongpro.desktop.model.resource.ResourceUploadAdapter.Destination;
 
 /**
  * Created by rajmu on 17.05.24.
  */
-public class ResourceUploader implements IResourceUploader{
+public class ResourceUploader implements IResourceUploader {
     @Override
     public Object upload(Resource resource, Destination destination) throws ModelSyncException, ConnectionException {
-        if(destination.equals(Destination.DATABASE) || destination.equals(Destination.MEDIA_SERVER) || destination.equals(Destination.CDN_SERVER)){
+        if (destination.equals(Destination.DATABASE) || destination.equals(Destination.MEDIA_SERVER) || destination.equals(Destination.CDN_SERVER)) {
             ResourceUploadAdapter adapter = new ResourceUploadAdapter(destination);
             return adapter.upload(resource, destination);
         } else {

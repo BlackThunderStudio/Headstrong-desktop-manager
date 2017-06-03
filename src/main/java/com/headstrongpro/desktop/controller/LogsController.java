@@ -20,7 +20,7 @@ public class LogsController implements Refreshable {
     private List<Log> logs;
     private DBLogActions dbLogActions;
 
-    public LogsController(){
+    public LogsController() {
         dbLogActions = new DBLogActions();
         logs = new ArrayList<>();
     }

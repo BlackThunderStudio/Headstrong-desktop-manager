@@ -15,9 +15,9 @@ import java.util.stream.Collectors;
 /**
  * Clients controller
  */
-public class ClientsController implements Refreshable{
-    List<Person> clients;
-    DBClient clientsDAO;
+public class ClientsController implements Refreshable {
+    private List<Person> clients;
+    private DBClient clientsDAO;
 
     public ClientsController() throws ModelSyncException {
         clients = new ArrayList<>();
@@ -29,8 +29,8 @@ public class ClientsController implements Refreshable{
         return FXCollections.observableArrayList(clientsDAO.getAll());
     }
 
-    public List<Person> search(String keyword) throws ModelSyncException{
-        if(keyword == null) throw new NullPointerException();
+    public List<Person> search(String keyword) throws ModelSyncException {
+        if (keyword == null) throw new NullPointerException();
         return FXCollections.observableArrayList(clients.stream().filter(e -> String.valueOf(e.getId()).contains(keyword) ||
                 e.getName().toLowerCase().contains(keyword.toLowerCase()) ||
                 e.getEmail().toLowerCase().contains(keyword.toLowerCase()) ||
@@ -39,12 +39,12 @@ public class ClientsController implements Refreshable{
     }
 
     public Person getById(int id) throws ModelSyncException {
-        if(id > 0){
+        if (id > 0) {
             return clientsDAO.getById(id);
         } else throw new IllegalStateException("Id must be greater than 0!");
     }
 
-    public void updateClient(int id, String name, String email, String phone, String gender) throws ModelSyncException, DatabaseOutOfSyncException{
+    public void updateClient(int id, String name, String email, String phone, String gender) throws ModelSyncException, DatabaseOutOfSyncException {
         Client client = (Client) clientsDAO.getById(id);
         client.setName(name);
         client.setEmail(email);

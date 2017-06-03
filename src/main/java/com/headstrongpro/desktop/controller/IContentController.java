@@ -12,9 +12,14 @@ import javafx.collections.ObservableList;
  */
 public interface IContentController<T extends Object> {
     ObservableList<T> getAll() throws ModelSyncException;
+
     ObservableList<T> searchByPhrase(String input);
+
     void delete(T t) throws DatabaseOutOfSyncException, ModelSyncException;
+
     T createNew(T t) throws ModelSyncException;
+
     void edit(T t) throws DatabaseOutOfSyncException, ModelSyncException;
+
     T getByID(int id) throws ModelSyncException;
 }

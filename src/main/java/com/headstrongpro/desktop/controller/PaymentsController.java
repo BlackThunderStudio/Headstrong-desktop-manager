@@ -13,10 +13,10 @@ import java.util.stream.Collectors;
 
 /**
  * desktop-manager
- *
+ * <p>
  * because of the lack of time this controller lacks a lot of fool proofing
  * and functionality. For more sophisticated implementation please see ResourcesController
- *
+ * <p>
  * <p>
  * <p>
  * Created by rajmu on 17.06.01.
@@ -26,7 +26,7 @@ public class PaymentsController implements Refreshable, IContentController<Payme
     private DBPayment dbPayment;
     private List<Payment> paymentList;
 
-    public PaymentsController(){
+    public PaymentsController() {
         dbPayment = new DBPayment();
         paymentList = new ArrayList<>();
     }
@@ -69,13 +69,13 @@ public class PaymentsController implements Refreshable, IContentController<Payme
 
     @Override
     public void delete(Payment payment) throws DatabaseOutOfSyncException, ModelSyncException {
-        if(payment == null) throw new IllegalArgumentException("Cannot be null");
+        if (payment == null) throw new IllegalArgumentException("Cannot be null");
         dbPayment.delete(payment);
     }
 
     @Override
     public Payment createNew(Payment payment) throws ModelSyncException {
-        if(payment != null) throw new IllegalArgumentException("Cannot be null");
+        if (payment != null) throw new IllegalArgumentException("Cannot be null");
         return dbPayment.persist(payment);
     }
 

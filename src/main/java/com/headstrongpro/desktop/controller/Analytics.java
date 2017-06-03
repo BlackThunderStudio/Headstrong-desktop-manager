@@ -11,7 +11,7 @@ import com.headstrongpro.desktop.core.exception.ModelSyncException;
  */
 public class Analytics {
 
-    public static int getCount(Table table){
+    public static int getCount(Table table) {
         try {
             return new DBStats().getAmountOfRecords(table.getName());
         } catch (ModelSyncException e) {
@@ -20,11 +20,11 @@ public class Analytics {
         return -1;
     }
 
-    public static int getOverduePayments(){
+    public static int getOverduePayments() {
         return new DBStats().getOverduePaymentsCount();
     }
 
-    public static int getActiveSubstriptions(){
+    public static int getActiveSubscriptions() {
         return new DBStats().getActiveSubscriptionsCount();
     }
 
@@ -37,7 +37,7 @@ public class Analytics {
 
         private String name;
 
-        Table(String name){
+        Table(String name) {
             this.name = name;
         }
 
