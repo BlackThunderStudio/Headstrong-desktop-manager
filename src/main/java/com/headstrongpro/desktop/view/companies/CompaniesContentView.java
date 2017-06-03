@@ -13,8 +13,6 @@ import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
@@ -27,24 +25,11 @@ import static javafx.concurrent.Worker.State.*;
  */
 public class CompaniesContentView extends ContentView<Company> implements Initializable {
 
-    // Content view topControls
+    // Table columns
     @FXML
-    public TextField searchField;
+    public TableColumn<Company, String> nameCol, cvrCol, streetCol, postalCol, cityCol, countryCol;
 
-    @FXML
-    public TableColumn<Company, String> companyNameCol;
-    @FXML
-    public TableColumn<Company, String> companyCvrCol;
-    @FXML
-    public TableColumn<Company, String> companyStreetCol;
-    @FXML
-    public TableColumn<Company, String> companyPostalCol;
-    @FXML
-    public TableColumn<Company, String> companyCityCol;
-    @FXML
-    public TableColumn<Company, String> companyCountryCol;
-
-    private CompaniesController companiesController;
+    private CompaniesController controller;
     private ObservableList<Company> companies;
 
     @Override
@@ -57,7 +42,7 @@ public class CompaniesContentView extends ContentView<Company> implements Initia
             @Override
             protected Void call() throws Exception {
                 Platform.runLater(() -> footer.show("Loading companies...", Footer.NotificationType.LOADING));
-                companiesController = new CompaniesController();
+                controller = new CompaniesController();
                 loadCompanies();
                 return null;
             }
@@ -84,32 +69,10 @@ public class CompaniesContentView extends ContentView<Company> implements Initia
         th.start();
     }
 
-    private void loadTable(ObservableList<Company> companies) {
-        mainTable.setItems(companies);
-    }
-
-    private void setColumns() {
-        companyNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
-        companyCvrCol.setCellValueFactory(new PropertyValueFactory<>("cvr"));
-        companyStreetCol.setCellValueFactory(new PropertyValueFactory<>("street"));
-        companyPostalCol.setCellValueFactory(new PropertyValueFactory<>("postal"));
-        companyCityCol.setCellValueFactory(new PropertyValueFactory<>("city"));
-        companyCountryCol.setCellValueFactory(new PropertyValueFactory<>("country"));
-    }
-
-    private void loadCompanies() {
-        try {
-            companies = FXCollections.emptyObservableList();
-            companies = FXCollections.observableArrayList(companiesController.getCompanies());
-        } catch (ModelSyncException e) {
-            e.printStackTrace();
-            footer.show(e.getMessage(), Footer.NotificationType.ERROR);
-        }
-    }
-
+    @FXML
     public void handleSearch() {
         try {
-            loadTable(companiesController.search(searchField.getText()));
+            loadTable(controller.search(searchField.getText()));
         } catch (ModelSyncException e2) {
             e2.printStackTrace();
             footer.show(e2.getMessage(), Footer.NotificationType.ERROR);
@@ -145,5 +108,24 @@ public class CompaniesContentView extends ContentView<Company> implements Initia
     @FXML
     public void addNewButtonOnClick() {
         mainWindowView.changeContext(ContentSource.COMPANIES_NEW);
+    }
+
+    private void setColumns() {
+        nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+        cvrCol.setCellValueFactory(new PropertyValueFactory<>("cvr"));
+        streetCol.setCellValueFactory(new PropertyValueFactory<>("street"));
+        postalCol.setCellValueFactory(new PropertyValueFactory<>("postal"));
+        cityCol.setCellValueFactory(new PropertyValueFactory<>("city"));
+        countryCol.setCellValueFactory(new PropertyValueFactory<>("country"));
+    }
+
+    private void loadCompanies() {
+        try {
+            companies = FXCollections.emptyObservableList();
+            companies = FXCollections.observableArrayList(controller.getCompanies());
+        } catch (ModelSyncException e) {
+            e.printStackTrace();
+            footer.show(e.getMessage(), Footer.NotificationType.ERROR);
+        }
     }
 }

@@ -26,7 +26,7 @@
    <children>
       <Pane prefHeight="200.0" prefWidth="200.0" styleClass="headerPane">
          <children>
-            <Text fx:id="coursesHeader" layoutX="14.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Courses">
+            <Text fx:id="headerText" layoutX="14.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Courses">
                <font>
                   <Font size="36.0" />
                </font>
@@ -35,8 +35,8 @@
       </Pane>
       <TableView fx:id="mainTable" maxHeight="4000.0" maxWidth="4000.0" minHeight="200.0" minWidth="200.0" prefHeight="200.0" prefWidth="200.0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.vgrow="ALWAYS">
         <columns>
-          <TableColumn fx:id="courseName" prefWidth="168.0" text="Name" />
-          <TableColumn fx:id="courseDesc" prefWidth="512.9999847412109" text="Description" />
+          <TableColumn fx:id="nameCol" prefWidth="168.0" text="Name" />
+          <TableColumn fx:id="descCol" prefWidth="512.9999847412109" text="Description" />
         </columns>
          <GridPane.margin>
             <Insets left="20.0" right="20.0" />
@@ -48,7 +48,7 @@
                <Insets left="20.0" />
            </GridPane.margin>
        </Footer>
-      <Button fx:id="newCourseButton" maxWidth="110.0" minWidth="110.0" mnemonicParsing="false" onAction="#courseNewOnClick" prefWidth="110.0" text="New" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
+      <Button fx:id="addNewButton" maxWidth="110.0" minWidth="110.0" mnemonicParsing="false" onAction="#courseNewOnClick" prefWidth="110.0" text="New" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
          <GridPane.margin>
             <Insets right="20.0" />
          </GridPane.margin>
@@ -63,7 +63,7 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <TextField fx:id="searchCoursesTextfield" onKeyReleased="#handleSearch" promptText="Search" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+            <TextField fx:id="searchField" onKeyReleased="#handleSearch" promptText="Search" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
                <GridPane.margin>
                   <Insets left="20.0" right="20.0" />
                </GridPane.margin>

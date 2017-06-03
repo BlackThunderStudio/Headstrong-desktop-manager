@@ -9,14 +9,12 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
 
 import java.net.URL;
@@ -26,9 +24,9 @@ import java.util.ResourceBundle;
 import static javafx.concurrent.Worker.State.*;
 
 /**
- * Created by Ondřej Soukup on 23.05.2017.
+ * Payments ContentView
  */
-public class PaymentsContentView extends ContentView implements Initializable {
+public class PaymentsContentView extends ContentView<Payment> implements Initializable {
 
     @FXML
     public Text paymentsHeader;
@@ -56,6 +54,8 @@ public class PaymentsContentView extends ContentView implements Initializable {
         controller = new PaymentsController();
         payments = FXCollections.emptyObservableList();
 
+        setColumns();
+
         Task<Void> init = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
@@ -66,10 +66,10 @@ public class PaymentsContentView extends ContentView implements Initializable {
         };
 
         init.stateProperty().addListener(((observable, oldValue, newValue) -> {
-            if(newValue.equals(SUCCEEDED)){
+            if (newValue.equals(SUCCEEDED)) {
                 loadTable(payments);
                 footer.show("Payments loaded", Footer.NotificationType.COMPLETED);
-            } else if(newValue.equals(FAILED) || newValue.equals(CANCELLED)){
+            } else if (newValue.equals(FAILED) || newValue.equals(CANCELLED)) {
                 footer.show("Error! Payments could not be loaded!", Footer.NotificationType.ERROR, Footer.FADE_LONG);
             }
         }));
@@ -79,14 +79,14 @@ public class PaymentsContentView extends ContentView implements Initializable {
         paymentsTable.getSelectionModel()
                 .selectedItemProperty()
                 .addListener(((observable, oldValue, newValue) -> {
-                    if(newValue != null){
+                    if (newValue != null) {
                         selected = newValue;
                         mainWindowView.getContextView().changeContextItem(selected);
                     }
                 }));
     }
 
-    private void loadPayments(){
+    private void loadPayments() {
         try {
             payments = controller.getAll();
         } catch (ModelSyncException e) {
@@ -95,24 +95,21 @@ public class PaymentsContentView extends ContentView implements Initializable {
         }
     }
 
-    private void loadTable(ObservableList<Payment> source){
-        paymentsTable.getColumns().removeAll(valCol, dueCol, payCol, companyNameCol, cvrCol);
-        paymentsTable.setItems(source);
+    private void setColumns() {
         valCol.setCellValueFactory(new PropertyValueFactory<>("value"));
         dueCol.setCellValueFactory(new PropertyValueFactory<>("dueDate"));
         payCol.setCellValueFactory(new PropertyValueFactory<>("timestamp"));
         companyNameCol.setCellValueFactory(new PropertyValueFactory<>("companyName"));
         cvrCol.setCellValueFactory(new PropertyValueFactory<>("companyCvr"));
-        paymentsTable.getColumns().addAll(valCol, dueCol, payCol, companyNameCol, cvrCol);
     }
 
     @FXML
-    public void searchPaymentsOnKeyReleased(KeyEvent event) {
+    public void searchPaymentsOnKeyReleased() {
         loadTable(controller.searchByPhrase(searchPaymentsTextfield.getText()));
     }
 
     @FXML
-    public void refreshButtonOnClick(ActionEvent event) {
+    public void refreshButtonOnClick() {
         searchPaymentsTextfield.clear();
         Task<Void> sync = new Task<Void>() {
             @Override
@@ -124,10 +121,10 @@ public class PaymentsContentView extends ContentView implements Initializable {
         };
 
         sync.stateProperty().addListener(((observable, oldValue, newValue) -> {
-            if(newValue.equals(SUCCEEDED)){
+            if (newValue.equals(SUCCEEDED)) {
                 loadTable(payments);
                 footer.show("Payments reloaded successfully", Footer.NotificationType.COMPLETED);
-            } else if(newValue.equals(CANCELLED) || newValue.equals(FAILED)){
+            } else if (newValue.equals(CANCELLED) || newValue.equals(FAILED)) {
                 footer.show("Coult not reload payments!", Footer.NotificationType.ERROR, Footer.FADE_LONG);
             }
         }));

@@ -1,6 +1,7 @@
 package com.headstrongpro.desktop.view;
 
 import com.headstrongpro.desktop.core.fxControls.Footer;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
@@ -33,6 +34,10 @@ public abstract class ContentView<T> {
 
     public void setMainWindowView(MainWindowView mainWindowView) {
         this.mainWindowView = mainWindowView;
+    }
+
+    protected void loadTable(ObservableList<T> items) {
+        mainTable.setItems(items);
     }
 
     public Footer getFooter() {

@@ -34,12 +34,12 @@
                prefHeight="520.0" prefWidth="760.0" GridPane.rowIndex="2">
         <columnResizePolicy><TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/></columnResizePolicy>
         <columns>
-            <TableColumn fx:id="companyNameCol" prefWidth="75.0" minWidth="100.0" text="Name"/>
-            <TableColumn fx:id="companyCvrCol" prefWidth="75.0" minWidth="65.0" text="CVR"/>
-            <TableColumn fx:id="companyStreetCol" prefWidth="75.0" minWidth="120.0" text="Street"/>
-            <TableColumn fx:id="companyPostalCol" prefWidth="75.0" minWidth="50.0" text="Postal"/>
-            <TableColumn fx:id="companyCityCol" prefWidth="75.0" minWidth="50.0" text="City"/>
-            <TableColumn fx:id="companyCountryCol" prefWidth="75.0" minWidth="65.0" text="Country"/>
+            <TableColumn fx:id="nameCol" prefWidth="75.0" minWidth="100.0" text="Name"/>
+            <TableColumn fx:id="cvrCol" prefWidth="75.0" minWidth="65.0" text="CVR"/>
+            <TableColumn fx:id="streetCol" prefWidth="75.0" minWidth="120.0" text="Street"/>
+            <TableColumn fx:id="postalCol" prefWidth="75.0" minWidth="50.0" text="Postal"/>
+            <TableColumn fx:id="cityCol" prefWidth="75.0" minWidth="50.0" text="City"/>
+            <TableColumn fx:id="countryCol" prefWidth="75.0" minWidth="65.0" text="Country"/>
         </columns>
         <GridPane.margin>
             <Insets left="20.0" right="20.0" />

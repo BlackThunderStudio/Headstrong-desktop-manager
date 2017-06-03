@@ -27,14 +27,14 @@
     <children>
         <Pane prefHeight="200.0" prefWidth="200.0">
             <children>
-                <Text fx:id="clientsHeader" layoutX="14.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Clients">
+                <Text fx:id="headerText" layoutX="14.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Clients">
                     <font>
                         <Font size="36.0" />
                     </font>
                 </Text>
             </children>
         </Pane>
-        <TableView fx:id="clientsTable" maxHeight="4000.0" maxWidth="4000.0" minWidth="460.0" GridPane.rowIndex="2">
+        <TableView fx:id="mainTable" maxHeight="4000.0" maxWidth="4000.0" minWidth="460.0" GridPane.rowIndex="2">
             <columnResizePolicy>
                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
             </columnResizePolicy>
@@ -57,12 +57,12 @@
                 <Insets left="20.0" />
             </GridPane.margin>
         </Footer>
-        <Button fx:id="newClientButton" maxWidth="110.0" minWidth="110.0" mnemonicParsing="false" onAction="#newClientButtonOnClick" prefWidth="110.0" text="New" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
+        <Button fx:id="addNewButton" maxWidth="110.0" minWidth="110.0" mnemonicParsing="false" onAction="#addNewOnClick" prefWidth="110.0" text="New" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
             <GridPane.margin>
                 <Insets right="20.0" />
             </GridPane.margin>
         </Button>
-        <Button fx:id="assignMoreButton" maxWidth="110.0" minWidth="110.0" mnemonicParsing="false" onAction="#assignMoreButtonOnClick" prefWidth="110.0" text="Assign more" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
+        <Button fx:id="assignMoreButton" maxWidth="110.0" minWidth="110.0" mnemonicParsing="false" onAction="#assignMoreOnClick" prefWidth="110.0" text="Assign more" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
             <GridPane.margin>
                 <Insets right="150.0" />
             </GridPane.margin>
@@ -76,12 +76,12 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-                <Button fx:id="refreshButton" maxWidth="60.0" minWidth="90.0" mnemonicParsing="false" onAction="#clientsRefreshButtonOnClick" prefHeight="20.0" prefWidth="60.0" text="Refresh">
+                <Button fx:id="refreshButton" maxWidth="60.0" minWidth="90.0" mnemonicParsing="false" onAction="#refreshButtonOnClick" prefHeight="20.0" prefWidth="60.0" text="Refresh">
                     <GridPane.margin>
                         <Insets left="20.0" />
                     </GridPane.margin>
                 </Button>
-                <TextField fx:id="searchClientsTextfield" onKeyReleased="#clientSearch" prefHeight="25.0" promptText="Search" GridPane.columnIndex="1">
+                <TextField fx:id="searchField" onKeyReleased="#clientSearch" prefHeight="25.0" promptText="Search" GridPane.columnIndex="1">
                     <GridPane.margin>
                         <Insets left="20.0" right="20.0" />
                     </GridPane.margin>

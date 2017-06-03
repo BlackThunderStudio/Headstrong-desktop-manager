@@ -84,7 +84,7 @@
                                         <Insets />
                                     </GridPane.margin>
                                     <children>
-                                        <TextField fx:id="searchResourcesTextfield" onKeyReleased="#searchResourcesTextfield_onKeyReleased" promptText="Search" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="SOMETIMES">
+                                        <TextField fx:id="searchField" onKeyReleased="#handleSearch" promptText="Search" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="SOMETIMES">
                                             <GridPane.margin>
                                                 <Insets left="20.0" right="20.0" />
                                             </GridPane.margin>
@@ -95,7 +95,7 @@
                                             </GridPane.margin></Button>
                                     </children>
                                 </GridPane>
-                                <TableView fx:id="logsTable" maxWidth="4000.0" minWidth="200.0" prefHeight="200.0" prefWidth="200.0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
+                                <TableView fx:id="mainTable" maxWidth="4000.0" minWidth="200.0" prefHeight="200.0" prefWidth="200.0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
                                     <columns>
                                         <TableColumn fx:id="empIdCol" prefWidth="80" text="Emp ID" />
                                         <TableColumn fx:id="tableCol" prefWidth="120" text="Table" />

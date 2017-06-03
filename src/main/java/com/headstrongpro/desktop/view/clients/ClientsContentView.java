@@ -10,78 +10,44 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.text.Text;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import static javafx.concurrent.Worker.State.CANCELLED;
-import static javafx.concurrent.Worker.State.FAILED;
-import static javafx.concurrent.Worker.State.SUCCEEDED;
+import static javafx.concurrent.Worker.State.*;
 
 /**
- * Created by Ondřej Soukup on 23.05.2017.
+ * Clients ContentView
  */
-public class ClientsContentView extends ContentView implements Initializable {
+public class ClientsContentView extends ContentView<Person> implements Initializable {
 
+    // Table columns
     @FXML
-    public TextField searchClientsTextfield;
-    @FXML
-    public TableView<Person> clientsTable;
+    public TableColumn<Person, String> clientNameCol, clientEmailCol, clientPhoneCol, clientGenderCol;
 
-    @FXML
-    public TableColumn<Person, Integer> clientCompanyCol;
-    @FXML
-    public TableColumn<Person, String> clientNameCol, clientEmailCol, clientPhoneCol, clientGenderCol, clientLoginCol, clientPassCol, clientDateCol;
-    @FXML
-    public Button newClientButton;
-    @FXML
-    public Text clientsHeader;
+    // Bottom controls
     @FXML
     public Button assignMoreButton;
 
-    private ClientsController clientsController;
+    private ClientsController controller;
     private ObservableList<Person> clients;
-
-    private void loadClients() {
-        try {
-            clients = clientsController.getClients();
-        } catch (ModelSyncException e) {
-            e.printStackTrace();
-            //TODO: pls handle with care <3
-        }
-    }
-
-    private void loadTable(ObservableList<Person> clients) {
-        clientsTable.getColumns().removeAll(clientNameCol, clientEmailCol, clientPhoneCol, clientGenderCol);
-        clientsTable.setItems(clients);
-        clientNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
-        clientEmailCol.setCellValueFactory(new PropertyValueFactory<>("email"));
-        clientPhoneCol.setCellValueFactory(new PropertyValueFactory<>("phone"));
-        clientGenderCol.setCellValueFactory(new PropertyValueFactory<>("gender"));
-        //clientLoginCol.setCellValueFactory(new PropertyValueFactory<>("login"));
-        //clientPassCol.setCellValueFactory(new PropertyValueFactory<>("pass"));
-        //clientDateCol.setCellValueFactory(new PropertyValueFactory<>("registrationDate"));
-        //clientCompanyCol.setCellValueFactory(new PropertyValueFactory<>("companyId"));
-        clientsTable.getColumns().addAll(clientNameCol, clientEmailCol, clientPhoneCol, clientGenderCol);
-    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         clients = FXCollections.observableArrayList();
+
+        setColumns();
+
         Task<Void> init = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
                 Platform.runLater(() -> footer.show("Loading clients...", Footer.NotificationType.LOADING));
-                clientsController = new ClientsController();
+                controller = new ClientsController();
                 loadClients();
                 return null;
             }
@@ -96,9 +62,9 @@ public class ClientsContentView extends ContentView implements Initializable {
             }
         }));
 
-        clientsTable.getSelectionModel().selectedItemProperty().addListener((o, e, c) -> {
+        mainTable.getSelectionModel().selectedItemProperty().addListener((o, e, c) -> {
             if (c != null) {
-                if(mainWindowView.getCurrentContentSource().equals(ContentSource.CLIENTS_NEW)){
+                if (mainWindowView.getCurrentContentSource().equals(ContentSource.CLIENTS_NEW)) {
                     mainWindowView.changeContent(ContentSource.CLIENTS);
                 }
                 footer.show(c.getName() + " selected.", Footer.NotificationType.INFORMATION, Footer.FADE_SUPER_QUICK);
@@ -114,7 +80,7 @@ public class ClientsContentView extends ContentView implements Initializable {
     @FXML
     public void clientSearch() {
         try {
-            loadTable(FXCollections.observableArrayList(clientsController.search(searchClientsTextfield.getText())));
+            loadTable(FXCollections.observableArrayList(controller.search(searchField.getText())));
         } catch (ModelSyncException e) {
             e.printStackTrace();
             //TODO: handle dis with care too~
@@ -122,8 +88,8 @@ public class ClientsContentView extends ContentView implements Initializable {
     }
 
     @FXML
-    public void clientsRefreshButtonOnClick() {
-        searchClientsTextfield.clear();
+    public void refreshButtonOnClick() {
+        searchField.clear();
         //TODO protected bullshit context clearing stufff
 
         Task<Void> sync = new Task<Void>() {
@@ -149,12 +115,29 @@ public class ClientsContentView extends ContentView implements Initializable {
         th.start();
     }
 
-
-    public void newClientButtonOnClick(ActionEvent event) {
+    @FXML
+    public void addNewOnClick() {
         mainWindowView.changeContext(ContentSource.CLIENTS_NEW);
     }
 
-    public void assignMoreButtonOnClick(ActionEvent event) {
+    @FXML
+    public void assignMoreOnClick() {
         footer.show("Feature not yet implemented, patience is advised.", Footer.NotificationType.INFORMATION);
+    }
+
+    private void setColumns() {
+        clientNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+        clientEmailCol.setCellValueFactory(new PropertyValueFactory<>("email"));
+        clientPhoneCol.setCellValueFactory(new PropertyValueFactory<>("phone"));
+        clientGenderCol.setCellValueFactory(new PropertyValueFactory<>("gender"));
+    }
+
+    private void loadClients() {
+        try {
+            clients = controller.getClients();
+        } catch (ModelSyncException e) {
+            e.printStackTrace();
+            //TODO: pls handle with care <3
+        }
     }
 }

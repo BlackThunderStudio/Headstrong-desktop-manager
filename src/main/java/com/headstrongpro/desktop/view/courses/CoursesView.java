@@ -12,47 +12,33 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.text.Text;
 
-import java.awt.event.ActionEvent;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import static javafx.concurrent.Worker.State.CANCELLED;
-import static javafx.concurrent.Worker.State.FAILED;
-import static javafx.concurrent.Worker.State.SUCCEEDED;
+import static javafx.concurrent.Worker.State.*;
 
 /**
- * Created by Ondřej Soukup on 23.05.2017.
+ * Courses ContentView
  */
 public class CoursesView extends ContentView<Course> implements Initializable {
 
+    // Table columns
     @FXML
-    public Text coursesHeader;
-    @FXML
-    public TextField searchCoursesTextfield;
-    @FXML
-    public TableColumn<Course, String> courseName;
-    @FXML
-    public TableColumn<Course, String> courseDesc;
-    @FXML
-    public Button newCourseButton;
-    @FXML
-    public Button refreshButton;
+    public TableColumn<Course, String> nameCol, descCol;
 
-    private CourseController courseController;
+    private CourseController controller;
     private ObservableList<Course> courses;
     private Course selected;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        courseController = new CourseController();
+        controller = new CourseController();
         courses = FXCollections.emptyObservableList();
+
+        setColumns();
 
         Task<Void> init = new Task<Void>() {
             @Override
@@ -64,10 +50,10 @@ public class CoursesView extends ContentView<Course> implements Initializable {
         };
 
         init.stateProperty().addListener(((observable, oldValue, newValue) -> {
-            if(newValue.equals(SUCCEEDED)){
+            if (newValue.equals(SUCCEEDED)) {
                 loadTable(courses);
                 footer.show("Courses loaded", Footer.NotificationType.COMPLETED);
-            } else if(newValue.equals(FAILED) || newValue.equals(CANCELLED)){
+            } else if (newValue.equals(FAILED) || newValue.equals(CANCELLED)) {
                 footer.show("Error! Courses could not be loaded!", Footer.NotificationType.ERROR, Footer.FADE_LONG);
             }
         }));
@@ -77,38 +63,21 @@ public class CoursesView extends ContentView<Course> implements Initializable {
         mainTable.getSelectionModel()
                 .selectedItemProperty()
                 .addListener(((observable, oldValue, newValue) -> {
-                    if(newValue != null) {
+                    if (newValue != null) {
                         selected = newValue;
                         mainWindowView.getContextView().changeContextItem(selected);
                     }
                 }));
     }
 
-    public void loadCourses(){
-        try{
-            courses = courseController.getAll();
-        } catch (ModelSyncException e){
-            e.printStackTrace();
-            footer.show(e.getMessage(), Footer.NotificationType.ERROR, Footer.FADE_QUICK);
-        }
-    }
-
-    public void loadTable(ObservableList<Course> courses){
-        mainTable.getColumns().removeAll(courseName, courseDesc);
-        mainTable.setItems(courses);
-        courseName.setCellValueFactory(new PropertyValueFactory<>("name"));
-        courseDesc.setCellValueFactory(new PropertyValueFactory<>("description"));
-        mainTable.getColumns().addAll(courseName, courseDesc);
+    @FXML
+    public void handleSearch() {
+        loadTable(controller.searchByPhrase(searchField.getText()));
     }
 
     @FXML
-    public void handleSearch(){
-        loadTable(courseController.searchByPhrase(searchCoursesTextfield.getText()));
-    }
-
-    @FXML
-    public void courseRefresh(){
-        searchCoursesTextfield.clear();
+    public void courseRefresh() {
+        searchField.clear();
         Task<Void> sync = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
@@ -120,10 +89,10 @@ public class CoursesView extends ContentView<Course> implements Initializable {
 
 
         sync.stateProperty().addListener(((observable, oldValue, newValue) -> {
-            if(newValue.equals(SUCCEEDED)){
+            if (newValue.equals(SUCCEEDED)) {
                 loadTable(courses);
                 footer.show("Courses reloaded successfully", Footer.NotificationType.COMPLETED);
-            } else if(newValue.equals(CANCELLED) || newValue.equals(FAILED)){
+            } else if (newValue.equals(CANCELLED) || newValue.equals(FAILED)) {
                 footer.show("Could not reload courses!", Footer.NotificationType.ERROR, Footer.FADE_LONG);
             }
         }));
@@ -132,7 +101,22 @@ public class CoursesView extends ContentView<Course> implements Initializable {
     }
 
     @FXML
-    public void courseNewOnClick(){
+    public void courseNewOnClick() {
         mainWindowView.changeContext(ContentSource.COURSES_NEW);
     }
+
+    private void loadCourses() {
+        try {
+            courses = controller.getAll();
+        } catch (ModelSyncException e) {
+            e.printStackTrace();
+            footer.show(e.getMessage(), Footer.NotificationType.ERROR, Footer.FADE_QUICK);
+        }
+    }
+
+    private void setColumns() {
+        nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+        descCol.setCellValueFactory(new PropertyValueFactory<>("description"));
+    }
+
 }

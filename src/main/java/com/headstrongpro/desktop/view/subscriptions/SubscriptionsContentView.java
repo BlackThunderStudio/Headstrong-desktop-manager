@@ -11,52 +11,34 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.text.Text;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import static javafx.concurrent.Worker.State.CANCELLED;
-import static javafx.concurrent.Worker.State.FAILED;
-import static javafx.concurrent.Worker.State.SUCCEEDED;
+import static javafx.concurrent.Worker.State.*;
 
 /**
- * Created by Ondřej Soukup on 23.05.2017.
+ * Subscriptions ContentView
  */
-public class SubscriptionsContentView extends ContentView implements Initializable {
+public class SubscriptionsContentView extends ContentView<Subscription> implements Initializable {
 
+    // Table columns
     @FXML
-    public Text subscriptionsHeader;
-    @FXML
-    public TextField searchSubscriptionsTextfield;
-    @FXML
-    public TableView<Subscription> subscriptionsTable;
-    @FXML
-    public TableColumn<Subscription, String> subscriptionsCompanyCol;
-    @FXML
-    public TableColumn<Subscription, String> subscriptionsStartCol;
-    @FXML
-    public TableColumn<Subscription, String> subscriptionsEndCol;
-    @FXML
-    public TableColumn<Subscription, String> subscriptionsUsersCol;
-    @FXML
-    public TableColumn<Subscription, String> subscriptionsRateCol;
-    @FXML
-    public Button newSubscriptionButton;
+    public TableColumn<Subscription, String> companyCol, startCol, endCol, usersCol, rateCol;
 
-    private SubscriptionsController subscriptionsController;
+    private SubscriptionsController controller;
     private ObservableList<Subscription> subscriptions;
     private Subscription selected;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        subscriptionsController = new SubscriptionsController();
+        controller = new SubscriptionsController();
         subscriptions = FXCollections.emptyObservableList();
+
+        setColumns();
+
         Task<Void> init = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
@@ -77,7 +59,7 @@ public class SubscriptionsContentView extends ContentView implements Initializab
 
         new Thread(init).start();
 
-        subscriptionsTable.getSelectionModel().selectedItemProperty().addListener((o, e, c) -> {
+        mainTable.getSelectionModel().selectedItemProperty().addListener((o, e, c) -> {
             if (c != null) {
                 System.out.println(c.getStartDate());
                 selected = c;
@@ -87,24 +69,22 @@ public class SubscriptionsContentView extends ContentView implements Initializab
         });
     }
 
-    public void loadSubscriptions(){
-        try{
+    private void loadSubscriptions() {
+        try {
             System.out.println(subscriptions.size());
-            subscriptions = FXCollections.observableArrayList(subscriptionsController.getAll());
+            subscriptions = FXCollections.observableArrayList(controller.getAll());
         } catch (ModelSyncException e) {
             e.printStackTrace();
             footer.show(e.getMessage(), Footer.NotificationType.ERROR, Footer.FADE_QUICK);
         }
     }
 
-    public void loadTable(ObservableList<Subscription> subscriptions){
-        subscriptionsTable.getColumns().removeAll(subscriptionsCompanyCol, subscriptionsStartCol, subscriptionsEndCol, subscriptionsUsersCol, subscriptionsRateCol);
-        subscriptionsTable.setItems(subscriptions);
-        subscriptionsCompanyCol.setCellValueFactory(new PropertyValueFactory<>("companyName"));
-        subscriptionsStartCol.setCellValueFactory(new PropertyValueFactory<>("startDate"));
-        subscriptionsEndCol.setCellValueFactory(new PropertyValueFactory<>("endDate"));
-        subscriptionsUsersCol.setCellValueFactory(new PropertyValueFactory<>("noOfUsers"));
-        subscriptionsRateCol.setCellValueFactory(new PropertyValueFactory<>("rateName"));
-        subscriptionsTable.getColumns().addAll(subscriptionsCompanyCol, subscriptionsStartCol, subscriptionsEndCol, subscriptionsUsersCol, subscriptionsRateCol);
+    private void setColumns() {
+        companyCol.setCellValueFactory(new PropertyValueFactory<>("companyName"));
+        startCol.setCellValueFactory(new PropertyValueFactory<>("startDate"));
+        endCol.setCellValueFactory(new PropertyValueFactory<>("endDate"));
+        usersCol.setCellValueFactory(new PropertyValueFactory<>("noOfUsers"));
+        rateCol.setCellValueFactory(new PropertyValueFactory<>("rateName"));
     }
+
 }

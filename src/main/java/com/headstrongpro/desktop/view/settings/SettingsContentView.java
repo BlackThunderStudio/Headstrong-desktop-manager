@@ -6,62 +6,39 @@ import com.headstrongpro.desktop.core.fxControls.Footer;
 import com.headstrongpro.desktop.model.Log;
 import com.headstrongpro.desktop.view.ContentView;
 import javafx.application.Platform;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.concurrent.Worker;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.KeyEvent;
-import javafx.util.Callback;
 
 import java.net.URL;
 import java.sql.Date;
 import java.util.ResourceBundle;
 
 /**
- * desktop-manager
- * <p>
- * <p>
- * Created by rajmu on 17.06.01.
+ * Settings ContentView
  */
-public class SettingsContentView extends ContentView implements Initializable {
+public class SettingsContentView extends ContentView<Log> implements Initializable {
 
+    // Table columns
     @FXML
-    public TextField searchResourcesTextfield;
+    public TableColumn<Log, Integer> empIdCol, itemIdCol;
     @FXML
-    public TableView<Log> logsTable;
-    @FXML
-    public TableColumn<Log, Integer> empIdCol;
-    @FXML
-    public TableColumn<Log, String> tableCol;
-    @FXML
-    public TableColumn<Log, Integer> itemIdCol;
-    @FXML
-    public TableColumn<Log, String> actionCol;
+    public TableColumn<Log, String> tableCol, actionCol;
     @FXML
     public TableColumn<Log, Date> timeCol;
 
-    ObservableList<Log> logs;
-
-    @FXML
-    public void searchResourcesTextfield_onKeyReleased(KeyEvent keyEvent) {
-    }
-
-    @FXML
-    public void refreshOnClick(ActionEvent event) {
-    }
+    private ObservableList<Log> logs;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         logs = FXCollections.emptyObservableList();
+
+        setColumns();
 
         Task<Void> initLogs = new Task<Void>() {
             @Override
@@ -73,10 +50,10 @@ public class SettingsContentView extends ContentView implements Initializable {
         };
 
         initLogs.stateProperty().addListener(((observable, oldValue, newValue) -> {
-            if(newValue.equals(Worker.State.SUCCEEDED)){
+            if (newValue.equals(Worker.State.SUCCEEDED)) {
                 loadTable(logs);
                 footer.show("Logs loaded.", Footer.NotificationType.COMPLETED);
-            } else if(newValue.equals(Worker.State.FAILED) || newValue.equals(Worker.State.CANCELLED)){
+            } else if (newValue.equals(Worker.State.FAILED) || newValue.equals(Worker.State.CANCELLED)) {
                 footer.show("Loading failed!", Footer.NotificationType.ERROR, Footer.FADE_LONG);
             }
         }));
@@ -84,18 +61,23 @@ public class SettingsContentView extends ContentView implements Initializable {
         new Thread(initLogs).start();
     }
 
-    private void loadTable(ObservableList<Log> logs) {
-        logsTable.getColumns().removeAll(empIdCol, tableCol, itemIdCol, actionCol, timeCol);
-        logsTable.setItems(logs);
+    @FXML
+    public void handleSearch() {
+    }
+
+    @FXML
+    public void refreshOnClick() {
+    }
+
+    private void setColumns() {
         empIdCol.setCellValueFactory(new PropertyValueFactory<>("headstrongEmpID"));
         tableCol.setCellValueFactory(new PropertyValueFactory<>("tableName"));
         itemIdCol.setCellValueFactory(new PropertyValueFactory<>("itemID"));
         actionCol.setCellValueFactory(new PropertyValueFactory<>("actionType"));
         timeCol.setCellValueFactory(new PropertyValueFactory<>("date"));
-        logsTable.getColumns().addAll(empIdCol, tableCol, itemIdCol, actionCol, timeCol);
     }
 
-    private void loadLogs(){
+    private void loadLogs() {
         try {
             logs = new LogsController().getAll();
         } catch (ModelSyncException e) {
