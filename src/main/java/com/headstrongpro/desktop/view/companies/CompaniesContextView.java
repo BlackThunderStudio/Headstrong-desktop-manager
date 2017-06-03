@@ -7,6 +7,7 @@ import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.core.fxControls.Footer;
 import com.headstrongpro.desktop.model.entity.Company;
 import com.headstrongpro.desktop.view.ContextView;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -178,5 +179,25 @@ public class CompaniesContextView extends ContextView<Company> implements Initia
     public void handleCancel() {
         toggleEditMode();
         populateForm();
+    }
+
+    @FXML
+    public void companyClientsButtonOnClick(ActionEvent event) {
+        displayNotImplementedError();
+    }
+
+    @FXML
+    public void companyDepartmentsButtonOnClick(ActionEvent event) {
+        displayNotImplementedError();
+    }
+
+    @FXML
+    public void companyGroupsButtonOnClick(ActionEvent event) {
+        displayNotImplementedError();
+    }
+
+    @FXML
+    public void companySubscriptionsButtonOnClick(ActionEvent event) {
+        displayNotImplementedError();
     }
 }
