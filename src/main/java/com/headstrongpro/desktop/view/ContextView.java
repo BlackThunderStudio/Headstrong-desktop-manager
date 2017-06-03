@@ -57,7 +57,7 @@ public abstract class ContextView<T> {
     /**
      * Sets the values on context initialization
      */
-    public abstract void populateForm();
+    protected abstract void populateForm();
 
     /**
      * Clears all the text input

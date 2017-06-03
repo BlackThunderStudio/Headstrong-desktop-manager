@@ -61,7 +61,7 @@ public class CompaniesContextView extends ContextView<Company> implements Initia
     }
 
     @Override
-    public void populateForm() {
+    protected void populateForm() {
         nameField.setText(contextItem.getName());
         cvrField.setText(contextItem.getCvr());
         streetField.setText(contextItem.getStreet());
