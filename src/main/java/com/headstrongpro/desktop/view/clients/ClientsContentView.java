@@ -4,11 +4,13 @@ import com.headstrongpro.desktop.controller.ClientsController;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.core.fxControls.Footer;
 import com.headstrongpro.desktop.model.entity.Person;
+import com.headstrongpro.desktop.view.ContentSource;
 import com.headstrongpro.desktop.view.ContentView;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -145,5 +147,11 @@ public class ClientsContentView extends ContentView implements Initializable {
     }
 
 
+    public void newClientButtonOnClick(ActionEvent event) {
+        mainWindowView.changeContext(ContentSource.CLIENTS_NEW);
+    }
 
+    public void assignMoreButtonOnClick(ActionEvent event) {
+        footer.show("Feature not yet implemented, patience is advised.", Footer.NotificationType.INFORMATION);
+    }
 }

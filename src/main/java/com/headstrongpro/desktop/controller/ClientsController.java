@@ -1,9 +1,11 @@
 package com.headstrongpro.desktop.controller;
 
 import com.headstrongpro.desktop.DbLayer.DBClient;
+import com.headstrongpro.desktop.DbLayer.DBCompany;
 import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.model.entity.Client;
+import com.headstrongpro.desktop.model.entity.Company;
 import com.headstrongpro.desktop.model.entity.Person;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -18,14 +20,16 @@ import java.util.stream.Collectors;
 public class ClientsController implements Refreshable {
     private List<Person> clients;
     private DBClient clientsDAO;
+    private DBCompany companyDAO;
 
-    public ClientsController() throws ModelSyncException {
+    public ClientsController() {
         clients = new ArrayList<>();
         clientsDAO = new DBClient();
-        refresh();
+        companyDAO = new DBCompany();
     }
 
     public ObservableList<Person> getClients() throws ModelSyncException {
+        refresh();
         return FXCollections.observableArrayList(clientsDAO.getAll());
     }
 
@@ -56,5 +60,13 @@ public class ClientsController implements Refreshable {
     @Override
     public void refresh() throws ModelSyncException {
         clients.addAll(clientsDAO.getAll());
+    }
+
+    public List<Company> LoadCompaniesData() throws ModelSyncException {
+        return companyDAO.getAll();
+    }
+
+    public Client createNew(Client c) throws ModelSyncException {
+        return (Client)clientsDAO.persist(c);
     }
 }

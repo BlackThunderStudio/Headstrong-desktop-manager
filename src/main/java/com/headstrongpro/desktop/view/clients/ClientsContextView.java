@@ -8,6 +8,7 @@ import com.headstrongpro.desktop.core.fxControls.Footer;
 import com.headstrongpro.desktop.model.entity.Client;
 import com.headstrongpro.desktop.view.ContentSource;
 import com.headstrongpro.desktop.view.ContextView;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -84,7 +85,7 @@ public class ClientsContextView extends ContextView<Client> implements Initializ
     };
 
     @FXML
-    public void clientEditButtonOnClick(){
+    public void clientEditButtonOnClick(){ //TODO: some error idk why, andrej must've messed sth
         if(validateInput(clientsNameTextfield, clientsEmailTextfield, clientsPhoneTextfield)){
             try {
                 mainWindowView.getContentView().footer.show("Updating client...", Footer.NotificationType.LOADING);
@@ -109,6 +110,21 @@ public class ClientsContextView extends ContextView<Client> implements Initializ
 
     @FXML
     public void clientDeleteButtonOnClick(){
-        mainWindowView.changeContent(ContentSource.CLIENTS); //TODO: implement properly
+        mainWindowView.changeContent(ContentSource.CLIENTS);
+    }
+
+    @FXML
+    public void clientsCompanyButtonOnClick(ActionEvent event) {
+        displayNotImplementedError();
+    }
+
+    @FXML
+    public void clientsGroupsButtonOnClick(ActionEvent event) {
+        displayNotImplementedError();
+    }
+
+    @FXML
+    public void clientsDepartmentsButtonOnClick(ActionEvent event) {
+        displayNotImplementedError();
     }
 }

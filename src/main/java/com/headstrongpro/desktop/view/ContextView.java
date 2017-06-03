@@ -83,4 +83,8 @@ public abstract class ContextView<T> {
             }
         });
     }
+
+    protected void displayNotImplementedError(){
+        mainWindowView.getContentView().footer.show("Feature not yet implemented, patience is advised.", Footer.NotificationType.INFORMATION);
+    }
 }

@@ -21,6 +21,7 @@ public enum ContentSource {
     PAYMENTS("Payments", "/layout/payments/paymentsContentPane.fxml", "/layout/payments/paymentsContextPane.fxml"),
 
     CLIENTS("Clients", "/layout/clients/clientsContentPane.fxml", "/layout/clients/clientsContextPane.fxml"),
+    CLIENTS_NEW("Clients", "/layout/clients/clientsContentPane.fxml", "/layout/clients/clientsContextNewPane.fxml"),
 
     SUBSCRIPTIONS("Subscriptions", "/layout/subscriptions/subscriptionsContentPane.fxml", "/layout/subscriptions/subscriptionsContextPane.fxml"),
     SUBSCRIPTIONS_NEW("New subscription", "/layout/subscriptions/subscriptionsContentPane.fxml", "/layout/subscriptions/subscriptionsNewContextPane.fxml"),
