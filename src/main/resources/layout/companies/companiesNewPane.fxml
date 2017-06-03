@@ -3,7 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<GridPane fx:controller="com.headstrongpro.desktop.view.companies.CompaniesNewView" xmlns:fx="http://javafx.com/fxml"
+<GridPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.headstrongpro.desktop.view.companies.CompaniesNewView"
           styleClass="context-view">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="500.0" minWidth="250.0" percentWidth="100.0" prefWidth="300.0"/>

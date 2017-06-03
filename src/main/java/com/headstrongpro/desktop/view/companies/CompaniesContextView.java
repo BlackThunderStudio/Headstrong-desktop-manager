@@ -9,10 +9,12 @@ import com.headstrongpro.desktop.model.entity.Company;
 import com.headstrongpro.desktop.view.ContextView;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.TextField;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -61,8 +63,7 @@ public class CompaniesContextView extends ContextView<Company> implements Initia
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
-        textFields = new ArrayList<>(Arrays.asList(
+        textFields.addAll(Arrays.asList(
                 companyNameTextfield,
                 companyCvrTextfield,
                 companyStreetTextfield,
@@ -73,8 +74,7 @@ public class CompaniesContextView extends ContextView<Company> implements Initia
 
         controller = new CompaniesController();
 
-        // By default, hide buttons of editing mode
-        topControls.getChildren().removeAll(editButton, cancelButton);
+        setDefaults();
     }
 
     @Override
@@ -85,7 +85,6 @@ public class CompaniesContextView extends ContextView<Company> implements Initia
         companyPostalTextfield.setText(contextItem.getPostal());
         companyCityTextfield.setText(contextItem.getCity());
         companyCountryTextfield.setText(contextItem.getCountry());
-        System.out.println(contextItem.getName());
     }
 
     @FXML
@@ -117,11 +116,6 @@ public class CompaniesContextView extends ContextView<Company> implements Initia
             mainWindowView.getContentView().footer.show("Values not valid!", Footer.NotificationType.ERROR);
     }
 
-    @Override
-    protected void clearFields() {
-        textFields.forEach(TextInputControl::clear);
-    }
-
     @FXML
     public void handleDelete() {
         Alert a = new Alert(Alert.AlertType.CONFIRMATION);
@@ -143,12 +137,6 @@ public class CompaniesContextView extends ContextView<Company> implements Initia
                 }
             }
         });
-    }
-
-    @FXML
-    public void handleCancel() {
-        toggleEditMode();
-        if (contextItem != null) populateForm();
     }
 
     @FXML

@@ -17,6 +17,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 
 import java.net.URL;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 
 /**
@@ -24,16 +25,9 @@ import java.util.ResourceBundle;
  */
 public class ClientsContextView extends ContextView<Client> implements Initializable {
 
-    @FXML
-    public Button clientsEditButton;
-    @FXML
-    public Button clientsDeleteButton;
-    @FXML
-    public Button clientsCompanyButton;
-    @FXML
-    public Button clientsGroupsButton;
-    @FXML
-    public Button clientsDepartmentsButton;
+    private final ToggleGroup genderRadios = new ToggleGroup();
+
+    // Form text fields
     @FXML
     public TextField clientsNameTextfield;
     @FXML
@@ -45,38 +39,19 @@ public class ClientsContextView extends ContextView<Client> implements Initializ
     @FXML
     public RadioButton clientsGenderFemaleRadio;
 
-    ClientsController clientsController;
-    final ToggleGroup genderRadios = new ToggleGroup();
+    // Links to related items
+    @FXML
+    public Button clientsCompanyButton;
+    @FXML
+    public Button clientsGroupsButton;
+    @FXML
+    public Button clientsDepartmentsButton;
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        clientsGenderMaleRadio.setToggleGroup(genderRadios);
-        clientsGenderFemaleRadio.setToggleGroup(genderRadios);
-    }
-
-    @Override
-    public void populateForm(){
-        clientsNameTextfield.setText(contextItem.getName());
-        clientsEmailTextfield.setText(contextItem.getEmail());
-        clientsPhoneTextfield.setText(contextItem.getPhone());
-        if(contextItem.getGender().equals("Male"))
-            clientsGenderMaleRadio.fire();
-        else
-            clientsGenderFemaleRadio.fire();
-    }
-
-    @Override
-    public void clearFields(){
-        clientsNameTextfield.clear();
-        clientsEmailTextfield.clear();
-        clientsPhoneTextfield.clear();
-        clientsGenderMaleRadio.disarm();
-        clientsGenderFemaleRadio.disarm();
-    }
+    private ClientsController controller;
 
     private SyncHandler handler = () -> {
         try {
-            return clientsController.getById(contextItem.getId());
+            return controller.getById(contextItem.getId());
         } catch (ModelSyncException e) {
             e.printStackTrace();
             mainWindowView.getContentView().footer.show(e.getMessage(), Footer.NotificationType.ERROR);
@@ -84,12 +59,46 @@ public class ClientsContextView extends ContextView<Client> implements Initializ
         return null;
     };
 
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        textFields.addAll(Arrays.asList(
+                clientsNameTextfield,
+                clientsEmailTextfield,
+                clientsPhoneTextfield
+        ));
+
+        radioButtons.addAll(Arrays.asList(
+                clientsGenderMaleRadio,
+                clientsGenderFemaleRadio
+        ));
+
+        controller = new ClientsController();
+
+        radioButtons.forEach(rb -> rb.setToggleGroup(genderRadios));
+
+        setDefaults();
+    }
+
+    @Override
+    public void populateForm() {
+        clientsNameTextfield.setText(contextItem.getName());
+        clientsEmailTextfield.setText(contextItem.getEmail());
+        clientsPhoneTextfield.setText(contextItem.getPhone());
+        radioButtons.forEach(rb -> rb.setDisable(false));
+        if (contextItem.getGender().equals("Male")) {
+            clientsGenderMaleRadio.fire();
+        } else {
+            clientsGenderFemaleRadio.fire();
+        }
+        radioButtons.forEach(rb -> rb.setDisable(true));
+    }
+
     @FXML
-    public void clientEditButtonOnClick(){ //TODO: some error idk why, andrej must've messed sth
-        if(validateInput(clientsNameTextfield, clientsEmailTextfield, clientsPhoneTextfield)){
+    public void handleEdit() {
+        if (validateInput(clientsNameTextfield, clientsEmailTextfield, clientsPhoneTextfield)) {
             try {
                 mainWindowView.getContentView().footer.show("Updating client...", Footer.NotificationType.LOADING);
-                clientsController.updateClient(contextItem.getId(),
+                controller.updateClient(contextItem.getId(),
                         clientsNameTextfield.getText(),
                         clientsEmailTextfield.getText(),
                         clientsPhoneTextfield.getText(),
@@ -109,22 +118,22 @@ public class ClientsContextView extends ContextView<Client> implements Initializ
     }
 
     @FXML
-    public void clientDeleteButtonOnClick(){
-        mainWindowView.changeContent(ContentSource.CLIENTS);
+    public void handleDelete() {
+        // TODO: implement
     }
 
     @FXML
-    public void clientsCompanyButtonOnClick(ActionEvent event) {
+    public void clientsCompanyButtonOnClick() {
         displayNotImplementedError();
     }
 
     @FXML
-    public void clientsGroupsButtonOnClick(ActionEvent event) {
+    public void clientsGroupsButtonOnClick() {
         displayNotImplementedError();
     }
 
     @FXML
-    public void clientsDepartmentsButtonOnClick(ActionEvent event) {
+    public void clientsDepartmentsButtonOnClick() {
         displayNotImplementedError();
     }
 }

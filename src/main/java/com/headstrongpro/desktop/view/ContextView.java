@@ -32,7 +32,8 @@ public abstract class ContextView<T> {
 
     protected MainWindowView mainWindowView; // Main view controller
 
-    protected ArrayList<TextField> textFields; // List of form text fields
+    protected ArrayList<TextField> textFields = new ArrayList<>(); // List of form text fields
+    protected ArrayList<RadioButton> radioButtons = new ArrayList<>(); // List of form text fields
 
     private boolean editMode = false; // Whether making changes is allowed
 
@@ -46,6 +47,7 @@ public abstract class ContextView<T> {
     public void changeContextItem(T t) {
         this.contextItem = t;
         populateForm();
+        if (editMode) toggleEditMode();
     }
 
     public T getContextItem() {
@@ -60,7 +62,10 @@ public abstract class ContextView<T> {
     /**
      * Clears all the text input
      */
-    protected abstract void clearFields();
+    protected void clearFields() {
+        textFields.forEach(TextInputControl::clear);
+        radioButtons.forEach(ToggleButton::disarm);
+    }
 
     /**
      * Validates the contexts window input fields
@@ -100,17 +105,34 @@ public abstract class ContextView<T> {
         mainWindowView.getContentView().footer.show("Feature not yet implemented, patience is advised.", Footer.NotificationType.INFORMATION);
     }
 
+    /**
+     * By default, hide buttons of editing mode and disable changing fields
+     */
+    protected void setDefaults() {
+        topControls.getChildren().removeAll(editButton, cancelButton);
+        textFields.forEach(tf -> tf.setEditable(false));
+        radioButtons.forEach(rb -> rb.setDisable(true));
+    }
+
     @FXML
     public void toggleEditMode() {
         if (editMode) {
             topControls.getChildren().removeAll(editButton, cancelButton);
             topControls.getChildren().addAll(toggleEditButton, deleteButton);
             textFields.forEach(tf -> tf.setEditable(false));
+            radioButtons.forEach(rb -> rb.setDisable(true));
         } else {
             topControls.getChildren().removeAll(toggleEditButton, deleteButton);
             topControls.getChildren().addAll(editButton, cancelButton);
             textFields.forEach(tf -> tf.setEditable(true));
+            radioButtons.forEach(rb -> rb.setDisable(false));
         }
         editMode = !editMode;
+    }
+
+    @FXML
+    public void handleCancel() {
+        toggleEditMode();
+        if (contextItem != null) populateForm();
     }
 }
