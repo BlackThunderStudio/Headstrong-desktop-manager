@@ -176,7 +176,7 @@ public class DashboardView extends ContentView implements Initializable {
 
     @FXML
     public void coursesTileOnClick(MouseEvent event) {
-        //TODO: link courses here once the window is done
+        mainWindowView.changeContent(ContentSource.COURSES);
     }
 
     @FXML

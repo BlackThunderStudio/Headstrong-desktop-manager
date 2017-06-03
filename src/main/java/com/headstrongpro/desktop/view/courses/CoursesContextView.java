@@ -149,6 +149,7 @@ public class CoursesContextView extends ContextView<Course> implements Initializ
 
     @FXML
     public void coursesAssignAudioButtonOnClick(ActionEvent event) {
+        mainWindowView.changeContext(ContentSource.COURSES_RES_AUDIO, contextItem);
     }
 
     @FXML

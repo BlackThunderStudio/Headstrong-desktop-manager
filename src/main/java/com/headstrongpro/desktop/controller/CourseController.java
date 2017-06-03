@@ -5,6 +5,7 @@ import com.headstrongpro.desktop.DbLayer.DBResources;
 import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.model.Course;
+import com.headstrongpro.desktop.model.resource.Resource;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -73,5 +74,13 @@ public class CourseController implements Refreshable, IContentController<Course>
         return FXCollections.observableArrayList(courses.stream().filter(
                 e -> e.getName().toLowerCase().contains(phrase.toLowerCase())
         ).collect(Collectors.toList()));
+    }
+
+    public List<Resource> getAssignedResources(Course course) throws ModelSyncException {
+        return dbResources.getByCourseID(course.getId());
+    }
+
+    public int assignResources(Course course, Resource resource) throws DatabaseOutOfSyncException, ModelSyncException {
+        return dbResources.assignToCourse(resource, course);
     }
 }
