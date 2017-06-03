@@ -14,7 +14,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<GridPane prefHeight="700.0" prefWidth="800.0" stylesheets="/style/resourcesContentPane.css" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.headstrongpro.desktop.view.resources.ResourcesView">
+<GridPane prefHeight="700.0" prefWidth="800.0" stylesheets="/style/resourcesContentPane.css" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.headstrongpro.desktop.view.resources.ResourcesContentView">
     <columnConstraints>
         <ColumnConstraints hgrow="NEVER" minWidth="500.0" percentWidth="100.0" prefWidth="800.0" />
     </columnConstraints>
@@ -40,7 +40,7 @@
             <Insets right="20.0" />
          </GridPane.margin>
       </ComboBox>
-      <TableView fx:id="resourcesTable" maxWidth="4000.0" minWidth="400.0" prefHeight="200.0" GridPane.rowIndex="3">
+      <TableView fx:id="mainTable" maxWidth="4000.0" minWidth="400.0" prefHeight="200.0" GridPane.rowIndex="3">
           <columnResizePolicy><TableView fx:constant="CONSTRAINED_RESIZE_POLICY" /></columnResizePolicy>
           <columns>
           <TableColumn fx:id="nameCol" minWidth="150" prefWidth="250" text="Name" />
@@ -89,7 +89,7 @@
             <Insets />
          </GridPane.margin>
          <children>
-            <TextField fx:id="searchResourcesTextfield" onKeyReleased="#searchResourcesTextfield_onKeyReleased" promptText="Search" GridPane.columnIndex="1">
+            <TextField fx:id="searchField" onKeyReleased="#handleSearch" promptText="Search" GridPane.columnIndex="1">
                <GridPane.margin>
                   <Insets left="20.0" right="20.0" />
                </GridPane.margin>
