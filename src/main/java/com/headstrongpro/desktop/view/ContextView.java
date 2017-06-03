@@ -2,10 +2,9 @@ package com.headstrongpro.desktop.view;
 
 import com.headstrongpro.desktop.core.SyncHandler;
 import com.headstrongpro.desktop.core.fxControls.Footer;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextInputControl;
+import javafx.fxml.FXML;
+import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,14 +14,27 @@ import java.util.Optional;
  * ContextView
  */
 public abstract class ContextView<T> {
-    // Currently set context item
-    protected T contextItem = null;
 
-    // Main view controller
-    protected MainWindowView mainWindowView;
+    // Top controls
+    @FXML
+    public Button toggleEditButton;
+    @FXML
+    public Button editButton;
+    @FXML
+    public Button cancelButton;
+    @FXML
+    public Button deleteButton;
 
-    // List of form text fields
-    protected ArrayList<TextField> textFields;
+    @FXML
+    public HBox topControls; // Horizontal row with top controls
+
+    protected T contextItem = null; // Currently set context item
+
+    protected MainWindowView mainWindowView; // Main view controller
+
+    protected ArrayList<TextField> textFields; // List of form text fields
+
+    private boolean editMode = false; // Whether making changes is allowed
 
     public void setMainWindowView(MainWindowView mainWindowView) {
         this.mainWindowView = mainWindowView;
@@ -36,7 +48,7 @@ public abstract class ContextView<T> {
         populateForm();
     }
 
-    public T getContextItem(){
+    public T getContextItem() {
         return contextItem;
     }
 
@@ -69,14 +81,14 @@ public abstract class ContextView<T> {
      *
      * @param handler function implemented by SyncHandler
      */
-    protected void handleOutOfSync(SyncHandler<T> handler){
+    protected void handleOutOfSync(SyncHandler<T> handler) {
         Alert a = new Alert(Alert.AlertType.CONFIRMATION);
         mainWindowView.getContentView().footer.show("Warning! Data inconsistency!", Footer.NotificationType.WARNING);
         a.setHeaderText("Warning! Database contains newer data.");
         a.setContentText("Do you want to reload the data? Clicking 'Cancel' will clear all the input");
         Optional<ButtonType> response = a.showAndWait();
         response.ifPresent(e -> {
-            if(ButtonType.OK.equals(e)){
+            if (ButtonType.OK.equals(e)) {
                 changeContextItem(handler.handle());
             } else {
                 clearFields();
@@ -84,7 +96,21 @@ public abstract class ContextView<T> {
         });
     }
 
-    protected void displayNotImplementedError(){
+    protected void displayNotImplementedError() {
         mainWindowView.getContentView().footer.show("Feature not yet implemented, patience is advised.", Footer.NotificationType.INFORMATION);
+    }
+
+    @FXML
+    public void toggleEditMode() {
+        if (editMode) {
+            topControls.getChildren().removeAll(editButton, cancelButton);
+            topControls.getChildren().addAll(toggleEditButton, deleteButton);
+            textFields.forEach(tf -> tf.setEditable(false));
+        } else {
+            topControls.getChildren().removeAll(toggleEditButton, deleteButton);
+            topControls.getChildren().addAll(editButton, cancelButton);
+            textFields.forEach(tf -> tf.setEditable(true));
+        }
+        editMode = !editMode;
     }
 }

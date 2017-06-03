@@ -7,11 +7,9 @@ import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.core.fxControls.Footer;
 import com.headstrongpro.desktop.model.entity.Company;
 import com.headstrongpro.desktop.view.ContextView;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.layout.HBox;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -23,19 +21,6 @@ import java.util.ResourceBundle;
  * Companies ContextView
  */
 public class CompaniesContextView extends ContextView<Company> implements Initializable {
-    // Top controls
-    @FXML
-    public Button toggleEditButton;
-    @FXML
-    public Button editButton;
-    @FXML
-    public Button cancelButton;
-    @FXML
-    public Button deleteButton;
-
-    // Horizontal row with top controls
-    @FXML
-    public HBox topControls;
 
     // Form text fields
     @FXML
@@ -62,13 +47,21 @@ public class CompaniesContextView extends ContextView<Company> implements Initia
     public Button companySubscriptionsButton;
 
     // Data controller
-    private CompaniesController companiesController;
+    private CompaniesController controller;
 
-    // Whether making changes is allowed
-    private boolean editMode = false;
+    private SyncHandler handler = () -> {
+        try {
+            return controller.getCompanyById(contextItem.getId());
+        } catch (ModelSyncException e) {
+            e.printStackTrace();
+            mainWindowView.getContentView().footer.show(e.getMessage(), Footer.NotificationType.ERROR);
+        }
+        return null;
+    };
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
         textFields = new ArrayList<>(Arrays.asList(
                 companyNameTextfield,
                 companyCvrTextfield,
@@ -78,7 +71,7 @@ public class CompaniesContextView extends ContextView<Company> implements Initia
                 companyCountryTextfield
         ));
 
-        companiesController = new CompaniesController();
+        controller = new CompaniesController();
 
         // By default, hide buttons of editing mode
         topControls.getChildren().removeAll(editButton, cancelButton);
@@ -96,22 +89,8 @@ public class CompaniesContextView extends ContextView<Company> implements Initia
     }
 
     @FXML
-    public void toggleEditMode() {
-        if (editMode) {
-            topControls.getChildren().removeAll(editButton, cancelButton);
-            topControls.getChildren().addAll(toggleEditButton, deleteButton);
-            textFields.forEach(tf -> tf.setEditable(false));
-        } else {
-            topControls.getChildren().removeAll(toggleEditButton, deleteButton);
-            topControls.getChildren().addAll(editButton, cancelButton);
-            textFields.forEach(tf -> tf.setEditable(true));
-        }
-        editMode = !editMode;
-    }
-
-    @FXML
     public void handleEdit() {
-        if (companiesController.validCompany(companyNameTextfield.getText(),
+        if (controller.validCompany(companyNameTextfield.getText(),
                 companyCvrTextfield.getText(),
                 companyStreetTextfield.getText(),
                 companyPostalTextfield.getText(),
@@ -119,7 +98,7 @@ public class CompaniesContextView extends ContextView<Company> implements Initia
                 companyCountryTextfield.getText())) {
             try {
                 mainWindowView.getContentView().footer.show("Updating company...", Footer.NotificationType.LOADING);
-                companiesController.updateCompany(contextItem.getId(),
+                controller.updateCompany(contextItem.getId(),
                         companyNameTextfield.getText(),
                         companyCvrTextfield.getText(),
                         companyStreetTextfield.getText(),
@@ -153,7 +132,7 @@ public class CompaniesContextView extends ContextView<Company> implements Initia
             if (ButtonType.OK.equals(btn)) {
                 try {
                     mainWindowView.getContentView().footer.show("Deleting " + contextItem.getName() + "...", Footer.NotificationType.LOADING);
-                    companiesController.deleteCompany(contextItem.getId());
+                    controller.deleteCompany(contextItem.getId());
                     mainWindowView.getContentView().footer.show("Company deleted.", Footer.NotificationType.COMPLETED);
                     mainWindowView.getContentView().refreshButton.fire();
                 } catch (ModelSyncException e) {
@@ -166,38 +145,29 @@ public class CompaniesContextView extends ContextView<Company> implements Initia
         });
     }
 
-    private SyncHandler handler = () -> {
-        try {
-            return companiesController.getCompanyById(contextItem.getId());
-        } catch (ModelSyncException e) {
-            e.printStackTrace();
-            mainWindowView.getContentView().footer.show(e.getMessage(), Footer.NotificationType.ERROR);
-        }
-        return null;
-    };
     @FXML
     public void handleCancel() {
         toggleEditMode();
-        populateForm();
+        if (contextItem != null) populateForm();
     }
 
     @FXML
-    public void companyClientsButtonOnClick(ActionEvent event) {
+    public void companyClientsButtonOnClick() {
         displayNotImplementedError();
     }
 
     @FXML
-    public void companyDepartmentsButtonOnClick(ActionEvent event) {
+    public void companyDepartmentsButtonOnClick() {
         displayNotImplementedError();
     }
 
     @FXML
-    public void companyGroupsButtonOnClick(ActionEvent event) {
+    public void companyGroupsButtonOnClick() {
         displayNotImplementedError();
     }
 
     @FXML
-    public void companySubscriptionsButtonOnClick(ActionEvent event) {
+    public void companySubscriptionsButtonOnClick() {
         displayNotImplementedError();
     }
 }

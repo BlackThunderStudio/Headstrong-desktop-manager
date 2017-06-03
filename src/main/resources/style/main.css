@@ -5,6 +5,15 @@
     -fx-opacity: 1.0;
     -fx-background-color: rgba(255, 255, 255, .7);
 }
+
+.context-view #topControls > .button {
+    -fx-max-width: 90.0;
+    -fx-min-width: 90.0;
+    -fx-pref-width: 90.0;
+    -fx-pref-height: 25.0;
+    -fx-content-display: center;
+}
+
 .button, .radio-button {
     -fx-cursor: hand;
 }

@@ -22,7 +22,7 @@
          prefWidth="200.0" type="HBox" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <JFXSpinner fx:id="spinner" alignment="CENTER_LEFT" prefHeight="32.0" prefWidth="200.0"/>
-        <Label fx:id="label" text="Label" alignment="CENTER_LEFT">
+        <Label fx:id="label" text="Label">
             <HBox.margin>
                 <Insets left="10.0"/>
             </HBox.margin>

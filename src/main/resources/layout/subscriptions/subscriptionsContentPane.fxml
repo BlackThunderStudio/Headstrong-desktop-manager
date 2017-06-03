@@ -45,7 +45,7 @@
               <TableColumn fx:id="companyCol" minWidth="120" prefWidth="150" text="Name" />
               <TableColumn fx:id="startCol" minWidth="100" prefWidth="120" text="Start" />
               <TableColumn fx:id="endCol" minWidth="100" prefWidth="120" text="End" />
-              <TableColumn fx:id="usersCol" minWidth="50" prefWidth="80" text="Users" />
+              <TableColumn fx:id="usersCol" minWidth="50" text="Users" />
               <TableColumn fx:id="rateCol" minWidth="70" prefWidth="100" text="Rate" />
 
           </columns>
