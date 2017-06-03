@@ -225,7 +225,7 @@ public class ResourcesContentView extends ContentView implements Initializable {
     }
 
     @FXML
-    public void refreshOnClick() {
+    public void handleRefresh() {
         searchField.clear();
         refresh();
     }
