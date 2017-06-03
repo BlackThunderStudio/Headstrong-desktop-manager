@@ -67,15 +67,15 @@
                 <RowConstraints minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-                <Button fx:id="coursesAssignAudioButton" minHeight="25.0" minWidth="90.0" mnemonicParsing="false" prefHeight="1000.0" prefWidth="1000.0" text="Audio" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+                <Button fx:id="coursesAssignAudioButton" minHeight="25.0" minWidth="90.0" mnemonicParsing="false" onAction="#coursesAssignAudioButtonOnClick" prefHeight="1000.0" prefWidth="1000.0" text="Audio" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
                     <GridPane.margin>
                         <Insets />
                     </GridPane.margin></Button>
-                <Button fx:id="coursesAssignImageButton" minHeight="25.0" minWidth="90.0" mnemonicParsing="false" prefHeight="1000.0" prefWidth="1000.0" text="Image" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+                <Button fx:id="coursesAssignImageButton" minHeight="25.0" minWidth="90.0" mnemonicParsing="false" onAction="#coursesAssignImageButtonOnClick" prefHeight="1000.0" prefWidth="1000.0" text="Image" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
                     <GridPane.margin>
                         <Insets />
                     </GridPane.margin></Button>
-                <Button fx:id="coursesAssignTextButton" minHeight="25.0" minWidth="90.0" mnemonicParsing="false" prefHeight="1000.0" prefWidth="1000.0" text="Text" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+                <Button fx:id="coursesAssignTextButton" minHeight="25.0" minWidth="90.0" mnemonicParsing="false" onAction="#coursesAssignTextButtonOnClick" prefHeight="1000.0" prefWidth="1000.0" text="Text" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
                     <GridPane.margin>
                         <Insets />
                     </GridPane.margin></Button>

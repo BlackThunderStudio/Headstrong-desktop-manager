@@ -30,14 +30,12 @@ import static javafx.concurrent.Worker.State.SUCCEEDED;
 /**
  * Created by Ondřej Soukup on 23.05.2017.
  */
-public class CoursesView extends ContentView implements Initializable {
+public class CoursesView extends ContentView<Course> implements Initializable {
 
     @FXML
     public Text coursesHeader;
     @FXML
     public TextField searchCoursesTextfield;
-    @FXML
-    public TableView<Course> coursesTable;
     @FXML
     public TableColumn<Course, String> courseName;
     @FXML
@@ -76,7 +74,7 @@ public class CoursesView extends ContentView implements Initializable {
 
         new Thread(init).start();
 
-        coursesTable.getSelectionModel()
+        mainTable.getSelectionModel()
                 .selectedItemProperty()
                 .addListener(((observable, oldValue, newValue) -> {
                     if(newValue != null) {
@@ -96,11 +94,11 @@ public class CoursesView extends ContentView implements Initializable {
     }
 
     public void loadTable(ObservableList<Course> courses){
-        coursesTable.getColumns().removeAll(courseName, courseDesc);
-        coursesTable.setItems(courses);
+        mainTable.getColumns().removeAll(courseName, courseDesc);
+        mainTable.setItems(courses);
         courseName.setCellValueFactory(new PropertyValueFactory<>("name"));
         courseDesc.setCellValueFactory(new PropertyValueFactory<>("description"));
-        coursesTable.getColumns().addAll(courseName, courseDesc);
+        mainTable.getColumns().addAll(courseName, courseDesc);
     }
 
     @FXML

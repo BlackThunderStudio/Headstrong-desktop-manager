@@ -33,7 +33,7 @@
             </Text>
          </children>
       </Pane>
-      <TableView fx:id="coursesTable" maxHeight="4000.0" maxWidth="4000.0" minHeight="200.0" minWidth="200.0" prefHeight="200.0" prefWidth="200.0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.vgrow="ALWAYS">
+      <TableView fx:id="mainTable" maxHeight="4000.0" maxWidth="4000.0" minHeight="200.0" minWidth="200.0" prefHeight="200.0" prefWidth="200.0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.vgrow="ALWAYS">
         <columns>
           <TableColumn fx:id="courseName" prefWidth="168.0" text="Name" />
           <TableColumn fx:id="courseDesc" prefWidth="512.9999847412109" text="Description" />

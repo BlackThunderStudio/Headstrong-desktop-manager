@@ -9,6 +9,7 @@ import com.headstrongpro.desktop.core.fxControls.Footer;
 import com.headstrongpro.desktop.model.Course;
 import com.headstrongpro.desktop.view.ContentSource;
 import com.headstrongpro.desktop.view.ContextView;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -144,5 +145,17 @@ public class CoursesContextView extends ContextView<Course> implements Initializ
     @FXML
     public void coursesTextOnClick(){
         mainWindowView.changeContent(ContentSource.RESOURCES_TEXT);
+    }
+
+    @FXML
+    public void coursesAssignAudioButtonOnClick(ActionEvent event) {
+    }
+
+    @FXML
+    public void coursesAssignImageButtonOnClick(ActionEvent event) {
+    }
+
+    @FXML
+    public void coursesAssignTextButtonOnClick(ActionEvent event) {
     }
 }
