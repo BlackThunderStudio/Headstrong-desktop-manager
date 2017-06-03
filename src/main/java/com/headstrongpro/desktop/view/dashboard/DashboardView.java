@@ -62,7 +62,6 @@ public class DashboardView extends ContentView implements Initializable {
         TimerTask reload = new TimerTask() {
             @Override
             public void run() {
-                System.out.println("Reloading dashboard data...");
                 loadData();
             }
         };
@@ -182,11 +181,6 @@ public class DashboardView extends ContentView implements Initializable {
     @FXML
     public void resourcesTileOnClick(MouseEvent event) {
         mainWindowView.changeContent(ContentSource.RESOURCES);
-    }
-
-    @FXML
-    public void employeesTileOnClick(MouseEvent event) {
-        //TODO: link employees here once the window is done
     }
 
     @FXML
