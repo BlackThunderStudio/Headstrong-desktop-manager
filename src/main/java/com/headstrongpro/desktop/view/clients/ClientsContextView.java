@@ -6,9 +6,7 @@ import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.core.fxControls.Footer;
 import com.headstrongpro.desktop.model.entity.Client;
-import com.headstrongpro.desktop.view.ContentSource;
 import com.headstrongpro.desktop.view.ContextView;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -29,25 +27,15 @@ public class ClientsContextView extends ContextView<Client> implements Initializ
 
     // Form text fields
     @FXML
-    public TextField clientsNameTextfield;
+    public TextField nameField, emailField, phoneField;
     @FXML
-    public TextField clientsEmailTextfield;
-    @FXML
-    public TextField clientsPhoneTextfield;
-    @FXML
-    public RadioButton clientsGenderMaleRadio;
-    @FXML
-    public RadioButton clientsGenderFemaleRadio;
+    public RadioButton maleGenderRadio, femaleGenderRadio;
 
     // Links to related items
     @FXML
-    public Button clientsCompanyButton;
-    @FXML
-    public Button clientsGroupsButton;
-    @FXML
-    public Button clientsDepartmentsButton;
+    public Button clientsCompanyButton, clientsGroupsButton, clientsDepartmentsButton;
 
-    private ClientsController controller;
+    private ClientsController controller; // Data controller
 
     private SyncHandler handler = () -> {
         try {
@@ -62,14 +50,14 @@ public class ClientsContextView extends ContextView<Client> implements Initializ
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         textFields.addAll(Arrays.asList(
-                clientsNameTextfield,
-                clientsEmailTextfield,
-                clientsPhoneTextfield
+                nameField,
+                emailField,
+                phoneField
         ));
 
         radioButtons.addAll(Arrays.asList(
-                clientsGenderMaleRadio,
-                clientsGenderFemaleRadio
+                maleGenderRadio,
+                femaleGenderRadio
         ));
 
         controller = new ClientsController();
@@ -81,27 +69,27 @@ public class ClientsContextView extends ContextView<Client> implements Initializ
 
     @Override
     public void populateForm() {
-        clientsNameTextfield.setText(contextItem.getName());
-        clientsEmailTextfield.setText(contextItem.getEmail());
-        clientsPhoneTextfield.setText(contextItem.getPhone());
+        nameField.setText(contextItem.getName());
+        emailField.setText(contextItem.getEmail());
+        phoneField.setText(contextItem.getPhone());
         radioButtons.forEach(rb -> rb.setDisable(false));
         if (contextItem.getGender().equals("Male")) {
-            clientsGenderMaleRadio.fire();
+            maleGenderRadio.fire();
         } else {
-            clientsGenderFemaleRadio.fire();
+            femaleGenderRadio.fire();
         }
         radioButtons.forEach(rb -> rb.setDisable(true));
     }
 
     @FXML
     public void handleEdit() {
-        if (validateInput(clientsNameTextfield, clientsEmailTextfield, clientsPhoneTextfield)) {
+        if (validateInput(nameField, emailField, phoneField)) {
             try {
                 mainWindowView.getContentView().footer.show("Updating client...", Footer.NotificationType.LOADING);
                 controller.updateClient(contextItem.getId(),
-                        clientsNameTextfield.getText(),
-                        clientsEmailTextfield.getText(),
-                        clientsPhoneTextfield.getText(),
+                        nameField.getText(),
+                        emailField.getText(),
+                        phoneField.getText(),
                         contextItem.getGender());
                 mainWindowView.getContentView().footer.show("Client updated.", Footer.NotificationType.COMPLETED);
                 mainWindowView.getContentView().refreshButton.fire();

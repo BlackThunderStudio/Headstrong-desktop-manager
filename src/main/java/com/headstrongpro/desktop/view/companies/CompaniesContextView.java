@@ -26,30 +26,13 @@ public class CompaniesContextView extends ContextView<Company> implements Initia
 
     // Form text fields
     @FXML
-    public TextField companyNameTextfield;
-    @FXML
-    public TextField companyCvrTextfield;
-    @FXML
-    public TextField companyStreetTextfield;
-    @FXML
-    public TextField companyPostalTextfield;
-    @FXML
-    public TextField companyCityTextfield;
-    @FXML
-    public TextField companyCountryTextfield;
+    public TextField nameField, cvrField, streetField, postalField, cityField, countryField;
 
     // Links to related items
     @FXML
-    public Button companyDepartmentsButton;
-    @FXML
-    public Button companyClientsButton;
-    @FXML
-    public Button companyGroupsButton;
-    @FXML
-    public Button companySubscriptionsButton;
+    public Button companyDepartmentsButton, companyClientsButton, companyGroupsButton, companySubscriptionsButton;
 
-    // Data controller
-    private CompaniesController controller;
+    private CompaniesController controller; // Data controller
 
     private SyncHandler handler = () -> {
         try {
@@ -64,12 +47,12 @@ public class CompaniesContextView extends ContextView<Company> implements Initia
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         textFields.addAll(Arrays.asList(
-                companyNameTextfield,
-                companyCvrTextfield,
-                companyStreetTextfield,
-                companyPostalTextfield,
-                companyCityTextfield,
-                companyCountryTextfield
+                nameField,
+                cvrField,
+                streetField,
+                postalField,
+                cityField,
+                countryField
         ));
 
         controller = new CompaniesController();
@@ -79,31 +62,31 @@ public class CompaniesContextView extends ContextView<Company> implements Initia
 
     @Override
     public void populateForm() {
-        companyNameTextfield.setText(contextItem.getName());
-        companyCvrTextfield.setText(contextItem.getCvr());
-        companyStreetTextfield.setText(contextItem.getStreet());
-        companyPostalTextfield.setText(contextItem.getPostal());
-        companyCityTextfield.setText(contextItem.getCity());
-        companyCountryTextfield.setText(contextItem.getCountry());
+        nameField.setText(contextItem.getName());
+        cvrField.setText(contextItem.getCvr());
+        streetField.setText(contextItem.getStreet());
+        postalField.setText(contextItem.getPostal());
+        cityField.setText(contextItem.getCity());
+        countryField.setText(contextItem.getCountry());
     }
 
     @FXML
     public void handleEdit() {
-        if (controller.validCompany(companyNameTextfield.getText(),
-                companyCvrTextfield.getText(),
-                companyStreetTextfield.getText(),
-                companyPostalTextfield.getText(),
-                companyCityTextfield.getText(),
-                companyCountryTextfield.getText())) {
+        if (controller.validCompany(nameField.getText(),
+                cvrField.getText(),
+                streetField.getText(),
+                postalField.getText(),
+                cityField.getText(),
+                countryField.getText())) {
             try {
                 mainWindowView.getContentView().footer.show("Updating company...", Footer.NotificationType.LOADING);
                 controller.updateCompany(contextItem.getId(),
-                        companyNameTextfield.getText(),
-                        companyCvrTextfield.getText(),
-                        companyStreetTextfield.getText(),
-                        companyPostalTextfield.getText(),
-                        companyCityTextfield.getText(),
-                        companyCountryTextfield.getText());
+                        nameField.getText(),
+                        cvrField.getText(),
+                        streetField.getText(),
+                        postalField.getText(),
+                        cityField.getText(),
+                        countryField.getText());
                 mainWindowView.getContentView().footer.show("Company updated.", Footer.NotificationType.COMPLETED);
                 mainWindowView.getContentView().refreshButton.fire();
             } catch (ModelSyncException e) {
