@@ -3,7 +3,10 @@ package com.headstrongpro.desktop.core.connection
 import com.headstrongpro.desktop.model.resource.IResourceConnector
 import com.headstrongpro.desktop.model.resource.Resource
 import com.headstrongpro.desktop.model.resource.ResourceType
-import com.jcraft.jsch.*
+import com.jcraft.jsch.Channel
+import com.jcraft.jsch.ChannelSftp
+import com.jcraft.jsch.JSch
+import com.jcraft.jsch.UserInfo
 import javafx.scene.control.Alert
 import org.apache.commons.io.FilenameUtils
 import java.io.File
@@ -18,7 +21,7 @@ import java.net.URLEncoder
  *
  * Created by rajmu on 17.05.29.
  */
-class SFTPKotlin(val host: String, val user: String, val  pass: String, val  path: String, val  subDomain: String) : IResourceConnector{
+class SFTPKotlin(val host: String, val user: String, val pass: String, val path: String, val subDomain: String) : IResourceConnector {
 
     var root = ""
     val port = 22
@@ -36,7 +39,7 @@ class SFTPKotlin(val host: String, val user: String, val  pass: String, val  pat
         jsch = JSch()
     }
 
-    fun upload(localFile: File, remote: String?): Unit{
+    fun upload(localFile: File, remote: String?): Unit {
         val c = connect()
         val stream: InputStream = FileInputStream(localFile)
         c.cd(root)
@@ -74,7 +77,7 @@ class SFTPKotlin(val host: String, val user: String, val  pass: String, val  pat
     }
 
     data class MyUserInfo(val pwd: String)
-        : UserInfo{
+        : UserInfo {
         override fun promptPassphrase(p0: String?): Boolean = true
 
         override fun getPassphrase(): String? = null

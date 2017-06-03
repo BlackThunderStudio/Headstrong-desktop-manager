@@ -5,13 +5,12 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
 
 /**
- * Created by Rajmund Staniek on 22-May-17.
+ * Configurable
  */
 public abstract class Configurable {
     protected JSONObject parseJsonConfig(String config, String root) {
@@ -20,15 +19,13 @@ public abstract class Configurable {
             Object file = parser.parse(
                     new InputStreamReader(
                             new FileInputStream(
-                                    getClass().getResource(config).getFile())));
+                                    getClass().getResource(config).getFile()
+                            )
+                    )
+            );
             JSONObject fullJSON = (JSONObject) file;
-            JSONObject json = (JSONObject) fullJSON.get(root);
-            return json;
-        } catch (ParseException e) {
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+            return (JSONObject) fullJSON.get(root);
+        } catch (ParseException | IOException e) {
             e.printStackTrace();
         }
         return null;

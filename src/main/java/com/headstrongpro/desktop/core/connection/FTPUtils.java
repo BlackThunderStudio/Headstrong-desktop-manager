@@ -66,11 +66,11 @@ public class FTPUtils {
 
     public void disconnect() throws ConnectionException {
         try {
-            if(ftpClient.isConnected()){
+            if (ftpClient.isConnected()) {
                 ftpClient.logout();
                 ftpClient.disconnect();
             }
-        } catch (IOException e){
+        } catch (IOException e) {
             throw new ConnectionException(e);
         }
     }
@@ -82,7 +82,7 @@ public class FTPUtils {
     public boolean download(String remoteFile, File localFile, boolean keepConnection) throws ConnectionException {
         boolean success = false;
         try {
-            if(!ftpClient.isConnected()){
+            if (!ftpClient.isConnected()) {
                 connect();
             }
             ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
@@ -93,7 +93,7 @@ public class FTPUtils {
             InputStream inputStream = ftpClient.retrieveFileStream(path + remoteFile);
             byte[] bytesArray = new byte[bufferSize];
             int bytesRead = -1;
-            while ((bytesRead = inputStream.read(bytesArray)) != -1){
+            while ((bytesRead = inputStream.read(bytesArray)) != -1) {
                 outputStream.write(bytesArray, 0, bytesRead);
             }
             success = ftpClient.completePendingCommand();
@@ -103,7 +103,7 @@ public class FTPUtils {
             e.printStackTrace();
             throw new ConnectionException(e);
         } finally {
-            if(!keepConnection){
+            if (!keepConnection) {
                 disconnect();
             }
         }
@@ -117,14 +117,14 @@ public class FTPUtils {
     public boolean upload(File localFile, String remoteFile, boolean keepConnection) throws ConnectionException {
         boolean success = false;
         try {
-            if(!ftpClient.isConnected()){
+            if (!ftpClient.isConnected()) {
                 connect();
             }
             InputStream inputStream = new FileInputStream(localFile);
             OutputStream outputStream = ftpClient.storeFileStream(path + remoteFile);
             byte[] bytesIn = new byte[bufferSize];
             int read = 0;
-            while ((read = inputStream.read(bytesIn)) != -1){
+            while ((read = inputStream.read(bytesIn)) != -1) {
                 outputStream.write(bytesIn, 0, read);
             }
             inputStream.close();
@@ -134,7 +134,7 @@ public class FTPUtils {
             e.printStackTrace();
             throw new ConnectionException(e);
         } finally {
-            if(!keepConnection){
+            if (!keepConnection) {
                 disconnect();
             }
         }

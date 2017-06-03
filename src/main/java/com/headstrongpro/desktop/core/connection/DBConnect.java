@@ -2,13 +2,7 @@ package com.headstrongpro.desktop.core.connection;
 
 import com.headstrongpro.desktop.core.exception.ConnectionException;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
-import javax.management.AttributeList;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
