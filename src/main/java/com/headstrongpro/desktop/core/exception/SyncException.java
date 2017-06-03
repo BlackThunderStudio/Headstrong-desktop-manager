@@ -1,7 +1,7 @@
 package com.headstrongpro.desktop.core.exception;
 
 /**
- * Created by rajmu on 17.05.25.
+ * SyncException
  */
 public class SyncException extends Exception {
     public SyncException() {

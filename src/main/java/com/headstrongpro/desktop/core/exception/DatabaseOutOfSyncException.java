@@ -1,7 +1,7 @@
 package com.headstrongpro.desktop.core.exception;
 
 /**
- * Created by rajmu on 17.05.15.
+ * DatabaseOutOfSyncException
  */
 public class DatabaseOutOfSyncException extends Exception {
     public DatabaseOutOfSyncException() {
