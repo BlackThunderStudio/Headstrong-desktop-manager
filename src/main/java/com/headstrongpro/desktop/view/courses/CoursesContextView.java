@@ -59,6 +59,7 @@ public class CoursesContextView extends ContextView<Course> implements Initializ
     public Button coursesNewCatSaveButton;
     @FXML
     public Button coursesNewCatCancelButton;
+    public Button coursesInspectButton;
 
     CoursesController coursesController;
     private SyncHandler<Course> syncHandler = () -> {
@@ -147,14 +148,15 @@ public class CoursesContextView extends ContextView<Course> implements Initializ
 
     @FXML
     public void coursesAssignAudioButtonOnClick(ActionEvent event) {
-        mainWindowView.changeContext(ContentSource.COURSES_RES_AUDIO, contextItem);
+        if(contextItem != null){
+            mainWindowView.changeContext(ContentSource.COURSES_RES_AUDIO, contextItem);
+        }
     }
 
     @FXML
-    public void coursesAssignImageButtonOnClick(ActionEvent event) {
-    }
+    public void coursesInspectButtonOnClick(ActionEvent event) {
+        if(contextItem != null){
 
-    @FXML
-    public void coursesAssignTextButtonOnClick(ActionEvent event) {
+        }
     }
 }
