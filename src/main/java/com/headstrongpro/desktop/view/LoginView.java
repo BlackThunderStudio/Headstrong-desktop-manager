@@ -11,7 +11,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * Login Controller
+ * Login View
  */
 public class LoginView extends RootLayoutView implements Initializable {
     private final PseudoClass errorClass = PseudoClass.getPseudoClass("error");

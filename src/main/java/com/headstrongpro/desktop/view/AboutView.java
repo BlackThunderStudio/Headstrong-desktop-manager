@@ -9,7 +9,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * AboutView
+ * About View
  */
 public class AboutView extends ContentView implements Initializable {
 

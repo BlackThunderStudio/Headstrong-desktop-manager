@@ -14,7 +14,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * Companies ContentView
+ * Companies Content View
  */
 public class CompaniesContentView extends ContentView<Company> implements Initializable {
 

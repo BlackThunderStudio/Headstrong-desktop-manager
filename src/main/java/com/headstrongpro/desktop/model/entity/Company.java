@@ -1,9 +1,11 @@
 package com.headstrongpro.desktop.model.entity;
 
+import com.headstrongpro.desktop.model.IModel;
+
 /**
  * Company Entity
  */
-public class Company {
+public class Company implements IModel {
     private int id;
     private String name, cvr, street, postal, city, country;
 
@@ -29,10 +31,12 @@ public class Company {
         this.country = country;
     }
 
+    @Override
     public int getId() {
         return id;
     }
 
+    @Override
     public void setId(int id) {
         this.id = id;
     }

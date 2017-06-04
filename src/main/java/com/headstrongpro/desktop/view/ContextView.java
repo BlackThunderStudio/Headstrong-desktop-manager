@@ -5,6 +5,7 @@ import com.headstrongpro.desktop.core.SyncHandler;
 import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.core.fxControls.Footer;
+import com.headstrongpro.desktop.model.IModel;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
@@ -34,6 +35,16 @@ public abstract class ContextView<T> {
     protected ArrayList<TextField> textFields = new ArrayList<>(); // List of form text fields
     protected ArrayList<RadioButton> radioButtons = new ArrayList<>(); // List of form text fields
 
+    protected SyncHandler<T> handler = () -> {
+        IModel modelItem = (IModel) contextItem;
+        try {
+            return controller.getById(modelItem.getId());
+        } catch (ModelSyncException e) {
+            e.printStackTrace();
+            mainWindowView.getContentView().footer.show(e.getMessage(), Footer.NotificationType.ERROR);
+        }
+        return null;
+    };
     private boolean editMode = false; // Whether making changes is allowed
 
     /**
@@ -123,19 +134,17 @@ public abstract class ContextView<T> {
 
     /**
      * Pops up a dialog window with delete confirmation
-     *
-     * @param handler function implemented by SyncHandler
-     * @param name    name of the item to be deleted
      */
-    protected void handleDelete(SyncHandler<T> handler, String name) {
+    @FXML
+    public void handleDelete() {
         Alert a = new Alert(Alert.AlertType.CONFIRMATION);
-        a.setHeaderText(String.format("Are you sure you want to delete %s from the list?", name));
+        a.setHeaderText(String.format("Are you sure you want to delete %s from the list?", contextItem));
         a.setContentText("You cannot take that action back");
         Optional<ButtonType> response = a.showAndWait();
         response.ifPresent(btn -> {
             if (ButtonType.OK.equals(btn)) {
                 try {
-                    mainWindowView.getContentView().footer.show("Deleting " + name + "...", Footer.NotificationType.LOADING);
+                    mainWindowView.getContentView().footer.show(String.format("Deleting %s...", contextItem), Footer.NotificationType.LOADING);
                     controller.delete(contextItem);
                     mainWindowView.getContentView().footer.show("Entry deleted.", Footer.NotificationType.COMPLETED);
                     mainWindowView.getContentView().handleRefresh();

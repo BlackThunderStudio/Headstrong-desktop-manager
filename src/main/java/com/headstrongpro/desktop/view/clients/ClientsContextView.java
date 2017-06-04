@@ -1,7 +1,6 @@
 package com.headstrongpro.desktop.view.clients;
 
 import com.headstrongpro.desktop.controller.ClientsController;
-import com.headstrongpro.desktop.core.SyncHandler;
 import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.core.fxControls.Footer;
@@ -34,16 +33,6 @@ public class ClientsContextView extends ContextView<Client> implements Initializ
     // Links to related items
     @FXML
     public Button clientsCompanyButton, clientsGroupsButton, clientsDepartmentsButton;
-
-    private SyncHandler handler = () -> {
-        try {
-            return controller.getById(contextItem.getId());
-        } catch (ModelSyncException e) {
-            e.printStackTrace();
-            mainWindowView.getContentView().footer.show(e.getMessage(), Footer.NotificationType.ERROR);
-        }
-        return null;
-    };
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -97,17 +86,11 @@ public class ClientsContextView extends ContextView<Client> implements Initializ
                 mainWindowView.getContentView().footer.show("Error! Could not update company!", Footer.NotificationType.ERROR, Footer.FADE_LONG);
             } catch (DatabaseOutOfSyncException e) {
                 e.fillInStackTrace();
-                //noinspection unchecked
                 handleOutOfSync(handler);
             }
         } else {
             mainWindowView.getContentView().footer.show("Invalid input", Footer.NotificationType.WARNING, Footer.FADE_QUICK);
         }
-    }
-
-    @FXML
-    public void handleDelete() {
-        handleDelete(handler, contextItem.getName());
     }
 
     @FXML

@@ -7,11 +7,14 @@ import java.util.List;
 /**
  * Course model class
  */
-public class Course {
+public class Course implements IModel {
     private int id;
     private String name, description;
     private CourseCategory courseCategory;
     private List<Resource> resources;
+
+    public Course() {
+    }
 
     public Course(int id, String name, String description, CourseCategory courseCategory) {
         this.id = id;
@@ -31,15 +34,12 @@ public class Course {
         this.description = description;
     }
 
-    public Course() {
-    }
-
-    ;
-
+    @Override
     public int getId() {
         return id;
     }
 
+    @Override
     public void setId(int id) {
         this.id = id;
     }

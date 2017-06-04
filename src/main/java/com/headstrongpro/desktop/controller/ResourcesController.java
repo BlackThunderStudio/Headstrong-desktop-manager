@@ -65,7 +65,7 @@ public class ResourcesController implements Refreshable {
     public List<Resource> searchByPhrase(String input) {
         if (input == null) throw new IllegalStateException("input query cannot be of null");
         return resources.stream()
-                .filter(e -> String.valueOf(e.getID()).contains(input) ||
+                .filter(e -> String.valueOf(e.getId()).contains(input) ||
                         e.getName().toLowerCase().contains(input.toLowerCase()) ||
                         e.getDescription().toLowerCase().contains(input.toLowerCase()))
                 .collect(Collectors.toList());

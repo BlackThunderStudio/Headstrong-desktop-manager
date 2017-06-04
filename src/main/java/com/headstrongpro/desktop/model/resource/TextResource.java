@@ -1,12 +1,14 @@
 package com.headstrongpro.desktop.model.resource;
 
+import com.headstrongpro.desktop.model.IModel;
+
 import java.io.File;
 
 /**
- * Created by rajmu on 17.05.08.
+ * Text Resource
  */
 //TODO: Custom functionality and behaviour to be added!
-public class TextResource implements Resource {
+public class TextResource implements Resource, IModel {
 
     private static final ResourceType TYPE = ResourceType.TEXT;
 
@@ -27,9 +29,6 @@ public class TextResource implements Resource {
         this.name = name;
         this.description = description;
         this.isForAchievement = isForAchievement;
-    }
-
-    private TextResource() {
     }
 
     @Override
@@ -77,12 +76,12 @@ public class TextResource implements Resource {
     }
 
     @Override
-    public int getID() {
+    public int getId() {
         return id;
     }
 
     @Override
-    public void setID(int id) {
+    public void setId(int id) {
         this.id = id;
     }
 

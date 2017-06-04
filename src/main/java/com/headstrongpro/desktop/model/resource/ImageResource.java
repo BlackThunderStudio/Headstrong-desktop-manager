@@ -1,12 +1,14 @@
 package com.headstrongpro.desktop.model.resource;
 
+import com.headstrongpro.desktop.model.IModel;
+
 import java.io.File;
 
 /**
- * Created by rajmu on 17.05.08.
+ * Image Resource
  */
 //TODO: Custom functionality and behaviour to be added!
-public class ImageResource implements Resource {
+public class ImageResource implements Resource, IModel {
 
     private static final ResourceType TYPE = ResourceType.IMAGE;
 
@@ -27,9 +29,6 @@ public class ImageResource implements Resource {
         this.name = name;
         this.description = description;
         this.isForAchievement = isForAchievement;
-    }
-
-    private ImageResource() {
     }
 
     @Override
@@ -89,12 +88,12 @@ public class ImageResource implements Resource {
     }
 
     @Override
-    public int getID() {
+    public int getId() {
         return id;
     }
 
     @Override
-    public void setID(int id) {
+    public void setId(int id) {
         this.id = id;
     }
 }

@@ -3,7 +3,7 @@ package com.headstrongpro.desktop.view;
 import com.headstrongpro.desktop.Main;
 
 /**
- * RootLayout
+ * Root Layout
  */
 public abstract class RootLayoutView {
     Main MainApp;

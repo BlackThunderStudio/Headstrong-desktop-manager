@@ -1,7 +1,7 @@
 package com.headstrongpro.desktop.model.resource;
 
 /**
- * Created by rajmu on 17.05.13.
+ * Resource Type
  */
 public enum ResourceType {
     TEXT(1),

@@ -8,7 +8,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * Departments ContentView
+ * Departments Content View
  */
 public class DepartmentsContentView extends ContentView<Department> implements Initializable {
 

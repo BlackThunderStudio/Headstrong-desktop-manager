@@ -5,7 +5,7 @@ import java.io.File;
 import static com.headstrongpro.desktop.model.resource.ResourceType.*;
 
 /**
- * Created by rajmu on 17.05.08.
+ * Resource Interface
  */
 public interface Resource {
     @Deprecated
@@ -13,6 +13,7 @@ public interface Resource {
         return type.cast(resource);
     }
 
+    @SuppressWarnings("unchecked")
     static <T extends Resource> T ofType(Resource resource) {
         if (resource.getType().equals(TEXT)) {
             return (T) TextResource.class.cast(resource);
@@ -34,9 +35,9 @@ public interface Resource {
 
     ResourceType getType();
 
-    int getID();
+    int getId();
 
-    void setID(int id);
+    void setId(int id);
 
     File getFile();
 

@@ -74,9 +74,9 @@ public class DBLogActions implements IDataAccessObject<Log> {
             //language=TSQL
             String query = "INSERT INTO log_actions(headstrong_employee_id, table_name, item_id, action_type) VALUES (?,?,?,?);";
             PreparedStatement preparedStatement = connect.getConnection().prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
-            preparedStatement.setInt(1, object.getHeadstrongEmpID());
+            preparedStatement.setInt(1, object.getHeadstrongEmpId());
             preparedStatement.setString(2, object.getTableName());
-            preparedStatement.setInt(3, object.getItemID());
+            preparedStatement.setInt(3, object.getItemId());
             preparedStatement.setString(4, object.getActionType());
             preparedStatement.executeUpdate();
             try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {

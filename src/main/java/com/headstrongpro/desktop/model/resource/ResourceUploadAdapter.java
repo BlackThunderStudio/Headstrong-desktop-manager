@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by rajmu on 17.05.24.
+ * Resource Upload Adapter
  */
 public class ResourceUploadAdapter extends Configurable implements IResourceUploader {
     private IResourceConnector resourceConnector;

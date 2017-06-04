@@ -13,7 +13,7 @@ import java.sql.Date;
 import java.util.ResourceBundle;
 
 /**
- * Settings ContentView
+ * Settings Content View
  */
 public class SettingsContentView extends ContentView<Log> implements Initializable {
 

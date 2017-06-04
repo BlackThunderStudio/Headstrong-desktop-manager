@@ -13,7 +13,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * Subscriptions ContentView
+ * Subscriptions Content View
  */
 public class SubscriptionsContentView extends ContentView<Subscription> implements Initializable {
 

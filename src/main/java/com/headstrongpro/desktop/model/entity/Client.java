@@ -50,7 +50,7 @@ public class Client extends Person {
         this.registrationDate = registrationDate;
     }
 
-    public int getcompanyId() {
+    public int getCompanyId() {
         return companyId;
     }
 

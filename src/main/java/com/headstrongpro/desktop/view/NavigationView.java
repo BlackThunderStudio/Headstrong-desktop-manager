@@ -10,7 +10,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * NavigationView
+ * Navigation View
  */
 public class NavigationView implements Initializable {
 

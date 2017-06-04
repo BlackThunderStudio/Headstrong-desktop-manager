@@ -3,9 +3,11 @@ package com.headstrongpro.desktop.model.entity;
 import java.sql.Date;
 
 /**
- * Created by Rajmund Staniek on 09-May-17.
+ * Entity Factory
  */
 public class EntityFactory {
+
+    //TODO: Implement to all entities
 
     public static Person getUser(int id, String name, String email, String phone, String gender, String cpr, String street, String postal, String city, String country, String accountNo, String baseSalary) {
         return new User(id, name, email, phone, gender, cpr, street, postal, city, country, accountNo, baseSalary);

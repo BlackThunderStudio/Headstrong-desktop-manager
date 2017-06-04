@@ -49,7 +49,7 @@ public class ResourcesImageContext extends ContextView<ImageResource> implements
     private ResourcesController controller;
     private SyncHandler<ImageResource> syncHandler = () -> {
         try {
-            return Resource.ofType(controller.getResourceById(contextItem.getID()));
+            return Resource.ofType(controller.getResourceById(contextItem.getId()));
         } catch (ModelSyncException e1) {
             e1.printStackTrace();
             mainWindowView.getContentView().footer.show(e1.getMessage(), Footer.NotificationType.ERROR, Footer.FADE_LONG);

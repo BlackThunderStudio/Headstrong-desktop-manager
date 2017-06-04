@@ -3,63 +3,65 @@ package com.headstrongpro.desktop.model;
 import java.sql.Date;
 
 /**
- * Created by rajmu on 17.05.09.
+ * Log Entity
  */
-public class Log {
-    private int id, headstrongEmpID;
+public class Log implements IModel {
+    private int id, headstrongEmpId;
     private String tableName;
-    private int itemID;
+    private int itemId;
     private Date date;
     private String timestamp, actionType;
 
 
-    public Log(int id, int headstrongEmpID, String tableName, int itemID, Date date, String timestamp, String actionType) {
+    public Log(int id, int headstrongEmpId, String tableName, int itemId, Date date, String timestamp, String actionType) {
         this.id = id;
-        this.headstrongEmpID = headstrongEmpID;
+        this.headstrongEmpId = headstrongEmpId;
         this.tableName = tableName;
-        this.itemID = itemID;
+        this.itemId = itemId;
         this.date = date;
         this.timestamp = timestamp;
         this.actionType = actionType;
     }
 
-    public Log(int headstrongEmpID, String tableName, int itemID, String actionType) {
-        this.headstrongEmpID = headstrongEmpID;
+    public Log(int headstrongEmpId, String tableName, int itemId, String actionType) {
+        this.headstrongEmpId = headstrongEmpId;
         this.tableName = tableName;
-        this.itemID = itemID;
+        this.itemId = itemId;
         this.actionType = actionType;
     }
 
-    public Log(int headstrongEmpID, String tableName, int itemID, Date date, String timestamp, String actionType) {
-        this.headstrongEmpID = headstrongEmpID;
+    public Log(int headstrongEmpId, String tableName, int itemId, Date date, String timestamp, String actionType) {
+        this.headstrongEmpId = headstrongEmpId;
         this.tableName = tableName;
-        this.itemID = itemID;
+        this.itemId = itemId;
         this.date = date;
         this.timestamp = timestamp;
         this.actionType = actionType;
     }
 
-    public Log(String tableName, int itemID, String actionType) {
+    public Log(String tableName, int itemId, String actionType) {
         this.tableName = tableName;
-        this.itemID = itemID;
+        this.itemId = itemId;
         this.actionType = actionType;
-        headstrongEmpID = -1;
+        headstrongEmpId = -1;
     }
 
+    @Override
     public int getId() {
         return id;
     }
 
+    @Override
     public void setId(int id) {
         this.id = id;
     }
 
-    public int getHeadstrongEmpID() {
-        return headstrongEmpID;
+    public int getHeadstrongEmpId() {
+        return headstrongEmpId;
     }
 
-    public void setHeadstrongEmpID(int headstrongEmpID) {
-        this.headstrongEmpID = headstrongEmpID;
+    public void setHeadstrongEmpId(int headstrongEmpId) {
+        this.headstrongEmpId = headstrongEmpId;
     }
 
     public String getTableName() {
@@ -70,12 +72,12 @@ public class Log {
         this.tableName = tableName;
     }
 
-    public int getItemID() {
-        return itemID;
+    public int getItemId() {
+        return itemId;
     }
 
-    public void setItemID(int itemID) {
-        this.itemID = itemID;
+    public void setItemId(int itemId) {
+        this.itemId = itemId;
     }
 
     public Date getDate() {

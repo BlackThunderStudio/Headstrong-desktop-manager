@@ -3,7 +3,7 @@ package com.headstrongpro.desktop.model;
 /**
  * Group model class
  */
-public class Group {
+public class Group implements IModel {
     private int id, companyId, parentId;
     private String name;
 
@@ -27,10 +27,12 @@ public class Group {
         this.parentId = parentId;
     }
 
+    @Override
     public int getId() {
         return id;
     }
 
+    @Override
     public void setId(int id) {
         this.id = id;
     }

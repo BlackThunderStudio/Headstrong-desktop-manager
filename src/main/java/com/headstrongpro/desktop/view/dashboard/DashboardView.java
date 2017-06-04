@@ -16,7 +16,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 /**
- * DashboardView
+ * Dashboard View
  */
 public class DashboardView extends ContentView implements Initializable {
 

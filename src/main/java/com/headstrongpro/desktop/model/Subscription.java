@@ -5,9 +5,9 @@ import com.headstrongpro.desktop.model.entity.Company;
 import java.sql.Date;
 
 /**
- * Subscription model class
+ * Subscription Entity
  */
-public class Subscription {
+public class Subscription implements IModel {
     private int id, noOfUsers;
     private boolean isActive;
     private Date startDate, endDate;
@@ -41,10 +41,12 @@ public class Subscription {
         companyName = company.getName();
     }
 
+    @Override
     public int getId() {
         return id;
     }
 
+    @Override
     public void setId(int id) {
         this.id = id;
     }
@@ -93,15 +95,8 @@ public class Subscription {
         return company;
     }
 
-    public String getRateName() {
-        return rateName;
-    }
-
-    public String getCompanyName() {
-        return companyName;
-    }
-
     public void setCompany(Company company) {
         this.company = company;
     }
+
 }

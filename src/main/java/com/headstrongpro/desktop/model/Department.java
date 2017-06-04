@@ -3,38 +3,29 @@ package com.headstrongpro.desktop.model;
 /**
  * Department model class
  */
-public class Department {
-    private int id, companyID;
+public class Department implements IModel {
+    private int id, companyId;
     private String name, description;
 
-    public Department(int id, String name, String description, int companyID) {
+    public Department(int id, String name, String description, int companyId) {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.companyID = companyID;
+        this.companyId = companyId;
     }
 
-    public Department(String name, String description, int companyID) {
+    public Department(String name, String description, int companyId) {
         this.name = name;
         this.description = description;
-        this.companyID = companyID;
+        this.companyId = companyId;
     }
 
-    public Department(String name, String description) {
-        this.name = name;
-        this.description = description;
-    }
-
-    public Department(int id, String name, String description) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-    }
-
+    @Override
     public int getId() {
         return id;
     }
 
+    @Override
     public void setId(int id) {
         this.id = id;
     }
@@ -55,11 +46,11 @@ public class Department {
         this.description = description;
     }
 
-    public int getCompanyID() {
-        return companyID;
+    public int getCompanyId() {
+        return companyId;
     }
 
-    public void setCompanyID(int companyID) {
-        this.companyID = companyID;
+    public void setCompanyId(int companyId) {
+        this.companyId = companyId;
     }
 }

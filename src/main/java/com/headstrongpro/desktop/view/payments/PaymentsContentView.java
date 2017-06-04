@@ -13,7 +13,7 @@ import java.sql.Date;
 import java.util.ResourceBundle;
 
 /**
- * Payments ContentView
+ * Payments Content View
  */
 public class PaymentsContentView extends ContentView<Payment> implements Initializable {
 

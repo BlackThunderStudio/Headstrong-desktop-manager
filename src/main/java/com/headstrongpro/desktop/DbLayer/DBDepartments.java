@@ -78,7 +78,7 @@ public class DBDepartments extends Synchronizable implements IDataAccessObject<D
             PreparedStatement preparedStatement = connect.getConnection().prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, object.getName());
             preparedStatement.setString(2, object.getDescription());
-            preparedStatement.setInt(3, object.getCompanyID());
+            preparedStatement.setInt(3, object.getCompanyId());
             preparedStatement.executeUpdate();
             try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
@@ -105,7 +105,7 @@ public class DBDepartments extends Synchronizable implements IDataAccessObject<D
                 PreparedStatement preparedStatement = connect.getConnection().prepareStatement(query);
                 preparedStatement.setString(1, object.getName());
                 preparedStatement.setString(2, object.getDescription());
-                preparedStatement.setInt(3, object.getCompanyID());
+                preparedStatement.setInt(3, object.getCompanyId());
                 preparedStatement.setInt(4, object.getId());
                 connect.uploadSafe(preparedStatement);
                 logChange("departments", object.getId(), ActionType.UPDATE);

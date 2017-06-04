@@ -1,14 +1,16 @@
 package com.headstrongpro.desktop.model.resource;
 
+import com.headstrongpro.desktop.model.IModel;
+
 import java.io.File;
 import java.sql.Time;
 
 /**
- * Created by rajmu on 17.05.08.
+ * Audio Resource
  */
 
 //TODO: Custom functionality and behaviour to be added!
-public class AudioResource implements Resource {
+public class AudioResource implements Resource, IModel {
 
     private static final ResourceType TYPE = ResourceType.AUDIO;
 
@@ -30,9 +32,6 @@ public class AudioResource implements Resource {
         this.name = name;
         this.description = description;
         this.isForAchievement = isForAchievement;
-    }
-
-    private AudioResource() {
     }
 
     @Override
@@ -84,12 +83,12 @@ public class AudioResource implements Resource {
     }
 
     @Override
-    public int getID() {
+    public int getId() {
         return id;
     }
 
     @Override
-    public void setID(int id) {
+    public void setId(int id) {
         this.id = id;
     }
 

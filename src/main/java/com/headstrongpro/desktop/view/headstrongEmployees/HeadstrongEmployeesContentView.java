@@ -7,7 +7,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * Headstrong Employees ContentView
+ * Headstrong Employees Content View
  */
 public class HeadstrongEmployeesContentView extends ContentView implements Initializable {
 

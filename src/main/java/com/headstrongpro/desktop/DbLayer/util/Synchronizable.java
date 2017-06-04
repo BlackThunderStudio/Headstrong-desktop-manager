@@ -63,9 +63,9 @@ public abstract class Synchronizable {
         List<Log> logs = new DBLogActions().getByTable(tableName);
         if (logs.size() == 0) return true;
         else {
-            if (logs.stream().anyMatch(e -> e.getItemID() == itemID)) {
+            if (logs.stream().anyMatch(e -> e.getItemId() == itemID)) {
                 long millis = logs.stream()
-                        .filter(e -> e.getItemID() == itemID)
+                        .filter(e -> e.getItemId() == itemID)
                         .sorted(Comparator.comparingLong(e -> e.getDate().getTime()))
                         .findFirst().get().getDate().getTime(); //Retrieves the most recent change from the list
                 return millis < timestamp.getTime();

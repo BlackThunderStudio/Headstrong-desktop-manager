@@ -38,7 +38,7 @@ public class ResourcesTextContext extends ContextView<TextResource> implements I
     private ResourcesController controller;
     private SyncHandler<TextResource> syncHandler = () -> {
         try {
-            return Resource.ofType(controller.getResourceById(contextItem.getID()));
+            return Resource.ofType(controller.getResourceById(contextItem.getId()));
         } catch (ModelSyncException e1) {
             e1.printStackTrace();
             mainWindowView.getContentView().footer.show(e1.getMessage(), Footer.NotificationType.ERROR);

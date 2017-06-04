@@ -26,7 +26,7 @@ import java.util.ResourceBundle;
 import static javafx.concurrent.Worker.State.*;
 
 /**
- * Resources ContentView
+ * Resources Content View
  */
 public class ResourcesContentView extends ContentView<Resource> implements Initializable {
 

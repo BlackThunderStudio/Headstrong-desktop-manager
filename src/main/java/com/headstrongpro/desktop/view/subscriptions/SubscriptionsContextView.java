@@ -185,11 +185,6 @@ public class SubscriptionsContextView extends ContextView<Subscription> implemen
         }
     }
 
-    @FXML
-    public void handleDelete() {
-        handleDelete(handler, "the subscription");
-    }
-
     private void getRates() {
         try {
             rates = controller.getRates();

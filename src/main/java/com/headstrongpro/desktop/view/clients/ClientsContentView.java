@@ -15,7 +15,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * Clients ContentView
+ * Clients Content View
  */
 public class ClientsContentView extends ContentView<Client> implements Initializable {
 

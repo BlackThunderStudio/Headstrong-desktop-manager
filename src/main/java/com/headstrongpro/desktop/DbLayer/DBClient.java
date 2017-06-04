@@ -92,7 +92,7 @@ public class DBClient extends Synchronizable implements IDataAccessObject<Client
             preparedStatement.setString(5, object.getLogin());
             preparedStatement.setString(6, object.getPassword());
             preparedStatement.setDate(7, object.getRegistrationDate());
-            preparedStatement.setInt(8, object.getcompanyId());
+            preparedStatement.setInt(8, object.getCompanyId());
             preparedStatement.executeUpdate();
             try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
@@ -124,7 +124,7 @@ public class DBClient extends Synchronizable implements IDataAccessObject<Client
                 preparedStatement.setString(5, object.getLogin());
                 preparedStatement.setString(6, object.getPassword());
                 preparedStatement.setDate(7, object.getRegistrationDate());
-                preparedStatement.setInt(8, object.getcompanyId());
+                preparedStatement.setInt(8, object.getCompanyId());
                 preparedStatement.setInt(9, object.getId());
                 connect.uploadSafe(preparedStatement);
                 logChange("clients", object.getId(), ActionType.UPDATE);

@@ -1,9 +1,9 @@
 package com.headstrongpro.desktop.model;
 
 /**
- * Created by jakub on 09/05/2017.
+ * Payment Rate Entity
  */
-public class PaymentRate {
+public class PaymentRate implements IModel {
     private int id, numberOfMonths;
     private String name;
 
@@ -18,8 +18,14 @@ public class PaymentRate {
         this.name = name;
     }
 
+    @Override
     public int getId() {
         return id;
+    }
+
+    @Override
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getNumberOfMonths() {

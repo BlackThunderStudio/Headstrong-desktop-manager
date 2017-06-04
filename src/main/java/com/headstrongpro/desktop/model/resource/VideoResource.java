@@ -1,13 +1,15 @@
 package com.headstrongpro.desktop.model.resource;
 
+import com.headstrongpro.desktop.model.IModel;
+
 import java.io.File;
 import java.sql.Time;
 
 /**
- * Created by rajmu on 17.05.08.
+ * Video Resource
  */
 //TODO: Custom functionality and behaviour to be added!
-public class VideoResource implements Resource {
+public class VideoResource implements Resource, IModel {
 
     private static final ResourceType TYPE = ResourceType.VIDEO;
 
@@ -31,9 +33,6 @@ public class VideoResource implements Resource {
         this.isForAchievement = isForAchievement;
     }
 
-    private VideoResource() {
-    }
-
     @Override
     public String getDescription() {
         return description;
@@ -55,12 +54,12 @@ public class VideoResource implements Resource {
     }
 
     @Override
-    public int getID() {
+    public int getId() {
         return id;
     }
 
     @Override
-    public void setID(int id) {
+    public void setId(int id) {
         this.id = id;
     }
 

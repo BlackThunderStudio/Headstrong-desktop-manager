@@ -5,7 +5,7 @@ import java.sql.Date;
 /**
  * Payment Model Entity
  */
-public class Payment {
+public class Payment implements IModel {
     private boolean paid;
     private int id;
     private double value;
@@ -30,10 +30,12 @@ public class Payment {
         this.dueDate = dueDate;
     }
 
+    @Override
     public int getId() {
         return id;
     }
 
+    @Override
     public void setId(int id) {
         this.id = id;
     }

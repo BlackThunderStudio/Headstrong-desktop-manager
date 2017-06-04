@@ -9,7 +9,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * Groups ContentView
+ * Groups Content View
  */
 public class GroupsContentView implements Initializable {
 

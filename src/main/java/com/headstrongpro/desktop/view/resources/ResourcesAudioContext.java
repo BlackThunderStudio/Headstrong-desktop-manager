@@ -70,7 +70,7 @@ public class ResourcesAudioContext extends ContextView<AudioResource> implements
     private boolean isPlaying;
     private SyncHandler<AudioResource> syncHandler = () -> {
         try {
-            Resource.ofType(controller.getResourceById(contextItem.getID()));
+            Resource.ofType(controller.getResourceById(contextItem.getId()));
         } catch (ModelSyncException e) {
             e.printStackTrace();
             mainWindowView.getContentView().footer.show(e.getMessage(), Footer.NotificationType.ERROR, Footer.FADE_LONG);

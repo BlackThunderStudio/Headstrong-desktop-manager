@@ -52,14 +52,14 @@ public class DBDepartmentsTest {
     @Test
     public void update() throws Exception {
         Department dummy = departmentDAO.getById(1);
-        int oldCompanyId = dummy.getCompanyID();
+        int oldCompanyId = dummy.getCompanyId();
         int newCompanyId = 2;
-        dummy.setCompanyID(newCompanyId);
+        dummy.setCompanyId(newCompanyId);
         departmentDAO.update(dummy);
-        assertEquals("Department's company Id was not updated", newCompanyId, departmentDAO.getById(1).getCompanyID());
-        dummy.setCompanyID(oldCompanyId);
+        assertEquals("Department's company Id was not updated", newCompanyId, departmentDAO.getById(1).getCompanyId());
+        dummy.setCompanyId(oldCompanyId);
         departmentDAO.update(dummy);
-        assertEquals("Changes were not reverted", oldCompanyId, departmentDAO.getById(1).getCompanyID());
+        assertEquals("Changes were not reverted", oldCompanyId, departmentDAO.getById(1).getCompanyId());
     }
 
     @Test

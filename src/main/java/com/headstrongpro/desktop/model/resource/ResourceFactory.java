@@ -1,7 +1,7 @@
 package com.headstrongpro.desktop.model.resource;
 
 /**
- * Created by rajmu on 17.05.08.
+ * Resource Factory
  */
 public class ResourceFactory {
 
