@@ -71,10 +71,10 @@ public abstract class ContentView<T> {
         initData.stateProperty().addListener(((observable, oldValue, newValue) -> {
             if (newValue.equals(SUCCEEDED)) {
                 loadTable(data);
-//                try {
-//                    mainTable.getSelectionModel().selectFirst();
-//                } catch (NullPointerException ignored) {
-//                }
+                try {
+                    mainTable.getSelectionModel().selectFirst();
+                } catch (NullPointerException ignored) {
+                }
                 footer.show("Entries loaded successfully!", Footer.NotificationType.COMPLETED, Footer.FADE_NORMAL);
             } else if (newValue.equals(FAILED) || newValue.equals(CANCELLED)) {
                 footer.show("Error while loading entries!", Footer.NotificationType.ERROR, Footer.FADE_LONG);

@@ -28,38 +28,17 @@ public class SubscriptionsContentView extends ContentView<Subscription> implemen
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setColumns();
+        controller = new SubscriptionsController();
 
-        Task<Void> init = new Task<Void>() {
-            @Override
-            protected Void call() throws Exception {
-                Platform.runLater(() -> footer.show("Loading subscriptions...", Footer.NotificationType.LOADING));
-                controller = new SubscriptionsController();
-                loadData();
-                return null;
-            }
-        };
-
-        init.stateProperty().addListener(((observable, oldValue, newValue) -> {
-            if (newValue.equals(SUCCEEDED)) {
-                loadTable(data);
-                footer.show("Subscriptions loaded successfully!", Footer.NotificationType.COMPLETED);
-            } else if (newValue.equals(FAILED) || newValue.equals(CANCELLED)) {
-                footer.show("Error while loading subscriptions!", Footer.NotificationType.ERROR, Footer.FADE_LONG);
-            }
-        }));
+        loadData();
 
         mainTable.getSelectionModel().selectedItemProperty().addListener((o, e, c) -> {
             if (c != null) {
-                System.out.println(c.getStartDate());
-                selected = c;
                 footer.show(c.getCompany().getName() + " selected.", Footer.NotificationType.INFORMATION, Footer.FADE_SUPER_QUICK);
-                mainWindowView.getContextView().changeContextItem(selected);
+                //noinspection unchecked
+                mainWindowView.getContextView().changeContextItem(c);
             }
         });
-
-        Thread th = new Thread(init);
-        th.setDaemon(true);
-        th.start();
     }
 
     private void setColumns() {
