@@ -68,11 +68,11 @@
                 <RowConstraints maxHeight="50.0" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-                <Button fx:id="paymentsCompanyButton" minHeight="25.0" minWidth="90.0" mnemonicParsing="false" prefHeight="1000.0" prefWidth="1000.0" text="Company" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+                <Button fx:id="paymentsCompanyButton" minHeight="25.0" minWidth="90.0" mnemonicParsing="false" onAction="#paymentsCompanyButtonOnClick" prefHeight="1000.0" prefWidth="1000.0" text="Company" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
                     <GridPane.margin>
                         <Insets />
                     </GridPane.margin></Button>
-                <Button fx:id="paymentsSubscriptionButton" minHeight="25.0" minWidth="90.0" mnemonicParsing="false" prefHeight="1000.0" prefWidth="1000.0" text="Subscription" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+                <Button fx:id="paymentsSubscriptionButton" minHeight="25.0" minWidth="90.0" mnemonicParsing="false" onAction="#paymentsSubscriptionButtonOnClick" prefHeight="1000.0" prefWidth="1000.0" text="Subscription" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
                     <GridPane.margin>
                         <Insets />
                     </GridPane.margin></Button>

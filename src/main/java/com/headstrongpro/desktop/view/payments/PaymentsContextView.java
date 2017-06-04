@@ -174,4 +174,14 @@ public class PaymentsContextView extends ContextView<Payment> implements Initial
             }
         });
     }
+
+    @FXML
+    public void paymentsCompanyButtonOnClick(ActionEvent event) {
+        displayNotImplementedError();
+    }
+
+    @FXML
+    public void paymentsSubscriptionButtonOnClick(ActionEvent event) {
+        displayNotImplementedError();
+    }
 }
