@@ -61,6 +61,7 @@ public class CoursesContextView extends ContextView<Course> implements Initializ
                 controller.edit(contextItem);
                 mainWindowView.getContentView().footer.show("Course updated",
                         Footer.NotificationType.COMPLETED, Footer.FADE_QUICK);
+                mainWindowView.getContentView().handleRefresh();
             } catch (DatabaseOutOfSyncException e) {
                 e.printStackTrace();
                 handleOutOfSync(handler);

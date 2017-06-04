@@ -82,7 +82,7 @@ public class ClientsContextView extends ContextView<Client> implements Initializ
                         contextItem.getGender());
                 mainWindowView.getContentView().footer.show("Client updated.",
                         Footer.NotificationType.COMPLETED);
-                mainWindowView.getContentView().refreshButton.fire();
+                mainWindowView.getContentView().handleRefresh();
             } catch (ModelSyncException e) {
                 e.fillInStackTrace();
                 mainWindowView.getContentView().footer.show("Error! Could not update company!",
