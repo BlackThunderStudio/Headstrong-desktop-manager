@@ -30,6 +30,7 @@ public enum ContentSource {
     COURSES_NEW("Courses", "/courses/coursesContentPane.fxml", "/courses/coursesNewCourseContextPane.fxml"),
     COURSES_NEW_CATEGORY("Courses", "/courses/coursesContentPane.fxml", "/courses/coursesNewCategoryContextPane.fxml"),
     COURSES_RES_AUDIO("Courses", "/courses/coursesContentPane.fxml", "/courses/coursesResContext.fxml"),
+    COURSES_RES_INSPECT("Course Inspection", "/courses/coursesContentPane.fxml", "/courses/coursesInspectContext.fxml"),
 
     DEPARTMENTS("Departments", "/departments/departmentsContentPane.fxml", "/departments/departmentsContextPane.fxml"),
 

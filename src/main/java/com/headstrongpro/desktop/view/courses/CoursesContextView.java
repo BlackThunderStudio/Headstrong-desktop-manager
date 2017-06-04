@@ -7,6 +7,7 @@ import com.headstrongpro.desktop.core.fxControls.Footer;
 import com.headstrongpro.desktop.model.Course;
 import com.headstrongpro.desktop.view.ContentSource;
 import com.headstrongpro.desktop.view.ContextView;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -32,6 +33,8 @@ public class CoursesContextView extends ContextView<Course> implements Initializ
     // Bottom controls
     @FXML
     public Button coursesAssignAudioButton;
+    @FXML
+    public Button coursesInspectButton;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -83,4 +86,9 @@ public class CoursesContextView extends ContextView<Course> implements Initializ
         }
     }
 
+    public void coursesInspectButtonOnClick(ActionEvent event) {
+        if(contextItem != null){
+            mainWindowView.changeContext(ContentSource.COURSES_RES_INSPECT, contextItem);
+        }
+    }
 }
