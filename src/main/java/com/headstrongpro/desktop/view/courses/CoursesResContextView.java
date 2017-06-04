@@ -35,6 +35,7 @@ import java.util.stream.Collectors;
  */
 public class CoursesResContextView extends ContextView<Course> implements Initializable {
 
+    private static final String[] resTypes = {"All types", "Audio", "Image", "Text"};
     @FXML
     public Label labelName;
     @FXML
@@ -45,14 +46,10 @@ public class CoursesResContextView extends ContextView<Course> implements Initia
     public CheckComboBox<String> resourcesCombo;
     @FXML
     public ComboBox<String> typeCombo;
-
     private CoursesController controller;
     private ResourcesController resourcesController;
-
     private List<Resource> resources;
     private List<Resource> assignedBefore;
-
-    private static final String[] resTypes = {"All types", "Audio", "Image", "Text"};
 
     @FXML
     public void saveCourseOnClick(ActionEvent event) {
@@ -110,10 +107,10 @@ public class CoursesResContextView extends ContextView<Course> implements Initia
 
     }
 
-    public ResourceType defineType(){
-        if(typeCombo.getValue().equals(resTypes[0])) return ResourceType.ANY;
-        else if(typeCombo.getValue().equals(resTypes[1])) return ResourceType.AUDIO;
-        else if(typeCombo.getValue().equals(resTypes[2])) return ResourceType.IMAGE;
+    public ResourceType defineType() {
+        if (typeCombo.getValue().equals(resTypes[0])) return ResourceType.ANY;
+        else if (typeCombo.getValue().equals(resTypes[1])) return ResourceType.AUDIO;
+        else if (typeCombo.getValue().equals(resTypes[2])) return ResourceType.IMAGE;
         else return ResourceType.TEXT;
     }
 
@@ -137,7 +134,7 @@ public class CoursesResContextView extends ContextView<Course> implements Initia
                 this.resources = newValue;
                 resourcesCombo.getItems().addAll(this.resources.stream().map(Resource::getName).collect(Collectors.toList()));
                 try {
-                    if(!defineType().equals(ResourceType.ANY)){
+                    if (!defineType().equals(ResourceType.ANY)) {
                         assignedBefore = controller.getAssignedResources(contextItem).stream()
                                 .filter(e -> e.getType().equals(defineType())).collect(Collectors.toList());
                     } else {
@@ -157,7 +154,7 @@ public class CoursesResContextView extends ContextView<Course> implements Initia
 
         typeCombo.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) -> {
             resourcesCombo.getItems().clear();
-            if(defineType().equals(ResourceType.ANY)){
+            if (defineType().equals(ResourceType.ANY)) {
                 resourcesCombo.getItems()
                         .addAll(this.resources.stream()
                                 .map(Resource::getName)

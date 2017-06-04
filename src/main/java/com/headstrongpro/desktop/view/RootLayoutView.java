@@ -6,7 +6,7 @@ import com.headstrongpro.desktop.Main;
  * RootLayout
  */
 public abstract class RootLayoutView {
-    protected Main MainApp;
+    Main MainApp;
 
     public void setMainApp(Main mainApp) {
         MainApp = mainApp;

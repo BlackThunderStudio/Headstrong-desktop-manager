@@ -7,7 +7,7 @@
 <?import javafx.scene.text.Text?>
 <GridPane maxHeight="700" maxWidth="800" minHeight="700" minWidth="800" prefHeight="700.0" prefWidth="800.0"
           styleClass="content-view" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1"
-          fx:controller="com.headstrongpro.desktop.view.HeadstrongEmployeesView">
+          fx:controller="com.headstrongpro.desktop.view.headstrongEmployees.HeadstrongEmployeesContentView">
     <columnConstraints>
         <ColumnConstraints hgrow="NEVER" maxWidth="300.0" minWidth="300.0" percentWidth="100.0" prefWidth="300.0"/>
     </columnConstraints>
@@ -19,19 +19,19 @@
         <RowConstraints/>
     </rowConstraints>
     <Pane prefHeight="200.0" prefWidth="200.0">
-        <Text fx:id="headstrongEmployeesHeader" layoutX="14.0" layoutY="44.0" strokeType="OUTSIDE"
+        <Text fx:id="headerText" layoutX="14.0" layoutY="44.0" strokeType="OUTSIDE"
               strokeWidth="0.0" text="Headstrong employees">
             <font>
                 <Font size="36.0"/>
             </font>
         </Text>
     </Pane>
-    <TextField fx:id="searchHeadstrongEmployeesTextfield" promptText="Search" GridPane.rowIndex="1">
+    <TextField fx:id="searchField" promptText="Search" GridPane.rowIndex="1">
         <GridPane.margin>
             <Insets left="20.0" right="20.0"/>
         </GridPane.margin>
     </TextField>
-    <TableView fx:id="headstrongEmployeesTable" maxWidth="4000.0" minWidth="200.0" prefHeight="200.0"
+    <TableView fx:id="mainTable" maxWidth="4000.0" minWidth="200.0" prefHeight="200.0"
                prefWidth="200.0" GridPane.rowIndex="2">
         <columns>
             <TableColumn prefWidth="75.0" text="C1"/>
@@ -41,7 +41,7 @@
             <Insets left="20.0" right="20.0"/>
         </GridPane.margin>
     </TableView>
-    <Button fx:id="newHeadstrongEmployeeButton" maxWidth="110.0" minWidth="110.0" mnemonicParsing="false"
+    <Button fx:id="addNewButton" maxWidth="110.0" minWidth="110.0" mnemonicParsing="false"
             prefWidth="110.0" text="New" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
         <GridPane.margin>
             <Insets right="20.0"/>

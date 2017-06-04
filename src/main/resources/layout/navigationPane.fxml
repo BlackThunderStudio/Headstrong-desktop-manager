@@ -94,7 +94,7 @@
             </padding>
         </Button>
         <Button fx:id="aboutButton" alignment="TOP_LEFT" layoutY="342.0" mnemonicParsing="false"
-                onAction="#AboutOnClick" prefWidth="300.0" styleClass="navButton" text="About" textFill="WHITE">
+                onAction="#aboutOnClick" prefWidth="300.0" styleClass="navButton" text="About" textFill="WHITE">
             <font>
                 <Font size="15.0"/>
             </font>

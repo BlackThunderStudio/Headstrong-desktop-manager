@@ -97,6 +97,7 @@ public class ClientsContextView extends ContextView<Client> implements Initializ
                 mainWindowView.getContentView().footer.show("Error! Could not update company!", Footer.NotificationType.ERROR, Footer.FADE_LONG);
             } catch (DatabaseOutOfSyncException e) {
                 e.fillInStackTrace();
+                //noinspection unchecked
                 handleOutOfSync(handler);
             }
         } else {

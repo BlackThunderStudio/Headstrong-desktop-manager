@@ -98,7 +98,7 @@ public class ClientsNewContextView extends ContextView<Client> implements Initia
                     "",
                     "",
                     new Date(Calendar.getInstance().getTimeInMillis()),
-                    companies.stream().filter(e -> e.getName().equals(companyComboBox.getValue())).map(Company::getId).findFirst().get());
+                    companies.stream().filter(e -> e.getName().equals(companyComboBox.getValue())).map(Company::getId).findFirst().orElseGet(null));
             try {
                 mainWindowView.getContentView().footer.show("Creating new client...", Footer.NotificationType.LOADING);
                 controller.createNew(client);

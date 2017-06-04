@@ -37,22 +37,22 @@
                     <RowConstraints maxHeight="6000.0" minHeight="20.0" prefHeight="20.0"/>
 
                 </rowConstraints>
-                <DashboardTile fx:id="dashCoursesTile" onMouseClicked="#coursesTileOnClick" prefHeight="250.0"
+                <DashboardTile fx:id="coursesTile" onMouseClicked="#coursesTileOnClick" prefHeight="250.0"
                                prefWidth="250.0" styleClass="dashboard-tile" GridPane.columnIndex="1"
                                GridPane.rowIndex="2"/>
-                <DashboardTile fx:id="dashResourcesTile" layoutX="10.0" layoutY="30.0"
+                <DashboardTile fx:id="resourcesTile" layoutX="10.0" layoutY="30.0"
                                onMouseClicked="#resourcesTileOnClick" prefHeight="250.0" prefWidth="250.0"
                                styleClass="dashboard-tile" GridPane.columnIndex="2" GridPane.rowIndex="2"/>
-                <DashboardTile fx:id="dashCompaniesTile" layoutX="200.0" layoutY="30.0"
+                <DashboardTile fx:id="companiesTile" layoutX="200.0" layoutY="30.0"
                                onMouseClicked="#companiesTileOnClick" prefHeight="250.0" prefWidth="250.0"
                                styleClass="dashboard-tile" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-                <DashboardTile fx:id="dashClientsTile" layoutX="10.0" layoutY="220.0"
+                <DashboardTile fx:id="clientsTile" layoutX="10.0" layoutY="220.0"
                                onMouseClicked="#clientsTileOnClick" prefHeight="250.0" prefWidth="250.0"
                                styleClass="dashboard-tile" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
-                <DashboardTile fx:id="dashSubscriptionsTile" layoutX="200.0" layoutY="220.0"
+                <DashboardTile fx:id="subscriptionsTile" layoutX="200.0" layoutY="220.0"
                                onMouseClicked="#subscriptionsTileOnClick" prefHeight="250.0" prefWidth="250.0"
                                styleClass="dashboard-tile" GridPane.columnIndex="3" GridPane.rowIndex="1"/>
-                <DashboardTile fx:id="dashPaymentsTile" layoutX="390.0" layoutY="220.0"
+                <DashboardTile fx:id="paymentsTile" layoutX="390.0" layoutY="220.0"
                                onMouseClicked="#paymentsTileOnClick" prefHeight="250.0" prefWidth="250.0"
                                styleClass="dashboard-tile" GridPane.columnIndex="3" GridPane.rowIndex="2"/>
                 <GridPane hgap="10.0" vgap="10.0" GridPane.columnIndex="4" GridPane.rowIndex="1">
@@ -64,14 +64,14 @@
                         <RowConstraints maxHeight="120.0" minHeight="120.0" prefHeight="120.0" vgrow="SOMETIMES"/>
                         <RowConstraints maxHeight="120.0" minHeight="120.0" prefHeight="120.0" vgrow="SOMETIMES"/>
                     </rowConstraints>
-                    <StackPane fx:id="dashSettingsTile" onMouseClicked="#settingTileOnClick" prefHeight="100.0"
+                    <StackPane fx:id="settingsTile" onMouseClicked="#settingTileOnClick" prefHeight="100.0"
                                prefWidth="100.0" styleClass="dashboard-tile">
                         <ImageView fitHeight="75.0" fitWidth="75.0" pickOnBounds="true"
                                    preserveRatio="true">
                             <Image url="@../img/icons/settings_icon.png"/>
                         </ImageView>
                     </StackPane>
-                    <StackPane fx:id="dashAboutTile" onMouseClicked="#aboutTileOnClick" prefHeight="100.0"
+                    <StackPane fx:id="aboutTile" onMouseClicked="#aboutTileOnClick" prefHeight="100.0"
                                prefWidth="100.0" styleClass="dashboard-tile" GridPane.rowIndex="1">
                         <ImageView fitHeight="75.0" fitWidth="75.0" pickOnBounds="true"
                                    preserveRatio="true">

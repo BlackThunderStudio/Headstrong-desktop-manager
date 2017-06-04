@@ -14,7 +14,7 @@ import java.util.Arrays;
 import java.util.Optional;
 
 /**
- * ContextView
+ * Abstract base class for context views
  */
 public abstract class ContextView<T> {
 
@@ -27,18 +27,14 @@ public abstract class ContextView<T> {
 
     protected T contextItem = null; // Currently set context item
 
-    protected MainWindowView mainWindowView; // Main view controller
+    protected MainWindowView mainWindowView; // MainWindow parent controller
 
-    protected IContentController<T> controller;
+    protected IContentController<T> controller; // Data controller
 
     protected ArrayList<TextField> textFields = new ArrayList<>(); // List of form text fields
     protected ArrayList<RadioButton> radioButtons = new ArrayList<>(); // List of form text fields
 
     private boolean editMode = false; // Whether making changes is allowed
-
-    public void setMainWindowView(MainWindowView mainWindowView) {
-        this.mainWindowView = mainWindowView;
-    }
 
     /**
      * Changes the context items and invokes population of the form
@@ -49,21 +45,26 @@ public abstract class ContextView<T> {
         if (editMode) toggleEditMode();
     }
 
-    public T getContextItem() {
-        return contextItem;
-    }
-
     /**
      * Sets the values on context initialization
      */
     protected abstract void populateForm();
 
     /**
-     * Clears all the text input
+     * Clears all the text input fields
      */
     protected void clearFields() {
         textFields.forEach(TextInputControl::clear);
         radioButtons.forEach(ToggleButton::disarm);
+    }
+
+    /**
+     * By default, hide buttons of editing mode and disable changing fields
+     */
+    protected void setDefaults() {
+        topControls.getChildren().removeAll(saveButton, cancelButton);
+        textFields.forEach(tf -> tf.setEditable(false));
+        radioButtons.forEach(rb -> rb.setDisable(true));
     }
 
     /**
@@ -79,8 +80,8 @@ public abstract class ContextView<T> {
                 .count() == 0;
     }
 
-    /***
-     * asks the user if he wants to reload the data in case of a database inconsistency
+    /**
+     * Asks the user if he wants to reload the data in case of a database inconsistency
      * If the user declines, then it resets the fields in a context window
      *
      * @param handler function implemented by SyncHandler
@@ -100,19 +101,10 @@ public abstract class ContextView<T> {
         });
     }
 
-    protected void displayNotImplementedError() {
-        mainWindowView.getContentView().footer.show("Feature not yet implemented, patience is advised.", Footer.NotificationType.INFORMATION);
-    }
-
     /**
-     * By default, hide buttons of editing mode and disable changing fields
+     * Toggles editing mode by enabling making changes in the form
+     * and changes top controls
      */
-    protected void setDefaults() {
-        topControls.getChildren().removeAll(saveButton, cancelButton);
-        textFields.forEach(tf -> tf.setEditable(false));
-        radioButtons.forEach(rb -> rb.setDisable(true));
-    }
-
     @FXML
     public void toggleEditMode() {
         if (editMode) {
@@ -129,7 +121,13 @@ public abstract class ContextView<T> {
         editMode = !editMode;
     }
 
-    protected void handleDelete(SyncHandler handler, String name) {
+    /**
+     * Pops up a dialog window with delete confirmation
+     *
+     * @param handler function implemented by SyncHandler
+     * @param name    name of the item to be deleted
+     */
+    protected void handleDelete(SyncHandler<T> handler, String name) {
         Alert a = new Alert(Alert.AlertType.CONFIRMATION);
         a.setHeaderText(String.format("Are you sure you want to delete %s from the list?", name));
         a.setContentText("You cannot take that action back");
@@ -152,9 +150,27 @@ public abstract class ContextView<T> {
         clearFields();
     }
 
+    /**
+     * Ends editing mode and cancels any changes
+     */
     @FXML
     public void handleCancel() {
         toggleEditMode();
         if (contextItem != null) populateForm();
+    }
+
+    /**
+     * Displays an error for not yet implemented features
+     */
+    protected void displayNotImplementedError() {
+        mainWindowView.getContentView().footer.show("Feature not yet implemented, patience is advised.", Footer.NotificationType.INFORMATION);
+    }
+
+    public T getContextItem() {
+        return contextItem;
+    }
+
+    public void setMainWindowView(MainWindowView mainWindowView) {
+        this.mainWindowView = mainWindowView;
     }
 }

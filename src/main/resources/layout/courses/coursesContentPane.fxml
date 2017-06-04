@@ -7,7 +7,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 <GridPane styleClass="content-view" xmlns:fx="http://javafx.com/fxml/1"
-          fx:controller="com.headstrongpro.desktop.view.courses.CoursesView">
+          fx:controller="com.headstrongpro.desktop.view.courses.CoursesContentView">
     <columnConstraints>
         <ColumnConstraints maxWidth="6000.0" minWidth="0.0" prefWidth="800.0"/>
     </columnConstraints>
@@ -43,7 +43,7 @@
         </GridPane.margin>
     </Footer>
     <Button fx:id="addNewButton" maxWidth="110.0" minWidth="110.0" mnemonicParsing="false"
-            onAction="#courseNewOnClick" prefWidth="110.0" text="New" GridPane.halignment="RIGHT"
+            onAction="#addNewButtonOnClick" prefWidth="110.0" text="New" GridPane.halignment="RIGHT"
             GridPane.rowIndex="3">
         <GridPane.margin>
             <Insets right="20.0"/>
@@ -67,7 +67,7 @@
                 <Insets/>
             </opaqueInsets>
         </TextField>
-        <Button fx:id="refreshButton" mnemonicParsing="false" onAction="#courseRefresh" prefHeight="25.0"
+        <Button fx:id="refreshButton" mnemonicParsing="false" onAction="#handleRefresh" prefHeight="25.0"
                 prefWidth="133.0" text="Refresh" GridPane.columnIndex="1"/>
     </GridPane>
 </GridPane>

@@ -89,6 +89,7 @@ public class CompaniesContextView extends ContextView<Company> implements Initia
                 e.fillInStackTrace();
                 mainWindowView.getContentView().footer.show("Error! Could not update company!", Footer.NotificationType.ERROR, Footer.FADE_LONG);
             } catch (DatabaseOutOfSyncException e) {
+                //noinspection unchecked
                 handleOutOfSync(handler);
             }
         } else

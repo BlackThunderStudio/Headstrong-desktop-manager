@@ -74,6 +74,7 @@ public class ResourcesContentView extends ContentView<Resource> implements Initi
                     if (mainWindowView.getContextView().getContextItem() instanceof Resource) {
                         Course c = (Course) mainWindowView.getContextView().getContextItem();
                         mainTable.setItems(FXCollections.observableList(controller.getTextResById(c.getId())));
+                        //noinspection unchecked
                         mainWindowView.getContextView().changeContextItem(null);
                         //TODO: needs a bit of tweaking to display from courses
                     } else
@@ -110,6 +111,7 @@ public class ResourcesContentView extends ContentView<Resource> implements Initi
                         } else if (newValue.getType().equals(ResourceType.TEXT)) {
                             mainWindowView.changeContext(ContentSource.RESOURCES_TEXT);
                         }
+                        //noinspection unchecked
                         mainWindowView.getContextView().changeContextItem(Resource.ofType(selected));
                     }
                 }));
@@ -197,10 +199,7 @@ public class ResourcesContentView extends ContentView<Resource> implements Initi
 
             try {
                 controller.assignToCourse(null, selected); //TODO: correct session to be given
-            } catch (DatabaseOutOfSyncException e) {
-                e.printStackTrace();
-                //TODO: handle error
-            } catch (ModelSyncException e) {
+            } catch (DatabaseOutOfSyncException | ModelSyncException e) {
                 e.printStackTrace();
                 //TODO: handle error
             }
@@ -208,7 +207,7 @@ public class ResourcesContentView extends ContentView<Resource> implements Initi
     }
 
     @FXML
-    public void newResourceButton_onClick() {
+    public void addNewButtonOnClick() {
         if (resourcesComboBox.getSelectionModel().getSelectedItem().equals("All")) {
             footer.show("Please specify resource type first!", Footer.NotificationType.WARNING);
         } else if (resourcesComboBox.getSelectionModel().getSelectedItem().equals("Text")) {

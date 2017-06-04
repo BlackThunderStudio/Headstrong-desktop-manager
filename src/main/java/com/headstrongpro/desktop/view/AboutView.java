@@ -9,10 +9,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * desktop-manager
- * <p>
- * <p>
- * Created by rajmu on 17.05.26.
+ * AboutView
  */
 public class AboutView extends ContentView implements Initializable {
 

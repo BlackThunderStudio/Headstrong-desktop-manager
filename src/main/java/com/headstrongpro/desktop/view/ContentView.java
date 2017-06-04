@@ -16,7 +16,7 @@ import javafx.scene.text.Text;
 import static javafx.concurrent.Worker.State.*;
 
 /**
- * ContentView
+ * Abstract base class for content views
  */
 public abstract class ContentView<T> {
 
@@ -31,27 +31,20 @@ public abstract class ContentView<T> {
     @FXML
     public Footer footer; // Notifications display area
 
-    // Main table
     @FXML
-    public TableView<T> mainTable;
+    public TableView<T> mainTable; // Main table
 
-    // MainWindow parent controller
-    protected MainWindowView mainWindowView;
+    protected MainWindowView mainWindowView; // MainWindow parent controller
 
-    protected IContentController<T> controller;
+    protected IContentController<T> controller; // Data controller
 
-    protected T selected;
+    protected T selected; // Currently selected item
 
-    protected ObservableList<T> data = FXCollections.observableArrayList();
+    private ObservableList<T> data = FXCollections.observableArrayList(); // Data collections for the main table
 
-    public void setMainWindowView(MainWindowView mainWindowView) {
-        this.mainWindowView = mainWindowView;
-    }
-
-    protected void loadTable(ObservableList<T> items) {
-        mainTable.setItems(items);
-    }
-
+    /**
+     * Loads data via content controller and populates the main table
+     */
     protected void loadData() {
         Task<Void> initData = new Task<Void>() {
             @Override
@@ -86,10 +79,9 @@ public abstract class ContentView<T> {
         th.start();
     }
 
-    public Footer getFooter() {
-        return footer;
-    }
-
+    /**
+     * Filters the data collection by a keyword entered into the search field
+     */
     @FXML
     public void handleSearch() {
         try {
@@ -100,13 +92,37 @@ public abstract class ContentView<T> {
         }
     }
 
+    /**
+     * Clears the search field and reloads the data collection
+     */
     @FXML
     public void handleRefresh() {
         searchField.clear();
         loadData();
     }
 
+    /**
+     * Displays an error for not yet implemented features
+     */
     protected void displayNotImplementedError() {
         mainWindowView.getContentView().footer.show("Feature not yet implemented, patience is advised.", Footer.NotificationType.INFORMATION);
     }
+
+    /**
+     * Populates the main table with data
+     *
+     * @param items data collection
+     */
+    private void loadTable(ObservableList<T> items) {
+        mainTable.setItems(items);
+    }
+
+    public Footer getFooter() {
+        return footer;
+    }
+
+    public void setMainWindowView(MainWindowView mainWindowView) {
+        this.mainWindowView = mainWindowView;
+    }
+
 }

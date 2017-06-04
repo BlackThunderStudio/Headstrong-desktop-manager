@@ -18,19 +18,19 @@
         <RowConstraints/>
     </rowConstraints>
     <Pane prefHeight="200.0" prefWidth="200.0">
-        <Text fx:id="groupsHeader" layoutX="14.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0"
+        <Text fx:id="headerText" layoutX="14.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0"
               text="Groups">
             <font>
                 <Font size="36.0"/>
             </font>
         </Text>
     </Pane>
-    <TextField fx:id="searchGroupsTextfield" promptText="Search" GridPane.rowIndex="1">
+    <TextField fx:id="searchField" promptText="Search" GridPane.rowIndex="1">
         <GridPane.margin>
             <Insets left="20.0" right="20.0"/>
         </GridPane.margin>
     </TextField>
-    <Button fx:id="newGroupButton" maxWidth="110.0" minWidth="110.0" mnemonicParsing="false" prefWidth="110.0"
+    <Button fx:id="addNewButton" maxWidth="110.0" minWidth="110.0" mnemonicParsing="false" prefWidth="110.0"
             text="New" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
         <GridPane.margin>
             <Insets right="20.0"/>

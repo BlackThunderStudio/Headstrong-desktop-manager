@@ -60,7 +60,7 @@
             </GridPane.margin>
         </Footer>
         <Button fx:id="addNewButton" maxWidth="110.0" minWidth="110.0" mnemonicParsing="false"
-                onAction="#newResourceButton_onClick" prefWidth="110.0" text="New" GridPane.columnIndex="1"
+                onAction="#addNewButtonOnClick" prefWidth="110.0" text="New" GridPane.columnIndex="1"
                 GridPane.halignment="RIGHT">
             <GridPane.margin>
                 <Insets right="20.0"/>
