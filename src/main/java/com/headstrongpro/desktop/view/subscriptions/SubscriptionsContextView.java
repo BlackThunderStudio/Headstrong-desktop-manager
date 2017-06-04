@@ -133,7 +133,6 @@ public class SubscriptionsContextView extends ContextView<Subscription> implemen
                 .setText(contextItem.getStartDate().toString());
         endDatePicker.getEditor()
                 .setText(contextItem.getEndDate().toString());
-        rateComboBox.getSelectionModel().select(contextItem.getRate().getName());
 
         //labels
         noOfUsersLabel.setText(String.valueOf(contextItem.getNoOfUsers()));
@@ -152,6 +151,7 @@ public class SubscriptionsContextView extends ContextView<Subscription> implemen
 
         rates.stateProperty().addListener(((observable, oldValue, newValue) -> {
             if (newValue.equals(Worker.State.SUCCEEDED)) {
+                rateComboBox.getSelectionModel().select(contextItem.getRate().getName());
                 initTotalAmount();
             }
         }));
@@ -199,7 +199,6 @@ public class SubscriptionsContextView extends ContextView<Subscription> implemen
         }
     }
 
-    // TODO: fix NullPointerException
     private void initTotalAmount() {
         if (contextItem != null) {
             totalPriceLabel.setText(String.valueOf(
