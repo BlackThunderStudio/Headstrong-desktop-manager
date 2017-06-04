@@ -16,7 +16,7 @@ import java.util.Arrays;
 import java.util.ResourceBundle;
 
 /**
- * Companies ContextView
+ * Companies Context View
  */
 public class CompaniesContextView extends ContextView<Company> implements Initializable {
 
@@ -30,7 +30,7 @@ public class CompaniesContextView extends ContextView<Company> implements Initia
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        textFields.addAll(Arrays.asList(
+        textInputControls.addAll(Arrays.asList(
                 nameField,
                 cvrField,
                 streetField,

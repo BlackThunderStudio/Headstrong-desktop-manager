@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-<GridPane xmlns:fx="http://javafx.com/fxml/1" styleClass="context-view" xmlns="http://javafx.com/javafx/8.0.112"
+<GridPane styleClass="context-view" xmlns:fx="http://javafx.com/fxml/1"
           fx:controller="com.headstrongpro.desktop.view.companies.CompaniesContextView">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="75.0" prefWidth="100.0"/>

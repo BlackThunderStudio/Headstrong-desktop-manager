@@ -18,7 +18,7 @@ import java.util.Arrays;
 import java.util.ResourceBundle;
 
 /**
- * Clients Context view
+ * Clients Context View
  */
 public class ClientsContextView extends ContextView<Client> implements Initializable {
 
@@ -36,7 +36,7 @@ public class ClientsContextView extends ContextView<Client> implements Initializ
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        textFields.addAll(Arrays.asList(
+        textInputControls.addAll(Arrays.asList(
                 nameField,
                 emailField,
                 phoneField
@@ -73,23 +73,27 @@ public class ClientsContextView extends ContextView<Client> implements Initializ
         ClientsController controller = (ClientsController) this.controller;
         if (validateInput(nameField, emailField, phoneField)) {
             try {
-                mainWindowView.getContentView().footer.show("Updating client...", Footer.NotificationType.LOADING);
+                mainWindowView.getContentView().footer.show("Updating client...",
+                        Footer.NotificationType.LOADING);
                 controller.updateClient(contextItem.getId(),
                         nameField.getText(),
                         emailField.getText(),
                         phoneField.getText(),
                         contextItem.getGender());
-                mainWindowView.getContentView().footer.show("Client updated.", Footer.NotificationType.COMPLETED);
+                mainWindowView.getContentView().footer.show("Client updated.",
+                        Footer.NotificationType.COMPLETED);
                 mainWindowView.getContentView().refreshButton.fire();
             } catch (ModelSyncException e) {
                 e.fillInStackTrace();
-                mainWindowView.getContentView().footer.show("Error! Could not update company!", Footer.NotificationType.ERROR, Footer.FADE_LONG);
+                mainWindowView.getContentView().footer.show("Error! Could not update company!",
+                        Footer.NotificationType.ERROR, Footer.FADE_LONG);
             } catch (DatabaseOutOfSyncException e) {
                 e.fillInStackTrace();
                 handleOutOfSync(handler);
             }
         } else {
-            mainWindowView.getContentView().footer.show("Invalid input", Footer.NotificationType.WARNING, Footer.FADE_QUICK);
+            mainWindowView.getContentView().footer.show("Invalid input",
+                    Footer.NotificationType.WARNING, Footer.FADE_QUICK);
         }
     }
 

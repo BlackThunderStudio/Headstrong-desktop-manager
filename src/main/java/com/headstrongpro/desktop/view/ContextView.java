@@ -32,7 +32,7 @@ public abstract class ContextView<T> {
 
     protected IContentController<T> controller; // Data controller
 
-    protected ArrayList<TextField> textFields = new ArrayList<>(); // List of form text fields
+    protected ArrayList<TextInputControl> textInputControls = new ArrayList<>(); // List of form text fields
     protected ArrayList<RadioButton> radioButtons = new ArrayList<>(); // List of form text fields
 
     protected SyncHandler<T> handler = () -> {
@@ -65,7 +65,7 @@ public abstract class ContextView<T> {
      * Clears all the text input fields
      */
     protected void clearFields() {
-        textFields.forEach(TextInputControl::clear);
+        textInputControls.forEach(TextInputControl::clear);
         radioButtons.forEach(ToggleButton::disarm);
     }
 
@@ -74,7 +74,7 @@ public abstract class ContextView<T> {
      */
     protected void setDefaults() {
         topControls.getChildren().removeAll(saveButton, cancelButton);
-        textFields.forEach(tf -> tf.setEditable(false));
+        textInputControls.forEach(tf -> tf.setEditable(false));
         radioButtons.forEach(rb -> rb.setDisable(true));
     }
 
@@ -121,12 +121,12 @@ public abstract class ContextView<T> {
         if (editMode) {
             topControls.getChildren().removeAll(saveButton, cancelButton);
             topControls.getChildren().addAll(toggleEditButton, deleteButton);
-            textFields.forEach(tf -> tf.setEditable(false));
+            textInputControls.forEach(tf -> tf.setEditable(false));
             radioButtons.forEach(rb -> rb.setDisable(true));
         } else {
             topControls.getChildren().removeAll(toggleEditButton, deleteButton);
             topControls.getChildren().addAll(saveButton, cancelButton);
-            textFields.forEach(tf -> tf.setEditable(true));
+            textInputControls.forEach(tf -> tf.setEditable(true));
             radioButtons.forEach(rb -> rb.setDisable(false));
         }
         editMode = !editMode;

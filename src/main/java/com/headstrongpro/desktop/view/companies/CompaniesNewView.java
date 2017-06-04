@@ -25,7 +25,7 @@ public class CompaniesNewView extends ContextView<Company> implements Initializa
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        textFields.addAll(Arrays.asList(
+        textInputControls.addAll(Arrays.asList(
                 nameField,
                 cvrField,
                 streetField,
