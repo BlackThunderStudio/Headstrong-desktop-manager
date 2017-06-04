@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 import static com.headstrongpro.desktop.model.resource.ResourceUploadAdapter.Destination;
 
 /**
- * Created by rajmu on 17.05.19.
+ * ResourcesController
  */
 public class ResourcesController implements Refreshable {
     private List<Resource> resources;

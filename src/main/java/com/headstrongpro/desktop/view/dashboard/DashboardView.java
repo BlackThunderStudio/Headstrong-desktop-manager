@@ -7,9 +7,9 @@ import com.headstrongpro.desktop.view.ContentView;
 import com.headstrongpro.desktop.view.MainWindowView;
 import javafx.concurrent.Task;
 import javafx.concurrent.Worker;
-import javafx.scene.input.MouseEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 
 import java.net.URL;
@@ -22,6 +22,8 @@ import java.util.TimerTask;
  */
 public class DashboardView extends ContentView implements Initializable {
 
+    private static final String TOTAL = "in\ntotal";
+    private static Timer timer;
     @FXML
     public DashboardTile dashCompaniesTile;
     @FXML
@@ -40,13 +42,7 @@ public class DashboardView extends ContentView implements Initializable {
     public StackPane dashSettingsTile;
     @FXML
     public StackPane dashAboutTile;
-
-    private static Timer timer;
-
     private MainWindowView mainWindowView;
-
-    private static final String TOTAL = "in\ntotal";
-
     private Task<Void> loadCompanies;
     private Task<Void> loadClients;
     private Task<Void> loadSubs;
@@ -55,6 +51,10 @@ public class DashboardView extends ContentView implements Initializable {
     private Task<Void> loadRes;
 
     private int valCompanies, valClients, valSubs, valPayments, valCourses, valRes;
+
+    public static void endReloadingDashboard() {
+        timer.cancel();
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -213,10 +213,6 @@ public class DashboardView extends ContentView implements Initializable {
     @FXML
     public void aboutTileOnClick(MouseEvent event) {
         mainWindowView.changeContent(ContentSource.ABOUT);
-    }
-
-    public static void endReloadingDashboard() {
-        timer.cancel();
     }
 
 }

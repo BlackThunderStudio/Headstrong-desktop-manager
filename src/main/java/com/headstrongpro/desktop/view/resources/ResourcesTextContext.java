@@ -9,7 +9,6 @@ import com.headstrongpro.desktop.model.resource.Resource;
 import com.headstrongpro.desktop.model.resource.TextResource;
 import com.headstrongpro.desktop.view.ContextView;
 import javafx.concurrent.Task;
-import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -37,6 +36,15 @@ public class ResourcesTextContext extends ContextView<TextResource> implements I
     public WebView textResourcesPreviewWeb;
 
     private ResourcesController controller;
+    private SyncHandler<TextResource> syncHandler = () -> {
+        try {
+            return Resource.ofType(controller.getResourceById(contextItem.getID()));
+        } catch (ModelSyncException e1) {
+            e1.printStackTrace();
+            mainWindowView.getContentView().footer.show(e1.getMessage(), Footer.NotificationType.ERROR);
+        }
+        return null;
+    };
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -45,7 +53,7 @@ public class ResourcesTextContext extends ContextView<TextResource> implements I
 
     @FXML
     public void editButtonOnClick() {
-        if(validateInput(textResourcesNameTextfield)){
+        if (validateInput(textResourcesNameTextfield)) {
             contextItem.setName(contextItem.getName());
             contextItem.setContent(textResourcesEditor.getHtmlText());
             try {
@@ -72,7 +80,7 @@ public class ResourcesTextContext extends ContextView<TextResource> implements I
         a.setContentText("You cannot take that action back");
         Optional<ButtonType> response = a.showAndWait();
         response.ifPresent(btn -> {
-            if(ButtonType.OK.equals(btn)){
+            if (ButtonType.OK.equals(btn)) {
                 mainWindowView.getContentView().footer.show("Deleting " + contextItem.getName() + "...", Footer.NotificationType.LOADING);
                 try {
                     controller.delete(contextItem);
@@ -88,16 +96,6 @@ public class ResourcesTextContext extends ContextView<TextResource> implements I
         });
     }
 
-    private SyncHandler<TextResource> syncHandler = () -> {
-        try {
-            return Resource.ofType(controller.getResourceById(contextItem.getID()));
-        } catch (ModelSyncException e1) {
-            e1.printStackTrace();
-            mainWindowView.getContentView().footer.show(e1.getMessage(), Footer.NotificationType.ERROR);
-        }
-        return null;
-    };
-
     @Override
     public void populateForm() {
         textResourcesNameTextfield.setText(contextItem.getName());
@@ -110,8 +108,8 @@ public class ResourcesTextContext extends ContextView<TextResource> implements I
             }
         };
 
-        loadTextContent.valueProperty().addListener((q,w,e) -> {
-            if(e != null){
+        loadTextContent.valueProperty().addListener((q, w, e) -> {
+            if (e != null) {
                 textResourcesEditor.setHtmlText(e);
             }
         });

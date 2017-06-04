@@ -16,6 +16,22 @@ public class TextResource implements Resource {
     private File file;
     private String path;
 
+    TextResource(String name, String description, boolean isForAchievement) {
+        this.name = name;
+        this.description = description;
+        this.isForAchievement = isForAchievement;
+    }
+
+    TextResource(int id, String name, String description, boolean isForAchievement) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.isForAchievement = isForAchievement;
+    }
+
+    private TextResource() {
+    }
+
     @Override
     public File getFile() {
         return file;
@@ -36,21 +52,6 @@ public class TextResource implements Resource {
         this.path = path;
     }
 
-    TextResource(String name, String description, boolean isForAchievement) {
-        this.name = name;
-        this.description = description;
-        this.isForAchievement = isForAchievement;
-    }
-
-    TextResource(int id, String name, String description, boolean isForAchievement) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.isForAchievement = isForAchievement;
-    }
-
-    private TextResource(){}
-
     @Override
     public String getDescription() {
         return description;
@@ -59,6 +60,10 @@ public class TextResource implements Resource {
     @Override
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
@@ -87,9 +92,5 @@ public class TextResource implements Resource {
 
     public void setContent(String content) {
         this.content = content;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 }

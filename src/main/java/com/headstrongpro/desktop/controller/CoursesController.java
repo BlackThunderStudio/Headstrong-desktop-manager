@@ -14,15 +14,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * c.c.catch.
+ * Courses Controller
  */
-public class CourseController implements Refreshable, IContentController<Course> {
+public class CoursesController implements Refreshable, IContentController<Course> {
 
     private DBCourse dbCourse;
     private DBResources dbResources;
     private List<Course> courses;
 
-    public CourseController() {
+    public CoursesController() {
         dbCourse = new DBCourse();
         dbResources = new DBResources();
         courses = new ArrayList<>();

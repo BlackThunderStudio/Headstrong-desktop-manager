@@ -4,16 +4,15 @@ import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.*;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import org.omg.PortableServer.THREAD_POLICY_ID;
 
 import java.io.IOException;
 
 
 /**
- * Created by Rajmund Staniek on 25-May-17.
+ * ErrorLabel
  */
 public class ErrorLabel extends Label {
 

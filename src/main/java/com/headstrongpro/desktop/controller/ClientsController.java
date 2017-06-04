@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Clients controller
+ * Clients Controller
  */
 public class ClientsController implements Refreshable, IContentController<Client> {
     private List<Client> clients;

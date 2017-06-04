@@ -11,11 +11,11 @@ public enum ResourceType {
 
     private int val;
 
-    ResourceType(int val){
+    ResourceType(int val) {
         this.val = val;
     }
 
-    public int get(){
+    public int get() {
         return val;
     }
 }

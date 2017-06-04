@@ -12,14 +12,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * desktop-manager
+ * Payments Controller
  * <p>
  * because of the lack of time this controller lacks a lot of fool proofing
  * and functionality. For more sophisticated implementation please see ResourcesController
- * <p>
- * <p>
- * <p>
- * Created by rajmu on 17.06.01.
  */
 public class PaymentsController implements Refreshable, IContentController<Payment> {
 

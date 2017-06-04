@@ -39,7 +39,6 @@ public class Subscription {
     }
 
 
-
     public int getId() {
         return id;
     }
@@ -84,6 +83,10 @@ public class Subscription {
         return rate;
     }
 
+    public void setRate(PaymentRate rate) {
+        this.rate = rate;
+    }
+
     public Company getCompany() {
         return company;
     }
@@ -94,9 +97,5 @@ public class Subscription {
 
     public String getCompanyName() {
         return companyName;
-    }
-
-    public void setRate(PaymentRate rate) {
-        this.rate = rate;
     }
 }

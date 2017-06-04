@@ -13,6 +13,24 @@ public class ImageResource implements Resource {
     private int id;
     private String name, description, url;
     private boolean isForAchievement;
+    private File file;
+    private String path;
+
+    ImageResource(String name, String description, boolean isForAchievement) {
+        this.name = name;
+        this.description = description;
+        this.isForAchievement = isForAchievement;
+    }
+
+    ImageResource(int id, String name, String description, boolean isForAchievement) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.isForAchievement = isForAchievement;
+    }
+
+    private ImageResource() {
+    }
 
     @Override
     public File getFile() {
@@ -34,26 +52,12 @@ public class ImageResource implements Resource {
         this.path = path;
     }
 
-    private File file;
-    private String path;
-
-    ImageResource(String name, String description, boolean isForAchievement) {
-        this.name = name;
-        this.description = description;
-        this.isForAchievement = isForAchievement;
-    }
-
-    ImageResource(int id, String name, String description, boolean isForAchievement) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.isForAchievement = isForAchievement;
-    }
-
-    private ImageResource(){}
-
     public String getURL() {
         return url;
+    }
+
+    public void setURL(String url) {
+        this.url = url;
     }
 
     @Override
@@ -61,9 +65,17 @@ public class ImageResource implements Resource {
         return description;
     }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     @Override
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
@@ -84,17 +96,5 @@ public class ImageResource implements Resource {
     @Override
     public void setID(int id) {
         this.id = id;
-    }
-
-    public void setURL(String url) {
-        this.url = url;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 }

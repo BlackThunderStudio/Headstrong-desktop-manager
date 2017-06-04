@@ -31,7 +31,8 @@ public class VideoResource implements Resource {
         this.isForAchievement = isForAchievement;
     }
 
-    private VideoResource(){}
+    private VideoResource() {
+    }
 
     @Override
     public String getDescription() {
@@ -59,6 +60,11 @@ public class VideoResource implements Resource {
     }
 
     @Override
+    public void setID(int id) {
+        this.id = id;
+    }
+
+    @Override
     public File getFile() {
         return file;
     }
@@ -76,11 +82,6 @@ public class VideoResource implements Resource {
     @Override
     public void setRemoteFileName(String path) {
         this.path = path;
-    }
-
-    @Override
-    public void setID(int id) {
-        this.id = id;
     }
 
     public String getUrl() {

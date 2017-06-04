@@ -5,10 +5,7 @@ import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import javafx.collections.ObservableList;
 
 /**
- * desktop-manager
- * <p>
- * <p>
- * Created by rajmu on 17.06.01.
+ * Content Controller Interface
  */
 public interface IContentController<T extends Object> {
 

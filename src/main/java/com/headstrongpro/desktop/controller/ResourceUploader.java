@@ -9,7 +9,7 @@ import com.headstrongpro.desktop.model.resource.ResourceUploadAdapter;
 import static com.headstrongpro.desktop.model.resource.ResourceUploadAdapter.Destination;
 
 /**
- * Created by rajmu on 17.05.24.
+ * ResourceUploader
  */
 public class ResourceUploader implements IResourceUploader {
     @Override

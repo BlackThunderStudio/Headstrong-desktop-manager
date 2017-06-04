@@ -1,6 +1,5 @@
 package com.headstrongpro.desktop;
 
-import com.headstrongpro.desktop.controller.UserController;
 import com.headstrongpro.desktop.view.RootLayoutView;
 import com.headstrongpro.desktop.view.dashboard.DashboardView;
 import javafx.application.Application;

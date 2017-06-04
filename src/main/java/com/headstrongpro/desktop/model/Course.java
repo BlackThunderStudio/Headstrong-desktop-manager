@@ -2,7 +2,6 @@ package com.headstrongpro.desktop.model;
 
 import com.headstrongpro.desktop.model.resource.Resource;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,7 +31,10 @@ public class Course {
         this.description = description;
     }
 
-    public Course(){};
+    public Course() {
+    }
+
+    ;
 
     public int getId() {
         return id;
@@ -62,9 +64,15 @@ public class Course {
         return courseCategory;
     }
 
-    public void setCourseCategory(CourseCategory courseCategory) { this.courseCategory = courseCategory; }
+    public void setCourseCategory(CourseCategory courseCategory) {
+        this.courseCategory = courseCategory;
+    }
 
-    public List<Resource> getResources() { return resources; }
+    public List<Resource> getResources() {
+        return resources;
+    }
 
-    public void setResources(List<Resource> resources) { this.resources = resources; }
+    public void setResources(List<Resource> resources) {
+        this.resources = resources;
+    }
 }

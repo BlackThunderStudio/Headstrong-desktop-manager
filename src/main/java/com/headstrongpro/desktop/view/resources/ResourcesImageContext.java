@@ -30,7 +30,7 @@ import java.util.ResourceBundle;
 /**
  * Created by jakub on 26/05/2017.
  */
-public class ResourcesImageContext extends ContextView<ImageResource> implements Initializable{
+public class ResourcesImageContext extends ContextView<ImageResource> implements Initializable {
     @FXML
     public GridPane resourceImageGrid;
     @FXML
@@ -47,10 +47,19 @@ public class ResourcesImageContext extends ContextView<ImageResource> implements
     public Button deleteButton;
 
     private ResourcesController controller;
+    private SyncHandler<ImageResource> syncHandler = () -> {
+        try {
+            return Resource.ofType(controller.getResourceById(contextItem.getID()));
+        } catch (ModelSyncException e1) {
+            e1.printStackTrace();
+            mainWindowView.getContentView().footer.show(e1.getMessage(), Footer.NotificationType.ERROR, Footer.FADE_LONG);
+        }
+        return null;
+    };
 
     @FXML
     public void editButtonOnClick(ActionEvent event) {
-        if(validateInput(nameField, descriptionField)){
+        if (validateInput(nameField, descriptionField)) {
             contextItem.setName(nameField.getText());
             contextItem.setDescription(descriptionField.getText());
             try {
@@ -77,7 +86,7 @@ public class ResourcesImageContext extends ContextView<ImageResource> implements
         a.setContentText("You cannot take that action back");
         Optional<ButtonType> response = a.showAndWait();
         response.ifPresent(btn -> {
-            if(ButtonType.OK.equals(btn)){
+            if (ButtonType.OK.equals(btn)) {
                 mainWindowView.getContentView().footer.show("Deleting " + contextItem.getName() + "...", Footer.NotificationType.LOADING);
                 try {
                     controller.delete(contextItem);
@@ -93,16 +102,6 @@ public class ResourcesImageContext extends ContextView<ImageResource> implements
             }
         });
     }
-
-    private SyncHandler<ImageResource> syncHandler = () -> {
-        try {
-            return Resource.ofType(controller.getResourceById(contextItem.getID()));
-        } catch (ModelSyncException e1) {
-            e1.printStackTrace();
-            mainWindowView.getContentView().footer.show(e1.getMessage(), Footer.NotificationType.ERROR, Footer.FADE_LONG);
-        }
-        return null;
-    };
 
     @Concurrent
     @Override

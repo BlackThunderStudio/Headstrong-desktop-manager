@@ -1,20 +1,18 @@
 package com.headstrongpro.desktop.DbLayer;
 
+import com.headstrongpro.desktop.DbLayer.util.ActionType;
+import com.headstrongpro.desktop.DbLayer.util.IDataAccessObject;
+import com.headstrongpro.desktop.DbLayer.util.Synchronizable;
 import com.headstrongpro.desktop.core.connection.DBConnect;
 import com.headstrongpro.desktop.core.exception.ConnectionException;
 import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.model.Group;
-import com.headstrongpro.desktop.DbLayer.util.ActionType;
-import com.headstrongpro.desktop.DbLayer.util.IDataAccessObject;
-import com.headstrongpro.desktop.DbLayer.util.Synchronizable;
 
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -22,7 +20,7 @@ import java.util.List;
  */
 public class DBGroups extends Synchronizable implements IDataAccessObject<Group> {
     private DBConnect connect;
-    
+
     public DBGroups() {
         updateTimestampLocal();
     }

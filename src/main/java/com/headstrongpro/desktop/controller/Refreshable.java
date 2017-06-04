@@ -3,7 +3,7 @@ package com.headstrongpro.desktop.controller;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 
 /**
- * Created by rajmu on 17.05.19.
+ * Refreshable Functional Interface
  */
 @FunctionalInterface
 public interface Refreshable {

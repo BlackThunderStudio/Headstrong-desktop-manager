@@ -4,10 +4,7 @@ import com.headstrongpro.desktop.DbLayer.DBStats;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 
 /**
- * desktop-manager
- * <p>
- * <p>
- * Created by rajmu on 17.05.31.
+ * Analytics
  */
 public class Analytics {
 

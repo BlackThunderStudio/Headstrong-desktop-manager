@@ -1,7 +1,6 @@
 package com.headstrongpro.desktop.model;
 
 import java.sql.Date;
-import java.sql.Timestamp;
 
 /**
  * Created by rajmu on 17.05.09.

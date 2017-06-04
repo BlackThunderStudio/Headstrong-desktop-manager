@@ -55,10 +55,14 @@ public class NavigationView implements Initializable {
     }
 
     @FXML
-    public void clientsOnClick(ActionEvent actionEvent) { mainWindowView.changeContent(ContentSource.CLIENTS);}
+    public void clientsOnClick(ActionEvent actionEvent) {
+        mainWindowView.changeContent(ContentSource.CLIENTS);
+    }
 
     @FXML
-    public void subsOnClick(ActionEvent actionEvent) { mainWindowView.changeContent(ContentSource.SUBSCRIPTIONS); }
+    public void subsOnClick(ActionEvent actionEvent) {
+        mainWindowView.changeContent(ContentSource.SUBSCRIPTIONS);
+    }
 
     @FXML
     public void resourcesOnClick(ActionEvent actionEvent) {
@@ -66,7 +70,9 @@ public class NavigationView implements Initializable {
     }
 
     @FXML
-    public void coursesOnClick(ActionEvent actionEvent) { mainWindowView.changeContent(ContentSource.COURSES); }
+    public void coursesOnClick(ActionEvent actionEvent) {
+        mainWindowView.changeContent(ContentSource.COURSES);
+    }
 
     @FXML
     public void paymentsOnClick(ActionEvent actionEvent) {

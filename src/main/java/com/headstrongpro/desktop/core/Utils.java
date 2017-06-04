@@ -7,22 +7,41 @@ import javafx.concurrent.Task;
 import javafx.scene.control.Label;
 
 import java.time.format.DateTimeFormatter;
-import java.util.function.Predicate;
 
 /**
- * Created by rajmu on 17.04.06.
+ * Utils
  */
 public class Utils {
 
-    public static class WaitingBar{
+    public static DateTimeFormatter dateFormatter(FormatterType type) {
+        String pattern = "dd-MM-yyyy";
+        switch (type) {
+            case DATE:
+                pattern = "yyyy-MM-dd";
+                break;
+            case DATETIME:
+                pattern = "dd-MM-yyyy hh:mm";
+                break;
+            case TIME:
+                pattern = "hh:mm";
+        }
+        return DateTimeFormatter.ofPattern(pattern);
+    }
+
+    public enum FormatterType {
+        DATE, DATETIME, TIME
+    }
+
+    public static class WaitingBar {
         private JFXProgressBar bar;
         private boolean isAlive;
 
-        public WaitingBar(JFXProgressBar bar){
+        public WaitingBar(JFXProgressBar bar) {
             this.bar = bar;
             isAlive = false;
         }
-        public void init(){
+
+        public void init() {
             bar.setVisible(true);
             isAlive = true;
 
@@ -39,29 +58,29 @@ public class Utils {
             Thread wait = new Thread(waitForTrigger);
             wait.start();
         }
-        
-        public void close(){
+
+        public void close() {
             isAlive = false;
         }
     }
 
-    public static class WaitingSpinner{
+    public static class WaitingSpinner {
         private JFXSpinner spinner;
         private Label label;
         private boolean isAlive = false;
 
-        public WaitingSpinner(JFXSpinner spinner, Label label){
+        public WaitingSpinner(JFXSpinner spinner, Label label) {
             this.spinner = spinner;
             this.label = label;
         }
 
-        public void init(){
+        public void init() {
             spinner.setVisible(true);
             isAlive = true;
             Task<Void> waitForTrigger = new Task<Void>() {
                 @Override
                 protected Void call() throws Exception {
-                    while (isAlive){
+                    while (isAlive) {
                         Thread.sleep(10);
                     }
                     Platform.runLater(() -> spinner.setVisible(false));
@@ -72,7 +91,7 @@ public class Utils {
             th.start();
         }
 
-        public void init(String message){
+        public void init(String message) {
             spinner.setVisible(true);
             label.setVisible(true);
             label.setText(message);
@@ -80,7 +99,7 @@ public class Utils {
             Task<Void> waitForTrigger = new Task<Void>() {
                 @Override
                 protected Void call() throws Exception {
-                    while (isAlive){
+                    while (isAlive) {
                         Thread.sleep(10);
                     }
                     Platform.runLater(() -> {
@@ -94,27 +113,8 @@ public class Utils {
             th.start();
         }
 
-        public void close(){
+        public void close() {
             isAlive = false;
         }
-    }
-
-    public enum FormatterType {
-        DATE, DATETIME, TIME
-    }
-
-    public static DateTimeFormatter dateFormatter(FormatterType type) {
-        String pattern = "dd-MM-yyyy";
-        switch (type) {
-            case DATE:
-                pattern = "yyyy-MM-dd";
-                break;
-            case DATETIME:
-                pattern = "dd-MM-yyyy hh:mm";
-                break;
-            case TIME:
-                pattern = "hh:mm";
-        }
-        return DateTimeFormatter.ofPattern(pattern);
     }
 }

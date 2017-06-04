@@ -6,10 +6,10 @@ import java.sql.Date;
  * Payment model class
  */
 public class Payment {
+    boolean paid;
     private int id;
     private double value;
     private Date timestamp, dueDate;
-    boolean paid;
     private Subscription subscription;
     private String companyName, companyCvr;
 
@@ -62,13 +62,21 @@ public class Payment {
         this.dueDate = dueDate;
     }
 
-    public boolean isPaid() { return paid; }
+    public boolean isPaid() {
+        return paid;
+    }
 
-    public void setPaid() { this.paid = paid; }
+    public void setPaid() {
+        this.paid = paid;
+    }
 
-    public Subscription getSubscription() { return subscription; }
+    public Subscription getSubscription() {
+        return subscription;
+    }
 
-    public void setSubscription(Subscription subscription) { this.subscription = subscription; }
+    public void setSubscription(Subscription subscription) {
+        this.subscription = subscription;
+    }
 
     public String getCompanyName() {
         return companyName;

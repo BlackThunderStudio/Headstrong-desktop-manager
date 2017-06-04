@@ -4,11 +4,9 @@ import com.headstrongpro.desktop.DbLayer.util.IStatistical;
 import com.headstrongpro.desktop.core.connection.DBContext;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
 
 /**
  * desktop-manager
@@ -16,7 +14,7 @@ import java.util.List;
  * <p>
  * Created by rajmu on 17.05.31.
  */
-public class DBStats implements IStatistical{
+public class DBStats implements IStatistical {
 
     private DBContext dbContext;
 

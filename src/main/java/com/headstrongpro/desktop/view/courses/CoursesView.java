@@ -1,6 +1,6 @@
 package com.headstrongpro.desktop.view.courses;
 
-import com.headstrongpro.desktop.controller.CourseController;
+import com.headstrongpro.desktop.controller.CoursesController;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.core.fxControls.Footer;
 import com.headstrongpro.desktop.model.Course;
@@ -29,13 +29,13 @@ public class CoursesView extends ContentView<Course> implements Initializable {
     @FXML
     public TableColumn<Course, String> nameCol, descCol;
 
-    private CourseController controller;
+    private CoursesController controller;
     private ObservableList<Course> courses;
     private Course selected;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        controller = new CourseController();
+        controller = new CoursesController();
         courses = FXCollections.emptyObservableList();
 
         setColumns();

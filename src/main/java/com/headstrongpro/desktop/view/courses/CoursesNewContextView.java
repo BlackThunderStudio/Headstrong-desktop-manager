@@ -1,6 +1,6 @@
 package com.headstrongpro.desktop.view.courses;
 
-import com.headstrongpro.desktop.controller.CourseController;
+import com.headstrongpro.desktop.controller.CoursesController;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.core.fxControls.Footer;
 import com.headstrongpro.desktop.model.Course;
@@ -31,20 +31,31 @@ public class CoursesNewContextView extends ContextView<Course> implements Initia
     public Button coursesNewCancelButton;
 
 
-    CourseController courseController;
+    CoursesController coursesController;
 
-    @Override public void initialize(URL location, ResourceBundle resources) { courseController = new CourseController(); }
-    @Override public void clearFields(){ coursesNewNameTextfield.clear(); coursesNewDescriptionTextfield.clear(); }
-    @Override public void populateForm(){}
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        coursesController = new CoursesController();
+    }
+
+    @Override
+    public void clearFields() {
+        coursesNewNameTextfield.clear();
+        coursesNewDescriptionTextfield.clear();
+    }
+
+    @Override
+    public void populateForm() {
+    }
 
     @FXML
-    public void saveCourseOnClick(){
-        if(!coursesNewNameTextfield.getText().isEmpty() && !coursesNewDescriptionTextfield.getText().isEmpty())
-            try{
+    public void saveCourseOnClick() {
+        if (!coursesNewNameTextfield.getText().isEmpty() && !coursesNewDescriptionTextfield.getText().isEmpty())
+            try {
                 mainWindowView.getContentView().footer.show("Creating new course...", Footer.NotificationType.LOADING);
-                courseController.createNew(new Course(coursesNewNameTextfield.getText(), coursesNewDescriptionTextfield.getText()));
+                coursesController.createNew(new Course(coursesNewNameTextfield.getText(), coursesNewDescriptionTextfield.getText()));
                 mainWindowView.getContentView().footer.show("Course created.", Footer.NotificationType.COMPLETED);
-            }catch(ModelSyncException e){
+            } catch (ModelSyncException e) {
                 e.printStackTrace();
                 mainWindowView.getContentView().footer.show(e.getMessage(), Footer.NotificationType.ERROR, Footer.FADE_LONG);
             }
@@ -53,7 +64,7 @@ public class CoursesNewContextView extends ContextView<Course> implements Initia
     }
 
     @FXML
-    public void cancelCourseOnClick(){
+    public void cancelCourseOnClick() {
         clearFields();
         mainWindowView.changeContext(ContentSource.COURSES);
     }

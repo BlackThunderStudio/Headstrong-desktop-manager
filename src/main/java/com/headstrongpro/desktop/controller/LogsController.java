@@ -10,10 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * desktop-manager
- * <p>
- * <p>
- * Created by rajmu on 17.06.01.
+ * Logs Controller
  */
 public class LogsController implements Refreshable {
 

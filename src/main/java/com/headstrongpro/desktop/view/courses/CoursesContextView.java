@@ -1,6 +1,6 @@
 package com.headstrongpro.desktop.view.courses;
 
-import com.headstrongpro.desktop.controller.CourseController;
+import com.headstrongpro.desktop.controller.CoursesController;
 import com.headstrongpro.desktop.core.SyncHandler;
 import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
@@ -60,33 +60,10 @@ public class CoursesContextView extends ContextView<Course> implements Initializ
     @FXML
     public Button coursesNewCatCancelButton;
 
-    CourseController courseController;
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        textFields = new ArrayList<>(Arrays.asList(
-                coursesNameTextfield, coursesDescriptionTextfield
-        ));
-
-        courseController = new CourseController();
-        // TODO: description doesnt autobreak multiple lines
-        // coursesDescriptionTextarea.setWrapText(true);
-    }
-
-    @Override
-    public void clearFields(){
-        textFields.forEach(TextInputControl::clear);
-    }
-
-    @Override
-    public void populateForm(){
-        coursesNameTextfield.setText(contextItem.getName());
-        coursesDescriptionTextfield.setText(contextItem.getDescription());
-    }
-
+    CoursesController coursesController;
     private SyncHandler<Course> syncHandler = () -> {
         try {
-            return courseController.getById(contextItem.getId());
+            return coursesController.getById(contextItem.getId());
         } catch (ModelSyncException e1) {
             e1.printStackTrace();
             mainWindowView.getContentView().footer.show(e1.getMessage(), Footer.NotificationType.ERROR);
@@ -94,14 +71,36 @@ public class CoursesContextView extends ContextView<Course> implements Initializ
         return null;
     };
 
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        textFields = new ArrayList<>(Arrays.asList(
+                coursesNameTextfield, coursesDescriptionTextfield
+        ));
+
+        coursesController = new CoursesController();
+        // TODO: description doesnt autobreak multiple lines
+        // coursesDescriptionTextarea.setWrapText(true);
+    }
+
+    @Override
+    public void clearFields() {
+        textFields.forEach(TextInputControl::clear);
+    }
+
+    @Override
+    public void populateForm() {
+        coursesNameTextfield.setText(contextItem.getName());
+        coursesDescriptionTextfield.setText(contextItem.getDescription());
+    }
+
     @FXML
-    public void courseEditOnClick(){
-        if (validateInput(coursesNameTextfield)){
+    public void courseEditOnClick() {
+        if (validateInput(coursesNameTextfield)) {
             contextItem.setName(coursesNameTextfield.getText());
             contextItem.setDescription(coursesDescriptionTextfield.getText());
             try {
                 mainWindowView.getContentView().footer.show("Updating...", Footer.NotificationType.LOADING);
-                courseController.edit(contextItem);
+                coursesController.edit(contextItem);
                 mainWindowView.getContentView().footer.show("Course updated", Footer.NotificationType.COMPLETED, Footer.FADE_QUICK);
                 //mainWindowView.getContentView()
             } catch (DatabaseOutOfSyncException e) {
@@ -117,16 +116,16 @@ public class CoursesContextView extends ContextView<Course> implements Initializ
     }
 
     @FXML
-    public void courseDeleteOnClick(){
+    public void courseDeleteOnClick() {
         Alert a = new Alert(Alert.AlertType.CONFIRMATION);
         a.setHeaderText("Are you sure you want to delete " + contextItem.getName() + "?");
         a.setContentText("You cannot take that action back");
         Optional<ButtonType> response = a.showAndWait();
         response.ifPresent(btn -> {
-            if(ButtonType.OK.equals(btn)){
+            if (ButtonType.OK.equals(btn)) {
                 mainWindowView.getContentView().footer.show("Deleting " + contextItem.getName() + "...", Footer.NotificationType.LOADING);
                 try {
-                    courseController.delete(contextItem);
+                    coursesController.delete(contextItem);
                     mainWindowView.getContentView().footer.show("Course deleted.", Footer.NotificationType.COMPLETED);
                     mainWindowView.getContentView().refreshButton.fire();
                 } catch (DatabaseOutOfSyncException e) {
@@ -142,7 +141,7 @@ public class CoursesContextView extends ContextView<Course> implements Initializ
     }
 
     @FXML
-    public void coursesTextOnClick(){
+    public void coursesTextOnClick() {
         mainWindowView.changeContent(ContentSource.RESOURCES_TEXT);
     }
 

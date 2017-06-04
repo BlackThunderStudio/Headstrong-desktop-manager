@@ -19,7 +19,8 @@ import java.time.LocalDate;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-import static com.headstrongpro.desktop.core.Utils.*;
+import static com.headstrongpro.desktop.core.Utils.FormatterType;
+import static com.headstrongpro.desktop.core.Utils.dateFormatter;
 
 /**
  * Created by Ondřej Soukup on 28.05.2017.
@@ -44,6 +45,15 @@ public class PaymentsContextView extends ContextView<Payment> implements Initial
     public Button btnMarkAsPaid;
 
     private PaymentsController controller;
+    private SyncHandler<Payment> syncHandler = () -> {
+        try {
+            return controller.getById(contextItem.getId());
+        } catch (ModelSyncException e1) {
+            e1.printStackTrace();
+            mainWindowView.getContentView().footer.show(e1.getMessage(), Footer.NotificationType.ERROR);
+        }
+        return null;
+    };
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -51,14 +61,14 @@ public class PaymentsContextView extends ContextView<Payment> implements Initial
         paymentsPaidDatePicker.setConverter(new StringConverter<LocalDate>() {
             @Override
             public String toString(LocalDate object) {
-                if(object != null){
+                if (object != null) {
                     return dateFormatter(FormatterType.DATE).format(object);
                 } else return "";
             }
 
             @Override
             public LocalDate fromString(String string) {
-                if(string != null && !string.isEmpty()){
+                if (string != null && !string.isEmpty()) {
                     return LocalDate.parse(string, dateFormatter(FormatterType.DATE));
                 } else return null;
             }
@@ -67,14 +77,14 @@ public class PaymentsContextView extends ContextView<Payment> implements Initial
         paymentsDueDatePicker.setConverter(new StringConverter<LocalDate>() {
             @Override
             public String toString(LocalDate object) {
-                if(object != null){
+                if (object != null) {
                     return dateFormatter(FormatterType.DATE).format(object);
                 } else return "";
             }
 
             @Override
             public LocalDate fromString(String string) {
-                if(string != null && !string.isEmpty()){
+                if (string != null && !string.isEmpty()) {
                     return LocalDate.parse(string, dateFormatter(FormatterType.DATE));
                 } else return null;
             }
@@ -88,7 +98,7 @@ public class PaymentsContextView extends ContextView<Payment> implements Initial
                 .setText(contextItem
                         .getDueDate()
                         .toString());
-        if(contextItem.getTimestamp() != null){
+        if (contextItem.getTimestamp() != null) {
             paymentsPaidDatePicker.getEditor()
                     .setText(contextItem.getTimestamp()
                             .toString());
@@ -104,7 +114,7 @@ public class PaymentsContextView extends ContextView<Payment> implements Initial
 
     @FXML
     public void btnMarkAsPaidOnClick(ActionEvent event) {
-        if(paymentsPaidDatePicker.getEditor().getText().isEmpty()){
+        if (paymentsPaidDatePicker.getEditor().getText().isEmpty()) {
             paymentsPaidDatePicker.setValue(LocalDate.now());
         }
         contextItem.setPaid();
@@ -113,25 +123,15 @@ public class PaymentsContextView extends ContextView<Payment> implements Initial
         a.setContentText("Do you want to update it's status?");
         Optional<ButtonType> response = a.showAndWait();
         response.ifPresent(e -> {
-            if(ButtonType.OK.equals(e)){
+            if (ButtonType.OK.equals(e)) {
                 paymentsEditButton.fire();
             }
         });
     }
 
-    private SyncHandler<Payment> syncHandler = () -> {
-        try {
-            return controller.getById(contextItem.getId());
-        } catch (ModelSyncException e1) {
-            e1.printStackTrace();
-            mainWindowView.getContentView().footer.show(e1.getMessage(), Footer.NotificationType.ERROR);
-        }
-        return null;
-    };
-
     @FXML
     public void paymentsEditButtonOnClick(ActionEvent event) {
-        if(validateInput(paymentsValueTextfield)){
+        if (validateInput(paymentsValueTextfield)) {
             contextItem.setValue(Double.parseDouble(paymentsValueTextfield.getText()));
             contextItem.setDueDate(Date.valueOf(paymentsDueDatePicker.getEditor().getText()));
             contextItem.setTimestamp(Date.valueOf(paymentsPaidDatePicker.getEditor().getText()));
@@ -159,7 +159,7 @@ public class PaymentsContextView extends ContextView<Payment> implements Initial
         a.setContentText("You cannot take that action back");
         Optional<ButtonType> response = a.showAndWait();
         response.ifPresent(btn -> {
-            if(ButtonType.OK.equals(btn)){
+            if (ButtonType.OK.equals(btn)) {
                 mainWindowView.getContentView().footer.show("Deleting...", Footer.NotificationType.LOADING);
                 try {
                     controller.delete(contextItem);

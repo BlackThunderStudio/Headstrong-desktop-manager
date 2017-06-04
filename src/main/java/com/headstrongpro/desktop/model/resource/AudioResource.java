@@ -19,6 +19,22 @@ public class AudioResource implements Resource {
     private File file;
     private String path;
 
+    AudioResource(String name, String description, boolean isForAchievement) {
+        this.name = name;
+        this.description = description;
+        this.isForAchievement = isForAchievement;
+    }
+
+    AudioResource(int id, String name, String description, boolean isForAchievement) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.isForAchievement = isForAchievement;
+    }
+
+    private AudioResource() {
+    }
+
     @Override
     public File getFile() {
         return file;
@@ -39,29 +55,22 @@ public class AudioResource implements Resource {
         this.path = path;
     }
 
-    AudioResource(String name, String description, boolean isForAchievement) {
-        this.name = name;
-        this.description = description;
-        this.isForAchievement = isForAchievement;
-    }
-
-    AudioResource(int id, String name, String description, boolean isForAchievement) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.isForAchievement = isForAchievement;
-    }
-
-    private AudioResource(){}
-
     @Override
     public String getDescription() {
         return description;
     }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     @Override
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
@@ -100,20 +109,12 @@ public class AudioResource implements Resource {
         this.duration = duration;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     @Override
     public String toString() {
         String s = String.format("[Name]: %s\n[Description]: %s\n[For Achievement]: %s\n", name, description, String.valueOf(isForAchievement));
-        if(id != 0) s += (String.format("[ID]: %d\n", id));
-        if(duration != null) s += String.format("[Duration]: %s\n", String.valueOf(duration));
-        if(url != null && !url.isEmpty()) s += String.format("[URL]: %s\n", url);
+        if (id != 0) s += (String.format("[ID]: %d\n", id));
+        if (duration != null) s += String.format("[Duration]: %s\n", String.valueOf(duration));
+        if (url != null && !url.isEmpty()) s += String.format("[URL]: %s\n", url);
         return s;
     }
 }

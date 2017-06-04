@@ -19,6 +19,17 @@ import javafx.stage.Stage;
  */
 public class WaitingBox {
     private static SimpleStringProperty newLabel = new SimpleStringProperty("");
+    private String msg;
+    private boolean isAlive;
+    public WaitingBox(String message) {
+        msg = message;
+        isAlive = true;
+        displayIndefinite();
+    }
+
+    public WaitingBox() {
+        isAlive = true;
+    }
 
     public static void display(String message, int timeInMilliseconds) {
         Stage window = new Stage();
@@ -66,19 +77,6 @@ public class WaitingBox {
         wait.start();
 
         window.showAndWait();
-    }
-
-    private String msg;
-    private boolean isAlive;
-
-    public WaitingBox(String message) {
-        msg = message;
-        isAlive = true;
-        displayIndefinite();
-    }
-
-    public WaitingBox() {
-        isAlive = true;
     }
 
     @Deprecated

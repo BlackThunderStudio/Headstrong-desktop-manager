@@ -1,12 +1,11 @@
 package com.headstrongpro.desktop.view.courses;
 
-import com.headstrongpro.desktop.controller.CourseController;
+import com.headstrongpro.desktop.controller.CoursesController;
 import com.headstrongpro.desktop.controller.ResourcesController;
 import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.core.fxControls.Footer;
 import com.headstrongpro.desktop.model.Course;
-import com.headstrongpro.desktop.model.resource.AudioResource;
 import com.headstrongpro.desktop.model.resource.Resource;
 import com.headstrongpro.desktop.model.resource.ResourceType;
 import com.headstrongpro.desktop.view.ContentSource;
@@ -44,7 +43,7 @@ public class CoursesAudioResContextView extends ContextView<Course> implements I
     @FXML
     public CheckComboBox<String> resourcesCombo;
 
-    private CourseController controller;
+    private CoursesController controller;
     private ResourcesController resourcesController;
 
     private List<Resource> resources;
@@ -62,7 +61,7 @@ public class CoursesAudioResContextView extends ContextView<Course> implements I
         };
 
         assign.stateProperty().addListener(((observable, oldValue, newValue) -> {
-            if(newValue.equals(Worker.State.SUCCEEDED)){
+            if (newValue.equals(Worker.State.SUCCEEDED)) {
                 mainWindowView.getContentView().footer.show("Resources assigned", Footer.NotificationType.COMPLETED);
                 mainWindowView.changeContext(ContentSource.COURSES);
             }
@@ -71,7 +70,7 @@ public class CoursesAudioResContextView extends ContextView<Course> implements I
         new Thread(assign).start();
     }
 
-    private void handleAssign(){
+    private void handleAssign() {
         List<Resource> newlyAssigned = new ArrayList<>();
         resourcesCombo.getCheckModel()
                 .getCheckedItems()
@@ -96,7 +95,7 @@ public class CoursesAudioResContextView extends ContextView<Course> implements I
 
     @Override
     public void populateForm() {
-        if(contextItem != null){
+        if (contextItem != null) {
             labelName.setText(contextItem.getName());
         }
     }
@@ -108,7 +107,7 @@ public class CoursesAudioResContextView extends ContextView<Course> implements I
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        controller = new CourseController();
+        controller = new CoursesController();
         resourcesController = new ResourcesController();
 
         Task<List<Resource>> initResources = new Task<List<Resource>>() {
@@ -119,7 +118,7 @@ public class CoursesAudioResContextView extends ContextView<Course> implements I
         };
 
         initResources.valueProperty().addListener(((observable, oldValue, newValue) -> {
-            if(newValue != null){
+            if (newValue != null) {
                 this.resources = newValue;
                 resourcesCombo.getItems().addAll(this.resources.stream().map(Resource::getName).collect(Collectors.toList()));
                 try {

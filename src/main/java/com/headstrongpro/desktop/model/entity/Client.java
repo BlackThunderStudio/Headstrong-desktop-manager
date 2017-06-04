@@ -7,7 +7,7 @@ import java.sql.Date;
  */
 public class Client extends Person {
     private String login, password;
-    private Date  registrationDate;
+    private Date registrationDate;
     private int companyId;
 
     public Client(int id, String name, String email, String phone, String gender, String login, String password, Date registrationDate, int companyId) {

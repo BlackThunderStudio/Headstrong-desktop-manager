@@ -21,10 +21,6 @@ public abstract class Synchronizable {
 
     protected Date timestamp;
 
-    protected void updateTimestampLocal(){
-        timestamp = new Date(Calendar.getInstance().getTimeInMillis());
-    }
-
     //TODO: we need to resolve the issue of tracking which employee triggered this method. Possibly storing user session data ofType a singleton?
     protected static Log logChange(int empID, String tableName, int itemID, ActionType type) throws ModelSyncException {
         return new DBLogActions().persist(new Log(empID, tableName, itemID, type.getType()));
@@ -40,6 +36,10 @@ public abstract class Synchronizable {
         for (int i : itemIDs) {
             new DBLogActions().persist(new Log(empID, tableName, i, type.getType()));
         }
+    }
+
+    protected void updateTimestampLocal() {
+        timestamp = new Date(Calendar.getInstance().getTimeInMillis());
     }
 
     protected Date setTimestamp() {

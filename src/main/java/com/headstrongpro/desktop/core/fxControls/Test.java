@@ -1,7 +1,6 @@
 package com.headstrongpro.desktop.core.fxControls;
 
 import javafx.fxml.Initializable;
-import javafx.scene.layout.Background;
 import javafx.scene.paint.Color;
 
 import java.net.URL;

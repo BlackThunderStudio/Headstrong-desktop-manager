@@ -68,6 +68,15 @@ public class ResourcesAudioContext extends ContextView<AudioResource> implements
     private Media media;
     private MediaPlayer mediaPlayer;
     private boolean isPlaying;
+    private SyncHandler<AudioResource> syncHandler = () -> {
+        try {
+            Resource.ofType(controller.getResourceById(contextItem.getID()));
+        } catch (ModelSyncException e) {
+            e.printStackTrace();
+            mainWindowView.getContentView().footer.show(e.getMessage(), Footer.NotificationType.ERROR, Footer.FADE_LONG);
+        }
+        return null;
+    };
 
     @Override
     public void populateForm() {
@@ -128,7 +137,7 @@ public class ResourcesAudioContext extends ContextView<AudioResource> implements
     }
 
     private void updateValues() {
-        if(audioSeekbarSlider != null){
+        if (audioSeekbarSlider != null) {
             Platform.runLater(() -> {
                 audioSeekbarSlider.setDisable(media.getDuration().isUnknown());
                 setDurationLabel(mediaPlayer.getCurrentTime(), labelCurrentPlaybackTime);
@@ -136,7 +145,7 @@ public class ResourcesAudioContext extends ContextView<AudioResource> implements
         }
     }
 
-    private void disablePlayer(){
+    private void disablePlayer() {
         fileLoader.setVisible(false);
         mediaPlayer.stop();
         isPlaying = false;
@@ -144,15 +153,15 @@ public class ResourcesAudioContext extends ContextView<AudioResource> implements
         playPauseButton.setText(BTN_PLAY);
     }
 
-    private void setDurationLabel(Duration duration, Label label){
-        if(!audioSeekbarSlider.isDisabled() &&
+    private void setDurationLabel(Duration duration, Label label) {
+        if (!audioSeekbarSlider.isDisabled() &&
                 !audioSeekbarSlider.isValueChanging() &&
-                media.getDuration().greaterThan(Duration.ZERO)){
+                media.getDuration().greaterThan(Duration.ZERO)) {
             audioSeekbarSlider.setValue(duration.toSeconds());
         }
-        int mins = (int)duration.toMinutes();
-        String secs = String.valueOf((int)duration.toSeconds() % 60);
-        if(((int)duration.toSeconds() % 60) < 10){
+        int mins = (int) duration.toMinutes();
+        String secs = String.valueOf((int) duration.toSeconds() % 60);
+        if (((int) duration.toSeconds() % 60) < 10) {
             secs = "0" + secs;
         }
         label.setText(String.format("%d:%s", mins, secs));
@@ -160,7 +169,7 @@ public class ResourcesAudioContext extends ContextView<AudioResource> implements
 
     @FXML
     public void editOnClick(ActionEvent actionEvent) {
-        if(validateInput(nameField, descriptionField)){
+        if (validateInput(nameField, descriptionField)) {
             contextItem.setName(nameField.getText());
             contextItem.setDescription(descriptionField.getText());
             try {
@@ -187,7 +196,7 @@ public class ResourcesAudioContext extends ContextView<AudioResource> implements
         a.setContentText("You cannot take that action back");
         Optional<ButtonType> response = a.showAndWait();
         response.ifPresent(btn -> {
-            if(ButtonType.OK.equals(btn)){
+            if (ButtonType.OK.equals(btn)) {
                 mainWindowView.getContentView().footer.show("Deleting " + contextItem.getName() + "...", Footer.NotificationType.LOADING);
                 try {
                     controller.delete(contextItem);
@@ -204,19 +213,9 @@ public class ResourcesAudioContext extends ContextView<AudioResource> implements
         });
     }
 
-    private SyncHandler<AudioResource> syncHandler = () -> {
-        try {
-            Resource.ofType(controller.getResourceById(contextItem.getID()));
-        } catch (ModelSyncException e) {
-            e.printStackTrace();
-            mainWindowView.getContentView().footer.show(e.getMessage(), Footer.NotificationType.ERROR, Footer.FADE_LONG);
-        }
-        return null;
-    };
-
     @FXML
     public void playPauseOnClick(ActionEvent event) {
-        if(isPlaying){
+        if (isPlaying) {
             playPauseButton.setText(BTN_PLAY);
             mediaPlayer.pause();
             isPlaying = false;
