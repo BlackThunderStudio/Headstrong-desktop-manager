@@ -57,7 +57,7 @@ public class DBStats implements IStatistical {
 
     @Override
     public int getActiveSubscriptionsCount() {
-        String query = "SELECT COUNT(*) FROM subscriptions WHERE end_date < CURRENT_TIMESTAMP";
+        String query = "SELECT COUNT(*) FROM subscriptions WHERE end_date > CURRENT_TIMESTAMP";
         int rows = 0;
         ResultSet rs = dbContext.getFromDataBase(query);
         try {

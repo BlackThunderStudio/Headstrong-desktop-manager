@@ -1,5 +1,7 @@
 package com.headstrongpro.desktop.view.groups;
 
+import com.headstrongpro.desktop.model.Group;
+import com.headstrongpro.desktop.view.ContextView;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -9,25 +11,25 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * Created by Ondřej Soukup on 26.05.2017.
+ * Groups Context View
  */
-public class GroupsContextView implements Initializable {
+public class GroupsContextView extends ContextView<Group> implements Initializable {
 
+    // Form text fields
     @FXML
-    public Button groupsEditButton;
+    public TextField nameField;
+
+    // Links to related items
     @FXML
-    public Button groupsDeleteButton;
-    @FXML
-    public Button groupsSelectParentButton;
-    @FXML
-    public Button groupsClientsButton;
-    @FXML
-    public Button groupsCompanyButton;
-    @FXML
-    public TextField groupsNameTextfield;
+    public Button groupsSelectParentButton, groupsClientsButton, groupsCompanyButton;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+    }
+
+    @Override
+    protected void populateForm() {
 
     }
 }

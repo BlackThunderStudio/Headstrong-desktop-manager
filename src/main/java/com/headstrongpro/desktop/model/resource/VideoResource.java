@@ -98,4 +98,14 @@ public class VideoResource implements Resource, IModel {
     public void setDuration(Time duration) {
         this.duration = duration;
     }
+
+    @Override
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }

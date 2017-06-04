@@ -11,34 +11,24 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * Created by Ondřej Soukup on 26.05.2017.
+ * Departments Context View
  */
 public class DepartmentsContextView extends ContextView<Department> implements Initializable {
 
+    // Form text fields
     @FXML
-    public Button departmentsDeleteButton;
+    public TextField nameField, descriptionField;
+
+    // Links to related items
     @FXML
-    public Button departmentsEditButton;
-    @FXML
-    public Button departmentsClientsButton;
-    @FXML
-    public Button departmentsCompanyButton;
-    @FXML
-    public TextField departmentsNameTextfield;
-    @FXML
-    public TextField departmentsDescriptionTextfield;
+    public Button departmentsClientsButton, departmentsCompanyButton;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
     }
 
     @Override
-    public void populateForm() {
-
-    }
-
-    @Override
-    protected void clearFields() {
+    protected void populateForm() {
 
     }
 }

@@ -44,14 +44,14 @@ public class ResourcesControllerTest {
     @Test
     public void editResource() throws Exception {
         String oldName , newName = "random name";
-        ImageResource test = (ImageResource) rc.getResourceById(66);
+        ImageResource test = (ImageResource) rc.getById(66);
         oldName = test.getName();
         test.setName(newName);
-        rc.editResource(test);
-        assertNotEquals(oldName, rc.getResourceById(66).getName());
+        rc.edit(test);
+        assertNotEquals(oldName, rc.getById(66).getName());
         test.setName(oldName);
-        rc.editResource(test);
-        assertEquals(oldName, rc.getResourceById(66).getName());
+        rc.edit(test);
+        assertEquals(oldName, rc.getById(66).getName());
     }
 
     @Ignore
@@ -61,7 +61,7 @@ public class ResourcesControllerTest {
     }
 
     @Test
-    public void getResourceById() throws Exception {
-        assertEquals("duck pic", rc.getResourceById(66).getName());
+    public void getById() throws Exception {
+        assertEquals("duck pic", rc.getById(66).getName());
     }
 }

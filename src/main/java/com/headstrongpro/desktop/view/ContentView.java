@@ -40,7 +40,7 @@ public abstract class ContentView<T> {
 
     protected T selected; // Currently selected item
 
-    private ObservableList<T> data = FXCollections.observableArrayList(); // Data collections for the main table
+    protected ObservableList<T> data = FXCollections.observableArrayList(); // Data collections for the main table
 
     /**
      * Loads data via content controller and populates the main table

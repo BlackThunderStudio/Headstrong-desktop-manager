@@ -57,4 +57,5 @@ public class Client extends Person {
     public void setcompanyId(int companyId) {
         this.companyId = companyId;
     }
+
 }

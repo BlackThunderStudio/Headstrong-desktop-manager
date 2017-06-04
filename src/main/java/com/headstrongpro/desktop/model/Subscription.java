@@ -13,7 +13,6 @@ public class Subscription implements IModel {
     private Date startDate, endDate;
     private PaymentRate rate;
     private Company company;
-    private String rateName, companyName;
 
     public Subscription() {
     }
@@ -26,8 +25,6 @@ public class Subscription implements IModel {
         this.endDate = endDate;
         this.rate = rate;
         this.company = company;
-        rateName = rate.getName();
-        companyName = company.getName();
     }
 
     public Subscription(int noOfUsers, boolean isActive, Date startDate, Date endDate, PaymentRate rate, Company company) {
@@ -37,8 +34,6 @@ public class Subscription implements IModel {
         this.endDate = endDate;
         this.rate = rate;
         this.company = company;
-        rateName = rate.getName();
-        companyName = company.getName();
     }
 
     @Override
@@ -99,4 +94,12 @@ public class Subscription implements IModel {
         this.company = company;
     }
 
+    @Override
+    public String toString() {
+        return "the subscription for " +
+                company +
+                " (from " + startDate +
+                " to " + endDate + " " +
+                "for " + noOfUsers + " users)";
+    }
 }

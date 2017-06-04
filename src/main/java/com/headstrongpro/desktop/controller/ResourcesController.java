@@ -7,9 +7,9 @@ import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.model.Course;
 import com.headstrongpro.desktop.model.resource.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.apache.commons.io.FilenameUtils;
@@ -25,12 +25,9 @@ import static com.headstrongpro.desktop.model.resource.ResourceUploadAdapter.Des
 /**
  * ResourcesController
  */
-public class ResourcesController implements Refreshable {
+public class ResourcesController implements Refreshable, IContentController<Resource> {
     private List<Resource> resources;
     private DBResources resourcesDAO;
-
-    private Media media;
-    private MediaPlayer mediaPlayer;
 
     public ResourcesController() {
         resources = new ArrayList<>();
@@ -50,9 +47,10 @@ public class ResourcesController implements Refreshable {
         resources.addAll(resourcesDAO.getAll());
     }
 
-    public List<Resource> getAll() throws ModelSyncException {
+    @Override
+    public ObservableList<Resource> getAll() throws ModelSyncException {
         refresh();
-        return resources;
+        return FXCollections.observableArrayList(resources);
     }
 
     /***
@@ -62,13 +60,14 @@ public class ResourcesController implements Refreshable {
      * @param input searched expression
      * @return A list of objects containing searched phrase
      */
-    public List<Resource> searchByPhrase(String input) {
+    @Override
+    public ObservableList<Resource> searchByPhrase(String input) {
         if (input == null) throw new IllegalStateException("input query cannot be of null");
-        return resources.stream()
+        return FXCollections.observableArrayList(resources.stream()
                 .filter(e -> String.valueOf(e.getId()).contains(input) ||
                         e.getName().toLowerCase().contains(input.toLowerCase()) ||
                         e.getDescription().toLowerCase().contains(input.toLowerCase()))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
     }
 
     /**
@@ -281,8 +280,9 @@ public class ResourcesController implements Refreshable {
      * @throws DatabaseOutOfSyncException
      * @throws ModelSyncException
      */
+    @Override
     @Concurrent
-    public void editResource(Resource selectedResource)
+    public void edit(Resource selectedResource)
             throws DatabaseOutOfSyncException, ModelSyncException {
         resourcesDAO.update(selectedResource);
     }
@@ -306,20 +306,19 @@ public class ResourcesController implements Refreshable {
      * @throws DatabaseOutOfSyncException
      * @throws ModelSyncException
      */
+    @Override
     public void delete(Resource resource)
             throws DatabaseOutOfSyncException, ModelSyncException {
         resourcesDAO.delete(resource);
     }
 
-    /***
-     *
-     * Retrieves a resource by a given ID
-     *
-     * @param id item ID
-     * @return
-     * @throws ModelSyncException
-     */
-    public Resource getResourceById(int id) throws ModelSyncException {
+    @Override
+    public Resource createNew(Resource resource) throws ModelSyncException {
+        return null;
+    }
+
+    @Override
+    public Resource getById(int id) throws ModelSyncException {
         return resourcesDAO.getById(id);
     }
 

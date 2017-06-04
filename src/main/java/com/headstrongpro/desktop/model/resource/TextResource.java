@@ -92,4 +92,9 @@ public class TextResource implements Resource, IModel {
     public void setContent(String content) {
         this.content = content;
     }
+
+    @Override
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }

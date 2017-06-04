@@ -31,6 +31,8 @@ public interface Resource {
 
     String getName();
 
+    void setName(String name);
+
     boolean isForAchievement();
 
     ResourceType getType();
@@ -38,6 +40,8 @@ public interface Resource {
     int getId();
 
     void setId(int id);
+
+    void setDescription(String description);
 
     File getFile();
 

@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane minHeight="460" minWidth="300.0" prefHeight="700.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.headstrongpro.desktop.view.resources.ResourcesAudioContext">
+<GridPane minHeight="460" minWidth="300.0" prefHeight="700.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.headstrongpro.desktop.view.resources.AudioResourcesContextView">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="250.0" prefWidth="300.0" />
     </columnConstraints>
@@ -34,15 +34,15 @@
         <TextField fx:id="descriptionField" alignment="TOP_LEFT" maxHeight="120.0" minHeight="75.0" prefHeight="100.0" promptText="Description" GridPane.rowIndex="5" />
         <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
             <children>
-                <Button fx:id="editButton" contentDisplay="CENTER" maxWidth="90.0" minWidth="90.0" mnemonicParsing="false" onAction="#editOnClick" prefWidth="90.0" text="Edit" />
-                <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#deleteOnClick" prefHeight="25.0" prefWidth="90.0" text="Delete" />
+                <Button fx:id="editButton" contentDisplay="CENTER" maxWidth="90.0" minWidth="90.0" mnemonicParsing="false" onAction="#handleEdit" prefWidth="90.0" text="Edit" />
+                <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#handleDelete" prefHeight="25.0" prefWidth="90.0" text="Delete" />
             </children>
             <GridPane.margin>
                 <Insets />
             </GridPane.margin>
         </HBox>
         <Separator maxWidth="1.7976931348623157E308" GridPane.rowIndex="2" GridPane.valignment="TOP" />
-      <JFXSlider fx:id="audioSeekbarSlider" GridPane.valignment="BOTTOM" />
+      <JFXSlider fx:id="audioSeekBarSlider" GridPane.valignment="BOTTOM" />
       <Button fx:id="playPauseButton" mnemonicParsing="false" onAction="#playPauseOnClick" prefWidth="90.0" text="Play/Pause" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
          <GridPane.margin>
             <Insets top="10.0" />

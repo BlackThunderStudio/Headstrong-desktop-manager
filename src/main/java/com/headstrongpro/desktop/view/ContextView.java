@@ -99,7 +99,8 @@ public abstract class ContextView<T> {
      */
     protected void handleOutOfSync(SyncHandler<T> handler) {
         Alert a = new Alert(Alert.AlertType.CONFIRMATION);
-        mainWindowView.getContentView().footer.show("Warning! Data inconsistency!", Footer.NotificationType.WARNING);
+        mainWindowView.getContentView().footer.show("Warning! Data inconsistency!",
+                Footer.NotificationType.WARNING);
         a.setHeaderText("Warning! Database contains newer data.");
         a.setContentText("Do you want to reload the data? Clicking 'Cancel' will clear all the input");
         Optional<ButtonType> response = a.showAndWait();
@@ -138,19 +139,23 @@ public abstract class ContextView<T> {
     @FXML
     public void handleDelete() {
         Alert a = new Alert(Alert.AlertType.CONFIRMATION);
-        a.setHeaderText(String.format("Are you sure you want to delete %s from the list?", contextItem));
-        a.setContentText("You cannot take that action back");
+        a.setHeaderText("Delete Item");
+        a.setContentText(String.format("Are you sure you want to delete %s?%n%nThis action cannot be undone.",
+                contextItem));
         Optional<ButtonType> response = a.showAndWait();
         response.ifPresent(btn -> {
             if (ButtonType.OK.equals(btn)) {
+                mainWindowView.getContentView().footer.show(String.format("Deleting %s...", contextItem),
+                        Footer.NotificationType.LOADING);
                 try {
-                    mainWindowView.getContentView().footer.show(String.format("Deleting %s...", contextItem), Footer.NotificationType.LOADING);
                     controller.delete(contextItem);
-                    mainWindowView.getContentView().footer.show("Entry deleted.", Footer.NotificationType.COMPLETED);
+                    mainWindowView.getContentView().footer.show("Entry deleted.",
+                            Footer.NotificationType.COMPLETED);
                     mainWindowView.getContentView().handleRefresh();
                 } catch (ModelSyncException e) {
                     e.printStackTrace();
-                    mainWindowView.getContentView().footer.show(e.getMessage(), Footer.NotificationType.ERROR, Footer.FADE_LONG);
+                    mainWindowView.getContentView().footer.show(e.getMessage(),
+                            Footer.NotificationType.ERROR, Footer.FADE_LONG);
                 } catch (DatabaseOutOfSyncException e) {
                     handleOutOfSync(handler);
                 }
@@ -172,7 +177,8 @@ public abstract class ContextView<T> {
      * Displays an error for not yet implemented features
      */
     protected void displayNotImplementedError() {
-        mainWindowView.getContentView().footer.show("Feature not yet implemented, patience is advised.", Footer.NotificationType.INFORMATION);
+        mainWindowView.getContentView().footer.show("Feature not yet implemented, patience is advised.",
+                Footer.NotificationType.INFORMATION);
     }
 
     public T getContextItem() {

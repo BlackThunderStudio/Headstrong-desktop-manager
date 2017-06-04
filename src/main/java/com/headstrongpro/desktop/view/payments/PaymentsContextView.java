@@ -120,7 +120,7 @@ public class PaymentsContextView extends ContextView<Payment> implements Initial
         contextItem.setPaid();
         Alert a = new Alert(Alert.AlertType.CONFIRMATION);
         a.setHeaderText("Invoice marked as paid.");
-        a.setContentText("Do you want to update it's status?");
+        a.setContentText("Do you want to update its status?");
         Optional<ButtonType> response = a.showAndWait();
         response.ifPresent(e -> {
             if (ButtonType.OK.equals(e)) {

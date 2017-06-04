@@ -4,15 +4,11 @@ import com.headstrongpro.desktop.controller.ResourcesController;
 import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.core.fxControls.Footer;
-import com.headstrongpro.desktop.model.Course;
 import com.headstrongpro.desktop.model.resource.Resource;
 import com.headstrongpro.desktop.model.resource.ResourceType;
 import com.headstrongpro.desktop.view.ContentSource;
 import com.headstrongpro.desktop.view.ContentView;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -22,8 +18,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-
-import static javafx.concurrent.Worker.State.*;
 
 /**
  * Resources Content View
@@ -46,58 +40,24 @@ public class ResourcesContentView extends ContentView<Resource> implements Initi
     @FXML
     public Button assignToCourseButton;
 
-    private ResourcesController controller;
-    private ObservableList<Resource> resources;
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         resourcesComboBox.getItems().addAll(TYPES);
         resourcesComboBox.getSelectionModel().select(3);
-        this.resources = FXCollections.observableArrayList();
 
         setColumns();
+        controller = new ResourcesController();
 
-        Task<Void> init = new Task<Void>() {
-            @Override
-            protected Void call() throws Exception {
-                Platform.runLater(() -> footer.show("Initializing window.", Footer.NotificationType.LOADING));
-                controller = new ResourcesController();
-                loadResources();
-                return null;
-            }
-        };
+        loadData();
 
-        init.stateProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue.equals(SUCCEEDED)) {
-
-                try {
-                    if (mainWindowView.getContextView().getContextItem() instanceof Resource) {
-                        Course c = (Course) mainWindowView.getContextView().getContextItem();
-                        mainTable.setItems(FXCollections.observableList(controller.getTextResById(c.getId())));
-                        //noinspection unchecked
-                        mainWindowView.getContextView().changeContextItem(null);
-                        //TODO: needs a bit of tweaking to display from courses
-                    } else
-                        mainTable.setItems(this.resources);
-                } catch (ModelSyncException e) {
-                    e.printStackTrace();
-                }
-                footer.show("Resources loaded.", Footer.NotificationType.COMPLETED);
-            } else if (newValue.equals(FAILED) || newValue.equals(CANCELLED)) {
-                footer.show("Error! Could not load resources!", Footer.NotificationType.ERROR, Footer.FADE_LONG);
-            }
-        });
-
-        Thread initThread = new Thread(init);
-        initThread.setDaemon(true);
-        initThread.start();
+        ResourcesController controller = (ResourcesController) this.controller;
 
         mainTable.getSelectionModel()
                 .selectedItemProperty()
                 .addListener(((observable, oldValue, newValue) -> {
                     if (newValue != null) {
                         if (selected != null && selected.getType() == ResourceType.AUDIO) {
-                            ResourcesAudioContext audioController = (ResourcesAudioContext) mainWindowView.getContextView();
+                            AudioResourcesContextView audioController = (AudioResourcesContextView) mainWindowView.getContextView();
                             audioController.stopAudio();
                         }
                         selected = newValue;
@@ -140,42 +100,10 @@ public class ResourcesContentView extends ContentView<Resource> implements Initi
                             break;
                         case "All":
                             addNewButton.setText("New");
-                            mainTable.setItems(this.resources);
+                            mainTable.setItems(this.data);
                             break;
                     }
                 }));
-    }
-
-    private void loadResources() {
-        try {
-            resources = FXCollections.observableArrayList(controller.getAll());
-        } catch (ModelSyncException e) {
-            mainWindowView.getContentView().footer.show(e.getMessage(), Footer.NotificationType.ERROR);
-        }
-    }
-
-    private void refresh() {
-        Task<Void> refresh = new Task<Void>() {
-            @Override
-            protected Void call() throws Exception {
-                Platform.runLater(() -> footer.show("Refreshing resources...", Footer.NotificationType.LOADING));
-                loadResources();
-                return null;
-            }
-        };
-
-        refresh.stateProperty().addListener(((observable, oldValue, newValue) -> {
-            if (newValue.equals(SUCCEEDED)) {
-                footer.show("Resources loaded successfully.", Footer.NotificationType.COMPLETED);
-                mainTable.setItems(this.resources);
-            } else if (newValue.equals(FAILED) || newValue.equals(CANCELLED)) {
-                footer.show("Error! Could not refresh the list!", Footer.NotificationType.ERROR, Footer.FADE_LONG);
-            }
-        }));
-
-        Thread th = new Thread(refresh);
-        th.setDaemon(true);
-        th.start();
     }
 
     private void setColumns() {
@@ -184,8 +112,10 @@ public class ResourcesContentView extends ContentView<Resource> implements Initi
         typeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
     }
 
+    @Override
     @FXML
     public void handleSearch() {
+        ResourcesController controller = (ResourcesController) this.controller;
         mainTable.setItems(FXCollections.observableArrayList(
                 controller.filterSearch(searchField.getText(), resourcesComboBox.getValue())
         ));
@@ -194,6 +124,7 @@ public class ResourcesContentView extends ContentView<Resource> implements Initi
     @FXML
     public void assignToCourseButton_onClick() {
         Resource selected = mainTable.getSelectionModel().getSelectedItem();
+        ResourcesController controller = (ResourcesController) this.controller;
         if (selected != null) {
             //TODO: assign to course
 
@@ -217,9 +148,4 @@ public class ResourcesContentView extends ContentView<Resource> implements Initi
         }
     }
 
-    @FXML
-    public void handleRefresh() {
-        searchField.clear();
-        refresh();
-    }
 }

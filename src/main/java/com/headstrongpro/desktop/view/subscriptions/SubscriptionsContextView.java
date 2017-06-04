@@ -1,7 +1,6 @@
 package com.headstrongpro.desktop.view.subscriptions;
 
 import com.headstrongpro.desktop.controller.SubscriptionsController;
-import com.headstrongpro.desktop.core.SyncHandler;
 import com.headstrongpro.desktop.core.Utils;
 import com.headstrongpro.desktop.core.exception.ConnectionException;
 import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
@@ -29,7 +28,7 @@ import java.util.ResourceBundle;
 import static com.headstrongpro.desktop.core.Utils.dateFormatter;
 
 /**
- * Subscriptions ContextView
+ * Subscriptions Context View
  */
 public class SubscriptionsContextView extends ContextView<Subscription> implements Initializable {
 
@@ -50,16 +49,6 @@ public class SubscriptionsContextView extends ContextView<Subscription> implemen
     private SubscriptionsController controller; // Data controller
 
     private List<PaymentRate> rates;
-
-    private SyncHandler<Subscription> handler = () -> {
-        try {
-            return controller.getById(contextItem.getId());
-        } catch (ModelSyncException e) {
-            e.printStackTrace();
-            mainWindowView.getContentView().footer.show(e.getMessage(), Footer.NotificationType.ERROR);
-        }
-        return null;
-    };
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

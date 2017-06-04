@@ -39,11 +39,11 @@ public class SubscriptionsContentView extends ContentView<Subscription> implemen
     }
 
     private void setColumns() {
-        companyCol.setCellValueFactory(new PropertyValueFactory<>("companyName"));
+        companyCol.setCellValueFactory(new PropertyValueFactory<>("company"));
         startCol.setCellValueFactory(new PropertyValueFactory<>("startDate"));
         endCol.setCellValueFactory(new PropertyValueFactory<>("endDate"));
         usersCol.setCellValueFactory(new PropertyValueFactory<>("noOfUsers"));
-        rateCol.setCellValueFactory(new PropertyValueFactory<>("rateName"));
+        rateCol.setCellValueFactory(new PropertyValueFactory<>("rate"));
     }
 
 }

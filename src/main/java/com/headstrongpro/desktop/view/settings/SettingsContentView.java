@@ -25,7 +25,6 @@ public class SettingsContentView extends ContentView<Log> implements Initializab
     @FXML
     public TableColumn<Log, Date> timeCol;
 
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setColumns();
@@ -35,9 +34,9 @@ public class SettingsContentView extends ContentView<Log> implements Initializab
     }
 
     private void setColumns() {
-        empIdCol.setCellValueFactory(new PropertyValueFactory<>("headstrongEmpID"));
+        empIdCol.setCellValueFactory(new PropertyValueFactory<>("headstrongEmpId"));
         tableCol.setCellValueFactory(new PropertyValueFactory<>("tableName"));
-        itemIdCol.setCellValueFactory(new PropertyValueFactory<>("itemID"));
+        itemIdCol.setCellValueFactory(new PropertyValueFactory<>("itemId"));
         actionCol.setCellValueFactory(new PropertyValueFactory<>("actionType"));
         timeCol.setCellValueFactory(new PropertyValueFactory<>("date"));
     }

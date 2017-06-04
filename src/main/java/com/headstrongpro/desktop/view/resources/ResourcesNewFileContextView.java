@@ -19,13 +19,12 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * Created by jakub on 26/05/2017.
+ * Resources New File Context View
  */
-public class ResourcesNewFileContext extends ContextView<Resource> implements Initializable {
+public class ResourcesNewFileContextView extends ContextView<Resource> implements Initializable {
+
     @FXML
-    public TextField newImageNameTextfield;
-    @FXML
-    public TextField newImageDescriptionTextfield;
+    public TextField newImageNameTextfield, newImageDescriptionTextfield;
     @FXML
     public Button selectFileButton;
     @FXML
