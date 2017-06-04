@@ -34,6 +34,7 @@ public class PaymentsContentView extends ContentView<Payment> implements Initial
 
         mainTable.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) -> {
             if (newValue != null) {
+                //noinspection unchecked
                 mainWindowView.getContextView().changeContextItem(newValue);
             }
         }));
