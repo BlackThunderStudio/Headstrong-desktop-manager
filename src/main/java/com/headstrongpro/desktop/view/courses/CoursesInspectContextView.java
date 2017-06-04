@@ -142,7 +142,7 @@ public class CoursesInspectContextView extends ContextView<Course> implements In
                 mainWindowView.getContentView().footer.hide();
                 int duration = (int) media.getDuration().toMillis();
                 mediaPlayer.seek(Duration.millis(duration * 0.25));
-                mediaPlayer.setVolume(0);
+                mediaPlayer.setVolume(0.01);
                 mediaPlayer.play();
                 Timeline timeline = new Timeline(
                   new KeyFrame(Duration.seconds(1),
@@ -153,13 +153,19 @@ public class CoursesInspectContextView extends ContextView<Course> implements In
                     @Override
                     protected Void call() throws Exception {
                         Thread.sleep((long) ((long) duration * PREVIEW_TIME_FRACTION));
-                        Platform.runLater(mediaPlayer::stop);
+                        Platform.runLater(() -> new Timeline(new KeyFrame(Duration.seconds(1), new KeyValue(mediaPlayer.volumeProperty(), 0))).play());
                         return null;
                     }
                 };
 
                 new Thread(waitTillTimeTrigger).start();
             });
+            mediaPlayer.volumeProperty().addListener(((observable, oldValue, newValue) -> {
+                if(oldValue.doubleValue() > newValue.doubleValue() && newValue.doubleValue() == 0.0){
+                    mediaPlayer.stop();
+                    System.out.println("Preview stopped.");
+                }
+            }));
             mediaPlayer.setOnError(() -> mainWindowView.getContentView().footer.show("Error!, Could not playback media!", Footer.NotificationType.ERROR));
             mediaPlayer.setOnEndOfMedia(mediaPlayer::stop);
         } catch (URISyntaxException | MalformedURLException e) {
