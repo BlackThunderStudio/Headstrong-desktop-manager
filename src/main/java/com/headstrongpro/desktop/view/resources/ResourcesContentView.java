@@ -38,9 +38,7 @@ public class ResourcesContentView extends ContentView<Resource> implements Initi
 
     //Table columns
     @FXML
-    public TableColumn<Resource, String> nameCol;
-    @FXML
-    public TableColumn<Resource, String> descCol;
+    public TableColumn<Resource, String> nameCol, descCol;
     @FXML
     public TableColumn<Resource, ResourceType> typeCol;
 
@@ -50,7 +48,6 @@ public class ResourcesContentView extends ContentView<Resource> implements Initi
 
     private ResourcesController controller;
     private ObservableList<Resource> resources;
-    private Resource selected;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

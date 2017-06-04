@@ -72,7 +72,7 @@ public class DBCompanyTest {
 
     @Test
     public void getCompanyNameByIdTest() throws Exception {
-        String name = companyDAO.getCompanyNameByID(1);
+        String name = companyDAO.getCompanyNameById(1);
         String expected = "Neas Energy A/S";
 
         assertEquals(expected, name);

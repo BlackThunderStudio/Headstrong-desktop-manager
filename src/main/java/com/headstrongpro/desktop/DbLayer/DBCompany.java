@@ -151,7 +151,7 @@ public class DBCompany extends Synchronizable implements IDataAccessObject<Compa
         }
     }
 
-    public String getCompanyNameByID(int id) throws ModelSyncException {
+    public String getCompanyNameById(int id) throws ModelSyncException {
         String result;
         try {
             dbConnect = new DBConnect();
