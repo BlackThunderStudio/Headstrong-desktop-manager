@@ -3,10 +3,10 @@ package com.headstrongpro.desktop.model;
 import java.sql.Date;
 
 /**
- * Payment model class
+ * Payment Model Entity
  */
 public class Payment {
-    boolean paid;
+    private boolean paid;
     private int id;
     private double value;
     private Date timestamp, dueDate;

@@ -17,6 +17,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * DB Payments
+ */
 public class DBPayment extends Synchronizable implements IDataAccessObject<Payment> {
 
     private DBConnect dbConnect;
@@ -62,7 +65,7 @@ public class DBPayment extends Synchronizable implements IDataAccessObject<Payme
 
     @Override
     public Payment getById(int id) throws ModelSyncException {
-        Payment payment = null;
+        Payment payment;
         try {
             dbConnect = new DBConnect();
             ResultSet rs = dbConnect.getFromDataBase("SELECT * FROM payments WHERE id=" + id + ";");
