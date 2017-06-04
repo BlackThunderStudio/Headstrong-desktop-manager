@@ -17,6 +17,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import org.controlsfx.control.CheckComboBox;
 
@@ -32,7 +33,7 @@ import java.util.stream.Collectors;
  * <p>
  * Created by rajmu on 17.06.03.
  */
-public class CoursesAudioResContextView extends ContextView<Course> implements Initializable {
+public class CoursesResContextView extends ContextView<Course> implements Initializable {
 
     @FXML
     public Label labelName;
@@ -42,12 +43,16 @@ public class CoursesAudioResContextView extends ContextView<Course> implements I
     public Button coursesNewCancelButton;
     @FXML
     public CheckComboBox<String> resourcesCombo;
+    @FXML
+    public ComboBox<String> typeCombo;
 
     private CoursesController controller;
     private ResourcesController resourcesController;
 
     private List<Resource> resources;
     private List<Resource> assignedBefore;
+
+    private static final String[] resTypes = {"All types", "Audio", "Image", "Text"};
 
     @FXML
     public void saveCourseOnClick(ActionEvent event) {
@@ -105,15 +110,25 @@ public class CoursesAudioResContextView extends ContextView<Course> implements I
 
     }
 
+    public ResourceType defineType(){
+        if(typeCombo.getValue().equals(resTypes[0])) return ResourceType.ANY;
+        else if(typeCombo.getValue().equals(resTypes[1])) return ResourceType.AUDIO;
+        else if(typeCombo.getValue().equals(resTypes[2])) return ResourceType.IMAGE;
+        else return ResourceType.TEXT;
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         controller = new CoursesController();
         resourcesController = new ResourcesController();
 
+        typeCombo.getItems().addAll(resTypes);
+        typeCombo.getSelectionModel().selectFirst();
+
         Task<List<Resource>> initResources = new Task<List<Resource>>() {
             @Override
             protected List<Resource> call() throws Exception {
-                return resourcesController.filterByType(ResourceType.AUDIO);
+                return resourcesController.getAll();
             }
         };
 
@@ -122,8 +137,12 @@ public class CoursesAudioResContextView extends ContextView<Course> implements I
                 this.resources = newValue;
                 resourcesCombo.getItems().addAll(this.resources.stream().map(Resource::getName).collect(Collectors.toList()));
                 try {
-                    assignedBefore = controller.getAssignedResources(contextItem).stream()
-                            .filter(e -> e.getType().equals(ResourceType.AUDIO)).collect(Collectors.toList());
+                    if(!defineType().equals(ResourceType.ANY)){
+                        assignedBefore = controller.getAssignedResources(contextItem).stream()
+                                .filter(e -> e.getType().equals(defineType())).collect(Collectors.toList());
+                    } else {
+                        assignedBefore = controller.getAssignedResources(contextItem);
+                    }
                     assignedBefore.stream()
                             .map(Resource::getName)
                             .forEach(e -> resourcesCombo.getCheckModel().check(e));
@@ -135,5 +154,24 @@ public class CoursesAudioResContextView extends ContextView<Course> implements I
         }));
 
         new Thread(initResources).start();
+
+        typeCombo.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) -> {
+            resourcesCombo.getItems().clear();
+            if(defineType().equals(ResourceType.ANY)){
+                resourcesCombo.getItems()
+                        .addAll(this.resources.stream()
+                                .map(Resource::getName)
+                                .collect(Collectors.toList()));
+            } else {
+                resourcesCombo.getItems()
+                        .addAll(this.resources.stream()
+                                .filter(e -> e.getType().equals(defineType()))
+                                .map(Resource::getName)
+                                .collect(Collectors.toList()));
+            }
+            assignedBefore.stream()
+                    .map(Resource::getName)
+                    .forEach(e -> resourcesCombo.getCheckModel().check(e));
+        }));
     }
 }
