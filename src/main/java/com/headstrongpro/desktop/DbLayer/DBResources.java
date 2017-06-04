@@ -425,16 +425,18 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
             for (int i = 0; i < resIDs.size() - 1; i++) {
                 simplifiedResIDs += resIDs.get(i) + ",";
             }
-            simplifiedResIDs += resIDs.get(resIDs.size());
-            qry = "SELECT * FROM resources WHERE id IN(" + simplifiedResIDs + ");";
-            rs = dbConnect.getFromDataBase(qry);
-            while (rs.next()) {
-                Resource resource = ResourceFactory.getResource(rs.getInt("id"),
-                        rs.getString("name"),
-                        rs.getString("description"),
-                        rs.getBoolean("is_for_achievement"),
-                        rs.getInt("type"));
-                resources.add(resource);
+            if(resIDs.size() > 0){
+                simplifiedResIDs += resIDs.get(resIDs.size() - 1);
+                qry = "SELECT * FROM resources WHERE id IN(" + simplifiedResIDs + ");";
+                rs = dbConnect.getFromDataBase(qry);
+                while (rs.next()) {
+                    Resource resource = ResourceFactory.getResource(rs.getInt("id"),
+                            rs.getString("name"),
+                            rs.getString("description"),
+                            rs.getBoolean("is_for_achievement"),
+                            rs.getInt("type"));
+                    resources.add(resource);
+                }
             }
             resources = prepareResources(resources);
         } catch (ConnectionException | SQLException e) {
@@ -449,7 +451,7 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
             dbConnect = new DBContext();
             PreparedStatement preparedStatement = dbConnect.getConnection().prepareStatement("INSERT INTO courses_resources(course_id, resource_id) VALUES (?,?);", PreparedStatement.RETURN_GENERATED_KEYS);
             preparedStatement.setInt(1, course.getId());
-            preparedStatement.setInt(1, resource.getID());
+            preparedStatement.setInt(2, resource.getID());
             preparedStatement.executeUpdate();
             try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
