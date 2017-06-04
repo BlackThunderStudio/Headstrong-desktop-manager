@@ -29,7 +29,7 @@
          </GridPane.margin></HTMLEditor>
         <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.halignment="RIGHT">
             <children>
-                <Button fx:id="editButton" contentDisplay="CENTER" maxWidth="90.0" minWidth="90.0" mnemonicParsing="false" onAction="#editButtonOnClick" prefWidth="90.0" text="Edit" />
+                <Button fx:id="saveButton" contentDisplay="CENTER" maxWidth="90.0" minWidth="90.0" mnemonicParsing="false" onAction="#editButtonOnClick" prefWidth="90.0" text="Edit" />
                 <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#deleteButtonOnClick" prefHeight="25.0" prefWidth="90.0" text="Delete" />
             </children>
             <GridPane.margin>

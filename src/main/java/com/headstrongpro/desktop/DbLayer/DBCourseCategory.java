@@ -85,7 +85,7 @@ public class DBCourseCategory extends Synchronizable implements IDataAccessObjec
                 throw new EmptyInputException("Name can not be empty");
             }
         } catch (EmptyInputException e) {
-            throw new ModelSyncException("Name can not be   e m p t y");
+            throw new ModelSyncException("Name can not be   e m p data y");
         } catch (ConnectionException | SQLException e) {
             throw new ModelSyncException("Could not persist new course category!", e);
         }
@@ -123,7 +123,7 @@ public class DBCourseCategory extends Synchronizable implements IDataAccessObjec
                 preparedStatement.execute();
                 logChange("s_categories", courseCategory.getId(), ActionType.DELETE);
             } catch (ConnectionException | SQLException e) {
-                throw new ModelSyncException("Couldn't delete course category of id=" + courseCategory.getId(), e);
+                throw new ModelSyncException("Couldn'data delete course category of id=" + courseCategory.getId(), e);
             }
         } else {
             throw new DatabaseOutOfSyncException();

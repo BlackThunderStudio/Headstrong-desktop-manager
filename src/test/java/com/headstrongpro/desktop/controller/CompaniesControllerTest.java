@@ -13,8 +13,8 @@ import static org.junit.Assert.*;
  */
 public class CompaniesControllerTest {
 
-    CompaniesController companiesController;
-    DBCompany companyDAO;
+    private CompaniesController companiesController;
+    private DBCompany companyDAO;
 
     @Before
     public void setUp() throws Exception {
@@ -23,32 +23,27 @@ public class CompaniesControllerTest {
     }
 
     @Test
-    public void constructor2() throws Exception{
-        assertEquals("Maersk", new CompaniesController(2).getCompanyById(2).getName());
-    }
-
-    @Test
     public void search() throws Exception {
-        assertNotNull(companiesController.search("neas"));
+        assertNotNull(companiesController.searchByPhrase("neas"));
     }
 
     @Test
-    public void validCompany(){
+    public void validCompany() {
         assertTrue(companiesController.validCompany("testcomp", String.valueOf(new Random().nextInt(500000) + 10000000), "teststreet", "123", "dummyville", "dummyland"));
     }
 
     @Test
     public void createDeleteCompany() throws Exception {
-        int oldSize = companiesController.getCompanies().size();
+        int oldSize = companiesController.getAll().size();
         companiesController.createCompany("testcomp", String.valueOf(new Random().nextInt(500000) + 10000000), "teststreet", "123", "dummyville", "dummyland");
-        assertNotEquals(oldSize, companiesController.getCompanies().size());
-        companiesController.deleteCompany(companiesController.search("testcomp").get(0).getId());
-        assertEquals(oldSize, companiesController.getCompanies().size());
+        assertNotEquals(oldSize, companiesController.getAll().size());
+        companiesController.delete(companiesController.searchByPhrase("testcomp").get(0));
+        assertEquals(oldSize, companiesController.getAll().size());
     }
 
     @Test
     public void getCompanies() throws Exception {
-        assertEquals(2, companiesController.getCompanies().size());
+        assertTrue(companiesController.getAll().size() > 0);
     }
 
     @Test
@@ -71,7 +66,7 @@ public class CompaniesControllerTest {
     }
 
     @Test
-    public void getSubcriptionByCompanyId() throws Exception {
+    public void getSubscriptionByCompanyId() throws Exception {
         assertEquals(1, companiesController.getSubscriptionByCompanyId(1).size());
     }
 

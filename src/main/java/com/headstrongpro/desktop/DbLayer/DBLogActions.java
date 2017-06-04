@@ -95,14 +95,14 @@ public class DBLogActions implements IDataAccessObject<Log> {
     @Deprecated
     @Override
     public void update(Log object) throws ModelSyncException {
-        //user shouldn't be able to update logs
+        //user shouldn'data be able to update logs
         throw new ModelSyncException("This method shall not be used!");
     }
 
     @Deprecated
     @Override
     public void delete(Log object) throws ModelSyncException {
-        //user shouldn't be able to delete logs
+        //user shouldn'data be able to delete logs
         throw new ModelSyncException("This method shall not be used!");
     }
 

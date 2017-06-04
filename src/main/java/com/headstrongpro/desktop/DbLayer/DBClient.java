@@ -1,28 +1,25 @@
 package com.headstrongpro.desktop.DbLayer;
 
+import com.headstrongpro.desktop.DbLayer.util.ActionType;
+import com.headstrongpro.desktop.DbLayer.util.IDataAccessObject;
+import com.headstrongpro.desktop.DbLayer.util.Synchronizable;
 import com.headstrongpro.desktop.core.connection.DBConnect;
 import com.headstrongpro.desktop.core.exception.ConnectionException;
 import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.model.entity.Client;
 import com.headstrongpro.desktop.model.entity.EntityFactory;
-import com.headstrongpro.desktop.model.entity.Person;
-import com.headstrongpro.desktop.DbLayer.util.ActionType;
-import com.headstrongpro.desktop.DbLayer.util.IDataAccessObject;
-import com.headstrongpro.desktop.DbLayer.util.Synchronizable;
 
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 /**
- * Created by rajmu on 17.05.15.
+ * DB Clients
  */
-public class DBClient extends Synchronizable implements IDataAccessObject<Person> {
+public class DBClient extends Synchronizable implements IDataAccessObject<Client> {
     private DBConnect connect;
 
     public DBClient() {
@@ -30,12 +27,13 @@ public class DBClient extends Synchronizable implements IDataAccessObject<Person
     }
 
     @Override
-    public List<Person> getAll() throws ModelSyncException {
-        List<Person> clients = new ArrayList<>();
+    public List<Client> getAll() throws ModelSyncException {
+        List<Client> clients = new ArrayList<>();
         try {
             connect = new DBConnect();
             //language=TSQL
-            String query = "SELECT * FROM clients";
+            String query = "SELECT *\n" +
+                    "FROM clients";
             ResultSet rs = connect.getFromDataBase(query);
             while (rs.next()) {
                 clients.add(EntityFactory.getClient(
@@ -43,7 +41,7 @@ public class DBClient extends Synchronizable implements IDataAccessObject<Person
                         rs.getString("name"),
                         rs.getString("email"),
                         String.valueOf(rs.getInt("phone_number")),
-                        (rs.getBoolean("gender")? "Male" : "Female"),
+                        (rs.getBoolean("gender") ? "Male" : "Female"),
                         rs.getString("login"),
                         rs.getString("pass"),
                         rs.getDate("date_registered"),
@@ -58,8 +56,8 @@ public class DBClient extends Synchronizable implements IDataAccessObject<Person
     }
 
     @Override
-    public Person getById(int id) throws ModelSyncException {
-        Person client = null;
+    public Client getById(int id) throws ModelSyncException {
+        Client client;
         try {
             connect = new DBConnect();
             ResultSet rs = connect.getFromDataBase("SELECT * FROM clients WHERE id=" + id + ";");
@@ -81,25 +79,25 @@ public class DBClient extends Synchronizable implements IDataAccessObject<Person
     }
 
     @Override
-    public Person persist(Person object) throws ModelSyncException {
-        Client newClient = (Client) object;
+    public Client persist(Client object) throws ModelSyncException {
         try {
             connect = new DBConnect();
-            String query = "INSERT INTO clients(name, email, phone_number, gender, login, pass, date_registered, company_id) VALUES (?,?,?,?,?,?,?,?);";
+            String query = "INSERT INTO clients (name, email, phone_number, gender, login, pass, date_registered, company_id)\n" +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
             PreparedStatement preparedStatement = connect.getConnection().prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
-            preparedStatement.setString(1, newClient.getName());
-            preparedStatement.setString(2, newClient.getEmail());
-            preparedStatement.setString(3, newClient.getPhone());
-            preparedStatement.setString(4, newClient.getGender());
-            preparedStatement.setString(5, newClient.getLogin());
-            preparedStatement.setString(6, newClient.getPassword());
-            preparedStatement.setDate(7, newClient.getRegistrationDate());
-            preparedStatement.setInt(8, newClient.getcompanyId());
+            preparedStatement.setString(1, object.getName());
+            preparedStatement.setString(2, object.getEmail());
+            preparedStatement.setString(3, object.getPhone());
+            preparedStatement.setBoolean(4, !object.getGender().equals("Male"));
+            preparedStatement.setString(5, object.getLogin());
+            preparedStatement.setString(6, object.getPassword());
+            preparedStatement.setDate(7, object.getRegistrationDate());
+            preparedStatement.setInt(8, object.getcompanyId());
             preparedStatement.executeUpdate();
             try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
-                    newClient.setId(generatedKeys.getInt(1));
-                    logChange("clients", newClient.getId(), ActionType.CREATE);
+                    object.setId(generatedKeys.getInt(1));
+                    logChange("clients", object.getId(), ActionType.CREATE);
                 } else {
                     throw new ModelSyncException("Creating new client failed! Could not retrieve the ID!");
                 }
@@ -107,28 +105,29 @@ public class DBClient extends Synchronizable implements IDataAccessObject<Person
         } catch (ConnectionException | SQLException e) {
             throw new ModelSyncException("Could not persist a client!", e);
         }
-        return newClient;
+        return object;
     }
 
     @Override
-    public void update(Person object) throws ModelSyncException, DatabaseOutOfSyncException {
-        Client client = (Client) object;
-        if (verifyIntegrity(client.getId())) {
+    public void update(Client object) throws ModelSyncException, DatabaseOutOfSyncException {
+        if (verifyIntegrity(object.getId())) {
             try {
                 connect = new DBConnect();
-                String query = "UPDATE clients SET name=?, email=?, phone_number=?, gender=?, login=?, pass=?, date_registered=?, company_id=? WHERE id=?;";
+                String query = "UPDATE clients\n" +
+                        "SET name = ?, email = ?, phone_number = ?, gender = ?, login = ?, pass = ?, date_registered = ?, company_id = ?\n" +
+                        "WHERE id = ?;";
                 PreparedStatement preparedStatement = connect.getConnection().prepareStatement(query);
-                preparedStatement.setString(1, client.getName());
-                preparedStatement.setString(2, client.getEmail());
-                preparedStatement.setString(3, client.getPhone());
-                preparedStatement.setBoolean(4, client.getGender().equals("Male")? true:false);
-                preparedStatement.setString(5, client.getLogin());
-                preparedStatement.setString(6, client.getPassword());
-                preparedStatement.setDate(7, client.getRegistrationDate());
-                preparedStatement.setInt(8, client.getcompanyId());
-                preparedStatement.setInt(9, client.getId());
+                preparedStatement.setString(1, object.getName());
+                preparedStatement.setString(2, object.getEmail());
+                preparedStatement.setString(3, object.getPhone());
+                preparedStatement.setBoolean(4, !object.getGender().equals("Male"));
+                preparedStatement.setString(5, object.getLogin());
+                preparedStatement.setString(6, object.getPassword());
+                preparedStatement.setDate(7, object.getRegistrationDate());
+                preparedStatement.setInt(8, object.getcompanyId());
+                preparedStatement.setInt(9, object.getId());
                 connect.uploadSafe(preparedStatement);
-                logChange("clients", client.getId(), ActionType.UPDATE);
+                logChange("clients", object.getId(), ActionType.UPDATE);
             } catch (ConnectionException | SQLException e) {
                 throw new ModelSyncException("Could not update a client!", e);
             }
@@ -138,7 +137,7 @@ public class DBClient extends Synchronizable implements IDataAccessObject<Person
     }
 
     @Override
-    public void delete(Person object) throws ModelSyncException, DatabaseOutOfSyncException {
+    public void delete(Client object) throws ModelSyncException, DatabaseOutOfSyncException {
         if (verifyIntegrity(object.getId())) {
             try {
                 connect = new DBConnect();
@@ -177,12 +176,12 @@ public class DBClient extends Synchronizable implements IDataAccessObject<Person
         }
     }
 
-    public List<Person> getByCompanyId(int id) throws ModelSyncException {
-        List<Person> clients = new ArrayList<>();
+    public List<Client> getByCompanyId(int id) throws ModelSyncException {
+        List<Client> clients = new ArrayList<>();
         try {
             connect = new DBConnect();
             //language=TSQL
-            String query = "SELECT * FROM clients WHERE company_id=" + id + ";";
+            String query = "SELECT * FROM clients WHERE company_id = " + id + ";";
             ResultSet rs = connect.getFromDataBase(query);
             while (rs.next()) {
                 clients.add(EntityFactory.getClient(

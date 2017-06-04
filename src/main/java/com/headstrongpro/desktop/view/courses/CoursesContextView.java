@@ -1,7 +1,6 @@
 package com.headstrongpro.desktop.view.courses;
 
 import com.headstrongpro.desktop.controller.CourseController;
-import com.headstrongpro.desktop.controller.ResourcesController;
 import com.headstrongpro.desktop.core.SyncHandler;
 import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
@@ -87,7 +86,7 @@ public class CoursesContextView extends ContextView<Course> implements Initializ
 
     private SyncHandler<Course> syncHandler = () -> {
         try {
-            return courseController.getByID(contextItem.getId());
+            return courseController.getById(contextItem.getId());
         } catch (ModelSyncException e1) {
             e1.printStackTrace();
             mainWindowView.getContentView().footer.show(e1.getMessage(), Footer.NotificationType.ERROR);

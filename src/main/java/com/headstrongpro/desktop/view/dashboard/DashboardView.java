@@ -71,11 +71,13 @@ public class DashboardView extends ContentView implements Initializable {
         timer.scheduleAtFixedRate(reload, delay, interval);
     }
 
+    @Override
     public void setMainWindowView(MainWindowView mainWindowView) {
         this.mainWindowView = mainWindowView;
     }
 
-    private void loadData() {
+    @Override
+    protected void loadData() {
         //tasks init
         loadCompanies = new Task<Void>() {
             @Override

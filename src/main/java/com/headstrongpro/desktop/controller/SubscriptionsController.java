@@ -21,11 +21,15 @@ public class SubscriptionsController implements Refreshable, IContentController<
     private List<Subscription> subscriptions;
     private DBSubscriptions subscriptionDAO;
 
+    /**
+     * Default constructor
+     */
     public SubscriptionsController() {
         subscriptions = new ArrayList<>();
         subscriptionDAO = new DBSubscriptions();
     }
 
+    @Override
     public ObservableList<Subscription> getAll() throws ModelSyncException {
         refresh();
         return FXCollections.observableArrayList(subscriptions);
@@ -40,7 +44,6 @@ public class SubscriptionsController implements Refreshable, IContentController<
     public List<PaymentRate> getRates() throws ConnectionException {
         return subscriptionDAO.getRates();
     }
-
 
     @Override
     public ObservableList<Subscription> searchByPhrase(String input) {
@@ -71,7 +74,7 @@ public class SubscriptionsController implements Refreshable, IContentController<
     }
 
     @Override
-    public Subscription getByID(int id) throws ModelSyncException {
+    public Subscription getById(int id) throws ModelSyncException {
         return subscriptionDAO.getById(id);
     }
 }

@@ -5,7 +5,7 @@ package com.headstrongpro.desktop.core.exception;
  */
 public class DatabaseOutOfSyncException extends Exception {
     public DatabaseOutOfSyncException() {
-        super("The database contains newer data, therefore this operation would disintegrate the system. Ain't gonna happen!");
+        super("The database contains newer data, therefore this operation would disintegrate the system. Ain'data gonna happen!");
     }
 
     public DatabaseOutOfSyncException(String message) {

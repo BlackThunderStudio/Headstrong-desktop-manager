@@ -1,13 +1,10 @@
 package com.headstrongpro.desktop.view.subscriptions;
 
 import com.headstrongpro.desktop.controller.SubscriptionsController;
-import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.core.fxControls.Footer;
 import com.headstrongpro.desktop.model.Subscription;
 import com.headstrongpro.desktop.view.ContentView;
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -28,10 +25,6 @@ public class SubscriptionsContentView extends ContentView<Subscription> implemen
     @FXML
     public TableColumn<Subscription, String> companyCol, startCol, endCol, usersCol, rateCol;
 
-    private SubscriptionsController controller; // Data controller
-    private ObservableList<Subscription> subscriptions = FXCollections.observableArrayList();
-    private Subscription selected;
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setColumns();
@@ -41,21 +34,19 @@ public class SubscriptionsContentView extends ContentView<Subscription> implemen
             protected Void call() throws Exception {
                 Platform.runLater(() -> footer.show("Loading subscriptions...", Footer.NotificationType.LOADING));
                 controller = new SubscriptionsController();
-                loadSubscriptions();
+                loadData();
                 return null;
             }
         };
 
         init.stateProperty().addListener(((observable, oldValue, newValue) -> {
             if (newValue.equals(SUCCEEDED)) {
-                loadTable(subscriptions);
+                loadTable(data);
                 footer.show("Subscriptions loaded successfully!", Footer.NotificationType.COMPLETED);
             } else if (newValue.equals(FAILED) || newValue.equals(CANCELLED)) {
                 footer.show("Error while loading subscriptions!", Footer.NotificationType.ERROR, Footer.FADE_LONG);
             }
         }));
-
-        new Thread(init).start();
 
         mainTable.getSelectionModel().selectedItemProperty().addListener((o, e, c) -> {
             if (c != null) {
@@ -65,6 +56,10 @@ public class SubscriptionsContentView extends ContentView<Subscription> implemen
                 mainWindowView.getContextView().changeContextItem(selected);
             }
         });
+
+        Thread th = new Thread(init);
+        th.setDaemon(true);
+        th.start();
     }
 
     private void setColumns() {
@@ -73,16 +68,6 @@ public class SubscriptionsContentView extends ContentView<Subscription> implemen
         endCol.setCellValueFactory(new PropertyValueFactory<>("endDate"));
         usersCol.setCellValueFactory(new PropertyValueFactory<>("noOfUsers"));
         rateCol.setCellValueFactory(new PropertyValueFactory<>("rateName"));
-    }
-
-    private void loadSubscriptions() {
-        try {
-            System.out.println(subscriptions.size());
-            subscriptions = FXCollections.observableArrayList(controller.getAll());
-        } catch (ModelSyncException e) {
-            e.printStackTrace();
-            footer.show(e.getMessage(), Footer.NotificationType.ERROR, Footer.FADE_QUICK);
-        }
     }
 
 }

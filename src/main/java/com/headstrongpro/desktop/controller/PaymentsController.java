@@ -44,7 +44,7 @@ public class PaymentsController implements Refreshable, IContentController<Payme
     }
 
     @Override
-    public Payment getByID(int id) throws ModelSyncException {
+    public Payment getById(int id) throws ModelSyncException {
         return dbPayment.getById(id);
     }
 

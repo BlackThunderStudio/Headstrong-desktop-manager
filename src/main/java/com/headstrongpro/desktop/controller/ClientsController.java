@@ -6,7 +6,6 @@ import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.model.entity.Client;
 import com.headstrongpro.desktop.model.entity.Company;
-import com.headstrongpro.desktop.model.entity.Person;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -17,8 +16,8 @@ import java.util.stream.Collectors;
 /**
  * Clients controller
  */
-public class ClientsController implements Refreshable {
-    private List<Person> clients;
+public class ClientsController implements Refreshable, IContentController<Client> {
+    private List<Client> clients;
     private DBClient clientsDAO;
     private DBCompany companyDAO;
 
@@ -28,28 +27,37 @@ public class ClientsController implements Refreshable {
         companyDAO = new DBCompany();
     }
 
-    public ObservableList<Person> getClients() throws ModelSyncException {
+    @Override
+    public ObservableList<Client> getAll() throws ModelSyncException {
         refresh();
         return FXCollections.observableArrayList(clientsDAO.getAll());
     }
 
-    public List<Person> search(String keyword) throws ModelSyncException {
-        if (keyword == null) throw new NullPointerException();
-        return FXCollections.observableArrayList(clients.stream().filter(e -> String.valueOf(e.getId()).contains(keyword) ||
-                e.getName().toLowerCase().contains(keyword.toLowerCase()) ||
-                e.getEmail().toLowerCase().contains(keyword.toLowerCase()) ||
-                e.getPhone().toLowerCase().contains(keyword.toLowerCase()) ||
-                e.getGender().toLowerCase().contains(keyword.toLowerCase())).collect(Collectors.toList()));
+    @Override
+    public ObservableList<Client> searchByPhrase(String input) {
+        if (input == null) throw new NullPointerException();
+        return FXCollections.observableArrayList(clients.stream().filter(e -> String.valueOf(e.getId()).contains(input) ||
+                e.getName().toLowerCase().contains(input.toLowerCase()) ||
+                e.getEmail().toLowerCase().contains(input.toLowerCase()) ||
+                e.getPhone().toLowerCase().contains(input.toLowerCase()) ||
+                e.getGender().toLowerCase().contains(input.toLowerCase())).collect(Collectors.toList()));
     }
 
-    public Person getById(int id) throws ModelSyncException {
+    @Override
+    public void delete(Client client) throws DatabaseOutOfSyncException, ModelSyncException {
+        clientsDAO.delete(client);
+        refresh();
+    }
+
+    @Override
+    public Client getById(int id) throws ModelSyncException {
         if (id > 0) {
             return clientsDAO.getById(id);
         } else throw new IllegalStateException("Id must be greater than 0!");
     }
 
     public void updateClient(int id, String name, String email, String phone, String gender) throws ModelSyncException, DatabaseOutOfSyncException {
-        Client client = (Client) clientsDAO.getById(id);
+        Client client = clientsDAO.getById(id);
         client.setName(name);
         client.setEmail(email);
         client.setPhone(phone);
@@ -67,6 +75,11 @@ public class ClientsController implements Refreshable {
     }
 
     public Client createNew(Client c) throws ModelSyncException {
-        return (Client)clientsDAO.persist(c);
+        return clientsDAO.persist(c);
+    }
+
+    @Override
+    public void edit(Client client) throws DatabaseOutOfSyncException, ModelSyncException {
+
     }
 }

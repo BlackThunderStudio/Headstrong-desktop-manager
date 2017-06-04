@@ -99,7 +99,7 @@ public class TcDigest {
                 } else {
                     /*if(system.equals(DigestSystem.BIN)){
                         output.append(systemChange.toNumericSystem(character + digestHash, 2)); //computes the output value
-                    }*/ //doesn't work
+                    }*/ //doesn'data work
                     if(system.equals(DigestSystem.HEX)){
                         output.append(systemChange.toNumericSystem(character + digestHash, 16)); //computes the output value
                     }
@@ -121,7 +121,7 @@ public class TcDigest {
                             throw new DigestRuntimeException("Error processing data. Invalid String to integer conversion. Could not convert BIN encrypted data into a String.\n" + ex.getMessage(),
                                     ex.getCause());
                         }
-                    }*/ //doesn't work
+                    }*/ //doesn'data work
                     if(system.equals(DigestSystem.HEX)){
                         try{
                             output.append((char) (Integer.parseInt(systemChange.toDecimal(temp, 16)) - digestHash)); //computes the original character by it's encrypted value
@@ -217,7 +217,7 @@ public class TcDigest {
 
     public enum DigestSystem {
         UTF8,
-        //BIN, doesn't work for some reason
+        //BIN, doesn'data work for some reason
         HEX
     }
 

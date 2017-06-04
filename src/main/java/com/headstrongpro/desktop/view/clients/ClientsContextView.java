@@ -35,8 +35,6 @@ public class ClientsContextView extends ContextView<Client> implements Initializ
     @FXML
     public Button clientsCompanyButton, clientsGroupsButton, clientsDepartmentsButton;
 
-    private ClientsController controller; // Data controller
-
     private SyncHandler handler = () -> {
         try {
             return controller.getById(contextItem.getId());
@@ -83,6 +81,7 @@ public class ClientsContextView extends ContextView<Client> implements Initializ
 
     @FXML
     public void handleEdit() {
+        ClientsController controller = (ClientsController) this.controller;
         if (validateInput(nameField, emailField, phoneField)) {
             try {
                 mainWindowView.getContentView().footer.show("Updating client...", Footer.NotificationType.LOADING);
@@ -107,7 +106,7 @@ public class ClientsContextView extends ContextView<Client> implements Initializ
 
     @FXML
     public void handleDelete() {
-        // TODO: implement
+        handleDelete(handler, contextItem.getName());
     }
 
     @FXML

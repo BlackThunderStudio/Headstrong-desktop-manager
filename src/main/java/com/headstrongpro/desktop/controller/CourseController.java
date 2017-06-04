@@ -65,7 +65,7 @@ public class CourseController implements Refreshable, IContentController<Course>
     }
 
     @Override
-    public Course getByID(int id) throws ModelSyncException {
+    public Course getById(int id) throws ModelSyncException {
         return dbCourse.getById(id);
     }
 

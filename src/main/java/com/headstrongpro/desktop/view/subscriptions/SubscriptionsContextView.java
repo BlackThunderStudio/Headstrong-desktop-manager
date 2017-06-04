@@ -14,14 +14,16 @@ import javafx.concurrent.Task;
 import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.util.StringConverter;
 
 import java.net.URL;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 import static com.headstrongpro.desktop.core.Utils.dateFormatter;
@@ -51,7 +53,7 @@ public class SubscriptionsContextView extends ContextView<Subscription> implemen
 
     private SyncHandler<Subscription> handler = () -> {
         try {
-            return controller.getByID(contextItem.getId());
+            return controller.getById(contextItem.getId());
         } catch (ModelSyncException e) {
             e.printStackTrace();
             mainWindowView.getContentView().footer.show(e.getMessage(), Footer.NotificationType.ERROR);
@@ -94,6 +96,13 @@ public class SubscriptionsContextView extends ContextView<Subscription> implemen
             }
         });
 
+        try {
+            for (PaymentRate pr : controller.getRates())
+                rateComboBox.getItems().add(pr.getName());
+        } catch (ConnectionException e) {
+            e.printStackTrace();
+        }
+
         rateComboBox.getSelectionModel()
                 .selectedItemProperty()
                 .addListener(((observable, oldValue, newValue) -> {
@@ -104,13 +113,6 @@ public class SubscriptionsContextView extends ContextView<Subscription> implemen
                 }));
 
         setDefaults();
-
-        try {
-            for (PaymentRate pr : controller.getRates())
-                rateComboBox.getItems().add(pr.getName());
-        } catch (ConnectionException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -163,11 +165,9 @@ public class SubscriptionsContextView extends ContextView<Subscription> implemen
             contextItem.setStartDate(Date.valueOf(startDatePicker.getEditor().getText()));
             contextItem.setEndDate(Date.valueOf(endDatePicker.getEditor().getText()));
             contextItem.setActive(true);
-            contextItem.setRate(rates
-                    .stream()
+            contextItem.setRate(rates.stream()
                     .filter(e -> e.getName().equals(rateComboBox.getValue()))
-                    .findFirst()
-                    .get());
+                    .findFirst().orElse(null));
             try {
                 mainWindowView.getContentView().footer.show("Updating subscription...", Footer.NotificationType.LOADING);
                 controller.edit(contextItem);
@@ -187,23 +187,7 @@ public class SubscriptionsContextView extends ContextView<Subscription> implemen
 
     @FXML
     public void handleDelete() {
-        Alert a = new Alert(Alert.AlertType.CONFIRMATION);
-        a.setHeaderText("Are you sure you want to delete a selected item?");
-        a.setContentText("You cannot take that action back");
-        Optional<ButtonType> response = a.showAndWait();
-        response.ifPresent(btn -> {
-            if (ButtonType.OK.equals(btn)) {
-                try {
-                    controller.delete(contextItem);
-                } catch (DatabaseOutOfSyncException e) {
-                    e.printStackTrace();
-                    handleOutOfSync(handler);
-                } catch (ModelSyncException e) {
-                    e.printStackTrace();
-                    mainWindowView.getContentView().footer.show(e.getMessage(), Footer.NotificationType.ERROR, Footer.FADE_LONG);
-                }
-            }
-        });
+        handleDelete(handler, "the subscription");
     }
 
     private void getRates() {
@@ -215,13 +199,15 @@ public class SubscriptionsContextView extends ContextView<Subscription> implemen
         }
     }
 
+    // TODO: fix NullPointerException
     private void initTotalAmount() {
-        totalPriceLabel.setText(String.valueOf(
-                PRICE_PER_USER * contextItem.getNoOfUsers() * rates.stream()
-                        .filter(e -> e.getName().equals(rateComboBox.getValue()))
-                        .map(PaymentRate::getNumberOfMonths)
-                        .findFirst()
-                        .get()
-        ));
+        if (contextItem != null) {
+            totalPriceLabel.setText(String.valueOf(
+                    PRICE_PER_USER * contextItem.getNoOfUsers() * rates.stream()
+                            .filter(e -> e.getName().equals(rateComboBox.getValue()))
+                            .map(PaymentRate::getNumberOfMonths)
+                            .findFirst().orElse(null)
+            ));
+        }
     }
 }

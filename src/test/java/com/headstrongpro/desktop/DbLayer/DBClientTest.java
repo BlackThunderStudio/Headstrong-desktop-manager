@@ -1,7 +1,6 @@
 package com.headstrongpro.desktop.DbLayer;
 
 import com.headstrongpro.desktop.model.entity.Client;
-import com.headstrongpro.desktop.model.entity.Person;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -24,7 +23,7 @@ public class DBClientTest {
 
     @Test
     public void getAll() throws Exception {
-        List<Person> people = clientDAO.getAll();
+        List<Client> people = clientDAO.getAll();
 
         assertNotNull(people);
         assertNotEquals(0, people.size());
@@ -32,7 +31,7 @@ public class DBClientTest {
 
     @Test
     public void getById() throws Exception {
-        Client p = (Client) clientDAO.getById(4);
+        Client p = clientDAO.getById(4);
         assertEquals("Tom Christiansen", p.getName());
     }
 
@@ -49,7 +48,7 @@ public class DBClientTest {
 
     @Test
     public void update() throws Exception {
-        Client client = (Client) clientDAO.getById(1);
+        Client client = clientDAO.getById(1);
         String oldName, newName = "dummy";
         oldName = client.getName();
         client.setName(newName);
@@ -62,7 +61,7 @@ public class DBClientTest {
 
     @Test
     public void getByCompanyId() throws Exception {
-        List<Person> clients =  clientDAO.getByCompanyId(1);
+        List<Client> clients = clientDAO.getByCompanyId(1);
         assertNotEquals("No clients were found for the company specified", 0, clients.size());
     }
 

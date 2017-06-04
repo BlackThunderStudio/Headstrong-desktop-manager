@@ -44,7 +44,7 @@
         </GridPane.margin>
         <Button fx:id="toggleEditButton" mnemonicParsing="false" onMouseClicked="#toggleEditMode" text="Edit"/>
         <Button fx:id="deleteButton" mnemonicParsing="false" onMouseClicked="#handleDelete" text="Delete"/>
-        <Button fx:id="editButton" mnemonicParsing="false" onMouseClicked="#handleEdit" text="Save"/>
+        <Button fx:id="saveButton" mnemonicParsing="false" onMouseClicked="#handleEdit" text="Save"/>
         <Button fx:id="cancelButton" mnemonicParsing="false" onMouseClicked="#handleCancel" text="Cancel"/>
     </HBox>
     <GridPane hgap="10.0" vgap="10.0" GridPane.rowIndex="7">

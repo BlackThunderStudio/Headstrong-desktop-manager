@@ -28,10 +28,6 @@ public class MainWindowView extends RootLayoutView implements Initializable {
     private ContentView contentView;
     private ContextView contextView;
 
-    public ContentSource getCurrentContentSource() {
-        return currentContentSource;
-    }
-
     private ContentSource currentContentSource;
 
     private boolean fullContentMode;

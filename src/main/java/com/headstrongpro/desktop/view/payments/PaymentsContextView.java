@@ -6,7 +6,6 @@ import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.core.fxControls.Footer;
 import com.headstrongpro.desktop.model.Payment;
-import com.headstrongpro.desktop.model.resource.Resource;
 import com.headstrongpro.desktop.view.ContextView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -122,7 +121,7 @@ public class PaymentsContextView extends ContextView<Payment> implements Initial
 
     private SyncHandler<Payment> syncHandler = () -> {
         try {
-            return controller.getByID(contextItem.getId());
+            return controller.getById(contextItem.getId());
         } catch (ModelSyncException e1) {
             e1.printStackTrace();
             mainWindowView.getContentView().footer.show(e1.getMessage(), Footer.NotificationType.ERROR);

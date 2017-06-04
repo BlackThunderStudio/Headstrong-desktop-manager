@@ -146,7 +146,7 @@ public class DBCompany extends Synchronizable implements IDataAccessObject<Compa
 
                 new DBDepartments().deleteByCompanyID(company.getId());
             } catch (ConnectionException | SQLException e) {
-                throw new ModelSyncException("Couldn't delete the company of id=" + company.getId(), e);
+                throw new ModelSyncException("Couldn'data delete the company of id=" + company.getId(), e);
             }
         } else {
             throw new DatabaseOutOfSyncException();
@@ -161,7 +161,7 @@ public class DBCompany extends Synchronizable implements IDataAccessObject<Compa
             rs.next();
             result = rs.getString(1);
         } catch (ConnectionException | SQLException e) {
-            throw new ModelSyncException("Couldn't fetch the company name of id=" + id, e);
+            throw new ModelSyncException("Couldn'data fetch the company name of id=" + id, e);
         }
         return result;
     }

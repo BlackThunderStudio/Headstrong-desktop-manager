@@ -44,7 +44,7 @@
             </GridPane.margin>
         </TextField>
         <Button fx:id="refreshButton" maxWidth="90.0" minWidth="90.0" mnemonicParsing="false"
-                onAction="#refreshButtonOnClick" prefWidth="90.0" text="Refresh">
+                onAction="#handleRefresh" prefWidth="90.0" text="Refresh">
             <GridPane.margin>
                 <Insets left="20.0"/>
             </GridPane.margin>

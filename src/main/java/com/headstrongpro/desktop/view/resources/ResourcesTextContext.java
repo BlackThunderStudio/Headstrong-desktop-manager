@@ -132,7 +132,7 @@ public class ResourcesTextContext extends ContextView<TextResource> implements I
 
     private void sendToPreview() {
         String html = textResourcesEditor.getHtmlText();
-        textResourcesPreviewWeb.getEngine().load(html); //TODO: for some reason doesn't work
+        textResourcesPreviewWeb.getEngine().load(html); //TODO: for some reason doesn'data work
     }
 
     @FXML

@@ -11,6 +11,7 @@ import javafx.collections.ObservableList;
  * Created by rajmu on 17.06.01.
  */
 public interface IContentController<T extends Object> {
+
     ObservableList<T> getAll() throws ModelSyncException;
 
     ObservableList<T> searchByPhrase(String input);
@@ -21,5 +22,7 @@ public interface IContentController<T extends Object> {
 
     void edit(T t) throws DatabaseOutOfSyncException, ModelSyncException;
 
-    T getByID(int id) throws ModelSyncException;
+    T getById(int id) throws ModelSyncException;
+
+    ;
 }

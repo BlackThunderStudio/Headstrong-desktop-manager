@@ -109,7 +109,7 @@ public class PaymentsContentView extends ContentView<Payment> implements Initial
     }
 
     @FXML
-    public void refreshButtonOnClick() {
+    public void handleRefresh() {
         searchPaymentsTextfield.clear();
         Task<Void> sync = new Task<Void>() {
             @Override

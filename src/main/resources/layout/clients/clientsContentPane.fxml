@@ -46,7 +46,7 @@
             <Insets left="20.0"/>
         </GridPane.margin>
     </Footer>
-    <Button fx:id="addNewButton" maxWidth="110.0" minWidth="110.0" mnemonicParsing="false" onAction="#addNewOnClick"
+    <Button fx:id="addNewButton" maxWidth="110.0" minWidth="110.0" mnemonicParsing="false" onAction="#addNewButtonOnClick"
             prefWidth="110.0" text="New" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
         <GridPane.margin>
             <Insets right="20.0"/>
@@ -68,12 +68,12 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
         </rowConstraints>
         <Button fx:id="refreshButton" maxWidth="60.0" minWidth="90.0" mnemonicParsing="false"
-                onAction="#refreshButtonOnClick" prefHeight="20.0" prefWidth="60.0" text="Refresh">
+                onAction="#handleRefresh" prefHeight="20.0" prefWidth="60.0" text="Refresh">
             <GridPane.margin>
                 <Insets left="20.0"/>
             </GridPane.margin>
         </Button>
-        <TextField fx:id="searchField" onKeyReleased="#clientSearch" prefHeight="25.0" promptText="Search"
+        <TextField fx:id="searchField" onKeyReleased="#handleSearch" prefHeight="25.0" promptText="Search"
                    GridPane.columnIndex="1">
             <GridPane.margin>
                 <Insets left="20.0" right="20.0"/>

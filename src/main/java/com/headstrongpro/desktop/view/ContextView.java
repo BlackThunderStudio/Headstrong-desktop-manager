@@ -1,6 +1,9 @@
 package com.headstrongpro.desktop.view;
 
+import com.headstrongpro.desktop.controller.IContentController;
 import com.headstrongpro.desktop.core.SyncHandler;
+import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
+import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.core.fxControls.Footer;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -17,7 +20,7 @@ public abstract class ContextView<T> {
 
     // Top controls
     @FXML
-    public Button toggleEditButton, editButton, cancelButton, deleteButton;
+    public Button toggleEditButton, saveButton, cancelButton, deleteButton;
 
     @FXML
     public HBox topControls; // Horizontal row with top controls
@@ -25,6 +28,8 @@ public abstract class ContextView<T> {
     protected T contextItem = null; // Currently set context item
 
     protected MainWindowView mainWindowView; // Main view controller
+
+    protected IContentController<T> controller;
 
     protected ArrayList<TextField> textFields = new ArrayList<>(); // List of form text fields
     protected ArrayList<RadioButton> radioButtons = new ArrayList<>(); // List of form text fields
@@ -103,7 +108,7 @@ public abstract class ContextView<T> {
      * By default, hide buttons of editing mode and disable changing fields
      */
     protected void setDefaults() {
-        topControls.getChildren().removeAll(editButton, cancelButton);
+        topControls.getChildren().removeAll(saveButton, cancelButton);
         textFields.forEach(tf -> tf.setEditable(false));
         radioButtons.forEach(rb -> rb.setDisable(true));
     }
@@ -111,17 +116,40 @@ public abstract class ContextView<T> {
     @FXML
     public void toggleEditMode() {
         if (editMode) {
-            topControls.getChildren().removeAll(editButton, cancelButton);
+            topControls.getChildren().removeAll(saveButton, cancelButton);
             topControls.getChildren().addAll(toggleEditButton, deleteButton);
             textFields.forEach(tf -> tf.setEditable(false));
             radioButtons.forEach(rb -> rb.setDisable(true));
         } else {
             topControls.getChildren().removeAll(toggleEditButton, deleteButton);
-            topControls.getChildren().addAll(editButton, cancelButton);
+            topControls.getChildren().addAll(saveButton, cancelButton);
             textFields.forEach(tf -> tf.setEditable(true));
             radioButtons.forEach(rb -> rb.setDisable(false));
         }
         editMode = !editMode;
+    }
+
+    protected void handleDelete(SyncHandler handler, String name) {
+        Alert a = new Alert(Alert.AlertType.CONFIRMATION);
+        a.setHeaderText(String.format("Are you sure you want to delete %s from the list?", name));
+        a.setContentText("You cannot take that action back");
+        Optional<ButtonType> response = a.showAndWait();
+        response.ifPresent(btn -> {
+            if (ButtonType.OK.equals(btn)) {
+                try {
+                    mainWindowView.getContentView().footer.show("Deleting " + name + "...", Footer.NotificationType.LOADING);
+                    controller.delete(contextItem);
+                    mainWindowView.getContentView().footer.show("Entry deleted.", Footer.NotificationType.COMPLETED);
+                    mainWindowView.getContentView().handleRefresh();
+                } catch (ModelSyncException e) {
+                    e.printStackTrace();
+                    mainWindowView.getContentView().footer.show(e.getMessage(), Footer.NotificationType.ERROR, Footer.FADE_LONG);
+                } catch (DatabaseOutOfSyncException e) {
+                    handleOutOfSync(handler);
+                }
+            }
+        });
+        clearFields();
     }
 
     @FXML

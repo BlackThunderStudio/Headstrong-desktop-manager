@@ -9,14 +9,11 @@ import com.headstrongpro.desktop.model.entity.Company;
 import com.headstrongpro.desktop.view.ContextView;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 
 import java.net.URL;
 import java.util.Arrays;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 /**
@@ -32,11 +29,9 @@ public class CompaniesContextView extends ContextView<Company> implements Initia
     @FXML
     public Button companyDepartmentsButton, companyClientsButton, companyGroupsButton, companySubscriptionsButton;
 
-    private CompaniesController controller; // Data controller
-
     private SyncHandler handler = () -> {
         try {
-            return controller.getCompanyById(contextItem.getId());
+            return controller.getById(contextItem.getId());
         } catch (ModelSyncException e) {
             e.printStackTrace();
             mainWindowView.getContentView().footer.show(e.getMessage(), Footer.NotificationType.ERROR);
@@ -72,6 +67,7 @@ public class CompaniesContextView extends ContextView<Company> implements Initia
 
     @FXML
     public void handleEdit() {
+        CompaniesController controller = (CompaniesController) this.controller;
         if (controller.validCompany(nameField.getText(),
                 cvrField.getText(),
                 streetField.getText(),
@@ -88,7 +84,7 @@ public class CompaniesContextView extends ContextView<Company> implements Initia
                         cityField.getText(),
                         countryField.getText());
                 mainWindowView.getContentView().footer.show("Company updated.", Footer.NotificationType.COMPLETED);
-                mainWindowView.getContentView().refreshButton.fire();
+                mainWindowView.getContentView().handleRefresh();
             } catch (ModelSyncException e) {
                 e.fillInStackTrace();
                 mainWindowView.getContentView().footer.show("Error! Could not update company!", Footer.NotificationType.ERROR, Footer.FADE_LONG);
@@ -101,25 +97,7 @@ public class CompaniesContextView extends ContextView<Company> implements Initia
 
     @FXML
     public void handleDelete() {
-        Alert a = new Alert(Alert.AlertType.CONFIRMATION);
-        a.setHeaderText(String.format("Are you sure you want to delete %s from the list?", contextItem.getName()));
-        a.setContentText("You cannot take that action back");
-        Optional<ButtonType> response = a.showAndWait();
-        response.ifPresent(btn -> {
-            if (ButtonType.OK.equals(btn)) {
-                try {
-                    mainWindowView.getContentView().footer.show("Deleting " + contextItem.getName() + "...", Footer.NotificationType.LOADING);
-                    controller.deleteCompany(contextItem.getId());
-                    mainWindowView.getContentView().footer.show("Company deleted.", Footer.NotificationType.COMPLETED);
-                    mainWindowView.getContentView().refreshButton.fire();
-                } catch (ModelSyncException e) {
-                    e.printStackTrace();
-                    mainWindowView.getContentView().footer.show(e.getMessage(), Footer.NotificationType.ERROR, Footer.FADE_LONG);
-                } catch (DatabaseOutOfSyncException e) {
-                    handleOutOfSync(handler);
-                }
-            }
-        });
+        handleDelete(handler, contextItem.getName());
     }
 
     @FXML
