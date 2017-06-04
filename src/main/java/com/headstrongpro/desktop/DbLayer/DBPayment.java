@@ -9,6 +9,7 @@ import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.model.Payment;
 import com.headstrongpro.desktop.model.Subscription;
+import com.headstrongpro.desktop.model.entity.Company;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -29,12 +30,20 @@ public class DBPayment extends Synchronizable implements IDataAccessObject<Payme
         List<Payment> payments = new ArrayList<>();
         try {
             dbConnect = new DBConnect();
-            String query = "SELECT * FROM payments";
+            String query = "SELECT p.id, value, timestamp, due_date, paid, subscription_id, " +
+                    "c.id AS company_id, c.name AS company_name, c.cvr " +
+                    "FROM [payments] AS p " +
+                    "INNER JOIN subscriptions AS s ON s.id = p.subscription_id " +
+                    "INNER JOIN companies AS c ON c.id = s.company_id;";
             ResultSet rs = dbConnect.getFromDataBase(query);
-            //DBPayment dbPayment = new DBPayment();
-            DBSubscriptions dbSubs = new DBSubscriptions();
             while (rs.next()) {
-                Subscription subscription = dbSubs.getById(rs.getInt("subscription_id"));
+                Subscription subscription = new Subscription();
+                subscription.setId(rs.getInt("subscription_id"));
+                Company company = new Company();
+                company.setId(rs.getInt("company_id"));
+                company.setName(rs.getString("company_name"));
+                company.setCvr(rs.getString("cvr"));
+                subscription.setCompany(company);
                 payments.add(new Payment(
                         rs.getInt("id"),
                         rs.getDouble("value"),

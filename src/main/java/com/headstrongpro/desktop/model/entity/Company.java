@@ -7,6 +7,9 @@ public class Company {
     private int id;
     private String name, cvr, street, postal, city, country;
 
+    public Company() {
+    }
+
     public Company(int id, String name, String cvr, String street, String postal, String city, String country) {
         this.id = id;
         this.name = name;

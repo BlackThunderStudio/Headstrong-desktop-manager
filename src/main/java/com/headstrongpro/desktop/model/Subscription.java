@@ -15,6 +15,9 @@ public class Subscription {
     private Company company;
     private String rateName, companyName;
 
+    public Subscription() {
+    }
+
     public Subscription(int id, int noOfUsers, boolean isActive, Date startDate, Date endDate, PaymentRate rate, Company company) {
         this.id = id;
         this.noOfUsers = noOfUsers;
@@ -37,7 +40,6 @@ public class Subscription {
         rateName = rate.getName();
         companyName = company.getName();
     }
-
 
     public int getId() {
         return id;
@@ -97,5 +99,9 @@ public class Subscription {
 
     public String getCompanyName() {
         return companyName;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
     }
 }
