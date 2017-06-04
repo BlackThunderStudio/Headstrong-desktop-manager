@@ -31,7 +31,8 @@ public class CompaniesContentView extends ContentView<Company> implements Initia
 
         mainTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
-                footer.show(newValue.getName() + " selected.", Footer.NotificationType.INFORMATION, Footer.FADE_SUPER_QUICK);
+                footer.show(newValue.getName() + " selected.",
+                        Footer.NotificationType.INFORMATION, Footer.FADE_SUPER_QUICK);
                 //noinspection unchecked
                 mainWindowView.getContextView().changeContextItem(newValue);
             }

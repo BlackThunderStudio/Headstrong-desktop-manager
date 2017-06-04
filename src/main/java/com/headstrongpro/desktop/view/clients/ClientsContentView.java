@@ -34,10 +34,12 @@ public class ClientsContentView extends ContentView<Client> implements Initializ
 
         loadData();
 
-        mainTable.getSelectionModel().selectedItemProperty().addListener((o, e, c) -> {
-            if (c != null) {
-                footer.show(c.getName() + " selected.", Footer.NotificationType.INFORMATION, Footer.FADE_SUPER_QUICK);
-                mainWindowView.getContextView().changeContextItem(c);
+        mainTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                footer.show(newValue.getName() + " selected.",
+                        Footer.NotificationType.INFORMATION, Footer.FADE_SUPER_QUICK);
+                //noinspection unchecked
+                mainWindowView.getContextView().changeContextItem(newValue);
             }
         });
     }
