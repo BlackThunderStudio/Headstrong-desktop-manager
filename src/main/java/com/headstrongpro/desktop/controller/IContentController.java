@@ -7,7 +7,7 @@ import javafx.collections.ObservableList;
 /**
  * Content Controller Interface
  */
-public interface IContentController<T extends Object> {
+public interface IContentController<T> {
 
     ObservableList<T> getAll() throws ModelSyncException;
 
