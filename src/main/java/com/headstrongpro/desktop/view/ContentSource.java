@@ -38,23 +38,23 @@ public enum ContentSource {
 
     SETTINGS("Settings", "/settings/settingsContent.fxml", null);
 
-    private String name, contentView, contextView;
+    private String name, contentViewPath, contextViewPath;
 
-    ContentSource(String name, String contentView, String contextView) {
+    ContentSource(String name, String contentViewPath, String contextViewPath) {
         this.name = name;
-        this.contentView = contentView;
-        this.contextView = contextView;
+        this.contentViewPath = contentViewPath;
+        this.contextViewPath = contextViewPath;
     }
 
     public String getName() {
         return name;
     }
 
-    public String getContentView() {
-        return (contentView != null) ? "/layout" + contentView : null;
+    public String getContentViewPath() {
+        return (contentViewPath != null) ? "/layout" + contentViewPath : null;
     }
 
-    public String getContextView() {
-        return (contextView != null) ? "/layout" + contextView : null;
+    public String getContextViewPath() {
+        return (contextViewPath != null) ? "/layout" + contextViewPath : null;
     }
 }

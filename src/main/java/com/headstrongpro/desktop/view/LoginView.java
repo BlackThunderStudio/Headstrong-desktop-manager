@@ -30,7 +30,7 @@ public class LoginView extends RootLayoutView implements Initializable {
 
         try {
             if (UserController.validateUser(userNameField.getText(), passwordField.getText())) {
-                MainApp.initLayout();
+                mainApp.initLayout();
             }
         } catch (IllegalArgumentException e) {
             passwordField.pseudoClassStateChanged(errorClass, true);
