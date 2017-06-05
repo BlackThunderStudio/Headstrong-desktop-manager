@@ -26,7 +26,7 @@ public class CompaniesContextView extends ContextView<Company> implements Initia
 
     // Links to related items
     @FXML
-    public Button companyDepartmentsButton, companyClientsButton, companyGroupsButton, companySubscriptionsButton;
+    public Button departmentsButton, clientsButton, groupsButton, subscriptionsButton;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -57,7 +57,7 @@ public class CompaniesContextView extends ContextView<Company> implements Initia
     @FXML
     public void handleEdit() {
         CompaniesController controller = (CompaniesController) this.controller;
-        if (controller.validCompany(nameField.getText(),
+        if (controller.isCompanyValid(nameField.getText(),
                 cvrField.getText(),
                 streetField.getText(),
                 postalField.getText(),
@@ -85,22 +85,22 @@ public class CompaniesContextView extends ContextView<Company> implements Initia
     }
 
     @FXML
-    public void companyClientsButtonOnClick() {
+    public void clientsButtonOnClick() {
         displayNotImplementedError();
     }
 
     @FXML
-    public void companyDepartmentsButtonOnClick() {
+    public void departmentsButtonOnClick() {
         displayNotImplementedError();
     }
 
     @FXML
-    public void companyGroupsButtonOnClick() {
+    public void groupsButtonOnClick() {
         displayNotImplementedError();
     }
 
     @FXML
-    public void companySubscriptionsButtonOnClick() {
+    public void subscriptionsButtonOnClick() {
         displayNotImplementedError();
     }
 }

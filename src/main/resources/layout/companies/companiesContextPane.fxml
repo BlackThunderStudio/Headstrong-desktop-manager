@@ -82,29 +82,29 @@
             <RowConstraints minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES"/>
             <RowConstraints minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES"/>
         </rowConstraints>
-        <Button fx:id="companyClientsButton" minHeight="25.0" minWidth="90.0" mnemonicParsing="false"
-                onAction="#companyClientsButtonOnClick" prefHeight="1000.0" prefWidth="1000.0" text="Clients"
+        <Button fx:id="clientsButton" minHeight="25.0" minWidth="90.0" mnemonicParsing="false"
+                onAction="#clientsButtonOnClick" prefHeight="1000.0" prefWidth="1000.0" text="Clients"
                 GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
             <GridPane.margin>
                 <Insets/>
             </GridPane.margin>
         </Button>
-        <Button fx:id="companyDepartmentsButton" minHeight="25.0" minWidth="90.0" mnemonicParsing="false"
-                onAction="#companyDepartmentsButtonOnClick" prefHeight="1000.0" prefWidth="1000.0" text="Departments"
+        <Button fx:id="departmentsButton" minHeight="25.0" minWidth="90.0" mnemonicParsing="false"
+                onAction="#departmentsButtonOnClick" prefHeight="1000.0" prefWidth="1000.0" text="Departments"
                 GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
             <GridPane.margin>
                 <Insets/>
             </GridPane.margin>
         </Button>
-        <Button fx:id="companyGroupsButton" minHeight="25.0" minWidth="90.0" mnemonicParsing="false"
-                onAction="#companyGroupsButtonOnClick" prefHeight="1000.0" prefWidth="1000.0" text="Groups"
+        <Button fx:id="groupsButton" minHeight="25.0" minWidth="90.0" mnemonicParsing="false"
+                onAction="#groupsButtonOnClick" prefHeight="1000.0" prefWidth="1000.0" text="Groups"
                 GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
             <GridPane.margin>
                 <Insets/>
             </GridPane.margin>
         </Button>
-        <Button fx:id="companySubscriptionsButton" minHeight="25.0" minWidth="90.0" mnemonicParsing="false"
-                onAction="#companySubscriptionsButtonOnClick" prefHeight="1000.0" prefWidth="1000.0"
+        <Button fx:id="subscriptionsButton" minHeight="25.0" minWidth="90.0" mnemonicParsing="false"
+                onAction="#subscriptionsButtonOnClick" prefHeight="1000.0" prefWidth="1000.0"
                 text="Subscriptions" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1"
                 GridPane.valignment="BOTTOM">
             <GridPane.margin>

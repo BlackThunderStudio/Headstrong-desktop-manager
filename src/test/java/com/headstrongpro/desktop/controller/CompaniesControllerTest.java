@@ -29,7 +29,7 @@ public class CompaniesControllerTest {
 
     @Test
     public void validCompany() {
-        assertTrue(companiesController.validCompany("testcomp", String.valueOf(new Random().nextInt(500000) + 10000000), "teststreet", "123", "dummyville", "dummyland"));
+        assertTrue(companiesController.isCompanyValid("testcomp", String.valueOf(new Random().nextInt(500000) + 10000000), "teststreet", "123", "dummyville", "dummyland"));
     }
 
     @Test

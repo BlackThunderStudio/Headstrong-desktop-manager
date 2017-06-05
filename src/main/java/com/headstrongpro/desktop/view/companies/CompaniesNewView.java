@@ -45,7 +45,7 @@ public class CompaniesNewView extends ContextView<Company> implements Initializa
     @FXML
     public void handleSave() {
         CompaniesController controller = (CompaniesController) this.controller;
-        if (controller.validCompany(nameField.getText(),
+        if (controller.isCompanyValid(nameField.getText(),
                 cvrField.getText(),
                 streetField.getText(),
                 postalField.getText(),
