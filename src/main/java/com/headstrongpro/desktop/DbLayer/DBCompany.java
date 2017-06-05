@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * company model collection
+ * DB Companies
  */
 public class DBCompany extends Synchronizable implements IDataAccessObject<Company> {
 
@@ -51,7 +51,7 @@ public class DBCompany extends Synchronizable implements IDataAccessObject<Compa
 
     @Override
     public Company getById(int id) throws ModelSyncException {
-        Company company = null;
+        Company company;
         try {
             dbConnect = new DBConnect();
             String query = "SELECT * FROM companies WHERE id=" + id + ";";
