@@ -209,7 +209,9 @@ public class DBSubscriptions extends Synchronizable implements IDataAccessObject
             String query = "SELECT * FROM payment_rates";
             ResultSet rs = dbConnect.getFromDataBase(query);
             while (rs.next()) {
-                res.add(new PaymentRate(rs.getInt("n_of_months"),
+                res.add(new PaymentRate(
+                        rs.getInt("id"),
+                        rs.getInt("n_of_months"),
                         rs.getString("name")));
             }
         } catch (SQLException e) {

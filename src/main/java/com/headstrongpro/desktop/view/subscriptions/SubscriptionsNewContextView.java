@@ -90,7 +90,7 @@ public class SubscriptionsNewContextView extends ContextView<Subscription> imple
                     companyCombo.getValue());
             try {
                 mainWindowView.getContentView().footer.show("Creating new subscription...", Footer.NotificationType.LOADING);
-                controller.createNew(subscription); //TODO: does't work. HAAAAAALP
+                controller.createNew(subscription);
                 mainWindowView.getContentView().footer.show("Subscription created.", Footer.NotificationType.COMPLETED);
             } catch (ModelSyncException e) {
                 e.printStackTrace();
