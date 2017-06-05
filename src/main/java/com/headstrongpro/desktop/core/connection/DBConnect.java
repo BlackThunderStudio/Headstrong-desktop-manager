@@ -38,19 +38,6 @@ public class DBConnect extends Configurable {
     }
 
     /**
-     * Test the connection
-     *
-     * @return returns true when connected, otherwise false
-     */
-    public static boolean testConnection(String host, String user, String pass) {
-        try (Connection conn = DriverManager.getConnection(host, user, pass)) {
-            return true;
-        } catch (SQLException ex) {
-            return false;
-        }
-    }
-
-    /**
      * Returns the connection object
      *
      * @return Connection
@@ -101,7 +88,7 @@ public class DBConnect extends Configurable {
     public void uploadSafe(PreparedStatement stmt) throws ConnectionException {
         Connection con = connect(url, username, password);
         try {
-            int affectedRows = stmt.executeUpdate();
+            stmt.executeUpdate();
             con.close();
         } catch (SQLException ex) {
             throw new ConnectionException("WARNING! exception occurred while uploading a query to the server.", ex);
@@ -110,11 +97,11 @@ public class DBConnect extends Configurable {
 
     @Override
     protected List<Object> getConfig() {
-        JSONObject creds = parseJsonConfig("/config.json", "database_mssql");
+        JSONObject credentials = parseJsonConfig("/config.json", "database_mssql");
         List<Object> result = new ArrayList<>();
-        result.add(creds.get("url"));
-        result.add(creds.get("user"));
-        result.add(creds.get("pass"));
+        result.add(credentials.get("url"));
+        result.add(credentials.get("user"));
+        result.add(credentials.get("pass"));
         return result;
     }
 }
