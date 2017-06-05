@@ -43,7 +43,7 @@ public class CompaniesController implements Refreshable, IContentController<Comp
      * @param country Company country
      * @return true if company details are valid, false otherwise
      */
-    public boolean validCompany(String name, String cvr, String street, String postal, String city, String country) {
+    public boolean isCompanyValid(String name, String cvr, String street, String postal, String city, String country) {
         boolean isValid = true;
         String basicRegex = "[A-Za-z0-9 .-]*";
         String intRegex = "^[0-9]*$";
@@ -73,7 +73,7 @@ public class CompaniesController implements Refreshable, IContentController<Comp
      */
     public void createCompany(String name, String cvr, String street, String postal, String city, String country)
             throws ModelSyncException {
-        if (validCompany(name, cvr, street, postal, city, country))
+        if (isCompanyValid(name, cvr, street, postal, city, country))
             companyDAO.persist(new Company(name, cvr, street, postal, city, country));
         refresh();
     }
@@ -94,7 +94,7 @@ public class CompaniesController implements Refreshable, IContentController<Comp
     public void updateCompany(int id, String name, String cvr, String street, String postal, String city, String country)
             throws ModelSyncException, DatabaseOutOfSyncException {
         Company selectedCompany = companyDAO.getById(id);
-        if (validCompany(name, cvr, street, postal, city, country)) {
+        if (isCompanyValid(name, cvr, street, postal, city, country)) {
             selectedCompany.setName(name);
             selectedCompany.setCvr(cvr);
             selectedCompany.setStreet(street);

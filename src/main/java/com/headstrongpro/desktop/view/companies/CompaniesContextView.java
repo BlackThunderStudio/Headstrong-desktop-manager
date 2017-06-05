@@ -57,7 +57,7 @@ public class CompaniesContextView extends ContextView<Company> implements Initia
     @FXML
     public void handleEdit() {
         CompaniesController controller = (CompaniesController) this.controller;
-        if (controller.validCompany(nameField.getText(),
+        if (controller.isCompanyValid(nameField.getText(),
                 cvrField.getText(),
                 streetField.getText(),
                 postalField.getText(),
