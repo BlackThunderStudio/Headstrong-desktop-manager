@@ -20,6 +20,4 @@ public interface IContentController<T extends Object> {
     void edit(T t) throws DatabaseOutOfSyncException, ModelSyncException;
 
     T getById(int id) throws ModelSyncException;
-
-    ;
 }
