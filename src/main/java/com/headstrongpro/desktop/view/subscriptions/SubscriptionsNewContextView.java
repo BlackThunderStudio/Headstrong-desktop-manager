@@ -127,6 +127,8 @@ public class SubscriptionsNewContextView extends ContextView<Subscription> imple
                 } catch (NumberFormatException e){
                     mainWindowView.getContentView().footer.show("Given input is not a number!", Footer.NotificationType.WARNING);
                     subscriptionsNewNoOfUsersTextfield.clear();
+                } finally {
+                    mainWindowView.getContentView().refreshButton.fire();
                 }
             } else subscriptionsNewTotalPriceLabel.setText("0 DKK");
         }));
