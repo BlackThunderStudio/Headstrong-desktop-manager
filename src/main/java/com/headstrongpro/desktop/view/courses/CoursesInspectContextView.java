@@ -29,7 +29,9 @@ import javafx.util.Duration;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Random;
 import java.util.ResourceBundle;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * desktop-manager
@@ -46,14 +48,15 @@ public class CoursesInspectContextView extends ContextView<Course> implements In
     @FXML
     public ListView<Resource> resourcesListView;
 
-    private ResourcesController resourcesController;
     private CoursesController controller;
     private ObservableList<Resource> resources;
     private Resource selected;
 
     private ContextMenu listContextMenu;
 
-    private static final double PREVIEW_TIME_FRACTION = 0.05;
+    private static final double PREVIEW_TIME_FRACTION = 0.025;
+    private static final double PREVIEW_INIT_TIME = 0.25;
+    private static final double PREVIEW_RANDOM_DELTA = 0.9;
 
     @Override
     protected void populateForm() {
@@ -97,7 +100,6 @@ public class CoursesInspectContextView extends ContextView<Course> implements In
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        resourcesController = new ResourcesController();
         controller = new CoursesController();
 
         resourcesListView.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) -> {
@@ -131,6 +133,9 @@ public class CoursesInspectContextView extends ContextView<Course> implements In
     private MediaPlayer mediaPlayer;
 
     private void previewAudio(){
+        if(mediaPlayer != null){
+            mediaPlayer.stop();
+        }
         System.out.println("Previewing " + selected.getName());
         AudioResource audio = Resource.ofType(selected);
         try {
@@ -141,7 +146,8 @@ public class CoursesInspectContextView extends ContextView<Course> implements In
             mediaPlayer.setOnReady(() -> {
                 mainWindowView.getContentView().footer.hide();
                 int duration = (int) media.getDuration().toMillis();
-                mediaPlayer.seek(Duration.millis(duration * 0.25));
+                double randomModifier = 1.0 + (ThreadLocalRandom.current().nextDouble(-0.5, 0.51) * PREVIEW_RANDOM_DELTA);
+                mediaPlayer.seek(Duration.millis(duration * PREVIEW_INIT_TIME * randomModifier));
                 mediaPlayer.setVolume(0.01);
                 mediaPlayer.play();
                 Timeline timeline = new Timeline(
