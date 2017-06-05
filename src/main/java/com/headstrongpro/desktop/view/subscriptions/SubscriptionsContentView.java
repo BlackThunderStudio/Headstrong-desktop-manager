@@ -3,7 +3,9 @@ package com.headstrongpro.desktop.view.subscriptions;
 import com.headstrongpro.desktop.controller.SubscriptionsController;
 import com.headstrongpro.desktop.core.fxControls.Footer;
 import com.headstrongpro.desktop.model.Subscription;
+import com.headstrongpro.desktop.view.ContentSource;
 import com.headstrongpro.desktop.view.ContentView;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
@@ -46,4 +48,8 @@ public class SubscriptionsContentView extends ContentView<Subscription> implemen
         rateCol.setCellValueFactory(new PropertyValueFactory<>("rate"));
     }
 
+    @FXML
+    public void addNewButtonOnClick(ActionEvent event) {
+        mainWindowView.changeContext(ContentSource.SUBSCRIPTIONS_NEW);
+    }
 }
