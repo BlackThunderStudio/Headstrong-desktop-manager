@@ -151,7 +151,7 @@ public class CoursesInspectContextView extends ContextView<Course> implements In
                 mediaPlayer.setVolume(0.01);
                 mediaPlayer.play();
                 Timeline timeline = new Timeline(
-                  new KeyFrame(Duration.seconds(1),
+                  new KeyFrame(Duration.millis(1500),
                           new KeyValue(mediaPlayer.volumeProperty(), 1))
                 );
                 timeline.play();
