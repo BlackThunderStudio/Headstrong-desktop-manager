@@ -181,14 +181,14 @@ public class ResourcesController implements Refreshable, IContentController<Reso
      * @param args list of arguments passed as Object. The order of objects in the list is equivalent to the order of
      *             columns in each of the tables.
      * @return Resource type object with id fetched from the database already.
-     * @throws ModelSyncException throws it when shit goes south.
+     * @throws ModelSyncException throws it when connection error occurs
      */
     @Concurrent(info = "Handles both database and media server")
     public Resource uploadLocalFile(File file, String remoteName, String description, boolean isForAchievement,
                                     ResourceType type, List<Object> args)
             throws ModelSyncException, ConnectionException {
 
-        //retard protection
+        //fool protection
         if (file == null || remoteName == null || description == null || type == null)
             throw new NullPointerException();
         if (file.getAbsolutePath().isEmpty() || file.getName().isEmpty())
