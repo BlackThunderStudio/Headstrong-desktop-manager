@@ -19,7 +19,7 @@ import static javafx.concurrent.Worker.State.*;
 /**
  * Abstract base class for content views
  */
-public abstract class ContentView<T extends IModel> {
+public abstract class ContentView<T> {
 
     // Common controls
     @FXML
