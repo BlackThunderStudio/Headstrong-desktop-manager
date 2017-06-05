@@ -15,7 +15,7 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * Created by rajmu on 17.05.09.
+ * Synchronizable
  */
 public abstract class Synchronizable {
 
@@ -43,7 +43,7 @@ public abstract class Synchronizable {
     }
 
     protected Date setTimestamp() {
-        ResultSet resultSet = null;
+        ResultSet resultSet;
         Date timestamp = new Date(Calendar.getInstance().getTimeInMillis());
         try {
             DBConnect connect = new DBConnect();
@@ -67,7 +67,7 @@ public abstract class Synchronizable {
                 long millis = logs.stream()
                         .filter(e -> e.getItemId() == itemID)
                         .sorted(Comparator.comparingLong(e -> e.getDate().getTime()))
-                        .findFirst().get().getDate().getTime(); //Retrieves the most recent change from the list
+                        .findFirst().orElseGet(null).getDate().getTime(); //Retrieves the most recent change from the list
                 return millis < timestamp.getTime();
             } else return true;
         }
