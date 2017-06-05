@@ -1,5 +1,6 @@
 package com.headstrongpro.desktop;
 
+import com.headstrongpro.desktop.controller.UserController;
 import com.headstrongpro.desktop.view.RootLayoutView;
 import com.headstrongpro.desktop.view.dashboard.DashboardView;
 import javafx.application.Application;
@@ -54,8 +55,8 @@ public class Main extends Application {
         try {
             // Load root layout from fxml file based on whether user is logged in
             FXMLLoader loader = new FXMLLoader();
-//            String location = UserController.isLoggedIn() ? "/layout/mainWindow.fxml" : "/layout/loginWindow.fxml";
-            String location = "/layout/mainWindow.fxml";
+            String location = UserController.isLoggedIn() ? "/layout/mainWindow.fxml" : "/layout/loginWindow.fxml";
+            //String location = "/layout/mainWindow.fxml";
             loader.setLocation(getClass().getResource(location));
 
             // Show the scene containing the root layout.
