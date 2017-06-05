@@ -3,6 +3,7 @@ package com.headstrongpro.desktop.view;
 import com.headstrongpro.desktop.controller.IContentController;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.core.fxControls.Footer;
+import com.headstrongpro.desktop.model.IModel;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -18,7 +19,7 @@ import static javafx.concurrent.Worker.State.*;
 /**
  * Abstract base class for content views
  */
-public abstract class ContentView<T> {
+public abstract class ContentView<T extends IModel> {
 
     // Common controls
     @FXML
