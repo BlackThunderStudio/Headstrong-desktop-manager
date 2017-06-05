@@ -48,7 +48,7 @@ public class NavigationView implements Initializable {
     }
 
     @FXML
-    public void subsOnClick() {
+    public void subscriptionsOnClick() {
         mainWindowView.changeContent(ContentSource.SUBSCRIPTIONS);
     }
 

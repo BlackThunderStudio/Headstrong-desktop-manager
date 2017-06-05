@@ -54,7 +54,7 @@
             </padding>
         </Button>
         <Button fx:id="subscriptionsButton" alignment="TOP_LEFT" layoutY="142.0" mnemonicParsing="false"
-                onAction="#subsOnClick" prefWidth="300.0" styleClass="navButton" text="Subscriptions"
+                onAction="#subscriptionsOnClick" prefWidth="300.0" styleClass="navButton" text="Subscriptions"
                 textFill="WHITE">
             <font>
                 <Font size="15.0"/>
