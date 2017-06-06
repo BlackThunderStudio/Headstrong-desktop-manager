@@ -13,14 +13,15 @@ import java.util.List;
  * Configurable
  */
 public abstract class Configurable {
-    protected JSONObject parseJsonConfig(String config, String root) {
+    protected JSONObject parseJsonConfig(String configName, String root) {
         JSONParser parser = new JSONParser();
         try {
+            String path = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
+            path = path.substring(1, path.lastIndexOf('/')) + "/cfg";
             Object file = parser.parse(
                     new InputStreamReader(
-                            new FileInputStream(
-                                    getClass().getResource(config).getFile()
-                            )
+                            /*getClass().getResourceAsStream(configName)*/
+                            new FileInputStream(path + configName)
                     )
             );
             JSONObject fullJSON = (JSONObject) file;
