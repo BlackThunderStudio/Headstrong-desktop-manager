@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Session model class
  */
-public class Session {
+public class Session implements IModel {
     private int id;
     private String name, description;
     private List<Resource> resources;
@@ -21,10 +21,12 @@ public class Session {
     public Session() {
     }
 
+    @Override
     public int getId() {
         return id;
     }
 
+    @Override
     public void setId(int id) {
         this.id = id;
     }

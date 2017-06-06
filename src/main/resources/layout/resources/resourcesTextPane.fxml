@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.web.HTMLEditor?>
 
-<GridPane minHeight="460" minWidth="300.0" prefHeight="700.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.headstrongpro.desktop.view.resources.ResourcesTextContext">
+<GridPane minHeight="460" minWidth="300.0" prefHeight="700.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.headstrongpro.desktop.view.resources.TextResourcesContextView">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="250.0" prefWidth="300.0" />
     </columnConstraints>
@@ -22,15 +22,15 @@
 
     </rowConstraints>
     <children>
-        <TextField fx:id="textResourcesNameTextfield" promptText="Name" GridPane.rowIndex="1" />
+        <TextField fx:id="nameField" promptText="Name" GridPane.rowIndex="1" />
         <HTMLEditor fx:id="textResourcesEditor" maxHeight="4000.0" minHeight="200.0" minWidth="260.0" onKeyReleased="#editorOnKeyReleased" onMouseClicked="#editorOnMouseClicked" prefHeight="255.0" prefWidth="250.0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
          <GridPane.margin>
             <Insets />
          </GridPane.margin></HTMLEditor>
         <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.halignment="RIGHT">
             <children>
-                <Button fx:id="editButton" contentDisplay="CENTER" maxWidth="90.0" minWidth="90.0" mnemonicParsing="false" onAction="#editButtonOnClick" prefWidth="90.0" text="Edit" />
-                <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#deleteButtonOnClick" prefHeight="25.0" prefWidth="90.0" text="Delete" />
+                <Button fx:id="saveButton" contentDisplay="CENTER" maxWidth="90.0" minWidth="90.0" mnemonicParsing="false" onAction="#handleEdit" prefWidth="90.0" text="Edit" />
+                <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#handleDelete" prefHeight="25.0" prefWidth="90.0" text="Delete" />
             </children>
             <GridPane.margin>
                 <Insets />

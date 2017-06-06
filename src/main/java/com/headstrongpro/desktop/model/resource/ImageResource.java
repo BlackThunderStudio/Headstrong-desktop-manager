@@ -1,18 +1,35 @@
 package com.headstrongpro.desktop.model.resource;
 
+import com.headstrongpro.desktop.model.IModel;
+
 import java.io.File;
 
 /**
- * Created by rajmu on 17.05.08.
+ * Image Resource
  */
 //TODO: Custom functionality and behaviour to be added!
-public class ImageResource implements Resource {
+public class ImageResource implements Resource, IModel {
 
     private static final ResourceType TYPE = ResourceType.IMAGE;
 
     private int id;
     private String name, description, url;
     private boolean isForAchievement;
+    private File file;
+    private String path;
+
+    ImageResource(String name, String description, boolean isForAchievement) {
+        this.name = name;
+        this.description = description;
+        this.isForAchievement = isForAchievement;
+    }
+
+    ImageResource(int id, String name, String description, boolean isForAchievement) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.isForAchievement = isForAchievement;
+    }
 
     @Override
     public File getFile() {
@@ -34,26 +51,12 @@ public class ImageResource implements Resource {
         this.path = path;
     }
 
-    private File file;
-    private String path;
-
-    ImageResource(String name, String description, boolean isForAchievement) {
-        this.name = name;
-        this.description = description;
-        this.isForAchievement = isForAchievement;
-    }
-
-    ImageResource(int id, String name, String description, boolean isForAchievement) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.isForAchievement = isForAchievement;
-    }
-
-    private ImageResource(){}
-
     public String getURL() {
         return url;
+    }
+
+    public void setURL(String url) {
+        this.url = url;
     }
 
     @Override
@@ -61,9 +64,17 @@ public class ImageResource implements Resource {
         return description;
     }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     @Override
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
@@ -77,24 +88,12 @@ public class ImageResource implements Resource {
     }
 
     @Override
-    public int getID() {
+    public int getId() {
         return id;
     }
 
     @Override
-    public void setID(int id) {
+    public void setId(int id) {
         this.id = id;
-    }
-
-    public void setURL(String url) {
-        this.url = url;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 }

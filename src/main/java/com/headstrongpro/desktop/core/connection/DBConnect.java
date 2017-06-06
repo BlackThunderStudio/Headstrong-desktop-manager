@@ -2,13 +2,7 @@ package com.headstrongpro.desktop.core.connection;
 
 import com.headstrongpro.desktop.core.exception.ConnectionException;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
-import javax.management.AttributeList;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +14,7 @@ public class DBConnect extends Configurable {
 
     private static String url, username, password;
 
-    public DBConnect() throws ConnectionException {
+    public DBConnect() {
         List<Object> credentials = getConfig();
         url = (String) credentials.get(0);
         username = (String) credentials.get(1);
@@ -41,19 +35,6 @@ public class DBConnect extends Configurable {
             throw new ConnectionException("Exception occurred while connecting to the database", ex);
         }
         return con;
-    }
-
-    /**
-     * Test the connection
-     *
-     * @return returns true when connected, otherwise false
-     */
-    public static boolean testConnection(String host, String user, String pass) {
-        try (Connection conn = DriverManager.getConnection(host, user, pass)) {
-            return true;
-        } catch (SQLException ex) {
-            return false;
-        }
     }
 
     /**
@@ -107,7 +88,7 @@ public class DBConnect extends Configurable {
     public void uploadSafe(PreparedStatement stmt) throws ConnectionException {
         Connection con = connect(url, username, password);
         try {
-            int affectedRows = stmt.executeUpdate();
+            stmt.executeUpdate();
             con.close();
         } catch (SQLException ex) {
             throw new ConnectionException("WARNING! exception occurred while uploading a query to the server.", ex);
@@ -116,11 +97,11 @@ public class DBConnect extends Configurable {
 
     @Override
     protected List<Object> getConfig() {
-        JSONObject creds = parseJsonConfig("/config.json", "database_mssql");
+        JSONObject credentials = parseJsonConfig("/config.json", "database_mssql");
         List<Object> result = new ArrayList<>();
-        result.add(creds.get("url"));
-        result.add(creds.get("user"));
-        result.add(creds.get("pass"));
+        result.add(credentials.get("url"));
+        result.add(credentials.get("user"));
+        result.add(credentials.get("pass"));
         return result;
     }
 }

@@ -15,15 +15,11 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * Created by rajmu on 17.05.09.
+ * Synchronizable
  */
 public abstract class Synchronizable {
 
     protected Date timestamp;
-
-    protected void updateTimestampLocal(){
-        timestamp = new Date(Calendar.getInstance().getTimeInMillis());
-    }
 
     //TODO: we need to resolve the issue of tracking which employee triggered this method. Possibly storing user session data ofType a singleton?
     protected static Log logChange(int empID, String tableName, int itemID, ActionType type) throws ModelSyncException {
@@ -42,8 +38,12 @@ public abstract class Synchronizable {
         }
     }
 
+    protected void updateTimestampLocal() {
+        timestamp = new Date(Calendar.getInstance().getTimeInMillis());
+    }
+
     protected Date setTimestamp() {
-        ResultSet resultSet = null;
+        ResultSet resultSet;
         Date timestamp = new Date(Calendar.getInstance().getTimeInMillis());
         try {
             DBConnect connect = new DBConnect();
@@ -63,11 +63,11 @@ public abstract class Synchronizable {
         List<Log> logs = new DBLogActions().getByTable(tableName);
         if (logs.size() == 0) return true;
         else {
-            if (logs.stream().anyMatch(e -> e.getItemID() == itemID)) {
+            if (logs.stream().anyMatch(e -> e.getItemId() == itemID)) {
                 long millis = logs.stream()
-                        .filter(e -> e.getItemID() == itemID)
+                        .filter(e -> e.getItemId() == itemID)
                         .sorted(Comparator.comparingLong(e -> e.getDate().getTime()))
-                        .findFirst().get().getDate().getTime(); //Retrieves the most recent change from the list
+                        .findFirst().orElseGet(null).getDate().getTime(); //Retrieves the most recent change from the list
                 return millis < timestamp.getTime();
             } else return true;
         }

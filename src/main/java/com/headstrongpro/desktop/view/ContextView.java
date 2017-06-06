@@ -1,32 +1,51 @@
 package com.headstrongpro.desktop.view;
 
+import com.headstrongpro.desktop.controller.IContentController;
 import com.headstrongpro.desktop.core.SyncHandler;
+import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
+import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.core.fxControls.Footer;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextInputControl;
+import com.headstrongpro.desktop.model.IModel;
+import javafx.fxml.FXML;
+import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Optional;
 
 /**
- * ContextView
+ * Abstract base class for context views
  */
 public abstract class ContextView<T> {
-    // Currently set context item
-    protected T contextItem = null;
 
-    // Main view controller
-    protected MainWindowView mainWindowView;
+    // Top controls
+    @FXML
+    public Button toggleEditButton, saveButton, cancelButton, deleteButton;
 
-    // List of form text fields
-    protected ArrayList<TextField> textFields;
+    @FXML
+    public HBox topControls; // Horizontal row with top controls
 
-    public void setMainWindowView(MainWindowView mainWindowView) {
-        this.mainWindowView = mainWindowView;
-    }
+    protected T contextItem = null; // Currently set context item
+
+    protected MainWindowView mainWindowView; // MainWindow parent controller
+
+    protected IContentController<T> controller; // Data controller
+
+    protected ArrayList<TextInputControl> textInputControls = new ArrayList<>(); // List of form text fields
+    protected ArrayList<RadioButton> radioButtons = new ArrayList<>(); // List of form text fields
+
+    protected SyncHandler<T> handler = () -> {
+        IModel modelItem = (IModel) contextItem;
+        try {
+            return controller.getById(modelItem.getId());
+        } catch (ModelSyncException e) {
+            e.printStackTrace();
+            mainWindowView.getContentView().footer.show(e.getMessage(), Footer.NotificationType.ERROR);
+        }
+        return null;
+    };
+    private boolean editMode = false; // Whether making changes is allowed
 
     /**
      * Changes the context items and invokes population of the form
@@ -34,17 +53,30 @@ public abstract class ContextView<T> {
     public void changeContextItem(T t) {
         this.contextItem = t;
         populateForm();
+        if (editMode) toggleEditMode();
     }
 
     /**
      * Sets the values on context initialization
      */
-    public abstract void populateForm();
+    protected abstract void populateForm();
 
     /**
-     * Clears all the text input
+     * Clears all the text input fields
      */
-    protected abstract void clearFields();
+    protected void clearFields() {
+        textInputControls.forEach(TextInputControl::clear);
+        radioButtons.forEach(ToggleButton::disarm);
+    }
+
+    /**
+     * By default, hide buttons of editing mode and disable changing fields
+     */
+    protected void setDefaults() {
+        topControls.getChildren().removeAll(saveButton, cancelButton);
+        textInputControls.forEach(tf -> tf.setEditable(false));
+        radioButtons.forEach(rb -> rb.setDisable(true));
+    }
 
     /**
      * Validates the contexts window input fields
@@ -59,24 +91,101 @@ public abstract class ContextView<T> {
                 .count() == 0;
     }
 
-    /***
-     * asks the user if he wants to reload the data in case of a database inconsistency
+    /**
+     * Asks the user if he wants to reload the data in case of a database inconsistency
      * If the user declines, then it resets the fields in a context window
      *
      * @param handler function implemented by SyncHandler
      */
-    protected void handleOutOfSync(SyncHandler<T> handler){
+    protected void handleOutOfSync(SyncHandler<T> handler) {
         Alert a = new Alert(Alert.AlertType.CONFIRMATION);
-        mainWindowView.getContentView().footer.show("Warning! Data inconsistency!", Footer.NotificationType.WARNING);
+        mainWindowView.getContentView().footer.show("Warning! Data inconsistency!",
+                Footer.NotificationType.WARNING);
         a.setHeaderText("Warning! Database contains newer data.");
         a.setContentText("Do you want to reload the data? Clicking 'Cancel' will clear all the input");
         Optional<ButtonType> response = a.showAndWait();
         response.ifPresent(e -> {
-            if(ButtonType.OK.equals(e)){
+            if (ButtonType.OK.equals(e)) {
                 changeContextItem(handler.handle());
             } else {
                 clearFields();
             }
         });
+    }
+
+    /**
+     * Toggles editing mode by enabling making changes in the form
+     * and changes top controls
+     */
+    @FXML
+    public void toggleEditMode() {
+        if (editMode) {
+            topControls.getChildren().removeAll(saveButton, cancelButton);
+            topControls.getChildren().addAll(toggleEditButton, deleteButton);
+            textInputControls.forEach(tf -> tf.setEditable(false));
+            radioButtons.forEach(rb -> rb.setDisable(true));
+        } else {
+            topControls.getChildren().removeAll(toggleEditButton, deleteButton);
+            topControls.getChildren().addAll(saveButton, cancelButton);
+            textInputControls.forEach(tf -> tf.setEditable(true));
+            radioButtons.forEach(rb -> rb.setDisable(false));
+        }
+        editMode = !editMode;
+    }
+
+    /**
+     * Pops up a dialog window with delete confirmation
+     */
+    @FXML
+    public void handleDelete() {
+        Alert a = new Alert(Alert.AlertType.CONFIRMATION);
+        a.setHeaderText("Delete Item");
+        a.setContentText(String.format("Are you sure you want to delete %s?%n%nThis action cannot be undone.",
+                contextItem));
+        Optional<ButtonType> response = a.showAndWait();
+        response.ifPresent(btn -> {
+            if (ButtonType.OK.equals(btn)) {
+                mainWindowView.getContentView().footer.show(String.format("Deleting %s...", contextItem),
+                        Footer.NotificationType.LOADING);
+                try {
+                    controller.delete(contextItem);
+                    mainWindowView.getContentView().footer.show("Entry deleted.",
+                            Footer.NotificationType.COMPLETED);
+                    mainWindowView.getContentView().handleRefresh();
+                } catch (ModelSyncException e) {
+                    e.printStackTrace();
+                    mainWindowView.getContentView().footer.show(e.getMessage(),
+                            Footer.NotificationType.ERROR, Footer.FADE_LONG);
+                } catch (DatabaseOutOfSyncException e) {
+                    handleOutOfSync(handler);
+                }
+            }
+        });
+        clearFields();
+    }
+
+    /**
+     * Ends editing mode and cancels any changes
+     */
+    @FXML
+    public void handleCancel() {
+        toggleEditMode();
+        if (contextItem != null) populateForm();
+    }
+
+    /**
+     * Displays an error for not yet implemented features
+     */
+    protected void displayNotImplementedError() {
+        mainWindowView.getContentView().footer.show("Feature not yet implemented, patience is advised.",
+                Footer.NotificationType.INFORMATION);
+    }
+
+    public T getContextItem() {
+        return contextItem;
+    }
+
+    public void setMainWindowView(MainWindowView mainWindowView) {
+        this.mainWindowView = mainWindowView;
     }
 }

@@ -8,17 +8,17 @@ import static org.junit.Assert.*;
 /**
  * Created by 1062085 on 31-May-17.
  */
-public class CourseControllerTest {
-    CourseController courseController;
+public class CoursesControllerTest {
+    CoursesController coursesController;
 
     @Before
     public void setUp() throws Exception {
-        courseController = new CourseController();
+        coursesController = new CoursesController();
     }
 
     @Test
     public void getAllCoursesTest() throws Exception{
-        assertNotNull(courseController.getAll());
+        assertNotNull(coursesController.getAll());
     }
 
 }

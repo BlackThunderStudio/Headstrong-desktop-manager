@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane fx:id="resourceImageGrid" minHeight="460" minWidth="300.0" prefHeight="800.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.headstrongpro.desktop.view.resources.ResourcesImageContext">
+<GridPane fx:id="resourceImageGrid" minHeight="460" minWidth="300.0" prefHeight="800.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.headstrongpro.desktop.view.resources.ImageResourcesContextView">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="260.0" prefWidth="360.0" />
     </columnConstraints>
@@ -29,8 +29,8 @@
         <TextField fx:id="descriptionField" alignment="TOP_LEFT" maxHeight="260.0" minHeight="75.0" prefHeight="200.0" promptText="Description" GridPane.rowIndex="4" GridPane.valignment="TOP" />
         <HBox alignment="CENTER_RIGHT" prefHeight="100.0" spacing="10.0" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
             <children>
-                <Button fx:id="editButton" contentDisplay="CENTER" maxWidth="90.0" minWidth="90.0" mnemonicParsing="false" onAction="#editButtonOnClick" prefWidth="90.0" text="Edit" />
-                <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#deleteButtonOnClick" prefHeight="25.0" prefWidth="90.0" text="Delete" />
+                <Button fx:id="editButton" contentDisplay="CENTER" maxWidth="90.0" minWidth="90.0" mnemonicParsing="false" onAction="#handleEdit" prefWidth="90.0" text="Edit" />
+                <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#handleDelete" prefHeight="25.0" prefWidth="90.0" text="Delete" />
             </children>
             <GridPane.margin>
                 <Insets />

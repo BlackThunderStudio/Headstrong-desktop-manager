@@ -5,16 +5,19 @@ import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import javafx.collections.ObservableList;
 
 /**
- * desktop-manager
- * <p>
- * <p>
- * Created by rajmu on 17.06.01.
+ * Content Controller Interface
  */
-public interface IContentController<T extends Object> {
+public interface IContentController<T> {
+
     ObservableList<T> getAll() throws ModelSyncException;
+
     ObservableList<T> searchByPhrase(String input);
+
     void delete(T t) throws DatabaseOutOfSyncException, ModelSyncException;
+
     T createNew(T t) throws ModelSyncException;
+
     void edit(T t) throws DatabaseOutOfSyncException, ModelSyncException;
-    T getByID(int id) throws ModelSyncException;
+
+    T getById(int id) throws ModelSyncException;
 }

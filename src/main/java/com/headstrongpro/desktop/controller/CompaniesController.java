@@ -17,13 +17,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * companies view
+ * Companies Controller
  */
-public class CompaniesController implements Refreshable {
+public class CompaniesController implements Refreshable, IContentController<Company> {
+
     private List<Company> companies;
     private DBCompany companyDAO;
-    private Company selectedCompany;
-
 
     /**
      * Default constructor
@@ -31,40 +30,6 @@ public class CompaniesController implements Refreshable {
     public CompaniesController() {
         companies = new ArrayList<>();
         companyDAO = new DBCompany();
-    }
-
-    /**
-     * Constructor selecting the selected company,
-     * may be useful if window is initialised
-     * from another window
-     *
-     * @param id Selected company id
-     * @throws ModelSyncException
-     */
-    public CompaniesController(int id) throws ModelSyncException {
-        companies = new ArrayList<>();
-        companyDAO = new DBCompany();
-        selectedCompany = companyDAO.getById(id);
-    }
-
-    /**
-     * Search keyword in all companies details
-     * searches thru the companies by a keyword
-     *
-     * @param keyword Searched expression
-     * @return Observable Array list of all companies containing the keyword
-     * @throws ModelSyncException
-     */
-    public ObservableList<Company> search(String keyword) throws ModelSyncException {
-        if (keyword == null) throw new NullPointerException();
-        return FXCollections.observableArrayList(companies.stream()
-                .filter(e -> e.getName().toLowerCase().contains(keyword.toLowerCase()) ||
-                        e.getCvr().toLowerCase().contains(keyword.toLowerCase()) ||
-                        e.getStreet().toLowerCase().contains(keyword.toLowerCase()) ||
-                        e.getPostal().toLowerCase().contains(keyword.toLowerCase()) ||
-                        e.getCity().toLowerCase().contains(keyword.toLowerCase()) ||
-                        e.getCountry().toLowerCase().contains(keyword.toLowerCase()))
-                .collect(Collectors.toList()));
     }
 
     /**
@@ -78,17 +43,19 @@ public class CompaniesController implements Refreshable {
      * @param country Company country
      * @return true if company details are valid, false otherwise
      */
-    public boolean validCompany(String name, String cvr, String street, String postal, String city, String country) {
+    public boolean isCompanyValid(String name, String cvr, String street, String postal, String city, String country) {
         boolean isValid = true;
         String basicRegex = "[A-Za-z0-9 .-]*";
+        String intRegex = "^[0-9]*$";
         String cvrRegex = "^[0-9]{8}$";
         if (!(name.matches(basicRegex) ||
                 street.matches(basicRegex) ||
-                postal.matches(basicRegex) ||
                 city.matches(basicRegex) ||
                 country.matches(basicRegex)))
             isValid = false;
         if (!cvr.matches(cvrRegex))
+            isValid = false;
+        if (!postal.matches(intRegex))
             isValid = false;
         return isValid;
     }
@@ -106,20 +73,9 @@ public class CompaniesController implements Refreshable {
      */
     public void createCompany(String name, String cvr, String street, String postal, String city, String country)
             throws ModelSyncException {
-        if (validCompany(name, cvr, street, postal, city, country))
+        if (isCompanyValid(name, cvr, street, postal, city, country))
             companyDAO.persist(new Company(name, cvr, street, postal, city, country));
         refresh();
-    }
-
-    /**
-     * Read all the companies
-     *
-     * @return Observable array list of existing companies
-     * @throws ModelSyncException
-     */
-    public List<Company> getCompanies() throws ModelSyncException {
-        refresh();
-        return companies;
     }
 
     /**
@@ -138,7 +94,7 @@ public class CompaniesController implements Refreshable {
     public void updateCompany(int id, String name, String cvr, String street, String postal, String city, String country)
             throws ModelSyncException, DatabaseOutOfSyncException {
         Company selectedCompany = companyDAO.getById(id);
-        if (validCompany(name, cvr, street, postal, city, country)) {
+        if (isCompanyValid(name, cvr, street, postal, city, country)) {
             selectedCompany.setName(name);
             selectedCompany.setCvr(cvr);
             selectedCompany.setStreet(street);
@@ -147,18 +103,6 @@ public class CompaniesController implements Refreshable {
             selectedCompany.setCountry(country);
             companyDAO.update(selectedCompany);
         }
-        refresh();
-    }
-
-    /**
-     * Delete a company by ID
-     *
-     * @param id Company ID
-     * @throws ModelSyncException
-     * @throws DatabaseOutOfSyncException
-     */
-    public void deleteCompany(int id) throws ModelSyncException, DatabaseOutOfSyncException {
-        companyDAO.delete(companyDAO.getById(id));
         refresh();
     }
 
@@ -192,7 +136,7 @@ public class CompaniesController implements Refreshable {
      * @throws ModelSyncException
      */
     public ObservableList<Subscription> getSubscriptionByCompanyId(int id) throws ModelSyncException {
-        return FXCollections.observableArrayList(new DBSubscriptions().getbyCompanyId(id));
+        return FXCollections.observableArrayList(new DBSubscriptions().getByCompanyId(id));
     }
 
     /**
@@ -214,7 +158,7 @@ public class CompaniesController implements Refreshable {
      * @throws ModelSyncException
      */
     public ObservableList<Payment> getPaymentsByCompanyId(int id) throws ModelSyncException {
-        List<Subscription> subscriptions = new DBSubscriptions().getbyCompanyId(id);
+        List<Subscription> subscriptions = new DBSubscriptions().getByCompanyId(id);
         List<Payment> payments = new ArrayList<>();
         for (Subscription s :
                 subscriptions) {
@@ -223,18 +167,50 @@ public class CompaniesController implements Refreshable {
         return FXCollections.observableArrayList(payments);
     }
 
-    /**
-     * gets the selected company
-     *
-     * @return
-     */
-    public Company getCompanyById(int id) throws ModelSyncException {
-        return companyDAO.getById(id);
-    }
-
     @Override
     public void refresh() throws ModelSyncException {
         companies.clear();
         companies.addAll(companyDAO.getAll());
+    }
+
+    @Override
+    public ObservableList<Company> getAll() throws ModelSyncException {
+        refresh();
+        return FXCollections.observableArrayList(companies);
+    }
+
+    @Override
+    public ObservableList<Company> searchByPhrase(String input) {
+        if (input == null) throw new NullPointerException();
+        return FXCollections.observableArrayList(companies.stream()
+                .filter(e -> e.getName().toLowerCase().contains(input.toLowerCase()) ||
+                        e.getCvr().toLowerCase().contains(input.toLowerCase()) ||
+                        e.getStreet().toLowerCase().contains(input.toLowerCase()) ||
+                        e.getPostal().toLowerCase().contains(input.toLowerCase()) ||
+                        e.getCity().toLowerCase().contains(input.toLowerCase()) ||
+                        e.getCountry().toLowerCase().contains(input.toLowerCase()))
+                .collect(Collectors.toList()));
+    }
+
+    @Override
+    public void delete(Company company) throws DatabaseOutOfSyncException, ModelSyncException {
+        companyDAO.delete(company);
+        refresh();
+    }
+
+    @Override
+    public Company createNew(Company company) throws ModelSyncException {
+        return companyDAO.persist(company);
+    }
+
+    @Override
+    public void edit(Company company) throws DatabaseOutOfSyncException, ModelSyncException {
+        companyDAO.update(company);
+        refresh();
+    }
+
+    @Override
+    public Company getById(int id) throws ModelSyncException {
+        return companyDAO.getById(id);
     }
 }

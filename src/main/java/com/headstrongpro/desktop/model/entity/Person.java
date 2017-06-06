@@ -1,16 +1,18 @@
 package com.headstrongpro.desktop.model.entity;
 
+import com.headstrongpro.desktop.model.IModel;
+
 /**
  * Person Entity
  */
-public abstract class Person {
+public abstract class Person implements IModel {
     private int id;
     private String name, email, phone, gender;
 
-    public Person() {
+    Person() {
     }
 
-    public Person(int id, String name, String email, String phone, String gender) {
+    Person(int id, String name, String email, String phone, String gender) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -18,17 +20,19 @@ public abstract class Person {
         this.gender = gender;
     }
 
-    public Person(String name, String email, String phone, String gender) {
+    Person(String name, String email, String phone, String gender) {
         this.name = name;
         this.email = email;
         this.phone = phone;
         this.gender = gender;
     }
 
+    @Override
     public int getId() {
         return id;
     }
 
+    @Override
     public void setId(int id) {
         this.id = id;
     }
@@ -63,5 +67,10 @@ public abstract class Person {
 
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }

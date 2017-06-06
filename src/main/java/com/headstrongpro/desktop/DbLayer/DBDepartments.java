@@ -1,24 +1,22 @@
 package com.headstrongpro.desktop.DbLayer;
 
+import com.headstrongpro.desktop.DbLayer.util.ActionType;
+import com.headstrongpro.desktop.DbLayer.util.IDataAccessObject;
+import com.headstrongpro.desktop.DbLayer.util.Synchronizable;
 import com.headstrongpro.desktop.core.connection.DBConnect;
 import com.headstrongpro.desktop.core.exception.ConnectionException;
 import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.model.Department;
-import com.headstrongpro.desktop.DbLayer.util.ActionType;
-import com.headstrongpro.desktop.DbLayer.util.IDataAccessObject;
-import com.headstrongpro.desktop.DbLayer.util.Synchronizable;
 
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 /**
- * Created by rajmu on 17.05.08.
+ * DB Departments
  */
 public class DBDepartments extends Synchronizable implements IDataAccessObject<Department> {
 
@@ -53,7 +51,7 @@ public class DBDepartments extends Synchronizable implements IDataAccessObject<D
 
     @Override
     public Department getById(int id) throws ModelSyncException {
-        Department department = null;
+        Department department;
         try {
             connect = new DBConnect();
             ResultSet rs = connect.getFromDataBase("SELECT * FROM departments WHERE id=" + id);
@@ -80,7 +78,7 @@ public class DBDepartments extends Synchronizable implements IDataAccessObject<D
             PreparedStatement preparedStatement = connect.getConnection().prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, object.getName());
             preparedStatement.setString(2, object.getDescription());
-            preparedStatement.setInt(3, object.getCompanyID());
+            preparedStatement.setInt(3, object.getCompanyId());
             preparedStatement.executeUpdate();
             try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
@@ -107,7 +105,7 @@ public class DBDepartments extends Synchronizable implements IDataAccessObject<D
                 PreparedStatement preparedStatement = connect.getConnection().prepareStatement(query);
                 preparedStatement.setString(1, object.getName());
                 preparedStatement.setString(2, object.getDescription());
-                preparedStatement.setInt(3, object.getCompanyID());
+                preparedStatement.setInt(3, object.getCompanyId());
                 preparedStatement.setInt(4, object.getId());
                 connect.uploadSafe(preparedStatement);
                 logChange("departments", object.getId(), ActionType.UPDATE);
@@ -160,7 +158,7 @@ public class DBDepartments extends Synchronizable implements IDataAccessObject<D
         return departments;
     }
 
-    public void deleteByCompanyID(int id) throws ModelSyncException, DatabaseOutOfSyncException {
+    void deleteByCompanyID(int id) throws ModelSyncException, DatabaseOutOfSyncException {
         if (verifyIntegrity(id)) {
             try {
                 connect = new DBConnect();
@@ -169,11 +167,11 @@ public class DBDepartments extends Synchronizable implements IDataAccessObject<D
                 while (rs.next()) {
                     deptIDs.add(rs.getInt(1));
                 }
-                String simplifiedDeptIDs = "";
+                StringBuilder simplifiedDeptIDs = new StringBuilder();
                 for (int i = 0; i < deptIDs.size() - 1; i++) {
-                    simplifiedDeptIDs += deptIDs.get(i) + ",";
+                    simplifiedDeptIDs.append(deptIDs.get(i)).append(",");
                 }
-                if (deptIDs.size() != 0) simplifiedDeptIDs += deptIDs.get(deptIDs.size() - 1);
+                if (deptIDs.size() != 0) simplifiedDeptIDs.append(deptIDs.get(deptIDs.size() - 1));
 
                 //language=TSQL
                 String query = "SELECT id FROM departments WHERE company_id=" + id + "; DELETE FROM departments WHERE company_id=" + id + ";";

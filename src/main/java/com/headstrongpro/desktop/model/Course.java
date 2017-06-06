@@ -2,17 +2,19 @@ package com.headstrongpro.desktop.model;
 
 import com.headstrongpro.desktop.model.resource.Resource;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Course model class
  */
-public class Course {
+public class Course implements IModel {
     private int id;
     private String name, description;
     private CourseCategory courseCategory;
     private List<Resource> resources;
+
+    public Course() {
+    }
 
     public Course(int id, String name, String description, CourseCategory courseCategory) {
         this.id = id;
@@ -27,12 +29,17 @@ public class Course {
         this.courseCategory = courseCategory;
     }
 
-    public Course(){};
+    public Course(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
 
+    @Override
     public int getId() {
         return id;
     }
 
+    @Override
     public void setId(int id) {
         this.id = id;
     }
@@ -57,9 +64,15 @@ public class Course {
         return courseCategory;
     }
 
-    public void setCourseCategory(CourseCategory courseCategory) { this.courseCategory = courseCategory; }
+    public void setCourseCategory(CourseCategory courseCategory) {
+        this.courseCategory = courseCategory;
+    }
 
-    public List<Resource> getResources() { return resources; }
+    public List<Resource> getResources() {
+        return resources;
+    }
 
-    public void setResources(List<Resource> resources) { this.resources = resources; }
+    public void setResources(List<Resource> resources) {
+        this.resources = resources;
+    }
 }

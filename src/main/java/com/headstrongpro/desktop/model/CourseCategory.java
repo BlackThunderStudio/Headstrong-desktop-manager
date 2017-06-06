@@ -3,7 +3,7 @@ package com.headstrongpro.desktop.model;
 /**
  * Course Category model
  */
-public class CourseCategory {
+public class CourseCategory implements IModel {
     private int id;
     private String name;
 
@@ -16,10 +16,12 @@ public class CourseCategory {
         this.name = name;
     }
 
+    @Override
     public int getId() {
         return id;
     }
 
+    @Override
     public void setId(int id) {
         this.id = id;
     }

@@ -1,58 +1,73 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.RowConstraints?>
+<?import com.headstrongpro.desktop.core.fxControls.Footer?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
-
-<GridPane stylesheets="/style/coursesContentPane.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.headstrongpro.desktop.view.courses.CoursesView">
+<GridPane styleClass="content-view" xmlns:fx="http://javafx.com/fxml/1"
+          fx:controller="com.headstrongpro.desktop.view.courses.CoursesContentView">
     <columnConstraints>
-        <ColumnConstraints maxWidth="6000.0" minWidth="0.0" prefWidth="800.0" />
+        <ColumnConstraints maxWidth="6000.0" minWidth="0.0" prefWidth="800.0"/>
     </columnConstraints>
     <rowConstraints>
-        <RowConstraints maxHeight="60.0" minHeight="60.0" prefHeight="60.0" vgrow="NEVER" />
-        <RowConstraints maxHeight="60.0" minHeight="60.0" prefHeight="60.0" vgrow="NEVER" />
-        <RowConstraints maxHeight="4000.0" minHeight="200.0" prefHeight="500.0" vgrow="ALWAYS" />
-        <RowConstraints maxHeight="60.0" minHeight="60.0" prefHeight="60.0" vgrow="NEVER" />
-</rowConstraints>
-   <children>
-      <Pane prefHeight="200.0" prefWidth="200.0" styleClass="headerPane">
-         <children>
-            <Text fx:id="coursesHeader" layoutX="14.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Courses">
-               <font>
-                  <Font size="36.0" />
-               </font>
-            </Text>
-         </children>
-      </Pane>
-      <TextField fx:id="searchCoursesTextfield" promptText="Search" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
-         <GridPane.margin>
-            <Insets left="20.0" right="20.0" />
-         </GridPane.margin>
-         <opaqueInsets>
-            <Insets />
-         </opaqueInsets>
-      </TextField>
-      <TableView fx:id="coursesTable" maxHeight="4000.0" maxWidth="4000.0" minHeight="200.0" minWidth="200.0" prefHeight="200.0" prefWidth="200.0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.vgrow="ALWAYS">
+        <RowConstraints maxHeight="60.0" minHeight="60.0" prefHeight="60.0" vgrow="NEVER"/>
+        <RowConstraints maxHeight="60.0" minHeight="60.0" prefHeight="60.0" vgrow="NEVER"/>
+        <RowConstraints maxHeight="4000.0" minHeight="200.0" prefHeight="500.0" vgrow="ALWAYS"/>
+        <RowConstraints maxHeight="60.0" minHeight="60.0" prefHeight="60.0" vgrow="NEVER"/>
+    </rowConstraints>
+    <Pane prefHeight="200.0" prefWidth="200.0">
+        <Text fx:id="headerText" layoutX="14.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0"
+              text="Courses">
+            <font>
+                <Font size="36.0"/>
+            </font>
+        </Text>
+    </Pane>
+    <TableView fx:id="mainTable" maxHeight="4000.0" maxWidth="4000.0" minHeight="200.0" minWidth="200.0"
+               prefHeight="200.0" prefWidth="200.0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2"
+               GridPane.vgrow="ALWAYS">
         <columns>
-          <TableColumn prefWidth="75.0" text="C1" />
-          <TableColumn prefWidth="75.0" text="C2" />
+            <TableColumn fx:id="nameCol" prefWidth="168.0" text="Name"/>
+            <TableColumn fx:id="descCol" prefWidth="512.9999847412109" text="Description"/>
         </columns>
-         <GridPane.margin>
-            <Insets left="20.0" right="20.0" />
-         </GridPane.margin>
-      </TableView>
-      <Button fx:id="newCourseButton" maxWidth="110.0" minWidth="110.0" mnemonicParsing="false" prefWidth="110.0" text="New" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
-         <GridPane.margin>
-            <Insets right="20.0" />
-         </GridPane.margin>
-      </Button>
-   </children>
+        <GridPane.margin>
+            <Insets left="20.0" right="20.0"/>
+        </GridPane.margin>
+    </TableView>
+
+    <Footer fx:id="footer" GridPane.rowIndex="3">
+        <GridPane.margin>
+            <Insets left="20.0"/>
+        </GridPane.margin>
+    </Footer>
+    <Button fx:id="addNewButton" maxWidth="110.0" minWidth="110.0" mnemonicParsing="false"
+            onAction="#addNewButtonOnClick" prefWidth="110.0" text="New" GridPane.halignment="RIGHT"
+            GridPane.rowIndex="3">
+        <GridPane.margin>
+            <Insets right="20.0"/>
+        </GridPane.margin>
+    </Button>
+    <GridPane GridPane.rowIndex="1">
+        <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="395.0" minWidth="10.0" prefWidth="21.0"/>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="395.0" minWidth="10.0" prefWidth="139.0"/>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="717.0" minWidth="10.0" prefWidth="642.0"/>
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+        </rowConstraints>
+        <TextField fx:id="searchField" onKeyReleased="#handleSearch" promptText="Search"
+                   GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+            <GridPane.margin>
+                <Insets left="20.0" right="20.0"/>
+            </GridPane.margin>
+            <opaqueInsets>
+                <Insets/>
+            </opaqueInsets>
+        </TextField>
+        <Button fx:id="refreshButton" mnemonicParsing="false" onAction="#handleRefresh" prefHeight="25.0"
+                prefWidth="133.0" text="Refresh" GridPane.columnIndex="1"/>
+    </GridPane>
 </GridPane>

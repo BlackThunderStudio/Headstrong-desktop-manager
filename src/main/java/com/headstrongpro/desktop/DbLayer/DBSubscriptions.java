@@ -1,5 +1,8 @@
 package com.headstrongpro.desktop.DbLayer;
 
+import com.headstrongpro.desktop.DbLayer.util.ActionType;
+import com.headstrongpro.desktop.DbLayer.util.IDataAccessObject;
+import com.headstrongpro.desktop.DbLayer.util.Synchronizable;
 import com.headstrongpro.desktop.core.connection.DBConnect;
 import com.headstrongpro.desktop.core.exception.ConnectionException;
 import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
@@ -7,9 +10,6 @@ import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.model.PaymentRate;
 import com.headstrongpro.desktop.model.Subscription;
 import com.headstrongpro.desktop.model.entity.Company;
-import com.headstrongpro.desktop.DbLayer.util.ActionType;
-import com.headstrongpro.desktop.DbLayer.util.IDataAccessObject;
-import com.headstrongpro.desktop.DbLayer.util.Synchronizable;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -73,7 +73,7 @@ public class DBSubscriptions extends Synchronizable implements IDataAccessObject
 
     @Override
     public Subscription getById(int id) throws ModelSyncException {
-        Subscription subscription = null;
+        Subscription subscription;
         try {
             dbConnect = new DBConnect();
             String query = "SELECT * FROM [subscriptions] WHERE id=" + id + ";";
@@ -170,7 +170,7 @@ public class DBSubscriptions extends Synchronizable implements IDataAccessObject
         }
     }
 
-    public List<Subscription> getbyCompanyId(int companyId) throws ModelSyncException {
+    public List<Subscription> getByCompanyId(int companyId) throws ModelSyncException {
         List<Subscription> subscriptions = new ArrayList<>();
         try {
             dbConnect = new DBConnect();
@@ -204,15 +204,17 @@ public class DBSubscriptions extends Synchronizable implements IDataAccessObject
 
     public List<PaymentRate> getRates() throws ConnectionException {
         List<PaymentRate> res = new ArrayList<>();
-        try{
+        try {
             dbConnect = new DBConnect();
             String query = "SELECT * FROM payment_rates";
             ResultSet rs = dbConnect.getFromDataBase(query);
-            while(rs.next()){
-                res.add(new PaymentRate(rs.getInt("n_of_months"),
-                                        rs.getString("name")));
+            while (rs.next()) {
+                res.add(new PaymentRate(
+                        rs.getInt("id"),
+                        rs.getInt("n_of_months"),
+                        rs.getString("name")));
             }
-        }catch(SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return res;

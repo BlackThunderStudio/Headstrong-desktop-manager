@@ -1,6 +1,5 @@
 package com.headstrongpro.desktop.core.fxControls;
 
-import com.headstrongpro.desktop.core.Drawables;
 import com.jfoenix.controls.JFXSpinner;
 import javafx.animation.FadeTransition;
 import javafx.application.Platform;
@@ -16,33 +15,30 @@ import javafx.util.Duration;
 import java.io.IOException;
 
 /**
- * Created by rajmu on 17.05.25.
+ * Footer
  */
 public class Footer extends AnchorPane {
-
-    @FXML
-    protected Label label;
-    @FXML
-    protected JFXSpinner spinner;
-    @FXML
-    protected ImageView image;
 
     public static final int FADE_MANUAL = 0;
     public static final int FADE_QUICK = 1500;
     public static final int FADE_NORMAL = 2000;
     public static final int FADE_LONG = 3500;
     public static final int FADE_SUPER_QUICK = 500;
-
     private static final int FADE_TIME = 250;
-
+    @FXML
+    protected Label label;
+    @FXML
+    protected JFXSpinner spinner;
+    @FXML
+    protected ImageView image;
     private int fadingTime = 0;
 
-    public Footer(){
+    public Footer() {
         FXMLLoader loader = new FXMLLoader(
                 getClass().getResource("/layout/customControls/footer.fxml"));
         loader.setRoot(this);
         loader.setController(this);
-        try{
+        try {
             loader.load();
             label.setVisible(false);
             image.setVisible(false);
@@ -53,16 +49,16 @@ public class Footer extends AnchorPane {
         }
     }
 
-    public void show(String message, NotificationType type){
+    public void show(String message, NotificationType type) {
         show(message, type, FADE_NORMAL);
     }
 
-    public void show(String message, NotificationType type, int milliseconds){
-        if(image.isVisible() || label.isVisible() || spinner.isVisible()){
+    public void show(String message, NotificationType type, int milliseconds) {
+        if (image.isVisible() || label.isVisible() || spinner.isVisible()) {
             hide();
         }
         label.setText(message);
-        if(type.equals(NotificationType.LOADING)){
+        if (type.equals(NotificationType.LOADING)) {
             label.setVisible(true);
             image.setVisible(false);
             spinner.setVisible(true);
@@ -72,7 +68,7 @@ public class Footer extends AnchorPane {
             image.setImage(new Image(type.getPath()));
             image.setVisible(true);
             label.setVisible(true);
-            if(milliseconds != -1){
+            if (milliseconds != -1) {
                 fadingTime = milliseconds;
                 Task<Void> waitForTime = new Task<Void>() {
                     @Override
@@ -89,10 +85,10 @@ public class Footer extends AnchorPane {
         }
     }
 
-    public void hide(){
+    public void hide() {
         FadeTransition ft = new FadeTransition(Duration.millis(FADE_TIME), this);
         label.setText("");
-        if(fadingTime != 0){
+        if (fadingTime != 0) {
             ft.setFromValue(1.0);
             ft.setToValue(0.0);
             ft.play();
@@ -112,7 +108,7 @@ public class Footer extends AnchorPane {
     /***
      * Enum containing types notification and paths to resource files
      */
-    public enum NotificationType{
+    public enum NotificationType {
         LOADING,
         ERROR("/img/icons/err-icon.png"),
         COMPLETED("/img/icons/check-icon.png"),
@@ -121,12 +117,14 @@ public class Footer extends AnchorPane {
 
         private String path;
 
-        NotificationType(){}
-        NotificationType(String path){
+        NotificationType() {
+        }
+
+        NotificationType(String path) {
             this.path = path;
         }
 
-        public String getPath(){
+        public String getPath() {
             return path;
         }
 

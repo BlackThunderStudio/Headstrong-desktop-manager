@@ -3,7 +3,6 @@ package com.headstrongpro.desktop.core.fxControls;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
@@ -11,10 +10,7 @@ import javafx.scene.paint.Color;
 import java.io.IOException;
 
 /**
- * desktop-manager
- * <p>
- * <p>
- * Created by rajmu on 17.05.30.
+ * DashboardTile
  */
 public class DashboardTile extends GridPane {
 
@@ -33,12 +29,12 @@ public class DashboardTile extends GridPane {
     @FXML
     public Label subtitle;
 
-    public DashboardTile(){
+    public DashboardTile() {
         FXMLLoader loader = new FXMLLoader(
                 getClass().getResource("/layout/customControls/dashboardTile.fxml"));
         loader.setRoot(this);
         loader.setController(this);
-        try{
+        try {
             loader.load();
             subtitle.setWrapText(true);
             title.setWrapText(true);
@@ -48,32 +44,32 @@ public class DashboardTile extends GridPane {
         }
     }
 
-    public void setTextFill(Color color){
+    public void setTextFill(Color color) {
         title.setTextFill(color);
         subtitle.setTextFill(color);
         value.setTextFill(color);
     }
 
-    public void setTitle(String string){
+    public void setTitle(String string) {
         title.setText(string);
     }
 
-    public void setSubtitle(String string){
+    public void setSubtitle(String string) {
         subtitle.setText(string);
     }
 
-    public void setValue(String string){
+    public void setValue(String string) {
         value.setText(string);
     }
 
-    public void clear(){
+    public void clear() {
         title.setText("");
         subtitle.setText("");
         value.setText("");
         background.setImage(null);
     }
 
-    public void setBackgroundColor(String colorCode){
+    public void setBackgroundColor(String colorCode) {
         pane.setStyle("-fx-background-color: " + colorCode);
     }
 }

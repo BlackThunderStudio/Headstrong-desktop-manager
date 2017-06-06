@@ -25,11 +25,11 @@
             <GridPane.margin>
                 <Insets top="12.5" />
             </GridPane.margin></Separator>
-        <TextField fx:id="coursesCatNameTextfield" promptText="Name" GridPane.rowIndex="1" />
+        <TextField fx:id="nameField" promptText="Name" GridPane.rowIndex="1" />
         <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.halignment="RIGHT">
             <children>
-                <Button fx:id="coursesCatEditButton" contentDisplay="CENTER" maxWidth="90.0" minWidth="90.0" mnemonicParsing="false" prefWidth="90.0" text="Edit" />
-                <Button fx:id="coursesCatDeleteButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="90.0" text="Delete" />
+                <Button fx:id="saveButton" contentDisplay="CENTER" maxWidth="90.0" minWidth="90.0" mnemonicParsing="false" prefWidth="90.0" text="Edit" />
+                <Button fx:id="deleteButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="90.0" text="Delete" />
             </children>
             <GridPane.margin>
                 <Insets />

@@ -4,29 +4,31 @@ import com.headstrongpro.desktop.DbLayer.DBClient;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * clients controler test
  */
 public class ClientsControllerTest {
-    ClientsController clientsController;
-    DBClient clientDAO;
+    private ClientsController clientsController;
+    private DBClient clientDAO;
 
     @Before
     public void setUp() throws Exception {
         clientsController = new ClientsController();
         clientDAO = new DBClient();
+        clientsController.refresh();
     }
 
     @Test
     public void getClients() throws Exception {
-        assertNotNull(clientsController.getClients());
+        assertNotNull(clientsController.getAll());
     }
 
     @Test
     public void search() throws Exception {
-        assertEquals("johnnn99@neasenergy.com", clientsController.search("john").get(0).getEmail());
+        assertEquals("johnnn99@neasenergy.com", clientsController.searchByPhrase("john").get(0).getEmail());
     }
 
 }

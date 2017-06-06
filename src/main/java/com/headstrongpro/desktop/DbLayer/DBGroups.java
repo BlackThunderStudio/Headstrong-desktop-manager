@@ -1,20 +1,18 @@
 package com.headstrongpro.desktop.DbLayer;
 
+import com.headstrongpro.desktop.DbLayer.util.ActionType;
+import com.headstrongpro.desktop.DbLayer.util.IDataAccessObject;
+import com.headstrongpro.desktop.DbLayer.util.Synchronizable;
 import com.headstrongpro.desktop.core.connection.DBConnect;
 import com.headstrongpro.desktop.core.exception.ConnectionException;
 import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.model.Group;
-import com.headstrongpro.desktop.DbLayer.util.ActionType;
-import com.headstrongpro.desktop.DbLayer.util.IDataAccessObject;
-import com.headstrongpro.desktop.DbLayer.util.Synchronizable;
 
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -22,7 +20,7 @@ import java.util.List;
  */
 public class DBGroups extends Synchronizable implements IDataAccessObject<Group> {
     private DBConnect connect;
-    
+
     public DBGroups() {
         updateTimestampLocal();
     }
@@ -52,7 +50,7 @@ public class DBGroups extends Synchronizable implements IDataAccessObject<Group>
 
     @Override
     public Group getById(int id) throws ModelSyncException {
-        Group group = null;
+        Group group;
         try {
             connect = new DBConnect();
             ResultSet rs = connect.getFromDataBase("SELECT * FROM groups WHERE id=" + id);
@@ -167,11 +165,11 @@ public class DBGroups extends Synchronizable implements IDataAccessObject<Group>
                 while (rs.next()) {
                     deptIDs.add(rs.getInt(1));
                 }
-                String simplifiedDeptIDs = "";
+                StringBuilder simplifiedDeptIDs = new StringBuilder();
                 for (int i = 0; i < deptIDs.size() - 1; i++) {
-                    simplifiedDeptIDs += deptIDs.get(i) + ",";
+                    simplifiedDeptIDs.append(deptIDs.get(i)).append(",");
                 }
-                if (deptIDs.size() != 0) simplifiedDeptIDs += deptIDs.get(deptIDs.size() - 1);
+                if (deptIDs.size() != 0) simplifiedDeptIDs.append(deptIDs.get(deptIDs.size() - 1));
 
                 //language=TSQL
                 String query = "SELECT id FROM groups WHERE company_id=" + id + "; DELETE FROM groups WHERE company_id=" + id + ";";

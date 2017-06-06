@@ -1,83 +1,73 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.headstrongpro.desktop.core.fxControls.Footer?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
-
-<GridPane minWidth="500" prefHeight="700.0" prefWidth="800.0" stylesheets="/style/paymentsContentPane.css" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.headstrongpro.desktop.view.payments.PaymentsContentView">
+<GridPane styleClass="content-view" xmlns:fx="http://javafx.com/fxml/1"
+          fx:controller="com.headstrongpro.desktop.view.payments.PaymentsContentView">
     <columnConstraints>
-        <ColumnConstraints percentWidth="100.0" prefWidth="800.0" />
+        <ColumnConstraints percentWidth="100.0" prefWidth="800.0"/>
     </columnConstraints>
     <rowConstraints>
-        <RowConstraints maxHeight="60.0" minHeight="60.0" prefHeight="60.0" vgrow="NEVER" />
-        <RowConstraints maxHeight="60.0" minHeight="60.0" prefHeight="60.0" vgrow="NEVER" />
-        <RowConstraints maxHeight="4000.0" minHeight="300.0" prefHeight="618.0" vgrow="ALWAYS" />
-        <RowConstraints maxHeight="62.0" minHeight="62.0" prefHeight="62.0" vgrow="NEVER" />
-        <RowConstraints />
+        <RowConstraints maxHeight="60.0" minHeight="60.0" prefHeight="60.0" vgrow="NEVER"/>
+        <RowConstraints maxHeight="60.0" minHeight="60.0" prefHeight="60.0" vgrow="NEVER"/>
+        <RowConstraints maxHeight="4000.0" minHeight="300.0" prefHeight="618.0" vgrow="ALWAYS"/>
+        <RowConstraints maxHeight="62.0" minHeight="62.0" prefHeight="62.0" vgrow="NEVER"/>
+        <RowConstraints/>
     </rowConstraints>
-    <children>
-        <Pane prefHeight="200.0" prefWidth="200.0">
-            <children>
-                <Text fx:id="paymentsHeader" layoutX="14.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Payments">
-                    <font>
-                        <Font size="36.0" />
-                    </font>
-                </Text>
-            </children>
-        </Pane>
-        <GridPane GridPane.rowIndex="1">
-            <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="110.0" minWidth="110.0" prefWidth="110.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="725.0" minWidth="200.0" prefWidth="706.0" />
-            </columnConstraints>
-            <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            </rowConstraints>
+    <Pane prefHeight="200.0" prefWidth="200.0">
+        <Text fx:id="headerText" layoutX="14.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0"
+              text="Payments">
+            <font>
+                <Font size="36.0"/>
+            </font>
+        </Text>
+    </Pane>
+    <GridPane GridPane.rowIndex="1">
+        <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="110.0" minWidth="110.0" prefWidth="110.0"/>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="725.0" minWidth="200.0" prefWidth="706.0"/>
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+        </rowConstraints>
+        <GridPane.margin>
+            <Insets/>
+        </GridPane.margin>
+        <TextField fx:id="searchField" onKeyReleased="#handleSearch"
+                   promptText="Search" GridPane.columnIndex="1">
             <GridPane.margin>
-                <Insets />
+                <Insets left="20.0" right="20.0"/>
             </GridPane.margin>
-            <children>
-                <TextField fx:id="searchPaymentsTextfield" onKeyReleased="#searchPaymentsOnKeyReleased" promptText="Search" GridPane.columnIndex="1">
-                    <GridPane.margin>
-                        <Insets left="20.0" right="20.0" />
-                    </GridPane.margin>
-                </TextField>
-                <Button fx:id="refreshButton" maxWidth="90.0" minWidth="90.0" mnemonicParsing="false" onAction="#refreshButtonOnClick" prefWidth="90.0" text="Refresh">
-                    <GridPane.margin>
-                        <Insets left="20.0" />
-                    </GridPane.margin>
-                </Button>
-            </children>
-        </GridPane>
-        <TableView fx:id="paymentsTable" maxWidth="4000.0" minWidth="460.0" GridPane.rowIndex="2">
-            <columnResizePolicy>
-                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-            </columnResizePolicy>
-
-            <columns>
-                <TableColumn fx:id="valCol" minWidth="70" prefWidth="90.0" text="Value" />
-                <TableColumn fx:id="dueCol" minWidth="109" prefWidth="180" text="Due date" />
-                <TableColumn fx:id="payCol" minWidth="109" prefWidth="180" text="Payment date" />
-                <TableColumn fx:id="companyNameCol" minWidth="100" prefWidth="150" text="Company name" />
-                <TableColumn fx:id="cvrCol" minWidth="70" prefWidth="100" text="CVR" />
-            </columns>
+        </TextField>
+        <Button fx:id="refreshButton" maxWidth="90.0" minWidth="90.0" mnemonicParsing="false"
+                onAction="#handleRefresh" prefWidth="90.0" text="Refresh">
             <GridPane.margin>
-                <Insets bottom="20.0" left="20.0" right="20.0" />
+                <Insets left="20.0"/>
             </GridPane.margin>
-        </TableView>
-        <Footer fx:id="footer" GridPane.rowIndex="3">
-            <GridPane.margin>
-                <Insets left="20.0" />
-            </GridPane.margin>
-        </Footer>
-    </children>
+        </Button>
+    </GridPane>
+    <TableView fx:id="mainTable" maxWidth="4000.0" minWidth="460.0" GridPane.rowIndex="2">
+        <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+        </columnResizePolicy>
+        <columns>
+            <TableColumn fx:id="companyNameCol" minWidth="100" prefWidth="150" text="Company name"/>
+            <TableColumn fx:id="cvrCol" minWidth="70" prefWidth="100" text="CVR"/>
+            <TableColumn fx:id="valCol" minWidth="70" prefWidth="90.0" text="Value"/>
+            <TableColumn fx:id="dueCol" minWidth="109" prefWidth="180" text="Due date"/>
+            <TableColumn fx:id="payCol" minWidth="109" prefWidth="180" text="Payment date"/>
+        </columns>
+        <GridPane.margin>
+            <Insets bottom="20.0" left="20.0" right="20.0"/>
+        </GridPane.margin>
+    </TableView>
+    <Footer fx:id="footer" GridPane.rowIndex="3">
+        <GridPane.margin>
+            <Insets left="20.0"/>
+        </GridPane.margin>
+    </Footer>
 </GridPane>

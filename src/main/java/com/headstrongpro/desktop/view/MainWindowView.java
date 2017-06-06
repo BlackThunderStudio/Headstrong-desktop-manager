@@ -27,6 +27,7 @@ public class MainWindowView extends RootLayoutView implements Initializable {
 
     private ContentView contentView;
     private ContextView contextView;
+
     private ContentSource currentContentSource;
 
     private boolean fullContentMode;
@@ -65,7 +66,7 @@ public class MainWindowView extends RootLayoutView implements Initializable {
 
             // Prepare FXML Loader and set location of content view
             FXMLLoader contentBarLoader = new FXMLLoader();
-            contentBarLoader.setLocation(getClass().getResource(contentSource.getContentView()));
+            contentBarLoader.setLocation(getClass().getResource(contentSource.getContentViewPath()));
 
             // Try to load content and context views from FXML resources
             try {
@@ -85,7 +86,7 @@ public class MainWindowView extends RootLayoutView implements Initializable {
             contentBar.setStyle("-fx-font-family: '" + JFXtrasFontRoboto.AvailableFonts.RobotoRegular.getFamilyName() + "';");
 
             // Prepare FXML Loader and set location of context view, if required
-            if (contentSource.getContextView() != null) {
+            if (contentSource.getContextViewPath() != null) {
                 changeContext(contentSource);
             } else {
                 fullContentMode = true;
@@ -103,7 +104,7 @@ public class MainWindowView extends RootLayoutView implements Initializable {
         }
         // Prepare FXML Loader and set location of context view
         FXMLLoader contextBarLoader = new FXMLLoader();
-        contextBarLoader.setLocation(getClass().getResource(contentSource.getContextView()));
+        contextBarLoader.setLocation(getClass().getResource(contentSource.getContextViewPath()));
 
         // Try to load context view from FXML resource
         try {

@@ -1,21 +1,19 @@
 package com.headstrongpro.desktop.DbLayer;
 
+import com.headstrongpro.desktop.DbLayer.util.ActionType;
+import com.headstrongpro.desktop.DbLayer.util.IDataAccessObject;
+import com.headstrongpro.desktop.DbLayer.util.Synchronizable;
 import com.headstrongpro.desktop.core.connection.DBConnect;
 import com.headstrongpro.desktop.core.exception.ConnectionException;
 import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
 import com.headstrongpro.desktop.core.exception.EmptyInputException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.model.CourseCategory;
-import com.headstrongpro.desktop.DbLayer.util.ActionType;
-import com.headstrongpro.desktop.DbLayer.util.IDataAccessObject;
-import com.headstrongpro.desktop.DbLayer.util.Synchronizable;
 
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 /**********************************
@@ -48,7 +46,7 @@ public class DBCourseCategory extends Synchronizable implements IDataAccessObjec
 
     @Override
     public CourseCategory getById(int id) throws ModelSyncException {
-        CourseCategory courseCategory = null;
+        CourseCategory courseCategory;
         try {
             dbConnect = new DBConnect();
             String getByIdCourseCategoriesQuery = "SELECT * FROM s_categories WHERE id = " + id + ";";
@@ -85,7 +83,7 @@ public class DBCourseCategory extends Synchronizable implements IDataAccessObjec
                 throw new EmptyInputException("Name can not be empty");
             }
         } catch (EmptyInputException e) {
-            throw new ModelSyncException("Name can not be   e m p t y");
+            throw new ModelSyncException("Name can not be   e m p data y");
         } catch (ConnectionException | SQLException e) {
             throw new ModelSyncException("Could not persist new course category!", e);
         }
@@ -123,7 +121,7 @@ public class DBCourseCategory extends Synchronizable implements IDataAccessObjec
                 preparedStatement.execute();
                 logChange("s_categories", courseCategory.getId(), ActionType.DELETE);
             } catch (ConnectionException | SQLException e) {
-                throw new ModelSyncException("Couldn't delete course category of id=" + courseCategory.getId(), e);
+                throw new ModelSyncException("Could not delete course category of id=" + courseCategory.getId(), e);
             }
         } else {
             throw new DatabaseOutOfSyncException();

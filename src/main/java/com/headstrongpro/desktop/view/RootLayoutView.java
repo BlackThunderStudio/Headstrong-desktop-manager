@@ -3,12 +3,12 @@ package com.headstrongpro.desktop.view;
 import com.headstrongpro.desktop.Main;
 
 /**
- * RootLayout
+ * Root Layout
  */
 public abstract class RootLayoutView {
-    protected Main MainApp;
+    Main mainApp;
 
     public void setMainApp(Main mainApp) {
-        MainApp = mainApp;
+        this.mainApp = mainApp;
     }
 }

@@ -1,12 +1,10 @@
 package com.headstrongpro.desktop.view.clients;
 
 import com.headstrongpro.desktop.controller.ClientsController;
-import com.headstrongpro.desktop.core.SyncHandler;
 import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.core.fxControls.Footer;
 import com.headstrongpro.desktop.model.entity.Client;
-import com.headstrongpro.desktop.view.ContentSource;
 import com.headstrongpro.desktop.view.ContextView;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -16,99 +14,101 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 
 import java.net.URL;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 
 /**
- * Clients Context view
+ * Clients Context View
  */
 public class ClientsContextView extends ContextView<Client> implements Initializable {
 
-    @FXML
-    public Button clientsEditButton;
-    @FXML
-    public Button clientsDeleteButton;
-    @FXML
-    public Button clientsCompanyButton;
-    @FXML
-    public Button clientsGroupsButton;
-    @FXML
-    public Button clientsDepartmentsButton;
-    @FXML
-    public TextField clientsNameTextfield;
-    @FXML
-    public TextField clientsEmailTextfield;
-    @FXML
-    public TextField clientsPhoneTextfield;
-    @FXML
-    public RadioButton clientsGenderMaleRadio;
-    @FXML
-    public RadioButton clientsGenderFemaleRadio;
+    private final ToggleGroup genderRadios = new ToggleGroup();
 
-    ClientsController clientsController;
-    final ToggleGroup genderRadios = new ToggleGroup();
+    // Form text fields
+    @FXML
+    public TextField nameField, emailField, phoneField;
+    @FXML
+    public RadioButton maleGenderRadio, femaleGenderRadio;
+
+    // Links to related items
+    @FXML
+    public Button clientsCompanyButton, clientsGroupsButton, clientsDepartmentsButton;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        clientsGenderMaleRadio.setToggleGroup(genderRadios);
-        clientsGenderFemaleRadio.setToggleGroup(genderRadios);
+        textInputControls.addAll(Arrays.asList(
+                nameField,
+                emailField,
+                phoneField
+        ));
+
+        radioButtons.addAll(Arrays.asList(
+                maleGenderRadio,
+                femaleGenderRadio
+        ));
+
+        controller = new ClientsController();
+
+        radioButtons.forEach(rb -> rb.setToggleGroup(genderRadios));
+
+        setDefaults();
     }
 
     @Override
-    public void populateForm(){
-        clientsNameTextfield.setText(contextItem.getName());
-        clientsEmailTextfield.setText(contextItem.getEmail());
-        clientsPhoneTextfield.setText(contextItem.getPhone());
-        if(contextItem.getGender().equals("Male"))
-            clientsGenderMaleRadio.fire();
-        else
-            clientsGenderFemaleRadio.fire();
-    }
-
-    @Override
-    public void clearFields(){
-        clientsNameTextfield.clear();
-        clientsEmailTextfield.clear();
-        clientsPhoneTextfield.clear();
-        clientsGenderMaleRadio.disarm();
-        clientsGenderFemaleRadio.disarm();
-    }
-
-    private SyncHandler handler = () -> {
-        try {
-            return clientsController.getById(contextItem.getId());
-        } catch (ModelSyncException e) {
-            e.printStackTrace();
-            mainWindowView.getContentView().footer.show(e.getMessage(), Footer.NotificationType.ERROR);
+    protected void populateForm() {
+        nameField.setText(contextItem.getName());
+        emailField.setText(contextItem.getEmail());
+        phoneField.setText(contextItem.getPhone());
+        radioButtons.forEach(rb -> rb.setDisable(false));
+        if (contextItem.getGender().equals("Male")) {
+            maleGenderRadio.fire();
+        } else {
+            femaleGenderRadio.fire();
         }
-        return null;
-    };
+        radioButtons.forEach(rb -> rb.setDisable(true));
+    }
 
     @FXML
-    public void clientEditButtonOnClick(){
-        if(validateInput(clientsNameTextfield, clientsEmailTextfield, clientsPhoneTextfield)){
+    public void handleEdit() {
+        ClientsController controller = (ClientsController) this.controller;
+        if (validateInput(nameField, emailField, phoneField)) {
             try {
-                mainWindowView.getContentView().footer.show("Updating client...", Footer.NotificationType.LOADING);
-                clientsController.updateClient(contextItem.getId(),
-                        clientsNameTextfield.getText(),
-                        clientsEmailTextfield.getText(),
-                        clientsPhoneTextfield.getText(),
+                mainWindowView.getContentView().footer.show("Updating client...",
+                        Footer.NotificationType.LOADING);
+                controller.updateClient(contextItem.getId(),
+                        nameField.getText(),
+                        emailField.getText(),
+                        phoneField.getText(),
                         contextItem.getGender());
-                mainWindowView.getContentView().footer.show("Client updated.", Footer.NotificationType.COMPLETED);
-                mainWindowView.getContentView().refreshButton.fire();
+                mainWindowView.getContentView().footer.show("Client updated.",
+                        Footer.NotificationType.COMPLETED);
+                mainWindowView.getContentView().handleRefresh();
             } catch (ModelSyncException e) {
                 e.fillInStackTrace();
-                mainWindowView.getContentView().footer.show("Error! Could not update company!", Footer.NotificationType.ERROR, Footer.FADE_LONG);
+                mainWindowView.getContentView().footer.show("Error! Could not update company!",
+                        Footer.NotificationType.ERROR, Footer.FADE_LONG);
             } catch (DatabaseOutOfSyncException e) {
                 e.fillInStackTrace();
                 handleOutOfSync(handler);
             }
         } else {
-            mainWindowView.getContentView().footer.show("Invalid input", Footer.NotificationType.WARNING, Footer.FADE_QUICK);
+            mainWindowView.getContentView().footer.show("Invalid input",
+                    Footer.NotificationType.WARNING, Footer.FADE_QUICK);
         }
     }
 
     @FXML
-    public void clientDeleteButtonOnClick(){
-        mainWindowView.changeContent(ContentSource.CLIENTS); //TODO: implement properly
+    public void clientsCompanyButtonOnClick() {
+        displayNotImplementedError();
+    }
+
+    @FXML
+    public void clientsGroupsButtonOnClick() {
+        displayNotImplementedError();
+    }
+
+    @FXML
+    public void clientsDepartmentsButtonOnClick() {
+        displayNotImplementedError();
     }
 }

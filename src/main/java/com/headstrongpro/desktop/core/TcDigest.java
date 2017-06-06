@@ -4,16 +4,12 @@ import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 /**
- * desktop-manager
- * <p>
- * <p>
- * Created by rajmu on 17.05.30.
+ * TcDigest
  */
 public class TcDigest {
 
-    private SystemChange systemChange;
-
     private static final String seed = "kljhH%945H5S3kj9s65n";
+    private SystemChange systemChange;
 
     /***
      * Default constructor
@@ -27,8 +23,8 @@ public class TcDigest {
      * @param input string of text
      * @return digested string of text
      */
-    public String encode(String input){
-        return processParallel(input, seed, ActionType.ENCODE, DigestSystem.UTF8, BufferSize.SMALL);
+    public String encode(String input) {
+        return processParallel(input, seed, ActionType.ENCODE, DigestSystem.HEX, BufferSize.SMALL);
     }
 
     /***
@@ -36,8 +32,8 @@ public class TcDigest {
      * @param input string of text
      * @return decrypted value
      */
-    private String decode(String input){
-        return processParallel(input, seed, ActionType.DECODE, DigestSystem.UTF8, BufferSize.SMALL);
+    private String decode(String input) {
+        return processParallel(input, seed, ActionType.DECODE, DigestSystem.HEX, BufferSize.SMALL);
     }
 
     /***
@@ -47,7 +43,7 @@ public class TcDigest {
      * @param system output text representation: [UTF8 / BIN / HEX]
      * @return digested string of text
      */
-    public String encode(String input, String seed, DigestSystem system){
+    public String encode(String input, String seed, DigestSystem system) {
         return processParallel(input, seed, ActionType.ENCODE, system, BufferSize.STANDARD);
     }
 
@@ -58,7 +54,7 @@ public class TcDigest {
      * @param system output text representation: [UTF8 / BIN / HEX]
      * @return decrypted string of text
      */
-    public String decode(String input, String seed, DigestSystem system){
+    public String decode(String input, String seed, DigestSystem system) {
         return processParallel(input, seed, ActionType.DECODE, system, BufferSize.STANDARD);
     }
 
@@ -76,7 +72,7 @@ public class TcDigest {
         return buffer.parallelStream()
                 .map(e -> {
                     try {
-                        return e = run(e, seed, flag, system);
+                        return run(e, seed, flag, system);
                     } catch (DigestRuntimeException e1) {
                         e1.printStackTrace();
                     }
@@ -87,33 +83,34 @@ public class TcDigest {
 
     private String run(String input, String seed, ActionType flag, DigestSystem system) throws DigestRuntimeException {
         int digestHash = 0;
-        for (int temp : seed.toCharArray()){
+        for (int temp : seed.toCharArray()) {
             digestHash += temp; //Converts string seed to a numeric value
         }
-        if(system.equals(DigestSystem.UTF8)) digestHash = digestHash % 2048; //if the output is represented as a UTF-8 string, then it uses only uses ASCII chars of values 0-2048
+        if (system.equals(DigestSystem.UTF8))
+            digestHash = digestHash % 2048; //if the output is represented as a UTF-8 string, then it uses only uses ASCII chars of values 0-2048
         StringBuilder output = new StringBuilder();
-        if(flag.equals(ActionType.ENCODE)){ //for encoding
-            for (int character : input.toCharArray()){ //iterates through each character in an input string
-                if(system.equals(DigestSystem.UTF8)){
+        if (flag.equals(ActionType.ENCODE)) { //for encoding
+            for (int character : input.toCharArray()) { //iterates through each character in an input string
+                if (system.equals(DigestSystem.UTF8)) {
                     output.append(Character.toString((char) (character + digestHash))); //computes the output value
                 } else {
                     /*if(system.equals(DigestSystem.BIN)){
                         output.append(systemChange.toNumericSystem(character + digestHash, 2)); //computes the output value
                     }*/ //doesn't work
-                    if(system.equals(DigestSystem.HEX)){
+                    if (system.equals(DigestSystem.HEX)) {
                         output.append(systemChange.toNumericSystem(character + digestHash, 16)); //computes the output value
                     }
                 }
             }//end of loop
         }//end of encoding
-        if(flag.equals(ActionType.DECODE)){ //for decoding; analogical to encoding but reversed
-            if(system.equals(DigestSystem.UTF8)){
-                for (int character : input.toCharArray()){
+        if (flag.equals(ActionType.DECODE)) { //for decoding; analogical to encoding but reversed
+            if (system.equals(DigestSystem.UTF8)) {
+                for (int character : input.toCharArray()) {
                     output.append((char) (character - digestHash));
                 }
             } else {
                 String[] tmpInput = input.split(" "); //if the encrypted input was represented as a base 16 or 2 values, then it splits the input to individual values
-                for(String temp : tmpInput){
+                for (String temp : tmpInput) {
                     /*if(system.equals(DigestSystem.BIN)){
                         try{
                             output.append((char) (Integer.parseInt(systemChange.toDecimal(temp, 2)) - digestHash)); //computes the original character by it's encrypted value
@@ -122,10 +119,10 @@ public class TcDigest {
                                     ex.getCause());
                         }
                     }*/ //doesn't work
-                    if(system.equals(DigestSystem.HEX)){
-                        try{
+                    if (system.equals(DigestSystem.HEX)) {
+                        try {
                             output.append((char) (Integer.parseInt(systemChange.toDecimal(temp, 16)) - digestHash)); //computes the original character by it's encrypted value
-                        } catch (NumberFormatException ex){
+                        } catch (NumberFormatException ex) {
                             throw new DigestRuntimeException("Error processing data. Invalid String to integer conversion. Could not convert HEX encrypted data into a String.\n" + ex.getMessage(),
                                     ex.getCause());
                         }
@@ -133,12 +130,12 @@ public class TcDigest {
                 }
             }
         }//end of decoding
-        if(output.length() == 0) throw new DigestRuntimeException("Unknown TcDigest exception!");
+        if (output.length() == 0) throw new DigestRuntimeException("Unknown TcDigest exception!");
         return output.toString();
     }//end of run()
 
     /***
-     *P artitions the input for a fixed sized blocks for parellel processing of the data
+     * Partitions the input for a fixed sized blocks for parallel processing of the data
      * @param string Input sequence
      * @param buffer size of a buffer for data
      * @return output array
@@ -157,6 +154,36 @@ public class TcDigest {
             chars.add(string.substring((blockCount - 1) * buff, string.length()));
         }
         return chars;
+    }
+
+    public enum ActionType {
+        ENCODE,
+        DECODE
+    }
+
+    public enum DigestSystem {
+        UTF8,
+        //BIN, doesn't work for some reason
+        HEX
+    }
+
+    public enum BufferSize {
+        TINY(8),
+        SMALL(16),
+        STANDARD(64),
+        BIG(256),
+        LARGE(512),
+        OMGWTFBBQ(2048);
+
+        private int bufferSize;
+
+        BufferSize(int size) {
+            bufferSize = size;
+        }
+
+        public int getValue() {
+            return bufferSize;
+        }
     }
 
     private class SystemChange {
@@ -207,36 +234,6 @@ public class TcDigest {
                 }
             }
             return String.valueOf(ret);
-        }
-    }
-
-    public enum ActionType {
-        ENCODE,
-        DECODE
-    }
-
-    public enum DigestSystem {
-        UTF8,
-        //BIN, doesn't work for some reason
-        HEX
-    }
-
-    public enum BufferSize {
-        TINY(8),
-        SMALL(16),
-        STANDARD(64),
-        BIG(256),
-        LARGE(512),
-        OMGWTFBBQ(2048);
-
-        private int bufferSize;
-
-        BufferSize(int size) {
-            bufferSize = size;
-        }
-
-        public int getValue() {
-            return bufferSize;
         }
     }
 

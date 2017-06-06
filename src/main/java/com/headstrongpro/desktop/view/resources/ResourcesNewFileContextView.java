@@ -19,13 +19,12 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * Created by jakub on 26/05/2017.
+ * Resources New File Context View
  */
-public class ResourcesNewFileContext extends ContextView<Resource> implements Initializable{
+public class ResourcesNewFileContextView extends ContextView<Resource> implements Initializable {
+
     @FXML
-    public TextField newImageNameTextfield;
-    @FXML
-    public TextField newImageDescriptionTextfield;
+    public TextField newImageNameTextfield, newImageDescriptionTextfield;
     @FXML
     public Button selectFileButton;
     @FXML
@@ -36,8 +35,8 @@ public class ResourcesNewFileContext extends ContextView<Resource> implements In
 
     @FXML
     public void saveButtonOnClick() {
-        if(selectedFile != null){
-            if(validateInput(newImageNameTextfield, newImageDescriptionTextfield)){
+        if (selectedFile != null) {
+            if (validateInput(newImageNameTextfield, newImageDescriptionTextfield)) {
                 try {
                     mainWindowView.getContentView().footer.show("Uploading resource...", Footer.NotificationType.LOADING);
                     controller.uploadLocalFile(selectedFile,
@@ -58,14 +57,16 @@ public class ResourcesNewFileContext extends ContextView<Resource> implements In
             mainWindowView.getContentView().footer.show("No file selected!", Footer.NotificationType.WARNING);
         }
     }
+
     @FXML
     public void cancelButtonOnClick() {
         mainWindowView.changeContent(ContentSource.RESOURCES);
     }
+
     @FXML
     public void selectFileButtonOnClick() {
         selectedFile = controller.selectLocalFile();
-        if(selectedFile != null){
+        if (selectedFile != null) {
             newImageFilenameLabel.setText(selectedFile.getName());
         } else {
             newImageFilenameLabel.setText("");

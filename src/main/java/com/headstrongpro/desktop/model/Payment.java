@@ -3,13 +3,13 @@ package com.headstrongpro.desktop.model;
 import java.sql.Date;
 
 /**
- * Payment model class
+ * Payment Model Entity
  */
-public class Payment {
+public class Payment implements IModel {
+    private boolean paid;
     private int id;
     private double value;
     private Date timestamp, dueDate;
-    boolean paid;
     private Subscription subscription;
     private String companyName, companyCvr;
 
@@ -30,10 +30,12 @@ public class Payment {
         this.dueDate = dueDate;
     }
 
+    @Override
     public int getId() {
         return id;
     }
 
+    @Override
     public void setId(int id) {
         this.id = id;
     }
@@ -62,13 +64,21 @@ public class Payment {
         this.dueDate = dueDate;
     }
 
-    public boolean isPaid() { return paid; }
+    public boolean isPaid() {
+        return paid;
+    }
 
-    public void setPaid() { this.paid = paid; }
+    public void setPaid() {
+        this.paid = true;
+    }
 
-    public Subscription getSubscription() { return subscription; }
+    public Subscription getSubscription() {
+        return subscription;
+    }
 
-    public void setSubscription(Subscription subscription) { this.subscription = subscription; }
+    public void setSubscription(Subscription subscription) {
+        this.subscription = subscription;
+    }
 
     public String getCompanyName() {
         return companyName;

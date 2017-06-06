@@ -1,25 +1,23 @@
 package com.headstrongpro.desktop.DbLayer;
 
+import com.headstrongpro.desktop.DbLayer.util.ActionType;
+import com.headstrongpro.desktop.DbLayer.util.IDataAccessObject;
+import com.headstrongpro.desktop.DbLayer.util.Synchronizable;
 import com.headstrongpro.desktop.core.connection.DBConnect;
 import com.headstrongpro.desktop.core.exception.ConnectionException;
 import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
 import com.headstrongpro.desktop.core.exception.EmptyInputException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.model.entity.Company;
-import com.headstrongpro.desktop.DbLayer.util.ActionType;
-import com.headstrongpro.desktop.DbLayer.util.IDataAccessObject;
-import com.headstrongpro.desktop.DbLayer.util.Synchronizable;
 
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 /**
- * company model collection
+ * DB Companies
  */
 public class DBCompany extends Synchronizable implements IDataAccessObject<Company> {
 
@@ -53,7 +51,7 @@ public class DBCompany extends Synchronizable implements IDataAccessObject<Compa
 
     @Override
     public Company getById(int id) throws ModelSyncException {
-        Company company = null;
+        Company company;
         try {
             dbConnect = new DBConnect();
             String query = "SELECT * FROM companies WHERE id=" + id + ";";
@@ -146,14 +144,14 @@ public class DBCompany extends Synchronizable implements IDataAccessObject<Compa
 
                 new DBDepartments().deleteByCompanyID(company.getId());
             } catch (ConnectionException | SQLException e) {
-                throw new ModelSyncException("Couldn't delete the company of id=" + company.getId(), e);
+                throw new ModelSyncException("Could not delete the company of id=" + company.getId(), e);
             }
         } else {
             throw new DatabaseOutOfSyncException();
         }
     }
 
-    public String getCompanyNameByID(int id) throws ModelSyncException {
+    public String getCompanyNameById(int id) throws ModelSyncException {
         String result;
         try {
             dbConnect = new DBConnect();
@@ -161,7 +159,7 @@ public class DBCompany extends Synchronizable implements IDataAccessObject<Compa
             rs.next();
             result = rs.getString(1);
         } catch (ConnectionException | SQLException e) {
-            throw new ModelSyncException("Couldn't fetch the company name of id=" + id, e);
+            throw new ModelSyncException("Could not fetch the company name of id=" + id, e);
         }
         return result;
     }

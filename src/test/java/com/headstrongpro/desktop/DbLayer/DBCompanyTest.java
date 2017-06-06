@@ -50,7 +50,7 @@ public class DBCompanyTest {
         int oldSize = companyDAO.getAll().size();
 
         company = companyDAO.persist(company);
-        department.setCompanyID(company.getId());
+        department.setCompanyId(company.getId());
         departmentsDAO.persist(department);
         assertNotEquals("Company has not been created", oldSize, companyDAO.getAll().size());
         companyDAO.delete(company);
@@ -72,7 +72,7 @@ public class DBCompanyTest {
 
     @Test
     public void getCompanyNameByIdTest() throws Exception {
-        String name = companyDAO.getCompanyNameByID(1);
+        String name = companyDAO.getCompanyNameById(1);
         String expected = "Neas Energy A/S";
 
         assertEquals(expected, name);

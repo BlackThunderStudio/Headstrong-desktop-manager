@@ -1,10 +1,10 @@
 package com.headstrongpro.desktop.DbLayer;
 
+import com.headstrongpro.desktop.DbLayer.util.IDataAccessObject;
 import com.headstrongpro.desktop.core.connection.DBConnect;
 import com.headstrongpro.desktop.core.exception.ConnectionException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.model.Log;
-import com.headstrongpro.desktop.DbLayer.util.IDataAccessObject;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by rajmu on 17.05.09.
+ * DB Log Actions
  */
 public class DBLogActions implements IDataAccessObject<Log> {
 
@@ -47,7 +47,7 @@ public class DBLogActions implements IDataAccessObject<Log> {
 
     @Override
     public Log getById(int id) throws ModelSyncException {
-        Log log = null;
+        Log log;
         try {
             connect = new DBConnect();
             ResultSet rs = connect.getFromDataBase("SELECT * FROM log_actions WHERE id=" + id + ";");
@@ -74,9 +74,9 @@ public class DBLogActions implements IDataAccessObject<Log> {
             //language=TSQL
             String query = "INSERT INTO log_actions(headstrong_employee_id, table_name, item_id, action_type) VALUES (?,?,?,?);";
             PreparedStatement preparedStatement = connect.getConnection().prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
-            preparedStatement.setInt(1, object.getHeadstrongEmpID());
+            preparedStatement.setInt(1, object.getHeadstrongEmpId());
             preparedStatement.setString(2, object.getTableName());
-            preparedStatement.setInt(3, object.getItemID());
+            preparedStatement.setInt(3, object.getItemId());
             preparedStatement.setString(4, object.getActionType());
             preparedStatement.executeUpdate();
             try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
@@ -95,14 +95,14 @@ public class DBLogActions implements IDataAccessObject<Log> {
     @Deprecated
     @Override
     public void update(Log object) throws ModelSyncException {
-        //user shouldn't be able to update logs
+        //user should not be able to update logs
         throw new ModelSyncException("This method shall not be used!");
     }
 
     @Deprecated
     @Override
     public void delete(Log object) throws ModelSyncException {
-        //user shouldn't be able to delete logs
+        //user should not be able to delete logs
         throw new ModelSyncException("This method shall not be used!");
     }
 

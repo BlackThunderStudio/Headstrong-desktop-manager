@@ -11,7 +11,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * Login Controller
+ * Login View
  */
 public class LoginView extends RootLayoutView implements Initializable {
     private final PseudoClass errorClass = PseudoClass.getPseudoClass("error");
@@ -30,7 +30,7 @@ public class LoginView extends RootLayoutView implements Initializable {
 
         try {
             if (UserController.validateUser(userNameField.getText(), passwordField.getText())) {
-                MainApp.initLayout();
+                mainApp.initLayout();
             }
         } catch (IllegalArgumentException e) {
             passwordField.pseudoClassStateChanged(errorClass, true);

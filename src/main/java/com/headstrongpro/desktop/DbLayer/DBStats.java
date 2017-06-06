@@ -4,19 +4,14 @@ import com.headstrongpro.desktop.DbLayer.util.IStatistical;
 import com.headstrongpro.desktop.core.connection.DBContext;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
 
 /**
- * desktop-manager
- * <p>
- * <p>
- * Created by rajmu on 17.05.31.
+ * DB Stats
  */
-public class DBStats implements IStatistical{
+public class DBStats implements IStatistical {
 
     private DBContext dbContext;
 
@@ -27,9 +22,9 @@ public class DBStats implements IStatistical{
     @Override
     public int getAmountOfRecords(String tableName) throws ModelSyncException {
         String query = "DECLARE @TableName VARCHAR(64)\n" +
-                "set @TableName = ?\n" +
+                "SET @TableName = ?\n" +
                 "EXEC('SELECT COUNT(*) FROM ' + @TableName);";
-        int rows = 0;
+        int rows;
         try {
             PreparedStatement preparedStatement = dbContext.getConnection().prepareStatement(query);
             preparedStatement.setString(1, tableName);
@@ -59,7 +54,7 @@ public class DBStats implements IStatistical{
 
     @Override
     public int getActiveSubscriptionsCount() {
-        String query = "SELECT COUNT(*) FROM subscriptions WHERE end_date < CURRENT_TIMESTAMP";
+        String query = "SELECT COUNT(*) FROM subscriptions WHERE end_date > CURRENT_TIMESTAMP";
         int rows = 0;
         ResultSet rs = dbContext.getFromDataBase(query);
         try {

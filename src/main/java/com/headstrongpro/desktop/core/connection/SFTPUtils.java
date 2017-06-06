@@ -7,16 +7,14 @@ import com.headstrongpro.desktop.model.resource.Resource;
 import com.headstrongpro.desktop.model.resource.ResourceType;
 import com.jcraft.jsch.*;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import org.apache.commons.io.FilenameUtils;
 
 import javax.swing.*;
 import java.io.*;
 import java.net.URLEncoder;
-import java.util.Optional;
 
 /**
- * Created by rajmu on 17.05.21.
+ * SFTP Utils
  */
 public class SFTPUtils implements IResourceConnector {
 
@@ -144,6 +142,42 @@ public class SFTPUtils implements IResourceConnector {
         return null;
     }
 
+    public static class MyProgressMonitor implements SftpProgressMonitor {
+        ProgressMonitor monitor;
+        long count = 0;
+        long max = 0;
+        private long percent = -1;
+
+        @Override
+        public void init(int i, String s, String s1, long l) {
+            this.max = l;
+            monitor = new ProgressMonitor(null,
+                    ((i == SftpProgressMonitor.PUT) ?
+                            "put" : "get") + ": " + s,
+                    "", 0, (int) max);
+            count = 0;
+            percent = -1;
+            monitor.setProgress((int) this.count);
+            monitor.setMillisToDecideToPopup(1000);
+        }
+
+        @Override
+        public boolean count(long l) {
+            count += l;
+            if (percent >= count * 100 / max) return true;
+            percent = count * 100 / max;
+            monitor.setNote("Completed " + count + "(" + percent + "%) out of " + max + ".");
+            monitor.setProgress((int) count);
+
+            return !monitor.isCanceled();
+        }
+
+        @Override
+        public void end() {
+            monitor.close();
+        }
+    }
+
     public class MyUserInfo implements UserInfo {
 
         private String password;
@@ -194,42 +228,6 @@ public class SFTPUtils implements IResourceConnector {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setHeaderText(s);
             alert.show();
-        }
-    }
-
-    public static class MyProgressMonitor implements SftpProgressMonitor {
-        ProgressMonitor monitor;
-        long count = 0;
-        long max = 0;
-        private long percent = -1;
-
-        @Override
-        public void init(int i, String s, String s1, long l) {
-            this.max = l;
-            monitor = new ProgressMonitor(null,
-                    ((i == SftpProgressMonitor.PUT) ?
-                            "put" : "get") + ": " + s,
-                    "", 0, (int) max);
-            count = 0;
-            percent = -1;
-            monitor.setProgress((int) this.count);
-            monitor.setMillisToDecideToPopup(1000);
-        }
-
-        @Override
-        public boolean count(long l) {
-            count += l;
-            if (percent >= count * 100 / max) return true;
-            percent = count * 100 / max;
-            monitor.setNote("Completed " + count + "(" + percent + "%) out of " + max + ".");
-            monitor.setProgress((int) count);
-
-            return !monitor.isCanceled();
-        }
-
-        @Override
-        public void end() {
-            monitor.close();
         }
     }
 }

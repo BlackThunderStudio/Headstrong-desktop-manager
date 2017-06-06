@@ -1,7 +1,7 @@
 package com.headstrongpro.desktop.core.exception;
 
 /**
- * Created by rajmu on 17.04.06.
+ * ConnectionException
  */
 public class ConnectionException extends Exception {
     public ConnectionException() {

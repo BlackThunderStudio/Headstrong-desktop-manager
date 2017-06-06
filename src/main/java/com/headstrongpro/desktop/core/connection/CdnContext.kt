@@ -1,6 +1,6 @@
 package com.headstrongpro.desktop.core.connection
 
-import com.cloudinary.*
+import com.cloudinary.Cloudinary
 import com.headstrongpro.desktop.model.resource.IResourceConnector
 import com.headstrongpro.desktop.model.resource.Resource
 import com.headstrongpro.desktop.model.resource.ResourceType
@@ -9,11 +9,7 @@ import java.util.*
 
 
 /**
- *
- * desktop-manager
- *
- *
- * Created by rajmu on 17.06.02.
+ * CDN Context
  */
 class CdnContext : IResourceConnector {
 
@@ -35,7 +31,7 @@ class CdnContext : IResourceConnector {
 
     override fun uploadCdnServer(file: File?, useHttps: Boolean, type: ResourceType): String {
         val options = HashMap<String, String>()
-        if(type == ResourceType.AUDIO || type == ResourceType.VIDEO){
+        if (type == ResourceType.AUDIO || type == ResourceType.VIDEO) {
             options.put("resource_type", "video")
         }
         val uploadResult = cloudinary.uploader().upload(file, options)

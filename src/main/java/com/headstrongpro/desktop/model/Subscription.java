@@ -5,14 +5,17 @@ import com.headstrongpro.desktop.model.entity.Company;
 import java.sql.Date;
 
 /**
- * Subscription model class
+ * Subscription Entity
  */
-public class Subscription {
+public class Subscription implements IModel {
     private int id, noOfUsers;
     private boolean isActive;
     private Date startDate, endDate;
     private PaymentRate rate;
     private Company company;
+
+    public Subscription() {
+    }
 
     public Subscription(int id, int noOfUsers, boolean isActive, Date startDate, Date endDate, PaymentRate rate, Company company) {
         this.id = id;
@@ -33,12 +36,12 @@ public class Subscription {
         this.company = company;
     }
 
-
-
+    @Override
     public int getId() {
         return id;
     }
 
+    @Override
     public void setId(int id) {
         this.id = id;
     }
@@ -79,7 +82,24 @@ public class Subscription {
         return rate;
     }
 
+    public void setRate(PaymentRate rate) {
+        this.rate = rate;
+    }
+
     public Company getCompany() {
         return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
+    }
+
+    @Override
+    public String toString() {
+        return "the subscription for " +
+                company +
+                " (from " + startDate +
+                " to " + endDate + " " +
+                "for " + noOfUsers + " users)";
     }
 }

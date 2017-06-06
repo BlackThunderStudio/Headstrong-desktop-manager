@@ -1,14 +1,16 @@
 package com.headstrongpro.desktop.model.resource;
 
+import com.headstrongpro.desktop.model.IModel;
+
 import java.io.File;
 import java.sql.Time;
 
 /**
- * Created by rajmu on 17.05.08.
+ * Audio Resource
  */
 
 //TODO: Custom functionality and behaviour to be added!
-public class AudioResource implements Resource {
+public class AudioResource implements Resource, IModel {
 
     private static final ResourceType TYPE = ResourceType.AUDIO;
 
@@ -18,6 +20,19 @@ public class AudioResource implements Resource {
     private Time duration;
     private File file;
     private String path;
+
+    AudioResource(String name, String description, boolean isForAchievement) {
+        this.name = name;
+        this.description = description;
+        this.isForAchievement = isForAchievement;
+    }
+
+    AudioResource(int id, String name, String description, boolean isForAchievement) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.isForAchievement = isForAchievement;
+    }
 
     @Override
     public File getFile() {
@@ -39,29 +54,22 @@ public class AudioResource implements Resource {
         this.path = path;
     }
 
-    AudioResource(String name, String description, boolean isForAchievement) {
-        this.name = name;
-        this.description = description;
-        this.isForAchievement = isForAchievement;
-    }
-
-    AudioResource(int id, String name, String description, boolean isForAchievement) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.isForAchievement = isForAchievement;
-    }
-
-    private AudioResource(){}
-
     @Override
     public String getDescription() {
         return description;
     }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     @Override
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
@@ -75,12 +83,12 @@ public class AudioResource implements Resource {
     }
 
     @Override
-    public int getID() {
+    public int getId() {
         return id;
     }
 
     @Override
-    public void setID(int id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -100,20 +108,12 @@ public class AudioResource implements Resource {
         this.duration = duration;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     @Override
     public String toString() {
         String s = String.format("[Name]: %s\n[Description]: %s\n[For Achievement]: %s\n", name, description, String.valueOf(isForAchievement));
-        if(id != 0) s += (String.format("[ID]: %d\n", id));
-        if(duration != null) s += String.format("[Duration]: %s\n", String.valueOf(duration));
-        if(url != null && !url.isEmpty()) s += String.format("[URL]: %s\n", url);
+        if (id != 0) s += (String.format("[ID]: %d\n", id));
+        if (duration != null) s += String.format("[Duration]: %s\n", String.valueOf(duration));
+        if (url != null && !url.isEmpty()) s += String.format("[URL]: %s\n", url);
         return s;
     }
 }

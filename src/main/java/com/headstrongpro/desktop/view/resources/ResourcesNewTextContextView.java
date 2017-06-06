@@ -10,16 +10,14 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
 import javafx.scene.web.HTMLEditor;
-import javafx.event.ActionEvent;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
-
 /**
- * Created by jakub on 26/05/2017.
+ * Resources New Text Context View
  */
-public class ResourcesNewTextContext extends ContextView<Resource> implements Initializable{
+public class ResourcesNewTextContextView extends ContextView<Resource> implements Initializable {
     @FXML
     public TextField resourcesNewTextNameTextfield;
     @FXML
@@ -28,8 +26,8 @@ public class ResourcesNewTextContext extends ContextView<Resource> implements In
     private ResourcesController controller;
 
     @FXML
-    public void saveButtonOnClick(ActionEvent event) {
-        if(!(resourcesNewTextNameTextfield.getText().isEmpty() && resourcesNewTextNameTextfield == null && resourcesNewTextEditor.getHtmlText().isEmpty() && resourcesNewTextEditor == null)){
+    public void saveButtonOnClick() {
+        if (!(resourcesNewTextNameTextfield.getText().isEmpty() && resourcesNewTextNameTextfield == null && resourcesNewTextEditor.getHtmlText().isEmpty() && resourcesNewTextEditor == null)) {
             try {
                 mainWindowView.getContentView().footer.show("Uploading new resource...", Footer.NotificationType.LOADING);
                 controller.uploadTextResource(resourcesNewTextNameTextfield.getText(), false, resourcesNewTextEditor.getHtmlText());
@@ -44,7 +42,7 @@ public class ResourcesNewTextContext extends ContextView<Resource> implements In
     }
 
     @FXML
-    public void cancelButtonOnClick(ActionEvent event) {
+    public void cancelButtonOnClick() {
         mainWindowView.changeContent(ContentSource.RESOURCES);
     }
 

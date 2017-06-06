@@ -1,10 +1,7 @@
 package com.headstrongpro.desktop.core;
 
 /**
- * desktop-manager
- * <p>
- * <p>
- * Created by rajmu on 17.06.01.
+ * SyncHandler Functional Interface
  */
 @FunctionalInterface
 public interface SyncHandler<T> {

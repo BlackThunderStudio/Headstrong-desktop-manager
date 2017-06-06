@@ -62,8 +62,8 @@ public class DBSubscriptionsTest {
 
     @Test
     public void getbyCompanyId() throws Exception {
-        assertNotNull("Subscriptions list is null", subscriptionsDAO.getbyCompanyId(1));
-        assertEquals("Subcriptions count wrong", 1, subscriptionsDAO.getbyCompanyId(1).size());
+        assertNotNull("Subscriptions list is null", subscriptionsDAO.getByCompanyId(1));
+        assertEquals("Subcriptions count wrong", 1, subscriptionsDAO.getByCompanyId(1).size());
     }
 
 }

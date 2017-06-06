@@ -4,10 +4,8 @@ import com.headstrongpro.desktop.controller.Analytics;
 import com.headstrongpro.desktop.core.fxControls.DashboardTile;
 import com.headstrongpro.desktop.view.ContentSource;
 import com.headstrongpro.desktop.view.ContentView;
-import com.headstrongpro.desktop.view.MainWindowView;
 import javafx.concurrent.Task;
 import javafx.concurrent.Worker;
-import javafx.scene.input.MouseEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.StackPane;
@@ -18,43 +16,24 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 /**
- * Created by Ondřej Soukup on 19.05.2017.
+ * Dashboard View
  */
 public class DashboardView extends ContentView implements Initializable {
 
-    @FXML
-    public DashboardTile dashCompaniesTile;
-    @FXML
-    public DashboardTile dashClientsTile;
-    @FXML
-    public DashboardTile dashSubscriptionsTile;
-    @FXML
-    public DashboardTile dashPaymentsTile;
-    @FXML
-    public DashboardTile dashCoursesTile;
-    @FXML
-    public DashboardTile dashResourcesTile;
-    @FXML
-    public DashboardTile dashEmployeesTile;
-    @FXML
-    public StackPane dashSettingsTile;
-    @FXML
-    public StackPane dashAboutTile;
-
+    private static final String TOTAL = "in\ntotal";
     private static Timer timer;
 
-    private MainWindowView mainWindowView;
+    // Dashboard tiles
+    @FXML
+    public DashboardTile companiesTile, clientsTile, subscriptionsTile, paymentsTile, coursesTile, resourcesTile;
+    @FXML
+    public StackPane settingsTile, aboutTile;
 
-    private static final String TOTAL = "in\ntotal";
+    private int companiesValue, clientsValue, subscriptionsValue, paymentsValue, coursesValue, resourcesValue;
 
-    private Task<Void> loadCompanies;
-    private Task<Void> loadClients;
-    private Task<Void> loadSubs;
-    private Task<Void> loadPayments;
-    private Task<Void> loadCourses;
-    private Task<Void> loadRes;
-
-    private int valCompanies, valClients, valSubs, valPayments, valCourses, valRes;
+    public static void endReloadingDashboard() {
+        timer.cancel();
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -62,7 +41,6 @@ public class DashboardView extends ContentView implements Initializable {
         TimerTask reload = new TimerTask() {
             @Override
             public void run() {
-                System.out.println("Reloading dashboard data...");
                 loadData();
             }
         };
@@ -72,51 +50,48 @@ public class DashboardView extends ContentView implements Initializable {
         timer.scheduleAtFixedRate(reload, delay, interval);
     }
 
-    public void setMainWindowView(MainWindowView mainWindowView) {
-        this.mainWindowView = mainWindowView;
-    }
-
-    private void loadData() {
+    @Override
+    protected void loadData() {
         //tasks init
-        loadCompanies = new Task<Void>() {
+        Task<Void> loadCompanies = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
-                valCompanies = Analytics.getCount(Analytics.Table.COMPANIES);
+                companiesValue = Analytics.getCount(Analytics.Table.COMPANIES);
                 return null;
             }
         };
-        loadClients = new Task<Void>() {
+        Task<Void> loadClients = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
-                valClients = Analytics.getCount(Analytics.Table.CLIENTS);
+                clientsValue = Analytics.getCount(Analytics.Table.CLIENTS);
                 return null;
             }
         };
-        loadSubs = new Task<Void>() {
+        Task<Void> loadSubscriptions = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
-                valSubs = Analytics.getActiveSubstriptions();
+                subscriptionsValue = Analytics.getActiveSubscriptions();
                 return null;
             }
         };
-        loadPayments = new Task<Void>() {
+        Task<Void> loadPayments = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
-                valPayments = Analytics.getOverduePayments();
+                paymentsValue = Analytics.getOverduePayments();
                 return null;
             }
         };
-        loadCourses = new Task<Void>() {
+        Task<Void> loadCourses = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
-                valCourses = Analytics.getCount(Analytics.Table.COURSES);
+                coursesValue = Analytics.getCount(Analytics.Table.COURSES);
                 return null;
             }
         };
-        loadRes = new Task<Void>() {
+        Task<Void> loadResources = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
-                valRes = Analytics.getCount(Analytics.Table.RESOURCES);
+                resourcesValue = Analytics.getCount(Analytics.Table.RESOURCES);
                 return null;
             }
         };
@@ -124,32 +99,32 @@ public class DashboardView extends ContentView implements Initializable {
         //event listeners
         loadCompanies.stateProperty().addListener(((observable, oldValue, newValue) -> {
             if (newValue.equals(Worker.State.SUCCEEDED)) {
-                prepareTile(dashCompaniesTile, "Companies", TOTAL, valCompanies);
+                prepareTile(companiesTile, "Companies", TOTAL, companiesValue);
             }
         }));
         loadClients.stateProperty().addListener(((observable, oldValue, newValue) -> {
             if (newValue.equals(Worker.State.SUCCEEDED)) {
-                prepareTile(dashClientsTile, "Clients", TOTAL, valClients);
+                prepareTile(clientsTile, "Clients", TOTAL, clientsValue);
             }
         }));
-        loadSubs.stateProperty().addListener(((observable, oldValue, newValue) -> {
+        loadSubscriptions.stateProperty().addListener(((observable, oldValue, newValue) -> {
             if (newValue.equals(Worker.State.SUCCEEDED)) {
-                prepareTile(dashSubscriptionsTile, "Subscriptions", "currently\nactive", valSubs);
+                prepareTile(subscriptionsTile, "Subscriptions", "currently\nactive", subscriptionsValue);
             }
         }));
         loadPayments.stateProperty().addListener(((observable, oldValue, newValue) -> {
             if (newValue.equals(Worker.State.SUCCEEDED)) {
-                prepareTile(dashPaymentsTile, "Payments", "overdue\npayments", valPayments);
+                prepareTile(paymentsTile, "Payments", "overdue\npayments", paymentsValue);
             }
         }));
         loadCourses.stateProperty().addListener(((observable, oldValue, newValue) -> {
             if (newValue.equals(Worker.State.SUCCEEDED)) {
-                prepareTile(dashCoursesTile, "Courses", TOTAL, valCourses);
+                prepareTile(coursesTile, "Courses", TOTAL, coursesValue);
             }
         }));
-        loadRes.stateProperty().addListener(((observable, oldValue, newValue) -> {
+        loadResources.stateProperty().addListener(((observable, oldValue, newValue) -> {
             if (newValue.equals(Worker.State.SUCCEEDED)) {
-                prepareTile(dashResourcesTile, "Resources", TOTAL, valRes);
+                prepareTile(resourcesTile, "Resources", TOTAL, resourcesValue);
             }
         }));
 
@@ -157,10 +132,10 @@ public class DashboardView extends ContentView implements Initializable {
         Thread[] threads = new Thread[6];
         threads[0] = new Thread(loadCompanies);
         threads[1] = new Thread(loadClients);
-        threads[2] = new Thread(loadSubs);
+        threads[2] = new Thread(loadSubscriptions);
         threads[3] = new Thread(loadPayments);
         threads[4] = new Thread(loadCourses);
-        threads[5] = new Thread(loadRes);
+        threads[5] = new Thread(loadResources);
 
         for (Thread th : threads) {
             th.setDaemon(true);
@@ -175,52 +150,43 @@ public class DashboardView extends ContentView implements Initializable {
     }
 
     @FXML
-    public void coursesTileOnClick(MouseEvent event) {
-        //TODO: link courses here once the window is done
+    public void coursesTileOnClick() {
+        mainWindowView.changeContent(ContentSource.COURSES);
     }
 
     @FXML
-    public void resourcesTileOnClick(MouseEvent event) {
+    public void resourcesTileOnClick() {
         mainWindowView.changeContent(ContentSource.RESOURCES);
     }
 
     @FXML
-    public void employeesTileOnClick(MouseEvent event) {
-        //TODO: link employees here once the window is done
-    }
-
-    @FXML
-    public void companiesTileOnClick(MouseEvent event) {
+    public void companiesTileOnClick() {
         mainWindowView.changeContent(ContentSource.COMPANIES);
     }
 
     @FXML
-    public void clientsTileOnClick(MouseEvent event) {
+    public void clientsTileOnClick() {
         mainWindowView.changeContent(ContentSource.CLIENTS);
     }
 
     @FXML
-    public void subscriptionsTileOnClick(MouseEvent event) {
+    public void subscriptionsTileOnClick() {
         mainWindowView.changeContent(ContentSource.SUBSCRIPTIONS);
     }
 
     @FXML
-    public void paymentsTileOnClick(MouseEvent event) {
+    public void paymentsTileOnClick() {
         mainWindowView.changeContent(ContentSource.PAYMENTS);
     }
 
     @FXML
-    public void settingTileOnClick(MouseEvent event) {
+    public void settingTileOnClick() {
         mainWindowView.changeContent(ContentSource.SETTINGS);
     }
 
     @FXML
-    public void aboutTileOnClick(MouseEvent event) {
+    public void aboutTileOnClick() {
         mainWindowView.changeContent(ContentSource.ABOUT);
-    }
-
-    public static void endReloadingDashboard() {
-        timer.cancel();
     }
 
 }

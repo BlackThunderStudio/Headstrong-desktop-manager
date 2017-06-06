@@ -7,7 +7,7 @@ import java.sql.Date;
  */
 public class Client extends Person {
     private String login, password;
-    private Date  registrationDate;
+    private Date registrationDate;
     private int companyId;
 
     public Client(int id, String name, String email, String phone, String gender, String login, String password, Date registrationDate, int companyId) {
@@ -50,11 +50,11 @@ public class Client extends Person {
         this.registrationDate = registrationDate;
     }
 
-    public int getcompanyId() {
+    public int getCompanyId() {
         return companyId;
     }
 
-    public void setcompanyId(int companyId) {
+    public void setCompanyId(int companyId) {
         this.companyId = companyId;
     }
 }
