@@ -1,8 +1,6 @@
 package com.headstrongpro.desktop.view.resources;
 
 import com.headstrongpro.desktop.controller.ResourcesController;
-import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
-import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.core.fxControls.Footer;
 import com.headstrongpro.desktop.model.resource.Resource;
 import com.headstrongpro.desktop.model.resource.ResourceType;
@@ -11,7 +9,6 @@ import com.headstrongpro.desktop.view.ContentView;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -35,10 +32,6 @@ public class ResourcesContentView extends ContentView<Resource> implements Initi
     public TableColumn<Resource, String> nameCol, descCol;
     @FXML
     public TableColumn<Resource, ResourceType> typeCol;
-
-    // Bottom controls
-    @FXML
-    public Button assignToCourseButton;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -119,22 +112,6 @@ public class ResourcesContentView extends ContentView<Resource> implements Initi
         mainTable.setItems(FXCollections.observableArrayList(
                 controller.filterSearch(searchField.getText(), resourcesComboBox.getValue())
         ));
-    }
-
-    @FXML
-    public void assignToCourseButton_onClick() {
-        Resource selected = mainTable.getSelectionModel().getSelectedItem();
-        ResourcesController controller = (ResourcesController) this.controller;
-        if (selected != null) {
-            //TODO: assign to course
-
-            try {
-                controller.assignToCourse(null, selected); //TODO: correct session to be given
-            } catch (DatabaseOutOfSyncException | ModelSyncException e) {
-                e.printStackTrace();
-                //TODO: handle error
-            }
-        }
     }
 
     @FXML

@@ -66,13 +66,6 @@
                 <Insets right="20.0"/>
             </GridPane.margin>
         </Button>
-        <Button fx:id="assignToCourseButton" maxWidth="150.0" minWidth="150.0" mnemonicParsing="false"
-                onAction="#assignToCourseButton_onClick" prefWidth="150.0" text="Assign to course"
-                GridPane.columnIndex="1" GridPane.halignment="RIGHT">
-            <GridPane.margin>
-                <Insets right="150.0"/>
-            </GridPane.margin>
-        </Button>
     </GridPane>
     <GridPane GridPane.rowIndex="2">
         <columnConstraints>
