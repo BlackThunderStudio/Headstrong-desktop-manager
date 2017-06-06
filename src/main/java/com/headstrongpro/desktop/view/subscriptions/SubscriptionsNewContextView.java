@@ -12,7 +12,6 @@ import com.headstrongpro.desktop.view.ContentSource;
 import com.headstrongpro.desktop.view.ContextView;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -28,10 +27,11 @@ import java.util.ResourceBundle;
 import static com.headstrongpro.desktop.core.Utils.dateFormatter;
 
 /**
- * Created by 1062085 on 02-Jun-17.
+ * Subscriptions New Context View
  */
 public class SubscriptionsNewContextView extends ContextView<Subscription> implements Initializable {
 
+    private static final int PRICE_PER_PERSON = 200;
     //subscriptionsNewContextPane.fxml - when adding a new subscription
     @FXML
     public DatePicker subscriptionsNewStartDatePicker;
@@ -51,24 +51,19 @@ public class SubscriptionsNewContextView extends ContextView<Subscription> imple
     public Button subscriptionsNewCancelButton;
     @FXML
     public ComboBox<Company> companyCombo;
-
     private CompaniesController companiesController;
     private int noOfUsers = -1;
-
-    private static final int PRICE_PER_PERSON = 200;
-
     private StringConverter<LocalDate> dateConverter = new StringConverter<LocalDate>() {
         @Override
         public String toString(LocalDate object) {
-            if(object != null){
+            if (object != null) {
                 return dateFormatter(Utils.FormatterType.DATE).format(object);
-            }
-            else return "";
+            } else return "";
         }
 
         @Override
         public LocalDate fromString(String string) {
-            if(string != null && !string.isEmpty()){
+            if (string != null && !string.isEmpty()) {
                 return LocalDate.parse(string, dateFormatter(Utils.FormatterType.DATE));
             } else return null;
         }
@@ -80,8 +75,8 @@ public class SubscriptionsNewContextView extends ContextView<Subscription> imple
     }
 
     @FXML
-    public void subscriptionsNewSaveButtonOnClick(ActionEvent event) {
-        if(validateInput(subscriptionsNewNoOfUsersTextfield, subscriptionsNewEndDatePicker.getEditor(), subscriptionsNewStartDatePicker.getEditor())){
+    public void subscriptionsNewSaveButtonOnClick() {
+        if (validateInput(subscriptionsNewNoOfUsersTextfield, subscriptionsNewEndDatePicker.getEditor(), subscriptionsNewStartDatePicker.getEditor())) {
             Subscription subscription = new Subscription(noOfUsers,
                     true,
                     Date.valueOf(subscriptionsNewStartDatePicker.getValue()),
@@ -102,7 +97,7 @@ public class SubscriptionsNewContextView extends ContextView<Subscription> imple
     }
 
     @FXML
-    public void subscriptionsNewCancelButtonOnClick(ActionEvent event) {
+    public void subscriptionsNewCancelButtonOnClick() {
         mainWindowView.changeContext(ContentSource.SUBSCRIPTIONS);
     }
 
@@ -119,12 +114,12 @@ public class SubscriptionsNewContextView extends ContextView<Subscription> imple
 
         subscriptionsNewNoOfUsersTextfield.textProperty().addListener(((observable, oldValue, newValue) -> {
             int number;
-            if(!newValue.isEmpty()){
-                try{
+            if (!newValue.isEmpty()) {
+                try {
                     number = Integer.parseInt(newValue);
                     noOfUsers = number;
                     subscriptionsNewTotalPriceLabel.setText(String.format("%d DKK", PRICE_PER_PERSON * noOfUsers));
-                } catch (NumberFormatException e){
+                } catch (NumberFormatException e) {
                     mainWindowView.getContentView().footer.show("Given input is not a number!", Footer.NotificationType.WARNING);
                     subscriptionsNewNoOfUsersTextfield.clear();
                 } finally {
@@ -136,12 +131,12 @@ public class SubscriptionsNewContextView extends ContextView<Subscription> imple
         subscriptionsNewEndDatePicker.setDayCellFactory(new Callback<DatePicker, DateCell>() {
             @Override
             public DateCell call(DatePicker param) {
-                return new DateCell(){
+                return new DateCell() {
                     @Override
-                    public void updateItem(LocalDate item, boolean empty){
+                    public void updateItem(LocalDate item, boolean empty) {
                         super.updateItem(item, empty);
-                        if(!subscriptionsNewStartDatePicker.getEditor().getText().isEmpty()){
-                            if(item.isBefore(subscriptionsNewStartDatePicker.getValue())){
+                        if (!subscriptionsNewStartDatePicker.getEditor().getText().isEmpty()) {
+                            if (item.isBefore(subscriptionsNewStartDatePicker.getValue())) {
                                 setDisable(true);
                                 setStyle("-fx-background-color: #ffc0cb;");
                             }
@@ -154,11 +149,11 @@ public class SubscriptionsNewContextView extends ContextView<Subscription> imple
         subscriptionsNewRateCombo.setCellFactory(new Callback<ListView<PaymentRate>, ListCell<PaymentRate>>() {
             @Override
             public ListCell<PaymentRate> call(ListView<PaymentRate> param) {
-                return new ListCell<PaymentRate>(){
+                return new ListCell<PaymentRate>() {
                     @Override
                     protected void updateItem(PaymentRate item, boolean empty) {
                         super.updateItem(item, empty);
-                        if(item != null){
+                        if (item != null) {
                             setText(item.getName());
                         }
                     }
@@ -169,11 +164,11 @@ public class SubscriptionsNewContextView extends ContextView<Subscription> imple
         companyCombo.setCellFactory(new Callback<ListView<Company>, ListCell<Company>>() {
             @Override
             public ListCell<Company> call(ListView<Company> param) {
-                return new ListCell<Company>(){
+                return new ListCell<Company>() {
                     @Override
-                    protected void updateItem(Company item, boolean empty){
+                    protected void updateItem(Company item, boolean empty) {
                         super.updateItem(item, empty);
-                        if(item != null){
+                        if (item != null) {
                             setText(item.getName());
                         }
                     }
@@ -188,7 +183,7 @@ public class SubscriptionsNewContextView extends ContextView<Subscription> imple
             }
         };
 
-        Task<List<PaymentRate>> loadrates = new Task<List<PaymentRate>>() {
+        Task<List<PaymentRate>> loadRates = new Task<List<PaymentRate>>() {
             @Override
             protected List<PaymentRate> call() throws Exception {
                 return new SubscriptionsController().getRates();
@@ -196,20 +191,20 @@ public class SubscriptionsNewContextView extends ContextView<Subscription> imple
         };
 
         loadCompanies.valueProperty().addListener(((observable, oldValue, newValue) -> {
-            if(newValue != null){
+            if (newValue != null) {
                 companyCombo.getItems().addAll(newValue);
                 companyCombo.getSelectionModel().selectFirst();
             }
         }));
 
-        loadrates.valueProperty().addListener(((observable, oldValue, newValue) -> {
-            if(newValue != null){
+        loadRates.valueProperty().addListener(((observable, oldValue, newValue) -> {
+            if (newValue != null) {
                 subscriptionsNewRateCombo.getItems().addAll(newValue);
                 subscriptionsNewRateCombo.getSelectionModel().selectFirst();
             }
         }));
 
         new Thread(loadCompanies).start();
-        new Thread(loadrates).start();
+        new Thread(loadRates).start();
     }
 }

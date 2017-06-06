@@ -9,10 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * desktop-manager
- * <p>
- * <p>
- * Created by rajmu on 17.05.31.
+ * DB Stats
  */
 public class DBStats implements IStatistical {
 
@@ -25,9 +22,9 @@ public class DBStats implements IStatistical {
     @Override
     public int getAmountOfRecords(String tableName) throws ModelSyncException {
         String query = "DECLARE @TableName VARCHAR(64)\n" +
-                "set @TableName = ?\n" +
+                "SET @TableName = ?\n" +
                 "EXEC('SELECT COUNT(*) FROM ' + @TableName);";
-        int rows = 0;
+        int rows;
         try {
             PreparedStatement preparedStatement = dbContext.getConnection().prepareStatement(query);
             preparedStatement.setString(1, tableName);

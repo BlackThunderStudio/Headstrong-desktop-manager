@@ -6,7 +6,6 @@ import com.headstrongpro.desktop.core.fxControls.Footer;
 import com.headstrongpro.desktop.model.resource.Resource;
 import com.headstrongpro.desktop.view.ContentSource;
 import com.headstrongpro.desktop.view.ContextView;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;

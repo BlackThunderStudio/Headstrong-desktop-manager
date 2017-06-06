@@ -46,7 +46,7 @@ public class DBCourseCategory extends Synchronizable implements IDataAccessObjec
 
     @Override
     public CourseCategory getById(int id) throws ModelSyncException {
-        CourseCategory courseCategory = null;
+        CourseCategory courseCategory;
         try {
             dbConnect = new DBConnect();
             String getByIdCourseCategoriesQuery = "SELECT * FROM s_categories WHERE id = " + id + ";";
@@ -121,7 +121,7 @@ public class DBCourseCategory extends Synchronizable implements IDataAccessObjec
                 preparedStatement.execute();
                 logChange("s_categories", courseCategory.getId(), ActionType.DELETE);
             } catch (ConnectionException | SQLException e) {
-                throw new ModelSyncException("Couldn'data delete course category of id=" + courseCategory.getId(), e);
+                throw new ModelSyncException("Could not delete course category of id=" + courseCategory.getId(), e);
             }
         } else {
             throw new DatabaseOutOfSyncException();

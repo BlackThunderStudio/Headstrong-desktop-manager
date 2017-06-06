@@ -15,11 +15,7 @@ import java.io.InputStream
 import java.net.URLEncoder
 
 /**
- *
- * desktop-manager
- *
- *
- * Created by rajmu on 17.05.29.
+ * SFTP Kotlin
  */
 class SFTPKotlin(val host: String, val user: String, val pass: String, val path: String, val subDomain: String) : IResourceConnector {
 
@@ -65,7 +61,7 @@ class SFTPKotlin(val host: String, val user: String, val pass: String, val path:
         return null
     }
 
-    protected fun connect(): ChannelSftp {
+    private fun connect(): ChannelSftp {
         val sftp: ChannelSftp
         val session = jsch.getSession(user, host, port)
         session.userInfo = MyUserInfo(pass)

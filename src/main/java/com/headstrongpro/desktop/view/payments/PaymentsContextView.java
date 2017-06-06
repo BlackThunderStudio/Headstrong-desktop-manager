@@ -7,7 +7,6 @@ import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.core.fxControls.Footer;
 import com.headstrongpro.desktop.model.Payment;
 import com.headstrongpro.desktop.view.ContextView;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -23,7 +22,7 @@ import static com.headstrongpro.desktop.core.Utils.FormatterType;
 import static com.headstrongpro.desktop.core.Utils.dateFormatter;
 
 /**
- * Created by Ondřej Soukup on 28.05.2017.
+ * Payments Context View
  */
 public class PaymentsContextView extends ContextView<Payment> implements Initializable {
 
@@ -113,7 +112,7 @@ public class PaymentsContextView extends ContextView<Payment> implements Initial
     }
 
     @FXML
-    public void btnMarkAsPaidOnClick(ActionEvent event) {
+    public void btnMarkAsPaidOnClick() {
         if (paymentsPaidDatePicker.getEditor().getText().isEmpty()) {
             paymentsPaidDatePicker.setValue(LocalDate.now());
         }
@@ -130,7 +129,7 @@ public class PaymentsContextView extends ContextView<Payment> implements Initial
     }
 
     @FXML
-    public void paymentsEditButtonOnClick(ActionEvent event) {
+    public void paymentsEditButtonOnClick() {
         if (validateInput(paymentsValueTextfield)) {
             contextItem.setValue(Double.parseDouble(paymentsValueTextfield.getText()));
             contextItem.setDueDate(Date.valueOf(paymentsDueDatePicker.getEditor().getText()));
@@ -153,7 +152,7 @@ public class PaymentsContextView extends ContextView<Payment> implements Initial
     }
 
     @FXML
-    public void paymentsDeleteButtonOnClick(ActionEvent event) {
+    public void paymentsDeleteButtonOnClick() {
         Alert a = new Alert(Alert.AlertType.CONFIRMATION);
         a.setHeaderText("Are you sure you want to delete a payment from " + contextItem.getCompanyName() + "?");
         a.setContentText("You cannot take that action back");
@@ -176,12 +175,12 @@ public class PaymentsContextView extends ContextView<Payment> implements Initial
     }
 
     @FXML
-    public void paymentsCompanyButtonOnClick(ActionEvent event) {
+    public void paymentsCompanyButtonOnClick() {
         displayNotImplementedError();
     }
 
     @FXML
-    public void paymentsSubscriptionButtonOnClick(ActionEvent event) {
+    public void paymentsSubscriptionButtonOnClick() {
         displayNotImplementedError();
     }
 }

@@ -73,7 +73,7 @@ public class DBSubscriptions extends Synchronizable implements IDataAccessObject
 
     @Override
     public Subscription getById(int id) throws ModelSyncException {
-        Subscription subscription = null;
+        Subscription subscription;
         try {
             dbConnect = new DBConnect();
             String query = "SELECT * FROM [subscriptions] WHERE id=" + id + ";";
@@ -170,7 +170,7 @@ public class DBSubscriptions extends Synchronizable implements IDataAccessObject
         }
     }
 
-    public List<Subscription> getbyCompanyId(int companyId) throws ModelSyncException {
+    public List<Subscription> getByCompanyId(int companyId) throws ModelSyncException {
         List<Subscription> subscriptions = new ArrayList<>();
         try {
             dbConnect = new DBConnect();

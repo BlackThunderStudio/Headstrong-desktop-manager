@@ -14,7 +14,7 @@ public class DBConnect extends Configurable {
 
     private static String url, username, password;
 
-    public DBConnect() throws ConnectionException {
+    public DBConnect() {
         List<Object> credentials = getConfig();
         url = (String) credentials.get(0);
         username = (String) credentials.get(1);

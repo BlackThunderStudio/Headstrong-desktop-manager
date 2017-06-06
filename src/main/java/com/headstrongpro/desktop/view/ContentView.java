@@ -3,7 +3,6 @@ package com.headstrongpro.desktop.view;
 import com.headstrongpro.desktop.controller.IContentController;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.core.fxControls.Footer;
-import com.headstrongpro.desktop.model.IModel;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

@@ -50,7 +50,7 @@ public class DBGroups extends Synchronizable implements IDataAccessObject<Group>
 
     @Override
     public Group getById(int id) throws ModelSyncException {
-        Group group = null;
+        Group group;
         try {
             connect = new DBConnect();
             ResultSet rs = connect.getFromDataBase("SELECT * FROM groups WHERE id=" + id);
@@ -165,11 +165,11 @@ public class DBGroups extends Synchronizable implements IDataAccessObject<Group>
                 while (rs.next()) {
                     deptIDs.add(rs.getInt(1));
                 }
-                String simplifiedDeptIDs = "";
+                StringBuilder simplifiedDeptIDs = new StringBuilder();
                 for (int i = 0; i < deptIDs.size() - 1; i++) {
-                    simplifiedDeptIDs += deptIDs.get(i) + ",";
+                    simplifiedDeptIDs.append(deptIDs.get(i)).append(",");
                 }
-                if (deptIDs.size() != 0) simplifiedDeptIDs += deptIDs.get(deptIDs.size() - 1);
+                if (deptIDs.size() != 0) simplifiedDeptIDs.append(deptIDs.get(deptIDs.size() - 1));
 
                 //language=TSQL
                 String query = "SELECT id FROM groups WHERE company_id=" + id + "; DELETE FROM groups WHERE company_id=" + id + ";";

@@ -103,7 +103,7 @@ public class ResourcesController implements Refreshable, IContentController<Reso
                 .filter(e -> e.getType().equals(type))
                 .collect(Collectors.toList());*/
         try {
-            return resourcesDAO.getbyType(type.get());
+            return resourcesDAO.getByType(type.get());
         } catch (ModelSyncException e) {
             e.printStackTrace();
         }
@@ -199,6 +199,7 @@ public class ResourcesController implements Refreshable, IContentController<Reso
         ResourceUploader resourceUploader = new ResourceUploader();
 
         Resource resource = ResourceFactory.getResource(remoteName, description, isForAchievement, type.get());
+        assert resource != null;
         resource.setFile(file);
         resource.setRemoteFileName(remoteName);
 

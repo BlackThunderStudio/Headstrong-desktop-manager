@@ -14,7 +14,7 @@ import java.io.*;
 import java.net.URLEncoder;
 
 /**
- * Created by rajmu on 17.05.21.
+ * SFTP Utils
  */
 public class SFTPUtils implements IResourceConnector {
 

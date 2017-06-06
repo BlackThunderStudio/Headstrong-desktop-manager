@@ -9,11 +9,7 @@ import java.util.*
 
 
 /**
- *
- * desktop-manager
- *
- *
- * Created by rajmu on 17.06.02.
+ * CDN Context
  */
 class CdnContext : IResourceConnector {
 

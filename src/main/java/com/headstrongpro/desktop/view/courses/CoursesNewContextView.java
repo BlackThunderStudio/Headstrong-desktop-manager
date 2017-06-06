@@ -15,7 +15,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * Created by 1062085 on 02-Jun-17.
+ * Courses New Context View
  */
 public class CoursesNewContextView extends ContextView<Course> implements Initializable {
 
@@ -31,7 +31,7 @@ public class CoursesNewContextView extends ContextView<Course> implements Initia
     public Button coursesNewCancelButton;
 
 
-    CoursesController coursesController;
+    private CoursesController coursesController;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

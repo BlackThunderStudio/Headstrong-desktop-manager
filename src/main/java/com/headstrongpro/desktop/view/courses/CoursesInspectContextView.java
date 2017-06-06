@@ -1,7 +1,6 @@
 package com.headstrongpro.desktop.view.courses;
 
 import com.headstrongpro.desktop.controller.CoursesController;
-import com.headstrongpro.desktop.controller.ResourcesController;
 import com.headstrongpro.desktop.core.fxControls.Footer;
 import com.headstrongpro.desktop.model.Course;
 import com.headstrongpro.desktop.model.resource.AudioResource;
@@ -29,34 +28,28 @@ import javafx.util.Duration;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
- * desktop-manager
- * <p>
- * <p>
- * Created by rajmu on 17.06.04.
+ * Courses Inspect Context View
  */
 public class CoursesInspectContextView extends ContextView<Course> implements Initializable {
 
+    private static final double PREVIEW_TIME_FRACTION = 0.025;
+    private static final double PREVIEW_INIT_TIME = 0.25;
+    private static final double PREVIEW_RANDOM_DELTA = 0.9;
     @FXML
     public Label labelName;
     @FXML
     public Button coursesNewCancelButton;
     @FXML
     public ListView<Resource> resourcesListView;
-
     private CoursesController controller;
     private ObservableList<Resource> resources;
     private Resource selected;
-
     private ContextMenu listContextMenu;
-
-    private static final double PREVIEW_TIME_FRACTION = 0.025;
-    private static final double PREVIEW_INIT_TIME = 0.25;
-    private static final double PREVIEW_RANDOM_DELTA = 0.9;
+    private MediaPlayer mediaPlayer;
 
     @Override
     protected void populateForm() {
@@ -69,18 +62,18 @@ public class CoursesInspectContextView extends ContextView<Course> implements In
         };
 
         loadResources.valueProperty().addListener(((observable, oldValue, newValue) -> {
-            if(newValue != null){
+            if (newValue != null) {
                 this.resources = newValue;
                 resourcesListView.setItems(this.resources);
 
                 resourcesListView.setCellFactory(new Callback<ListView<Resource>, ListCell<Resource>>() {
                     @Override
                     public ListCell<Resource> call(ListView<Resource> param) {
-                        return new ListCell<Resource>(){
+                        return new ListCell<Resource>() {
                             @Override
-                            protected void updateItem(Resource r, boolean b){
+                            protected void updateItem(Resource r, boolean b) {
                                 super.updateItem(r, b);
-                                if(r != null){
+                                if (r != null) {
                                     setText(String.format("%s\n(%s)", r.getName(), determineType(r)));
                                 }
                             }
@@ -103,7 +96,7 @@ public class CoursesInspectContextView extends ContextView<Course> implements In
         controller = new CoursesController();
 
         resourcesListView.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) -> {
-            if(newValue != null){
+            if (newValue != null) {
                 selected = newValue;
             }
         }));
@@ -112,34 +105,33 @@ public class CoursesInspectContextView extends ContextView<Course> implements In
         listContextMenu = new ContextMenu();
         MenuItem previewItem = new MenuItem("Preview");
         previewItem.setOnAction(e -> {
-            if(selected.getType().equals(ResourceType.AUDIO)) previewAudio();
+            if (selected.getType().equals(ResourceType.AUDIO)) previewAudio();
         });
         listContextMenu.getItems().add(previewItem);
 
         resourcesListView.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            if(event.getButton().equals(MouseButton.SECONDARY)){
+            if (event.getButton().equals(MouseButton.SECONDARY)) {
                 listContextMenu.show(resourcesListView, event.getScreenX(), event.getScreenY());
             }
         });
     }
 
-    private String determineType(Resource resource){
-        if(resource.getType().equals(ResourceType.TEXT)) return "Text";
-        else if(resource.getType().equals(ResourceType.AUDIO)) return "Audio";
-        else if(resource.getType().equals(ResourceType.IMAGE)) return "Image";
+    private String determineType(Resource resource) {
+        if (resource.getType().equals(ResourceType.TEXT)) return "Text";
+        else if (resource.getType().equals(ResourceType.AUDIO)) return "Audio";
+        else if (resource.getType().equals(ResourceType.IMAGE)) return "Image";
         else return "Video";
     }
 
-    private MediaPlayer mediaPlayer;
-
-    private void previewAudio(){
-        if(mediaPlayer != null){
+    private void previewAudio() {
+        if (mediaPlayer != null) {
             mediaPlayer.stop();
         }
         System.out.println("Previewing " + selected.getName());
         AudioResource audio = Resource.ofType(selected);
         try {
             mainWindowView.getContentView().footer.show("Buffering resource...", Footer.NotificationType.LOADING);
+            assert audio != null;
             Media media = new Media(new URL(audio.getUrl()).toURI().toString());
             mediaPlayer = new MediaPlayer(media);
 
@@ -151,8 +143,8 @@ public class CoursesInspectContextView extends ContextView<Course> implements In
                 mediaPlayer.setVolume(0.01);
                 mediaPlayer.play();
                 Timeline timeline = new Timeline(
-                  new KeyFrame(Duration.millis(1500),
-                          new KeyValue(mediaPlayer.volumeProperty(), 1))
+                        new KeyFrame(Duration.millis(1500),
+                                new KeyValue(mediaPlayer.volumeProperty(), 1))
                 );
                 timeline.play();
                 Task<Void> waitTillTimeTrigger = new Task<Void>() {
@@ -167,7 +159,7 @@ public class CoursesInspectContextView extends ContextView<Course> implements In
                 new Thread(waitTillTimeTrigger).start();
             });
             mediaPlayer.volumeProperty().addListener(((observable, oldValue, newValue) -> {
-                if(oldValue.doubleValue() > newValue.doubleValue() && newValue.doubleValue() == 0.0){
+                if (oldValue.doubleValue() > newValue.doubleValue() && newValue.doubleValue() == 0.0) {
                     mediaPlayer.stop();
                     System.out.println("Preview stopped.");
                 }

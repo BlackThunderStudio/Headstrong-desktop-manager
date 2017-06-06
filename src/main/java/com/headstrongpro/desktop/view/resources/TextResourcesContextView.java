@@ -10,18 +10,12 @@ import com.headstrongpro.desktop.view.ContextView;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.web.HTMLEditor;
 import javafx.scene.web.WebView;
 
 import java.net.URL;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 /**

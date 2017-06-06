@@ -136,7 +136,7 @@ public class CompaniesController implements Refreshable, IContentController<Comp
      * @throws ModelSyncException
      */
     public ObservableList<Subscription> getSubscriptionByCompanyId(int id) throws ModelSyncException {
-        return FXCollections.observableArrayList(new DBSubscriptions().getbyCompanyId(id));
+        return FXCollections.observableArrayList(new DBSubscriptions().getByCompanyId(id));
     }
 
     /**
@@ -158,7 +158,7 @@ public class CompaniesController implements Refreshable, IContentController<Comp
      * @throws ModelSyncException
      */
     public ObservableList<Payment> getPaymentsByCompanyId(int id) throws ModelSyncException {
-        List<Subscription> subscriptions = new DBSubscriptions().getbyCompanyId(id);
+        List<Subscription> subscriptions = new DBSubscriptions().getByCompanyId(id);
         List<Payment> payments = new ArrayList<>();
         for (Subscription s :
                 subscriptions) {

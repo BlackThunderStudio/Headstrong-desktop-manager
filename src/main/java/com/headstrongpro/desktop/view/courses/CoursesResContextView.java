@@ -13,7 +13,6 @@ import com.headstrongpro.desktop.view.ContextView;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.concurrent.Worker;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -28,10 +27,7 @@ import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 /**
- * desktop-manager
- * <p>
- * <p>
- * Created by rajmu on 17.06.03.
+ * Courses Res Context View
  */
 public class CoursesResContextView extends ContextView<Course> implements Initializable {
 
@@ -52,7 +48,7 @@ public class CoursesResContextView extends ContextView<Course> implements Initia
     private List<Resource> assignedBefore;
 
     @FXML
-    public void saveCourseOnClick(ActionEvent event) {
+    public void saveCourseOnClick() {
         Task<Void> assign = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
@@ -79,7 +75,7 @@ public class CoursesResContextView extends ContextView<Course> implements Initia
                 .forEach(name -> newlyAssigned.add(resources.stream()
                         .filter(resource -> resource.getName().equals(name))
                         .findFirst()
-                        .get()));
+                        .orElseGet(null)));
         newlyAssigned.removeAll(assignedBefore);
         newlyAssigned.forEach(e -> {
             try {
@@ -91,7 +87,7 @@ public class CoursesResContextView extends ContextView<Course> implements Initia
     }
 
     @FXML
-    public void cancelCourseOnClick(ActionEvent event) {
+    public void cancelCourseOnClick() {
         mainWindowView.changeContext(ContentSource.COURSES);
     }
 
@@ -107,7 +103,7 @@ public class CoursesResContextView extends ContextView<Course> implements Initia
 
     }
 
-    public ResourceType defineType() {
+    private ResourceType defineType() {
         if (typeCombo.getValue().equals(resTypes[0])) return ResourceType.ANY;
         else if (typeCombo.getValue().equals(resTypes[1])) return ResourceType.AUDIO;
         else if (typeCombo.getValue().equals(resTypes[2])) return ResourceType.IMAGE;

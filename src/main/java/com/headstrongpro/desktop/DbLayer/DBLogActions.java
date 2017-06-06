@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by rajmu on 17.05.09.
+ * DB Log Actions
  */
 public class DBLogActions implements IDataAccessObject<Log> {
 
@@ -47,7 +47,7 @@ public class DBLogActions implements IDataAccessObject<Log> {
 
     @Override
     public Log getById(int id) throws ModelSyncException {
-        Log log = null;
+        Log log;
         try {
             connect = new DBConnect();
             ResultSet rs = connect.getFromDataBase("SELECT * FROM log_actions WHERE id=" + id + ";");
@@ -95,14 +95,14 @@ public class DBLogActions implements IDataAccessObject<Log> {
     @Deprecated
     @Override
     public void update(Log object) throws ModelSyncException {
-        //user shouldn'data be able to update logs
+        //user should not be able to update logs
         throw new ModelSyncException("This method shall not be used!");
     }
 
     @Deprecated
     @Override
     public void delete(Log object) throws ModelSyncException {
-        //user shouldn'data be able to delete logs
+        //user should not be able to delete logs
         throw new ModelSyncException("This method shall not be used!");
     }
 

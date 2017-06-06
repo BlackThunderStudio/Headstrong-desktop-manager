@@ -7,11 +7,7 @@ import java.sql.PreparedStatement
 import java.sql.ResultSet
 
 /**
- *
- * desktop-manager
- *
- *
- * Created by rajmu on 17.05.29.
+ * DB Context
  */
 class DBContext : Configurable() {
 
@@ -41,11 +37,11 @@ class DBContext : Configurable() {
     fun uploadSafe(stmt: PreparedStatement): Int = stmt.executeUpdate()
 
     override fun getConfig(): MutableList<Any> {
-        val creds: JSONObject = parseJsonConfig("/config.json", "database_mssql")
+        val credentials: JSONObject = parseJsonConfig("/config.json", "database_mssql")
         val list = mutableListOf<Any>()
-        creds["url"]?.let { list.add(it) }
-        creds["user"]?.let { list.add(it) }
-        creds["pass"]?.let { list.add(it) }
+        credentials["url"]?.let { list.add(it) }
+        credentials["user"]?.let { list.add(it) }
+        credentials["pass"]?.let { list.add(it) }
         return list
     }
 }

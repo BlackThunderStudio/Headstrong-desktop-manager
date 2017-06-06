@@ -60,7 +60,7 @@ public class CoursesController implements Refreshable, IContentController<Course
 
     @Override
     public void delete(Course course) throws DatabaseOutOfSyncException, ModelSyncException {
-        if (course == null) throw new IllegalArgumentException("Cannot be nullu");
+        if (course == null) throw new IllegalArgumentException("Cannot be null");
         dbCourse.delete(course);
     }
 

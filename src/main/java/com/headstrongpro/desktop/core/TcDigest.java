@@ -72,7 +72,7 @@ public class TcDigest {
         return buffer.parallelStream()
                 .map(e -> {
                     try {
-                        return e = run(e, seed, flag, system);
+                        return run(e, seed, flag, system);
                     } catch (DigestRuntimeException e1) {
                         e1.printStackTrace();
                     }
@@ -96,7 +96,7 @@ public class TcDigest {
                 } else {
                     /*if(system.equals(DigestSystem.BIN)){
                         output.append(systemChange.toNumericSystem(character + digestHash, 2)); //computes the output value
-                    }*/ //doesn'data work
+                    }*/ //doesn't work
                     if (system.equals(DigestSystem.HEX)) {
                         output.append(systemChange.toNumericSystem(character + digestHash, 16)); //computes the output value
                     }
@@ -118,7 +118,7 @@ public class TcDigest {
                             throw new DigestRuntimeException("Error processing data. Invalid String to integer conversion. Could not convert BIN encrypted data into a String.\n" + ex.getMessage(),
                                     ex.getCause());
                         }
-                    }*/ //doesn'data work
+                    }*/ //doesn't work
                     if (system.equals(DigestSystem.HEX)) {
                         try {
                             output.append((char) (Integer.parseInt(systemChange.toDecimal(temp, 16)) - digestHash)); //computes the original character by it's encrypted value
@@ -135,7 +135,7 @@ public class TcDigest {
     }//end of run()
 
     /***
-     *P artitions the input for a fixed sized blocks for parellel processing of the data
+     * Partitions the input for a fixed sized blocks for parallel processing of the data
      * @param string Input sequence
      * @param buffer size of a buffer for data
      * @return output array
@@ -163,7 +163,7 @@ public class TcDigest {
 
     public enum DigestSystem {
         UTF8,
-        //BIN, doesn'data work for some reason
+        //BIN, doesn't work for some reason
         HEX
     }
 

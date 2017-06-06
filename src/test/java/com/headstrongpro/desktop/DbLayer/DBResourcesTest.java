@@ -72,7 +72,7 @@ public class DBResourcesTest {
 
     @Test
     public void getByTypeTest() throws Exception {
-        List<Resource> resources = resourcesDAO.getbyType(2);
+        List<Resource> resources = resourcesDAO.getByType(2);
 
         assertNotNull(resources);
         assertNotEquals(0, resources.size());

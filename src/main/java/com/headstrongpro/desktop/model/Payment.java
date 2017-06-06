@@ -69,7 +69,7 @@ public class Payment implements IModel {
     }
 
     public void setPaid() {
-        this.paid = paid;
+        this.paid = true;
     }
 
     public Subscription getSubscription() {

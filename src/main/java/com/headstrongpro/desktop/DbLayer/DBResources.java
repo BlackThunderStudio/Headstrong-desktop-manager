@@ -3,7 +3,6 @@ package com.headstrongpro.desktop.DbLayer;
 import com.headstrongpro.desktop.DbLayer.util.IDataAccessObject;
 import com.headstrongpro.desktop.DbLayer.util.Synchronizable;
 import com.headstrongpro.desktop.core.connection.DBContext;
-import com.headstrongpro.desktop.core.exception.ConnectionException;
 import com.headstrongpro.desktop.core.exception.DatabaseOutOfSyncException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 import com.headstrongpro.desktop.model.Course;
@@ -21,7 +20,7 @@ import static com.headstrongpro.desktop.DbLayer.util.ActionType.*;
 import static com.headstrongpro.desktop.model.resource.ResourceType.*;
 
 /**
- * Created by rajmu on 17.05.08.
+ * DB Resources
  */
 public class DBResources extends Synchronizable implements IDataAccessObject<Resource>, IResourceConnector {
 
@@ -31,17 +30,17 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
         updateTimestampLocal();
     }
 
-    private List<Resource> prepareResources(List<Resource> resources) throws ConnectionException, SQLException {
+    private List<Resource> prepareResources(List<Resource> resources) throws SQLException {
         //TODO: created a bit more optimised version of the query
         // resource segment: TEXT
         String query = "SELECT content,parent_id FROM text_resources WHERE parent_id IN (";
-        String parentIDs = "";
+        StringBuilder parentIDs = new StringBuilder();
         List<TextResource> textResources = resources.stream().filter(e -> e.getType().equals(TEXT)).map(TextResource.class::cast).collect(Collectors.toList());
         if (textResources.size() != 0) {
             for (int i = 0; i < textResources.size() - 1; i++) {
-                parentIDs += textResources.get(i).getId() + ",";
+                parentIDs.append(textResources.get(i).getId()).append(",");
             }
-            parentIDs += textResources.get(textResources.size() - 1).getId();
+            parentIDs.append(textResources.get(textResources.size() - 1).getId());
             ResultSet resultSet = dbConnect.getFromDataBase(query + parentIDs + ");");
             while (resultSet.next()) {
                 textResources.stream().filter(e -> {
@@ -51,7 +50,7 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
                         e1.printStackTrace();
                     }
                     return false;
-                }).findFirst().get().setContent(resultSet.getString(1));
+                }).findFirst().orElseGet(null).setContent(resultSet.getString(1));
             }
         }
         //EOS
@@ -59,12 +58,12 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
         //resource segment: Image
         List<ImageResource> imageResources = resources.stream().filter(e -> e.getType().equals(IMAGE)).map(ImageResource.class::cast).collect(Collectors.toList());
         query = "SELECT url, parent_id FROM image_resources WHERE parent_id IN (";
-        parentIDs = "";
+        parentIDs = new StringBuilder();
         if (imageResources.size() != 0) {
             for (int i = 0; i < imageResources.size() - 1; i++) {
-                parentIDs += imageResources.get(i).getId() + ",";
+                parentIDs.append(imageResources.get(i).getId()).append(",");
             }
-            parentIDs += imageResources.get(imageResources.size() - 1).getId();
+            parentIDs.append(imageResources.get(imageResources.size() - 1).getId());
             ResultSet resultSet = dbConnect.getFromDataBase(query + parentIDs + ");");
             while (resultSet.next()) {
                 imageResources.stream().filter(e -> {
@@ -74,20 +73,20 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
                         e2.printStackTrace();
                     }
                     return false;
-                }).findFirst().get().setURL(resultSet.getString(1));
+                }).findFirst().orElseGet(null).setURL(resultSet.getString(1));
             }
         }
         //EOS
 
         //resource segment: audio
         List<AudioResource> audioResources = resources.stream().filter(e -> e.getType().equals(AUDIO)).map(AudioResource.class::cast).collect(Collectors.toList());
-        parentIDs = "";
+        parentIDs = new StringBuilder();
         query = "SELECT url, duration, parent_id FROM multimedia_resources WHERE parent_id IN (";
         if (audioResources.size() != 0) {
             for (int i = 0; i < audioResources.size() - 1; i++) {
-                parentIDs += audioResources.get(i).getId() + ",";
+                parentIDs.append(audioResources.get(i).getId()).append(",");
             }
-            parentIDs += audioResources.get(audioResources.size() - 1).getId();
+            parentIDs.append(audioResources.get(audioResources.size() - 1).getId());
             ResultSet resultSet = dbConnect.getFromDataBase(query + parentIDs + ");");
             while (resultSet.next()) {
                 AudioResource ar = audioResources.stream().filter(e -> {
@@ -97,7 +96,7 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
                         e1.printStackTrace();
                     }
                     return false;
-                }).findFirst().get();
+                }).findFirst().orElseGet(null);
                 ar.setUrl(resultSet.getString(1));
                 ar.setDuration(resultSet.getTime(2));
             }
@@ -106,12 +105,12 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
 
         //resource segment: video
         List<VideoResource> videoResources = resources.stream().filter(e -> e.getType().equals(VIDEO)).map(VideoResource.class::cast).collect(Collectors.toList());
-        parentIDs = "";
+        parentIDs = new StringBuilder();
         if (videoResources.size() != 0) {
             for (int i = 0; i < videoResources.size() - 1; i++) {
-                parentIDs += videoResources.get(i).getId() + ",";
+                parentIDs.append(videoResources.get(i).getId()).append(",");
             }
-            parentIDs += videoResources.get(videoResources.size() - 1).getId();
+            parentIDs.append(videoResources.get(videoResources.size() - 1).getId());
             ResultSet resultSet = dbConnect.getFromDataBase(query + parentIDs + ");");
             while (resultSet.next()) {
                 VideoResource vr = videoResources.stream().filter(e -> {
@@ -121,7 +120,7 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
                         e1.printStackTrace();
                     }
                     return false;
-                }).findFirst().get();
+                }).findFirst().orElseGet(null);
                 vr.setUrl(resultSet.getString(1));
                 vr.setDuration(resultSet.getTime(2));
             }
@@ -153,7 +152,7 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
             }
             resources = prepareResources(resources);
             timestamp = setTimestamp();
-        } catch (ConnectionException | SQLException e) {
+        } catch (SQLException e) {
             throw new ModelSyncException("Could not load resources.", e);
         }
         return resources;
@@ -161,7 +160,7 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
 
     @Override
     public Resource getById(int id) throws ModelSyncException {
-        Resource resource = null;
+        Resource resource;
         try {
             dbConnect = new DBContext();
             String query = "SELECT * FROM [resources] WHERE id=" + id + ";";
@@ -176,7 +175,7 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
             r.add(resource);
             resource = prepareResources(r).get(0);
             timestamp = setTimestamp();
-        } catch (ConnectionException | SQLException e) {
+        } catch (SQLException e) {
             throw new ModelSyncException("Could not load resources.", e);
         }
         return resource;
@@ -204,6 +203,7 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
                             TextResource textResource = Resource.ofType(object);
                             query = "INSERT INTO text_resources(content, parent_id) VALUES (?,?)";
                             PreparedStatement preparedStatement1 = dbConnect.getConnection().prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
+                            assert textResource != null;
                             preparedStatement1.setString(1, textResource.getContent());
                             preparedStatement1.setInt(2, textResource.getId());
                             preparedStatement1.executeUpdate();
@@ -218,6 +218,7 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
                             ImageResource imageResource = Resource.ofType(object);
                             query = "INSERT INTO image_resources(url, parent_id) VALUES (?,?)";
                             PreparedStatement preparedStatement2 = dbConnect.getConnection().prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
+                            assert imageResource != null;
                             preparedStatement2.setString(1, imageResource.getURL());
                             preparedStatement2.setInt(2, imageResource.getId());
                             preparedStatement2.executeUpdate();
@@ -232,6 +233,7 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
                             AudioResource audioResource = Resource.ofType(object);
                             query = "INSERT INTO multimedia_resources(url, duration, parent_id) VALUES (?,?,?)";
                             PreparedStatement preparedStatement3 = dbConnect.getConnection().prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
+                            assert audioResource != null;
                             preparedStatement3.setString(1, audioResource.getUrl());
                             preparedStatement3.setTime(2, audioResource.getDuration());
                             preparedStatement3.setInt(3, audioResource.getId());
@@ -247,6 +249,7 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
                             VideoResource videoResource = Resource.ofType(object);
                             query = "INSERT INTO multimedia_resources(url, duration, parent_id) VALUES (?,?,?)";
                             PreparedStatement preparedStatement4 = dbConnect.getConnection().prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
+                            assert videoResource != null;
                             preparedStatement4.setString(1, videoResource.getUrl());
                             preparedStatement4.setTime(2, videoResource.getDuration());
                             preparedStatement4.setInt(3, videoResource.getId());
@@ -291,6 +294,7 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
                         TextResource textResource = Resource.ofType(object);
                         query = "UPDATE text_resources SET content=? WHERE parent_id=?";
                         PreparedStatement preparedStatement1 = dbConnect.getConnection().prepareStatement(query);
+                        assert textResource != null;
                         preparedStatement1.setString(1, textResource.getContent());
                         preparedStatement1.setInt(2, textResource.getId());
                         ResultSet x = dbConnect.getFromDataBase("SELECT id FROM text_resources WHERE parent_id=" + textResource.getId());
@@ -302,6 +306,7 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
                         ImageResource imageResource = Resource.ofType(object);
                         query = "UPDATE image_resources SET url=? WHERE parent_id=?";
                         PreparedStatement preparedStatement2 = dbConnect.getConnection().prepareStatement(query);
+                        assert imageResource != null;
                         preparedStatement2.setString(1, imageResource.getURL());
                         preparedStatement2.setInt(2, imageResource.getId());
                         dbConnect.uploadSafe(preparedStatement2);
@@ -313,6 +318,7 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
                         AudioResource audioResource = Resource.ofType(object);
                         query = "UPDATE multimedia_resources SET url=?,duration=? WHERE parent_id=?";
                         PreparedStatement preparedStatement3 = dbConnect.getConnection().prepareStatement(query);
+                        assert audioResource != null;
                         preparedStatement3.setString(1, audioResource.getUrl());
                         preparedStatement3.setTime(2, audioResource.getDuration());
                         preparedStatement3.setInt(3, audioResource.getId());
@@ -325,6 +331,7 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
                         VideoResource videoResource = Resource.ofType(object);
                         query = "UPDATE multimedia_resources SET url=?,duration=? WHERE parent_id=?";
                         PreparedStatement preparedStatement4 = dbConnect.getConnection().prepareStatement(query);
+                        assert videoResource != null;
                         preparedStatement4.setString(1, videoResource.getUrl());
                         preparedStatement4.setTime(2, videoResource.getDuration());
                         preparedStatement4.setInt(3, videoResource.getId());
@@ -387,7 +394,7 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
         }
     }
 
-    public List<Resource> getbyType(int type) throws ModelSyncException {
+    public List<Resource> getByType(int type) throws ModelSyncException {
         List<Resource> resources = new ArrayList<>();
         try {
             dbConnect = new DBContext();
@@ -403,7 +410,7 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
                 resources.add(resource);
             }
             resources = prepareResources(resources);
-        } catch (ConnectionException | SQLException e) {
+        } catch (SQLException e) {
             throw new ModelSyncException("Could not load resources.", e);
         }
         return resources;
@@ -421,12 +428,12 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
                 resIDs.add(rs.getInt("resource_id"));
             }
 
-            String simplifiedResIDs = "";
+            StringBuilder simplifiedResIDs = new StringBuilder();
             for (int i = 0; i < resIDs.size() - 1; i++) {
-                simplifiedResIDs += resIDs.get(i) + ",";
+                simplifiedResIDs.append(resIDs.get(i)).append(",");
             }
-            if(resIDs.size() > 0){
-                simplifiedResIDs += resIDs.get(resIDs.size() - 1);
+            if (resIDs.size() > 0) {
+                simplifiedResIDs.append(resIDs.get(resIDs.size() - 1));
                 qry = "SELECT * FROM resources WHERE id IN(" + simplifiedResIDs + ");";
                 rs = dbConnect.getFromDataBase(qry);
                 while (rs.next()) {
@@ -439,7 +446,7 @@ public class DBResources extends Synchronizable implements IDataAccessObject<Res
                 }
             }
             resources = prepareResources(resources);
-        } catch (ConnectionException | SQLException e) {
+        } catch (SQLException e) {
             throw new ModelSyncException("WARNING! Could not fetch resources of courseID: " + courseID + " !", e);
         }
         return resources;
