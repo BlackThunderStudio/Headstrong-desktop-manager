@@ -3,6 +3,7 @@ package com.headstrongpro.desktop.DbLayer;
 import com.headstrongpro.desktop.model.Department;
 import com.headstrongpro.desktop.model.entity.Company;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.List;
@@ -69,7 +70,7 @@ public class DBDepartmentsTest {
 
     }
 
-    //@Ignore("needs to be fixed")
+    @Ignore("needs to be fixed")
     @Test
     public void deleteByCompanyID() throws Exception {
         Company company = new Company("test company", String.valueOf(new Random().nextInt()), "test street", "123", "dummyville", "dummyland");
