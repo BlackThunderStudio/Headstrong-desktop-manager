@@ -44,24 +44,18 @@ public class ResourcesControllerTest {
     @Test
     public void editResource() throws Exception {
         String oldName , newName = "random name";
-        ImageResource test = (ImageResource) rc.getById(66);
+        ImageResource test = (ImageResource) rc.getById(2);
         oldName = test.getName();
         test.setName(newName);
         rc.edit(test);
-        assertNotEquals(oldName, rc.getById(66).getName());
+        assertNotEquals(oldName, rc.getById(2).getName());
         test.setName(oldName);
         rc.edit(test);
-        assertEquals(oldName, rc.getById(66).getName());
-    }
-
-    @Ignore
-    @Test
-    public void delete() throws Exception {
-        //TextResource test = new TextResource("really random text", "test", false);
+        assertEquals(oldName, rc.getById(2).getName());
     }
 
     @Test
     public void getById() throws Exception {
-        assertEquals("duck pic", rc.getById(66).getName());
+        assertEquals("get_focused_part1", rc.getById(15).getName());
     }
 }
