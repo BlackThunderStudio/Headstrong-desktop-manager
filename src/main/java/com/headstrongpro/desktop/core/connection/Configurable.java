@@ -18,6 +18,8 @@ public abstract class Configurable {
         try {
             String path = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
             path = path.substring(1, path.lastIndexOf('/')) + "/cfg";
+            path = path.replaceAll("%20", " ");
+            System.out.println(path + configName);
             Object file = parser.parse(
                     new InputStreamReader(
                             /*getClass().getResourceAsStream(configName)*/
