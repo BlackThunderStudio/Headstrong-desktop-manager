@@ -81,7 +81,9 @@ public class Main extends Application {
         Optional<ButtonType> closeResponse = a.showAndWait();
         closeResponse.ifPresent(buttonType -> {
             if (ButtonType.OK.equals(buttonType)) {
-                DashboardView.endReloadingDashboard();
+                if (UserController.isLoggedIn()) {
+                    DashboardView.endReloadingDashboard();
+                }
                 primaryStage.close();
             }
         });
