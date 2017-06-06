@@ -8,9 +8,7 @@ import org.junit.Test;
 import java.util.List;
 import java.util.Random;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 /**
  * Tests for company collection~
@@ -43,7 +41,7 @@ public class DBCompanyTest {
 
     //@Ignore ("needs fix")
     @Test
-    public void createDelete() throws  Exception{
+    public void createDelete() throws Exception {
         Company company = new Company("test company", String.valueOf(new Random().nextInt()), "test street", "123", "dummyville", "dummyland");
         Department department = new Department(12, "depo", "yest", 26);
 
@@ -59,7 +57,7 @@ public class DBCompanyTest {
     }
 
     @Test
-    public void update() throws Exception{
+    public void update() throws Exception {
         Company company = companyDAO.getById(1);
         String oldName = company.getName(), newName = "dummy industries";
         company.setName(newName);

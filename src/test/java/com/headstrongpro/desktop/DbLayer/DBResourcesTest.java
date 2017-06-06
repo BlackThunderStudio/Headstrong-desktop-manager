@@ -1,7 +1,9 @@
 package com.headstrongpro.desktop.DbLayer;
 
 import com.headstrongpro.desktop.core.connection.DBConnect;
-import com.headstrongpro.desktop.model.resource.*;
+import com.headstrongpro.desktop.model.resource.AudioResource;
+import com.headstrongpro.desktop.model.resource.Resource;
+import com.headstrongpro.desktop.model.resource.ResourceFactory;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -14,11 +16,11 @@ import static org.junit.Assert.*;
  * Created by rajmu on 17.05.08.
  */
 public class DBResourcesTest {
-    private DBConnect connect;
     private DBResources resourcesDAO;
+
     @Before
     public void setUp() throws Exception {
-        connect = new DBConnect();
+        new DBConnect();
         resourcesDAO = new DBResources();
     }
 
@@ -59,11 +61,13 @@ public class DBResourcesTest {
         Resource r = resourcesDAO.getById(10);
         AudioResource ar = Resource.ofType(r);
         String expected = "http://www.example.com/qwerty.mp3";
+        assert ar != null;
         ar.setUrl(expected);
 
         resourcesDAO.update(ar);
         AudioResource ar2 = Resource.ofType(resourcesDAO.getById(10));
 
+        assert ar2 != null;
         assertEquals(expected, ar2.getUrl());
 
         ar2.setUrl(oldVal);

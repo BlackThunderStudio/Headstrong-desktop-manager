@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
  * Created by 1062085 on 16-May-17.
  */
 public class DBCourseTest {
-    DBCourse courseDAO;
+    private DBCourse courseDAO;
 
     @Before
     public void setUp() throws Exception {
@@ -38,7 +38,8 @@ public class DBCourseTest {
         assertNotEquals("Course has not been added", oldSize, courseDAO.getAll().size());
         courseDAO.delete(newSess);
         assertEquals("Course has not been removed", oldSize, courseDAO.getAll().size());
-    */}
+    */
+    }
 
     @Test
     public void update() throws Exception {

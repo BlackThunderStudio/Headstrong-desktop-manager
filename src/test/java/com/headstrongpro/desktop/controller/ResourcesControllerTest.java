@@ -1,11 +1,8 @@
 package com.headstrongpro.desktop.controller;
 
 import com.headstrongpro.desktop.model.resource.ImageResource;
-import com.headstrongpro.desktop.model.resource.Resource;
 import com.headstrongpro.desktop.model.resource.ResourceType;
-import com.headstrongpro.desktop.model.resource.TextResource;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -43,7 +40,7 @@ public class ResourcesControllerTest {
 
     @Test
     public void editResource() throws Exception {
-        String oldName , newName = "random name";
+        String oldName, newName = "random name";
         ImageResource test = (ImageResource) rc.getById(2);
         oldName = test.getName();
         test.setName(newName);

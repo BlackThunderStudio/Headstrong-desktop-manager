@@ -2,10 +2,7 @@ package com.headstrongpro.desktop.model.resource;
 
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Created by rajmu on 17.05.08.

@@ -1,10 +1,9 @@
 package com.headstrongpro.desktop.core.connection;
 
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Created by rajmu on 17.04.06.

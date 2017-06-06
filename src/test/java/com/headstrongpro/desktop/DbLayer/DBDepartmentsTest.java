@@ -66,7 +66,7 @@ public class DBDepartmentsTest {
     @Test
     public void getByCompanyID() throws Exception {
         List<Department> departments = departmentDAO.getByCompanyID(1);
-        assertNotEquals("No departments have been found", 0 , departments.size());
+        assertNotEquals("No departments have been found", 0, departments.size());
 
     }
 
