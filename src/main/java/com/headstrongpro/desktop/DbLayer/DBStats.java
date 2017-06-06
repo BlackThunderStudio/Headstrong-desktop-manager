@@ -1,7 +1,8 @@
 package com.headstrongpro.desktop.DbLayer;
 
 import com.headstrongpro.desktop.DbLayer.util.IStatistical;
-import com.headstrongpro.desktop.core.connection.DBContext;
+import com.headstrongpro.desktop.core.connection.DBConnect;
+import com.headstrongpro.desktop.core.exception.ConnectionException;
 import com.headstrongpro.desktop.core.exception.ModelSyncException;
 
 import java.sql.PreparedStatement;
@@ -13,10 +14,10 @@ import java.sql.SQLException;
  */
 public class DBStats implements IStatistical {
 
-    private DBContext dbContext;
+    private DBConnect dbContext;
 
     public DBStats() {
-        dbContext = new DBContext();
+        dbContext = new DBConnect();
     }
 
     @Override
@@ -31,7 +32,7 @@ public class DBStats implements IStatistical {
             ResultSet rs = preparedStatement.executeQuery();
             rs.next();
             rows = rs.getInt(1);
-        } catch (SQLException e) {
+        } catch (SQLException | ConnectionException e) {
             throw new ModelSyncException(e);
         }
         return rows;
@@ -46,7 +47,7 @@ public class DBStats implements IStatistical {
             ResultSet rs = preparedStatement.executeQuery();
             rs.next();
             rows = rs.getInt(1);
-        } catch (SQLException e) {
+        } catch (SQLException | ConnectionException e) {
             e.printStackTrace();
         }
         return rows;
@@ -56,11 +57,11 @@ public class DBStats implements IStatistical {
     public int getActiveSubscriptionsCount() {
         String query = "SELECT COUNT(*) FROM subscriptions WHERE end_date > CURRENT_TIMESTAMP";
         int rows = 0;
-        ResultSet rs = dbContext.getFromDataBase(query);
         try {
+            ResultSet rs = dbContext.getFromDataBase(query);
             rs.next();
             rows = rs.getInt(1);
-        } catch (SQLException e) {
+        } catch (SQLException | ConnectionException e) {
             e.printStackTrace();
         }
         return rows;
