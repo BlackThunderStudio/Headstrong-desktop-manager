@@ -21,5 +21,8 @@
     "cloud_name": "headstrongpro-com",
     "api_key": "373434186787348",
     "api_secret": "vzql3EvyPYMnQ_2cbTl0CIuRYg8"
+  },
+  "local": {
+    "version": "1.0.0"
   }
 }
