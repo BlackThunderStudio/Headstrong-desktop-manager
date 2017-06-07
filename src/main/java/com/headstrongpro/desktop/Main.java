@@ -36,7 +36,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws IOException {
 //        SplashScreen.viewSplashScreen(3000, SplashScreen.Style.FADE, SplashScreen.Style.FADE);
         this.primaryStage = primaryStage;
-        this.primaryStage.setTitle("Headstrong Company Manager");
+        this.primaryStage.setTitle("Headstrong Company Manager 1.0.1");
 
         // Set minimum window size
         this.primaryStage.setMinWidth(1100);
