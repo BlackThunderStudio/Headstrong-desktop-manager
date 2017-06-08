@@ -1,6 +1,7 @@
 package com.headstrongpro.desktop.view.dashboard;
 
 import com.headstrongpro.desktop.controller.Analytics;
+import com.headstrongpro.desktop.controller.UserController;
 import com.headstrongpro.desktop.core.fxControls.DashboardTile;
 import com.headstrongpro.desktop.view.ContentSource;
 import com.headstrongpro.desktop.view.ContentView;
@@ -32,6 +33,7 @@ public class DashboardView extends ContentView implements Initializable {
     private int companiesValue, clientsValue, subscriptionsValue, paymentsValue, coursesValue, resourcesValue;
 
     public static void endReloadingDashboard() {
+        if (UserController.isLoggedIn())
         timer.cancel();
     }
 
