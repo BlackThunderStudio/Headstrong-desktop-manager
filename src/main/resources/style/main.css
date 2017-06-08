@@ -28,3 +28,18 @@
 .button, .radio-button {
     -fx-cursor: hand;
 }
+
+.progress-bar {
+    -fx-accent: #1DA88B;
+    -fx-border-style: hidden;
+
+}
+
+.progress-bar .bar {
+    -fx-background-insets: 1 1 1 1;
+    -fx-padding: 0.20em;
+
+}.progress-bar .track {
+     -fx-background-radius: 0, 0, 0, 0;
+}
+

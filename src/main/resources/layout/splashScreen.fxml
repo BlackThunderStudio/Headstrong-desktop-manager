@@ -12,6 +12,6 @@
                 <Image url="@../img/splash_screen.jpg" />
             </image>
         </ImageView>
-      <ProgressBar fx:id="progressBar" layoutX="85.0" layoutY="277.0" prefHeight="8.0" prefWidth="200.0" />
+      <ProgressBar fx:id="progressBar" layoutX="85.0" layoutY="277.0" prefHeight="8.0" prefWidth="200.0" stylesheets="/style/main.css"/>
     </children>
 </AnchorPane>
