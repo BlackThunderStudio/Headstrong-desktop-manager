@@ -6,6 +6,7 @@ import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 
+import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.ProgressBar;
 
@@ -17,12 +18,16 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 /**
  * Created by rajmu on 17.04.06.
  */
-public class SplashScreen {
+public class SplashScreen implements Initializable{
 
     @FXML
     public AnchorPane layout;
@@ -32,10 +37,11 @@ public class SplashScreen {
 
     private Style style;
 
-    private Stage window;
+    private static int durationMillis;
 
     public void viewSplashScreen(int durationMillis, Style styleOpen, Style styleClose) {
         Stage window = new Stage();
+        SplashScreen.durationMillis = durationMillis;
 
         style = styleClose;
 
@@ -102,6 +108,21 @@ public class SplashScreen {
             fadeTransition.setToValue(0.0);
             fadeTransition.play();
         }
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        final double[] timePassed = {0.0};
+        Timer timer = new Timer();
+        TimerTask updateProgress = new TimerTask() {
+            @Override
+            public void run() {
+                if (timePassed[0] > durationMillis) timer.cancel();
+                else timePassed[0] += 100;
+                progressBar.setProgress(timePassed[0] / durationMillis);
+            }
+        };
+        timer.scheduleAtFixedRate(updateProgress, 0, 150);
     }
 
     public enum Style {
