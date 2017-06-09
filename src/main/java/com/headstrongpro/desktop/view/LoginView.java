@@ -5,6 +5,7 @@ import javafx.css.PseudoClass;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
 
 import java.net.URL;
@@ -19,12 +20,16 @@ public class LoginView extends RootLayoutView implements Initializable {
     public TextField userNameField;
     @FXML
     public PasswordField passwordField;
+    @FXML
+    public ProgressIndicator progressIndicator;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        progressIndicator.setVisible(false);
     }
 
     public void handleLogin() {
+        progressIndicator.setVisible(true);
         userNameField.pseudoClassStateChanged(errorClass, false);
         passwordField.pseudoClassStateChanged(errorClass, false);
 
@@ -37,6 +42,8 @@ public class LoginView extends RootLayoutView implements Initializable {
             if (!e.toString().contains("password")) {
                 userNameField.pseudoClassStateChanged(errorClass, true);
             }
+        } finally {
+            progressIndicator.setVisible(false);
         }
     }
 
