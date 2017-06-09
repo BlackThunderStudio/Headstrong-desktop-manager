@@ -23,7 +23,7 @@
     </rowConstraints>
     <children>
         <TextField fx:id="nameField" promptText="Name" GridPane.rowIndex="1" />
-        <HTMLEditor fx:id="textResourcesEditor" maxHeight="4000.0" minHeight="200.0" minWidth="260.0" onKeyReleased="#editorOnKeyReleased" onMouseClicked="#editorOnMouseClicked" prefHeight="255.0" prefWidth="250.0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+        <HTMLEditor fx:id="textResourcesEditor" maxHeight="4000.0" minHeight="200.0" minWidth="260.0" prefHeight="255.0" prefWidth="250.0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
          <GridPane.margin>
             <Insets />
          </GridPane.margin></HTMLEditor>
