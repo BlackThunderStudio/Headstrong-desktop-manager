@@ -27,8 +27,6 @@ public class TextResourcesContextView extends ContextView<Resource> implements I
     public TextField nameField;
     @FXML
     public HTMLEditor textResourcesEditor;
-    @FXML
-    public WebView textResourcesPreviewWeb;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -87,22 +85,5 @@ public class TextResourcesContextView extends ContextView<Resource> implements I
         });
 
         new Thread(loadTextContent).start();
-    }
-
-    @FXML
-    public void editorOnKeyReleased() {
-        System.out.println("editorOnKeyReleased");
-        sendToPreview();
-    }
-
-    private void sendToPreview() {
-        String html = textResourcesEditor.getHtmlText();
-        textResourcesPreviewWeb.getEngine().load(html); //TODO: for some reason doesn't work
-    }
-
-    @FXML
-    public void editorOnMouseClicked() {
-        System.out.println("editorOnMouseClicked");
-        sendToPreview();
     }
 }
