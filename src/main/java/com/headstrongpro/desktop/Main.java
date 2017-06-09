@@ -12,8 +12,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Optional;
 
 /**
@@ -40,7 +45,7 @@ public class Main extends Application {
         SplashScreen.view(2500, SplashScreen.Style.FADE, SplashScreen.Style.FADE);
 
         this.primaryStage = primaryStage;
-        this.primaryStage.setTitle("Headstrong Company Manager 1.0.1");
+        this.primaryStage.setTitle("Headstrong Company Manager " + getAppVersion());
 
         // Set minimum window size
         this.primaryStage.setMinWidth(1100);
@@ -92,5 +97,19 @@ public class Main extends Application {
                 primaryStage.close();
             }
         });
+    }
+
+    private String getAppVersion(){
+        String path = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
+        path = path.substring(1, path.lastIndexOf('/')) + "/cfg/";
+        path = path.replaceAll("%20", " ");
+        try {
+            JSONObject jsonObject = (JSONObject) new JSONParser().parse(new InputStreamReader(new FileInputStream(path + "update.json")));
+            jsonObject = (JSONObject)jsonObject.get("local");
+            return (String)jsonObject.get("version");
+        } catch (IOException | ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
