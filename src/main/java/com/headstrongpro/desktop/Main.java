@@ -12,6 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import org.jetbrains.annotations.Nullable;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -99,8 +100,9 @@ public class Main extends Application {
         });
     }
 
-    private String getAppVersion(){
-        String path = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
+    @Nullable
+    public static String getAppVersion(){
+        String path = Main.class.getProtectionDomain().getCodeSource().getLocation().getPath();
         path = path.substring(1, path.lastIndexOf('/')) + "/cfg/";
         path = path.replaceAll("%20", " ");
         try {
