@@ -37,7 +37,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws IOException {
         /*SplashScreen splashScreenController = new SplashScreen();
         splashScreenController.viewSplashScreen(2000, SplashScreen.Style.FADE, SplashScreen.Style.FADE);*/
-        SplashScreen.view(3000, SplashScreen.Style.FADE, SplashScreen.Style.FADE);
+        SplashScreen.view(2500, SplashScreen.Style.FADE, SplashScreen.Style.FADE);
 
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("Headstrong Company Manager 1.0.1");

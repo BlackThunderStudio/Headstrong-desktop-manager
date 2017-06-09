@@ -9,9 +9,9 @@
     <children>
         <ImageView fitHeight="360.0" fitWidth="540.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <image>
-                <Image url="@../img/splash_screen.jpg" />
+                <Image url="@../img/splash_screen_1.jpg" />
             </image>
         </ImageView>
-      <ProgressBar fx:id="progressBar" layoutX="85.0" layoutY="277.0" prefHeight="8.0" prefWidth="200.0" stylesheets="/style/main.css"/>
+      <ProgressBar fx:id="progressBar" layoutX="85.0" layoutY="248.0" prefWidth="200.0" stylesheets="/style/main.css" visible="false"/>
     </children>
 </AnchorPane>
