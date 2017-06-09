@@ -34,6 +34,8 @@ public abstract class ContextView<T> {
 
     protected ArrayList<TextInputControl> textInputControls = new ArrayList<>(); // List of form text fields
     protected ArrayList<RadioButton> radioButtons = new ArrayList<>(); // List of form text fields
+    protected ArrayList<DatePicker> datePickers = new ArrayList<>(); // List of form date pickers
+    protected ArrayList<ComboBox> comboBoxes = new ArrayList<>(); //List of combo boxes
 
     protected SyncHandler<T> handler = () -> {
         IModel modelItem = (IModel) contextItem;
@@ -124,11 +126,15 @@ public abstract class ContextView<T> {
             topControls.getChildren().addAll(toggleEditButton, deleteButton);
             textInputControls.forEach(tf -> tf.setEditable(false));
             radioButtons.forEach(rb -> rb.setDisable(true));
+            datePickers.forEach(dp -> dp.setDisable(true));
+            comboBoxes.forEach(cb -> cb.setDisable(true));
         } else {
             topControls.getChildren().removeAll(toggleEditButton, deleteButton);
             topControls.getChildren().addAll(saveButton, cancelButton);
             textInputControls.forEach(tf -> tf.setEditable(true));
             radioButtons.forEach(rb -> rb.setDisable(false));
+            datePickers.forEach(dp -> dp.setDisable(false));
+            comboBoxes.forEach(cb -> cb.setDisable(false));
         }
         editMode = !editMode;
     }

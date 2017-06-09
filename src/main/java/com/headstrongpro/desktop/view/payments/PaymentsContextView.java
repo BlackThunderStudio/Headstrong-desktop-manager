@@ -15,6 +15,7 @@ import javafx.util.StringConverter;
 import java.net.URL;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -88,6 +89,10 @@ public class PaymentsContextView extends ContextView<Payment> implements Initial
                 } else return null;
             }
         });
+
+        textInputControls.addAll(Arrays.asList(paymentsValueTextfield));
+        datePickers.addAll(Arrays.asList(paymentsDueDatePicker, paymentsPaidDatePicker));
+
     }
 
     @Override

@@ -22,6 +22,7 @@ import javafx.util.StringConverter;
 import java.net.URL;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -102,6 +103,8 @@ public class SubscriptionsContextView extends ContextView<Subscription> implemen
                 }));
 
         setDefaults();
+        datePickers.addAll(Arrays.asList(startDatePicker, endDatePicker));
+        comboBoxes.addAll(Arrays.asList(rateComboBox));
     }
 
     @Override
