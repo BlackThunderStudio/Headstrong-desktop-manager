@@ -92,6 +92,7 @@ public class PaymentsContextView extends ContextView<Payment> implements Initial
 
         textInputControls.addAll(Arrays.asList(paymentsValueTextfield));
         datePickers.addAll(Arrays.asList(paymentsDueDatePicker, paymentsPaidDatePicker));
+        setDefaults();
 
     }
 

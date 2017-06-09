@@ -78,6 +78,8 @@ public abstract class ContextView<T> {
         topControls.getChildren().removeAll(saveButton, cancelButton);
         textInputControls.forEach(tf -> tf.setEditable(false));
         radioButtons.forEach(rb -> rb.setDisable(true));
+        datePickers.forEach(dp -> dp.setDisable(true));
+        comboBoxes.forEach(cb -> cb.setDisable(true));
     }
 
     /**

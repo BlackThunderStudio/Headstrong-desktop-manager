@@ -102,9 +102,9 @@ public class SubscriptionsContextView extends ContextView<Subscription> implemen
                     }
                 }));
 
-        setDefaults();
         datePickers.addAll(Arrays.asList(startDatePicker, endDatePicker));
         comboBoxes.addAll(Arrays.asList(rateComboBox));
+        setDefaults();
     }
 
     @Override
