@@ -28,10 +28,6 @@ import static com.headstrongpro.desktop.core.Utils.dateFormatter;
 public class PaymentsContextView extends ContextView<Payment> implements Initializable {
 
     @FXML
-    public Button paymentsEditButton;
-    @FXML
-    public Button paymentsDeleteButton;
-    @FXML
     public Button paymentsCompanyButton;
     @FXML
     public Button paymentsSubscriptionButton;
@@ -129,13 +125,13 @@ public class PaymentsContextView extends ContextView<Payment> implements Initial
         Optional<ButtonType> response = a.showAndWait();
         response.ifPresent(e -> {
             if (ButtonType.OK.equals(e)) {
-                paymentsEditButton.fire();
+                //refresh.fire();
             }
         });
     }
 
     @FXML
-    public void paymentsEditButtonOnClick() {
+    public void handleEdit() {
         if (validateInput(paymentsValueTextfield)) {
             contextItem.setValue(Double.parseDouble(paymentsValueTextfield.getText()));
             contextItem.setDueDate(Date.valueOf(paymentsDueDatePicker.getEditor().getText()));
@@ -157,8 +153,9 @@ public class PaymentsContextView extends ContextView<Payment> implements Initial
         }
     }
 
+    /*
     @FXML
-    public void paymentsDeleteButtonOnClick() {
+    public void handleDelete() {
         Alert a = new Alert(Alert.AlertType.CONFIRMATION);
         a.setHeaderText("Are you sure you want to delete a payment from " + contextItem.getCompanyName() + "?");
         a.setContentText("You cannot take that action back");
@@ -178,7 +175,7 @@ public class PaymentsContextView extends ContextView<Payment> implements Initial
                 }
             }
         });
-    }
+    }*/
 
     @FXML
     public void paymentsCompanyButtonOnClick() {

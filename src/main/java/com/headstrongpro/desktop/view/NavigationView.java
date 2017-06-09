@@ -63,9 +63,7 @@ public class NavigationView implements Initializable {
     }
 
     @FXML
-    public void paymentsOnClick() {
-        mainWindowView.changeContent(ContentSource.PAYMENTS);
-    }
+    public void paymentsOnClick() { mainWindowView.changeContent(ContentSource.PAYMENTS); }
 
     @FXML
     public void aboutOnClick() {
