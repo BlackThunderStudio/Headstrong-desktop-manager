@@ -103,7 +103,7 @@ public class Main extends Application {
     @Nullable
     public static String getAppVersion(){
         String path = Main.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-        path = path.substring(1, path.lastIndexOf('/')) + "/cfg/";
+        path = "/" + path.substring(1, path.lastIndexOf('/')) + "/cfg/";
         path = path.replaceAll("%20", " ");
         try {
             JSONObject jsonObject = (JSONObject) new JSONParser().parse(new InputStreamReader(new FileInputStream(path + "update.json")));

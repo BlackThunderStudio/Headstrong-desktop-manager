@@ -17,7 +17,7 @@ public abstract class Configurable {
         JSONParser parser = new JSONParser();
         try {
             String path = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
-            path = path.substring(1, path.lastIndexOf('/')) + "/cfg";
+            path = "/" + path.substring(1, path.lastIndexOf('/')) + "/cfg";
             path = path.replaceAll("%20", " ");
             System.out.println(path + configName);
             Object file = parser.parse(
